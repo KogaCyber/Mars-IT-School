@@ -1,0 +1,1 @@
+import{p as e}from"./index-CrzIZus5.js";async function t(){let{data:t}=await e.get(`/news-categories/`);return t}async function n(t={}){let{data:n}=await e.get(`/news/`,{params:t});return n}async function r(t){let{data:n}=await e.get(`/news/${t}/`);return n}export{t as n,r,n as t};

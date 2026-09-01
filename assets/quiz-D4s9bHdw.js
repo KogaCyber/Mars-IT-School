@@ -1,0 +1,1 @@
+import{p as e}from"./index-CrzIZus5.js";async function t(t){let{data:n}=await e.get(`/quizzes/${t}/`);return n}async function n(t,n){let{data:r}=await e.post(`/quizzes/${t}/submit/`,n);return r}async function r(t){let{data:n}=await e.get(`/quiz-results/${t}/`);return n}export{r as n,n as r,t};

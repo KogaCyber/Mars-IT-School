@@ -1,0 +1,1 @@
+import{p as e}from"./index-CrzIZus5.js";async function t(){let{data:t}=await e.get(`/branches/`);return t}async function n(t){let{data:n}=await e.get(`/branches/${t}/`);return n}export{t as n,n as t};

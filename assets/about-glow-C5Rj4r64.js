@@ -1,0 +1,1 @@
+var e=`/assets/about-glow-pFjUIN5q.webp`;export{e as t};

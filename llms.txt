@@ -1,0 +1,34 @@
+# MARS IT School
+
+> Toshkentdagi (O‘zbekiston) 7–17 yoshli bolalar va o‘smirlar uchun dasturlash maktabi. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar oflayn, 12 tagacha o‘quvchili guruhlarda, birinchi sinov darsi bepul.
+
+## Qisqacha
+
+- Nomi: MARS IT School
+- Sayt: https://marsitschool.uz
+- Shahar: Toshkent, O‘zbekiston
+- Tashkil etilgan yil: 2019
+- Telefon: +998 78 777 77 57
+- Email: info@marsitschool.uz
+- Sayt tillari: o‘zbek, rus, ingliz
+- O‘quvchilar yoshi: 7–17 yosh
+- Format: Toshkent filiallarida oflayn darslar, 12 tagacha o‘quvchili guruhlar
+- Sinov darsi: bepul, yozilish https://marsitschool.uz/zayavka
+
+## Sahifalar
+
+- [MARS IT School — bolalar va o‘smirlar uchun dasturlash maktabi](https://marsitschool.uz/): MARS IT School — Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun dasturlash maktablari tarmog‘i. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar 12 tagacha o‘quvchidan iborat kichik guruhlarda, haftasiga 2 marta, dastur davomiyligi 24 oygacha. Birinchi sinov darsi bepul.
+- [MARS IT School maktabi haqida](https://marsitschool.uz/o-nas): MARS IT School 2019-yilda tashkil etilgan. O‘qituvchilar — amaliyotdagi IT mutaxassislari. Har bir modul o‘quvchining shaxsiy loyihasi bilan, kurs esa Demo Day’dagi ochiq himoya bilan yakunlanadi.
+- [MARS IT School kurslari](https://marsitschool.uz/kursy): MARS IT School kurslari ikki yo‘nalishga bo‘lingan: 9–11 yoshli bolalar uchun IT Kids va 12–17 yoshli o‘smirlar uchun IT-dasturlash. Ichida — veb-dasturlash (HTML, CSS, JavaScript), Python, o‘yin yaratish, robototexnika va raqamli dizayn.
+- [IT Kids — 9–11 yoshli bolalar uchun kurs](https://marsitschool.uz/kursy/it-kids): IT Kids — 9–11 yoshli bolalar uchun kurs. Bolalar vizual va matnli dasturlashni, robototexnikani o‘zlashtiradi va o‘z o‘yinlarini yaratadi. Guruhlar 12 tagacha o‘quvchi, dastur davomiyligi 24 oygacha.
+- [IT-dasturlash — 12–17 yoshli o‘smirlar uchun kurs](https://marsitschool.uz/kursy/it-razrabotka): IT-dasturlash — 12–17 yoshli o‘smirlar uchun dastur. O‘quvchilar HTML va CSS’dan JavaScript va Python’gacha yo‘lni bosib o‘tadi, saytlar, Telegram-botlar va ma’lumotlar bazasiga ega servislar yaratadi hamda loyihalar portfoliosini yig‘adi.
+- [SPACE — o‘ynab o‘rgan](https://marsitschool.uz/space): SPACE — MARS IT School’ning o‘z platformasi. Unda o‘quvchi uy vazifalari, dars yozuvlari va o‘z taraqqiyotini ko‘radi, bajarilgan vazifalar uchun mukofot oladi, ota-onalar esa o‘zlashtirishni kuzatib boradi.
+- [Kasb tanlash testi](https://marsitschool.uz/test): Bir necha savoldan iborat bepul kasb tanlash testi. Natijaga ko‘ra ota-ona mos IT yo‘nalishni, tavsiya etilgan kursni va taxminiy o‘quv rejasini oladi.
+- [MARS IT School yangiliklari](https://marsitschool.uz/novosti): MARS IT School yangiliklari bo‘limi: qabul e’lonlari, Demo Day va xakatonlar hisobotlari, o‘quvchilar loyihalari va maktab tadbirlari.
+- [MARS IT School vakansiyalari](https://marsitschool.uz/vakansii): MARS IT School Toshkentdagi filiallariga dasturlash o‘qituvchilari, metodistlar va qo‘llab-quvvatlash xodimlarini qabul qilmoqda. Ariza to‘g‘ridan-to‘g‘ri vakansiya sahifasida qoldiriladi.
+- [MARS IT School kontaktlari](https://marsitschool.uz/kontakty): MARS IT School Toshkentning bir necha filialida — Yunusobod, Chilonzor, Mirobod, Shayxontohur va Yashnobod tumanlarida ishlaydi. Sahifada manzillar, telefonlar va yo‘l xaritasi bor.
+- [Ariza qoldirish](https://marsitschool.uz/zayavka): Bepul sinov darsiga yozilish shakli. Ariza qoldirilgach menejer ota-ona bilan bog‘lanadi, bolaning yoshiga mos yo‘nalishni tanlaydi va qulay vaqtni taklif qiladi.
+
+## Foydalanish shartlari
+
+Sayt mazmunini manbaga havola ko‘rsatilgan holda javoblarda iqtibos qilish mumkin.

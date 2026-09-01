@@ -1,0 +1,15 @@
+{
+  "name": "MARS IT School — школа программирования для детей",
+  "short_name": "MARS IT School",
+  "description": "Школа программирования для детей и подростков 7–17 лет в Ташкенте.",
+  "lang": "ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0B0B0F",
+  "theme_color": "#0B0B0F",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

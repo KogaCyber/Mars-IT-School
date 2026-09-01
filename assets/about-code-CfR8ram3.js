@@ -1,0 +1,1 @@
+var e=`/assets/about-code-CSVOSpeX.webp`;export{e as t};

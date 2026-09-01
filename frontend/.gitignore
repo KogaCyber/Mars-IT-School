@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Build natijasi (scripts/generate-seo.mjs yasaydi)
+public/sitemap.xml
+public/llms.txt
+
+.env
+.env.local
+.env.*.local
+!.env.example
+
+.eslintcache
+.DS_Store

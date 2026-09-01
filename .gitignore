@@ -1,0 +1,13 @@
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Muharrirlar ---
+.vscode/
+.idea/
+*.swp
+
+# --- Sirlar ---
+.env
+.env.local
+*.env.local

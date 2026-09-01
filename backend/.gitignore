@@ -1,0 +1,25 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# --- Django ---
+db.sqlite3
+staticfiles/
+media/
+*.log
+
+# --- Sirlar ---
+.env
+!.env.example
+
+# --- Keshlar ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+.DS_Store
