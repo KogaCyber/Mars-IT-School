@@ -38,10 +38,10 @@ DEBUG=False
 DJANGO_SECRET_KEY=<yuqorida yaratilgan kalit>
 JWT_SIGNING_KEY=<ikkinchi kalit>
 
-ALLOWED_HOSTS=api.marsitschool.uz,<loyiha>.up.railway.app
-CORS_ALLOWED_ORIGINS=https://marsitschool.uz,https://www.marsitschool.uz
-CSRF_TRUSTED_ORIGINS=https://marsitschool.uz,https://api.marsitschool.uz
-FRONTEND_URL=https://marsitschool.uz
+ALLOWED_HOSTS=mars-it-school-production.up.railway.app
+CORS_ALLOWED_ORIGINS=https://mars-it-school-lemon.vercel.app
+CSRF_TRUSTED_ORIGINS=https://mars-it-school-lemon.vercel.app
+FRONTEND_URL=https://mars-it-school-lemon.vercel.app
 
 MONGODB_URI=mongodb+srv://...
 MONGODB_NAME=mars_it_school
@@ -105,10 +105,17 @@ Ikkita Railway xizmati bitta repodan ishlaydi:
 
 ### 3.2 Environment Variables
 
+Bu qiymatlar `frontend/.env.production` faylida git'ga qo'shilgan, shuning uchun
+Vercel'da qo'lda hech narsa qo'yish shart emas — build ularni fayldan oladi:
+
 ```
-VITE_API_BASE_URL=https://api.marsitschool.uz
-VITE_SITE_URL=https://marsitschool.uz
+VITE_API_BASE_URL=https://mars-it-school-production.up.railway.app
+VITE_SITE_URL=https://mars-it-school-lemon.vercel.app
 ```
+
+`VITE_` prefiksli qiymatlar build vaqtida bundle ichiga yoziladi — ular baribir
+ommaviy, shuning uchun git'da turishi xavfsiz. Maxfiy qiymatlarni bu faylga
+yozmang. Vercel dashboard'ida xuddi shu nomlar qo'yilsa, ular fayldan ustun turadi.
 
 > `VITE_SITE_URL` ni to'g'ri yozish **shart**: `sitemap.xml`, `llms.txt`,
 > canonical va hreflang havolalari aynan shu manzildan yasaladi. `localhost`
@@ -117,7 +124,8 @@ VITE_SITE_URL=https://marsitschool.uz
 ### 3.3 Backend domenini CSP ga qo'shing
 
 `frontend/vercel.json` → `Content-Security-Policy` → `connect-src`.
-Hozir `https://api.marsitschool.uz` va `https://*.up.railway.app` ruxsat etilgan.
+Hozir `https://api.marsitschool.uz` va `https://*.up.railway.app` ruxsat etilgan
+(Railway domeni ikkinchi qolip ostiga tushadi).
 Backend boshqa domenda bo'lsa, o'sha domenni shu yerga qo'shing — aks holda
 brauzer API so'rovlarini bloklaydi.
 
@@ -183,3 +191,45 @@ curl -s https://marsitschool.uz/kursy | grep -o '<link rel="canonical"[^>]*>'
   haftalik cron'ga ulang).
 * Bog'liqliklarni har chorakda yangilang: `pip list --outdated`, `npm outdated`.
 * Atlas'da avtomatik zaxira nusxa (backup) yoqilganini tekshiring.
+
+---
+
+## 7. Tez-tez uchraydigan nosozliklar
+
+### `502 Application failed to respond` va `x-railway-fallback: true`
+
+```bash
+curl -i https://<domen>/health/
+# HTTP/2 502 ... x-railway-fallback: true
+```
+
+Bu sarlavha — so'rov konteynerga **umuman yetib bormaganini** bildiradi: javobni
+Railway'ning zaxira sahifasi qaytaryapti. Django loglarida traceback bo'lmasligi
+va gunicorn'ning `Listening at: http://0.0.0.0:8080` deb yozishi buni tasdiqlaydi.
+
+Tekshirish tartibi:
+
+1. **Deploy loglarida request bormi?** `railway.json` da `--access-logfile -` bor,
+   ya'ni har bir so'rov logga tushishi kerak. Railway'ning o'z healthcheck'i ham
+   ko'rinmasa — muammo marshrutlashda, Django'da emas.
+2. **Domenning target port'i.** Settings → Networking → Public Networking →
+   domen yonidagi port gunicorn tinglayotgan port bilan bir xil bo'lsin.
+   Mos kelmasa domenni o'chirib qaytadan yarating.
+3. **Variables'da qo'lda qo'yilgan `PORT` bo'lmasin.** Uni Railway o'zi inject
+   qiladi va domen mapping'ini shunga qarab quradi; qo'lda qo'yilgani ikkalasini
+   uzib qo'yadi.
+4. **Deployment holati `Active` mi?** `Failed healthcheck` bo'lsa Railway o'sha
+   deploy'ni jonli trafikka ulamaydi va aynan shu 502 ni qaytaradi.
+
+### Frontend backendga ulanmayapti
+
+Avval yuqoridagi `curl https://<backend>/health/` ni ishga tushiring. `502` yoki
+`000` qaytsa — muammo backendda, CORS'da emas. `200` qaytsa-yu brauzerda xato
+bo'lsa, DevTools → Network → Console'dagi xabarga qarang:
+
+* `CORS policy` — Railway'da `CORS_ALLOWED_ORIGINS` da frontend domeni yo'q.
+* `Refused to connect ... Content Security Policy` — `vercel.json` dagi
+  `connect-src` ga backend domenini qo'shing (§3.3).
+* So'rovlar Vercel domeniga ketyapti — build'da `VITE_API_BASE_URL` bo'sh qolgan.
+  Vite bu qiymatni **build vaqtida** bundle ichiga yozadi, shuning uchun
+  o'zgartirgandan keyin Redeploy qilish shart.

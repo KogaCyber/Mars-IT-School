@@ -12,6 +12,7 @@
  *
  * Backend javob bermasa build to'xtamaydi — faqat statik qism yaratiladi.
  */
+import { readFileSync } from 'node:fs'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -33,6 +34,27 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST = join(ROOT, 'dist')
+
+// Vite `.env.production` ni o'zi o'qiydi, bu skript esa alohida Node jarayoni —
+// shuning uchun o'sha faylni qo'lda o'qiymiz. Aks holda Vercel'da sitemap va
+// canonical manzillar seoConfig'dagi zaxira domenga tushib qolardi.
+loadEnvFile(join(ROOT, '.env.production'))
+
+function loadEnvFile(path) {
+  let raw
+  try {
+    raw = readFileSync(path, 'utf8')
+  } catch {
+    return // fayl yo'q — muhit o'zgaruvchilariga tayanamiz
+  }
+  for (const line of raw.split('\n')) {
+    const match = /^\s*([A-Z0-9_]+)\s*=\s*(.*)$/.exec(line)
+    if (!match) continue
+    const [, key, value] = match
+    // Haqiqiy muhit o'zgaruvchisi (Vercel dashboard) fayldan ustun turadi.
+    if (process.env[key] === undefined) process.env[key] = value.trim()
+  }
+}
 
 const ORIGIN = (process.env.VITE_SITE_URL || process.env.SITE_URL || SITE.url).replace(/\/$/, '')
 const API = (process.env.VITE_API_BASE_URL || process.env.API_BASE_URL || '').replace(/\/$/, '')
