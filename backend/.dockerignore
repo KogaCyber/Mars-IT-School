@@ -3,8 +3,11 @@ __pycache__/
 .venv/
 venv/
 db.sqlite3
-media/
 staticfiles/
+
+# Sayt kontenti rasmlari image ichiga kirishi kerak (`.gitignore` ga qarang).
+# Rezyumelar esa shaxsiy ma'lumot — ular git'da ham, image'da ham yo'q.
+media/resumes/
 .env
 .env.local
 .pytest_cache/
