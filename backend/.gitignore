@@ -8,8 +8,13 @@ venv/
 # --- Django ---
 db.sqlite3
 staticfiles/
-media/
 *.log
+
+# Sayt kontenti rasmlari ATAYLAB git'da: Railway konteyner diski vaqtinchalik,
+# shuning uchun rasmlar kod bilan birga har deploy'da qaytadan keladi.
+# Nomzodlar rezyumesi esa SHAXSIY MA'LUMOT — u hech qachon git'ga tushmaydi
+# (WhiteNoise `/media/` ni ochiq uzatadi, ya'ni serverga chiqsa hamma ko'radi).
+media/resumes/
 
 # --- Sirlar ---
 .env
