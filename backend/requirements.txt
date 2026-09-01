@@ -1,0 +1,25 @@
+# --- Core ---------------------------------------------------------------
+Django==5.2.6
+djangorestframework==3.16.1
+django-cors-headers==4.7.0
+django-filter==25.1
+djangorestframework-simplejwt==5.5.1
+drf-spectacular==0.28.0
+
+# --- Config / infra -----------------------------------------------------
+django-environ==0.12.0
+gunicorn==23.0.0
+whitenoise[brotli]==6.9.0
+django-mongodb-backend==5.2.4
+pymongo==4.17.0
+
+# --- Media / images -----------------------------------------------------
+Pillow==11.3.0
+
+# --- Security -----------------------------------------------------------
+django-axes==7.0.2
+django-csp==4.0
+argon2-cffi==25.1.0
+
+# --- Utils --------------------------------------------------------------
+python-slugify==8.0.4

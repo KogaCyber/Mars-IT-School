@@ -1,0 +1,36 @@
+/** SPACE platformasi maketining o'zgarmas qismlari (namoyish interfeysi). */
+export default {
+  uz: {
+    weekdays: 'Du,Se,Ch,Pa,Ju,Sh,Ya',
+    studentInitials: 'RA',
+    studentName: 'Ramis Abdulov',
+    studentRole: 'O‘quvchi',
+    level: '{level}-daraja',
+    progressChart: 'Taraqqiyot grafigi',
+    upcomingDeadlines: 'Yaqin muddatlar',
+    menuLabel: 'SPACE menyusi',
+    xp: '{current} / {total} XP',
+  },
+  ru: {
+    weekdays: 'Пн,Вт,Ср,Чт,Пт,Сб,Вс',
+    studentInitials: 'РА',
+    studentName: 'Рамис Абдулов',
+    studentRole: 'Студент',
+    level: 'Уровень {level}',
+    progressChart: 'График прогресса',
+    upcomingDeadlines: 'Ближайшие дедлайны',
+    menuLabel: 'Меню SPACE',
+    xp: '{current} / {total} XP',
+  },
+  en: {
+    weekdays: 'Mo,Tu,We,Th,Fr,Sa,Su',
+    studentInitials: 'RA',
+    studentName: 'Ramis Abdulov',
+    studentRole: 'Student',
+    level: 'Level {level}',
+    progressChart: 'Progress chart',
+    upcomingDeadlines: 'Upcoming deadlines',
+    menuLabel: 'SPACE menu',
+    xp: '{current} / {total} XP',
+  },
+}

@@ -1,0 +1,382 @@
+"""
+Umumiy (barcha muhitlar uchun) Django sozlamalari.
+
+Muhitga bog'liq qiymatlar `local.py` va `production.py` da qayta belgilanadi.
+Hech qanday maxfiy qiymat (secret) shu faylga yozilmaydi — faqat .env orqali.
+"""
+
+from datetime import timedelta
+from pathlib import Path
+
+import environ
+from django.core.exceptions import ImproperlyConfigured
+
+# ---------------------------------------------------------------------------
+# Yo'llar (paths)
+# ---------------------------------------------------------------------------
+# base.py -> settings/ -> config/ -> backend/
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    CORS_ALLOWED_ORIGINS=(list, []),
+    CSRF_TRUSTED_ORIGINS=(list, []),
+)
+
+# .env fayli mavjud bo'lsa o'qiladi (productionda odatda real env o'zgaruvchilar).
+env_file = BASE_DIR / ".env"
+if env_file.exists():
+    env.read_env(str(env_file))
+
+# ---------------------------------------------------------------------------
+# Xavfsizlik (asosiy)
+# ---------------------------------------------------------------------------
+SECRET_KEY = env("DJANGO_SECRET_KEY")
+DEBUG = env("DEBUG")
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+
+# ---------------------------------------------------------------------------
+# Xizmat roli — qaysi URL'lar ochilishini belgilaydi
+# ---------------------------------------------------------------------------
+# Admin panel va ommaviy API alohida portlarda (alohida jarayonlarda) ishlashi
+# uchun. Kod bazasi bitta, lekin har bir jarayon faqat o'z URL'larini ochadi:
+#   api   — faqat /api/v1/ va /health/ (admin panel bu portda umuman yo'q)
+#   admin — faqat admin panel va /health/
+#   all   — hammasi bitta portda (eski xatti-harakat, standart qiymat)
+SERVICE_ROLE = env("SERVICE_ROLE", default="all")
+if SERVICE_ROLE not in {"api", "admin", "all"}:
+    raise ImproperlyConfigured(
+        f"SERVICE_ROLE noto'g'ri: {SERVICE_ROLE!r}. Ruxsat etilgan: api, admin, all."
+    )
+
+SERVICE_HAS_API = SERVICE_ROLE in {"api", "all"}
+SERVICE_HAS_ADMIN = SERVICE_ROLE in {"admin", "all"}
+
+# Admin panel manzili (productionda maxfiy qiymatga o'zgartiriladi).
+ADMIN_URL = env("ADMIN_URL", default="admin/")
+if not ADMIN_URL.endswith("/"):
+    ADMIN_URL += "/"
+
+# ---------------------------------------------------------------------------
+# Ilovalar
+# ---------------------------------------------------------------------------
+DJANGO_APPS = [
+    # MongoDB uchun moslashtirilgan konfiguratsiyalar (config/mongo_apps.py).
+    "config.mongo_apps.MongoAdminConfig",
+    "config.mongo_apps.MongoAuthConfig",
+    "config.mongo_apps.MongoContentTypesConfig",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.humanize",
+]
+
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "corsheaders",
+    "django_filters",
+    "drf_spectacular",
+    "config.mongo_apps.MongoAxesConfig",
+]
+
+LOCAL_APPS = [
+    "apps.core",  # sayt sozlamalari, FAQ, afzalliklar, ota-onalar fikri
+    "apps.accounts",  # foydalanuvchilar va autentifikatsiya
+    "apps.courses",  # kurslar va o'qish bosqichlari
+    "apps.teachers",  # o'qituvchilar
+    "apps.news",  # yangiliklar va galereya
+    "apps.branches",  # filiallar va xarita
+    "apps.vacancies",  # vakansiyalar va ularga arizalar
+    "apps.quiz",  # proforientatsiya testi va natijalar
+    "apps.leads",  # saytdagi arizalar
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+# ---------------------------------------------------------------------------
+# Middleware (tartib muhim!)
+# ---------------------------------------------------------------------------
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
+    # django-axes eng oxirida: autentifikatsiya natijasini kuzatadi.
+    "axes.middleware.AxesMiddleware",
+]
+
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
+ASGI_APPLICATION = "config.asgi.application"
+
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+# ---------------------------------------------------------------------------
+# Ma'lumotlar bazasi
+# ---------------------------------------------------------------------------
+# MongoDB (django-mongodb-backend). Ulanish satri MONGODB_URI orqali beriladi:
+#   lokal:      mongodb://localhost:27017/mars_it_school
+#   Atlas/Railway: mongodb+srv://user:pass@cluster/mars_it_school?retryWrites=true&w=majority
+DATABASES = {
+    "default": {
+        "ENGINE": "django_mongodb_backend",
+        "HOST": env("MONGODB_URI", default="mongodb://localhost:27017"),
+        "NAME": env("MONGODB_NAME", default="mars_it_school"),
+    }
+}
+
+# MongoDB tranzaksiyalarni Django ORM darajasida qo'llab-quvvatlamaydi,
+# shuning uchun ATOMIC_REQUESTS ishlatilmaydi (yozish amallari idempotent yozilgan).
+DATABASES["default"]["ATOMIC_REQUESTS"] = False
+
+# Embedded (ichki) modellar alohida kolleksiya yaratmasligi uchun router kerak.
+DATABASE_ROUTERS = ["django_mongodb_backend.routers.MongoRouter"]
+
+# Mongo hujjatlarining birlamchi kaliti — ObjectId.
+DEFAULT_AUTO_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
+
+# Django/uchinchi tomon ilovalarining tayyor migratsiyalari AutoField ishlatadi,
+# shuning uchun ular Mongo uchun qaytadan yaratiladi (mongo_migrations/ papkasi).
+MIGRATION_MODULES = {
+    "admin": "mongo_migrations.admin",
+    "auth": "mongo_migrations.auth",
+    "contenttypes": "mongo_migrations.contenttypes",
+    "axes": "mongo_migrations.axes",
+}
+
+# ---------------------------------------------------------------------------
+# Autentifikatsiya
+# ---------------------------------------------------------------------------
+AUTH_USER_MODEL = "accounts.User"
+
+AUTHENTICATION_BACKENDS = [
+    # AxesStandaloneBackend birinchi bo'lishi shart (brute-force himoyasi).
+    "axes.backends.AxesStandaloneBackend",
+    "apps.accounts.backends.EmailOrPhoneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# Argon2 — Django tavsiya qiladigan eng kuchli parol hasher.
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
+
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 10},
+    },
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
+
+# --- django-axes: login urinishlarini cheklash ------------------------------
+AXES_FAILURE_LIMIT = env.int("AXES_FAILURE_LIMIT", default=5)
+AXES_COOLOFF_TIME = timedelta(minutes=env.int("AXES_COOLOFF_MINUTES", default=30))
+AXES_LOCKOUT_PARAMETERS = ["ip_address", "username"]
+AXES_RESET_ON_SUCCESS = True
+AXES_ENABLE_ADMIN = True
+AXES_LOCKOUT_TEMPLATE = None
+# Proksi orqasida REMOTE_ADDR — bu proksining IP'si. Uni ishlatsak bitta
+# foydalanuvchining xato paroli hammani bloklab qo'yardi. Shuning uchun
+# X-Forwarded-For zanjiridan oxirgi (proksi qo'ygan, ishonchli) manzil olinadi.
+AXES_IPWARE_PROXY_COUNT = env.int("NUM_PROXIES", default=1) or None
+AXES_IPWARE_META_PRECEDENCE_ORDER = ["HTTP_X_FORWARDED_FOR", "REMOTE_ADDR"]
+
+# ---------------------------------------------------------------------------
+# Xalqarolashtirish
+# ---------------------------------------------------------------------------
+LANGUAGE_CODE = "ru"
+LANGUAGES = [
+    ("ru", "Русский"),
+    ("uz", "O'zbekcha"),
+    ("en", "English"),
+]
+# Kontent tarjimalari uchun ishlatiladigan tillar (model maydonlari: _ru/_uz/_en).
+CONTENT_LANGUAGES = ["ru", "uz", "en"]
+DEFAULT_CONTENT_LANGUAGE = "ru"
+LOCALE_PATHS = [BASE_DIR / "locale"]
+TIME_ZONE = "Asia/Tashkent"
+USE_I18N = True
+USE_TZ = True
+
+# ---------------------------------------------------------------------------
+# Statik va media fayllar
+# ---------------------------------------------------------------------------
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
+
+MEDIA_URL = "/media/"
+# Railway'da konteyner disk vaqtinchalik: har deploy'da yuklangan rasmlar
+# yo'qoladi. Shuning uchun MEDIA_ROOT doimiy volume'ga yo'naltiriladi
+# (Railway → Volumes → mount path, masalan /data/media).
+MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
+
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+}
+
+# Yuklanadigan fayl hajmi cheklovi (5 MB) — DoS va disk to'lib qolishiga qarshi.
+DATA_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 5 * 1024 * 1024
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 500
+
+# ---------------------------------------------------------------------------
+# Django REST Framework
+# ---------------------------------------------------------------------------
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_RENDERER_CLASSES": ("apps.core.drf.MongoJSONRenderer",),
+    "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.StandardPagination",
+    "PAGE_SIZE": 12,
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "apps.core.filters.SafeSearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
+    "DEFAULT_THROTTLE_CLASSES": (
+        "rest_framework.throttling.AnonRateThrottle",
+        "rest_framework.throttling.UserRateThrottle",
+    ),
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "60/min",
+        "user": "240/min",
+        "lead": "5/hour",  # ariza yuborish formasi
+        "auth": "10/min",  # login / register
+    },
+    # Proksi (Railway/Vercel) orqasida throttling kimni cheklashini aniqlash uchun.
+    # `None` bo'lganda DRF butun X-Forwarded-For zanjirini kalit sifatida oladi —
+    # sarlavhani soxtalashtirib har safar yangi "hisob" ochish va cheklovni
+    # aylanib o'tish mumkin bo'ladi. Ishonchli proksi soni aniq beriladi.
+    "NUM_PROXIES": env.int("NUM_PROXIES", default=1),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "apps.core.exceptions.api_exception_handler",
+    "DEFAULT_VERSIONING_CLASS": None,
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=env.int("JWT_ACCESS_MINUTES", default=15)),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=env.int("JWT_REFRESH_DAYS", default=7)),
+    "ROTATE_REFRESH_TOKENS": True,
+    # Blacklist o'rniga o'zimizning `RevokedRefreshToken` modeli ishlatiladi
+    # (simplejwt'ning blacklist ilovasi MongoDB bilan mos kelmaydi).
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": env("JWT_SIGNING_KEY", default=SECRET_KEY),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "TOKEN_OBTAIN_SERIALIZER": "apps.accounts.serializers.TokenObtainSerializer",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Mars IT School API",
+    "DESCRIPTION": "Mars IT School rasmiy sayti uchun REST API.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "COMPONENT_SPLIT_REQUEST": True,
+    "SCHEMA_PATH_PREFIX": "/api/v1",
+}
+
+# Ilova oldida turgan ishonchli proksilar soni (Railway/Vercel = 1).
+# Proksisiz (to'g'ridan-to'g'ri) ishlatilsa 0 qilinadi.
+NUM_PROXIES = env.int("NUM_PROXIES", default=1)
+
+# ---------------------------------------------------------------------------
+# CORS / CSRF
+# ---------------------------------------------------------------------------
+CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+CORS_ALLOW_CREDENTIALS = False  # JWT header orqali ishlaydi, cookie kerak emas.
+CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+
+# ---------------------------------------------------------------------------
+# Xavfsizlik sarlavhalari (production.py da kuchaytiriladi)
+# ---------------------------------------------------------------------------
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_REFERRER_POLICY = "same-origin"
+X_FRAME_OPTIONS = "DENY"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = "Lax"
+
+# Content-Security-Policy (django-csp 4.x formati)
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": ["'self'"],
+        "script-src": ["'self'"],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "img-src": ["'self'", "data:", "https:"],
+        "font-src": ["'self'", "data:"],
+        "connect-src": ["'self'"],
+        "frame-ancestors": ["'none'"],
+        "base-uri": ["'self'"],
+        "form-action": ["'self'"],
+        "object-src": ["'none'"],
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Email
+# ---------------------------------------------------------------------------
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="Mars IT School <no-reply@marsit.uz>")
+LEAD_NOTIFY_EMAILS = env.list("LEAD_NOTIFY_EMAILS", default=[])
+
+# ---------------------------------------------------------------------------
+# Loyihaga oid sozlamalar
+# ---------------------------------------------------------------------------
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5173")
+TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default="")
+TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID", default="")
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
+    },
+    "root": {"handlers": ["console"], "level": env("LOG_LEVEL", default="INFO")},
+    "loggers": {
+        "django.security": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        "axes": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+    },
+}

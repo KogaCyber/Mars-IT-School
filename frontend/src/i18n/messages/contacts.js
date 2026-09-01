@@ -1,0 +1,122 @@
+/** «Kontaktlar» sahifasi va filiallar bo'limi. */
+export default {
+  uz: {
+    heroTitle: 'Doim\naloqada',
+    infoEyebrow: 'Bog‘lanish uchun',
+    infoTitle: 'MARS\nIT School\nkontaktlari',
+    infoText:
+      'Biz bilan o‘zingizga qulay har qanday usulda bog‘laning — savollaringizga javob berishga doim tayyormiz.',
+    phone: 'Telefon',
+    email: 'Email',
+    workHours: 'Ish vaqti',
+    defaultWorkHours: 'Har kuni 09:00 dan 20:00 gacha',
+
+    branchesEyebrow: 'Filiallar',
+    branchesTitle: 'Toshkentdagi\nmaktab manzillari',
+    branchesHint: 'O‘zingizga mos filialni tanlang.',
+    branchesViewLabel: 'Filiallarni ko‘rsatish turi',
+    viewMap: 'Xarita',
+    viewList: 'Ro‘yxat',
+    branchesEmpty: 'Filiallar tez orada paydo bo‘ladi',
+    address: 'Manzil:',
+    landmark: 'Mo‘ljal: {landmark}',
+    viewOnMap: 'Xaritada ko‘rish',
+
+    branchNotFound: 'Filial topilmadi',
+    branchEyebrow: 'Filial',
+    branchAddress: 'Manzil',
+    branchLandmark: 'Mo‘ljal',
+    branchHours: 'Ish vaqti',
+    branchPhone: 'Telefon',
+    branchPhoto: '{index}-fotoni ochish',
+    branchSignup: 'Shu filialga yozilish',
+    branchSignupSubmit: 'Yozilish',
+    branchSeoTitle: '{name} — Toshkentdagi filial',
+    branchSeoDescription:
+      '{name}: {address}. MARS IT School — bolalar uchun dasturlash maktabi.',
+    branchDefaultCity: 'Toshkent',
+
+    trialTitle: 'Sinov\ndarsiga\nyoziling',
+    trialDescription:
+      'Kontaktlaringizni qoldiring — 24 soat ichida qo‘ng‘iroq qilamiz, filial va qulay vaqtni tanlab beramiz.',
+  },
+  ru: {
+    heroTitle: 'Всегда\nна связи',
+    infoEyebrow: 'Для связи',
+    infoTitle: 'Контакты\nMARS\nIT School',
+    infoText:
+      'Свяжитесь с нами любым удобным способом — мы всегда готовы ответить на ваши вопросы.',
+    phone: 'Телефон',
+    email: 'Email',
+    workHours: 'Время работы',
+    defaultWorkHours: 'Ежедневно с 09:00 до 20:00',
+
+    branchesEyebrow: 'Филиалы',
+    branchesTitle: 'Адреса школ\nв Ташкенте',
+    branchesHint: 'Выберите филиал, который подходит именно вам.',
+    branchesViewLabel: 'Вид отображения филиалов',
+    viewMap: 'Карта',
+    viewList: 'Список',
+    branchesEmpty: 'Филиалы скоро появятся',
+    address: 'Адрес:',
+    landmark: 'Ориентир: {landmark}',
+    viewOnMap: 'Посмотреть на карте',
+
+    branchNotFound: 'Филиал не найден',
+    branchEyebrow: 'Филиал',
+    branchAddress: 'Адрес',
+    branchLandmark: 'Ориентир',
+    branchHours: 'Часы работы',
+    branchPhone: 'Телефон',
+    branchPhoto: 'Открыть фото {index}',
+    branchSignup: 'Записаться в этот филиал',
+    branchSignupSubmit: 'Записаться',
+    branchSeoTitle: '{name} — филиал в Ташкенте',
+    branchSeoDescription:
+      '{name}: {address}. MARS IT School — школа программирования для детей.',
+    branchDefaultCity: 'Ташкент',
+
+    trialTitle: 'Запишитесь\nна пробное\nзанятие',
+    trialDescription:
+      'Оставьте контакты — перезвоним в течение 24 часов, подберём филиал и удобное время.',
+  },
+  en: {
+    heroTitle: 'Always\nin touch',
+    infoEyebrow: 'Get in touch',
+    infoTitle: 'MARS\nIT School\ncontacts',
+    infoText: 'Reach us in whichever way suits you — we are always happy to answer your questions.',
+    phone: 'Phone',
+    email: 'Email',
+    workHours: 'Opening hours',
+    defaultWorkHours: 'Daily from 09:00 to 20:00',
+
+    branchesEyebrow: 'Branches',
+    branchesTitle: 'School addresses\nin Tashkent',
+    branchesHint: 'Choose the branch that works best for you.',
+    branchesViewLabel: 'Branch display mode',
+    viewMap: 'Map',
+    viewList: 'List',
+    branchesEmpty: 'Branches are coming soon',
+    address: 'Address:',
+    landmark: 'Landmark: {landmark}',
+    viewOnMap: 'View on the map',
+
+    branchNotFound: 'Branch not found',
+    branchEyebrow: 'Branch',
+    branchAddress: 'Address',
+    branchLandmark: 'Landmark',
+    branchHours: 'Opening hours',
+    branchPhone: 'Phone',
+    branchPhoto: 'Open photo {index}',
+    branchSignup: 'Enrol at this branch',
+    branchSignupSubmit: 'Enrol',
+    branchSeoTitle: '{name} — a branch in Tashkent',
+    branchSeoDescription:
+      '{name}: {address}. MARS IT School — a programming school for children.',
+    branchDefaultCity: 'Tashkent',
+
+    trialTitle: 'Book\na trial\nlesson',
+    trialDescription:
+      'Leave your contact details — we will call within 24 hours and help pick a branch and a convenient time.',
+  },
+}

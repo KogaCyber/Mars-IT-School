@@ -1,0 +1,342 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+/* ---------------------------------------------------------------------------
+   Dizayn tokenlari — Figma qiymatlari nisbiy birliklarga o'girilgan.
+
+   Figma maketi 1920px kenglikda chizilgan, shuning uchun:
+     1vw = 19.2px  →  96px = 5vw,  56px = 2.92vw,  16px = 0.83vw
+   Har bir o'lcham `clamp(min, vw, max)` ko'rinishida beriladi: ekran kichrayganda
+   ham, kattalashganda ham makon proporsional saqlanadi (piksel qotib qolmaydi).
+--------------------------------------------------------------------------- */
+@theme {
+  /* Brend ranglari */
+  --color-brand: #e94921;
+  --color-brand-hover: #d13d18;
+  --color-brand-soft: #fee0d9;
+  --color-blue-soft: #c5c9ff;
+  --color-navy: #242754;
+
+  /* Fon va yuzalar */
+  --color-ink: #171717;
+  --color-surface: #252525;
+  --color-surface-2: #2b2b2b;
+  --color-muted: #737373;
+  --color-line: #303030;
+
+  /* Shriftlar */
+  --font-sans: 'Actay', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-wide: 'Actay Wide', 'Actay', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+
+  /* Tipografika — Figma nisbatlari saqlangan holda ~25% kichraytirilgan
+     (1920px maket katta monitorda haddan tashqari yirik ko'rinardi). */
+  --text-hero: clamp(2rem, 3.75vw, 4.5rem); /* 72px */
+  --text-h2: clamp(1.5rem, 2.2vw, 2.625rem); /* 42px */
+  --text-h3: clamp(1.125rem, 1.25vw, 1.5rem); /* 24px */
+  --text-h4: clamp(1rem, 1vw, 1.25rem); /* 20px */
+  --text-lead: clamp(0.9375rem, 0.83vw, 1.0625rem); /* 17px */
+  --text-body: clamp(0.875rem, 0.73vw, 0.9375rem); /* 15px */
+  --text-small: clamp(0.75rem, 0.63vw, 0.8125rem); /* 13px */
+
+  /* Masofalar */
+  --spacing-section: clamp(3rem, 5.2vw, 6.25rem); /* 100px */
+  --spacing-block: clamp(1.25rem, 2.3vw, 2.75rem); /* 44px */
+  --spacing-gutter: clamp(1rem, 1.56vw, 1.875rem); /* 30px */
+
+  /* Radiuslar */
+  --radius-pill: 3.125rem; /* 60px — doim yumaloq */
+  --radius-card: clamp(1rem, 1.25vw, 1.5rem); /* 24px */
+  --radius-block: clamp(1.25rem, 2.08vw, 2.5rem); /* 40px */
+
+  /* Kontent kengligi: Figma'da 1420 / 1920 = 73.96%; maksimal kenglik cheklangan */
+  --width-content: 82%;
+}
+
+/* --------------------------------------------------------------------------
+   Bazaviy uslublar
+-------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--color-ink);
+  }
+
+  body {
+    @apply bg-ink font-sans antialiased;
+    color: #fff;
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-wide font-bold;
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+
+  ::selection {
+    background-color: var(--color-brand);
+    color: #fff;
+  }
+
+  /* Harakatni kamaytirish rejimi (accessibility) */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Takrorlanuvchi kompozitsiyalar — barchasi nisbiy o'lchamlarda
+-------------------------------------------------------------------------- */
+@layer components {
+  /* Figma'dagi 1420px kontent maydoni: keng ekranda 73.96%, kichikda to'liq */
+  .container-page {
+    width: min(92%, 100%);
+    max-width: 1180px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .container-page {
+      width: var(--width-content);
+    }
+  }
+
+  .section {
+    padding-block: var(--spacing-section);
+  }
+
+  .title-hero {
+    font-size: var(--text-hero);
+    line-height: 1.05;
+  }
+
+  .section-title {
+    font-size: var(--text-h2);
+    line-height: 1.1;
+  }
+
+  .title-block {
+    font-size: var(--text-h3);
+    line-height: 1.15;
+  }
+
+  .text-lead {
+    font-size: var(--text-lead);
+    line-height: 1.5;
+  }
+
+  /* Bo'lim tepasidagi yorliq — Figma'da to'q sariqdan binafshaga o'tuvchi gradient */
+  .eyebrow {
+    @apply inline-flex items-center rounded-pill text-white;
+    background: linear-gradient(90deg, var(--color-brand) 0%, #3b2f7a 100%);
+    font-size: var(--text-small);
+    padding-inline: 1.35em;
+    padding-block: 0.55em;
+  }
+
+  .card-dark {
+    @apply border-line bg-surface rounded-card border;
+  }
+
+  /* Klaviatura foydalanuvchilari uchun "kontentga o'tish" havolasi */
+  .skip-link {
+    @apply focus:bg-brand sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50
+           focus:rounded-lg focus:px-4 focus:py-2 focus:text-white;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Yordamchi animatsiyalar
+-------------------------------------------------------------------------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+/* --------------------------------------------------------------------------
+   «SPACE» havolasidagi raketa: kursor ustiga kelganda tepaga uchib chiqib,
+   pastdan qaytib keladi. `overflow: hidden` tufayli u chetdan chiqmaydi.
+-------------------------------------------------------------------------- */
+.rocket-slot {
+  display: inline-flex;
+  overflow: hidden;
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+}
+
+.rocket-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.rocket-fly:hover .rocket-slot img,
+.rocket-fly:focus-visible .rocket-slot img {
+  animation: rocket-fly 0.5s ease-out;
+}
+
+/* Ikki bosqich: 1) tez tepaga uchib chiqadi, 2) pastdan qaytib o'z joyiga qo'nadi.
+
+   MUHIM: barcha kadrlarda transform funksiyalari ketma-ketligi bir xil
+   (`translate` + `rotate`). Aks holda brauzer matritsa interpolyatsiyasiga
+   o'tadi va foizli siljish yo'qoladi. */
+@keyframes rocket-fly {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  /* Tez tepaga uchib chiqadi */
+  40% {
+    transform: translate(0, -190%) rotate(0deg);
+    opacity: 0;
+  }
+  /* Ko'rinmas holatda pastga o'tkaziladi — sakrash sezilmaydi */
+  41% {
+    transform: translate(0, 190%) rotate(0deg);
+    opacity: 0;
+  }
+  62% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rocket-fly:hover .rocket-slot img,
+  .rocket-fly:focus-visible .rocket-slot img {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Interaktivlik: bosiladigan elementlarda qo'l ko'rsatkichi
+-------------------------------------------------------------------------- */
+@layer base {
+  /* Tailwind v4 da tugmalar standart `cursor: default` bo'ladi — tiklaymiz. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  a[href],
+  label[for],
+  summary,
+  select,
+  input[type='file'],
+  input[type='checkbox'],
+  input[type='radio'] {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Animatsiyalar
+-------------------------------------------------------------------------- */
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2%);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@layer components {
+  /* Skrollda paydo bo'lish (v-reveal direktivasi bilan ishlaydi) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+
+  .animate-float {
+    animation: float-slow 7s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow-pulse 5s ease-in-out infinite;
+  }
+
+  .animate-orbit {
+    animation: spin-slow 60s linear infinite;
+    transform-origin: center;
+  }
+
+  /* Bosilganda kichik "bosim" effekti */
+  .press {
+    transition: transform 0.15s ease;
+  }
+
+  .press:active {
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-glow,
+  .animate-orbit {
+    animation: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

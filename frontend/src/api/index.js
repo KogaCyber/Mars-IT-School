@@ -1,0 +1,10 @@
+/** API modullarining yagona kirish nuqtasi. */
+export * as branchesApi from './branches'
+export * as coursesApi from './courses'
+export * as leadsApi from './leads'
+export * as newsApi from './news'
+export * as quizApi from './quiz'
+export * as siteApi from './site'
+export * as teachersApi from './teachers'
+export * as vacanciesApi from './vacancies'
+export { http, normalizeError } from './client'

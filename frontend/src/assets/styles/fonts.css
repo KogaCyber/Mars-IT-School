@@ -1,0 +1,22 @@
+/**
+ * Figma'da ishlatilgan shriftlar: «Actay» va «Actay Wide».
+ * Shrift fayllarini `frontend/public/fonts/` papkasiga joylang:
+ *   actay-regular.woff2, actay-wide-bold.woff2
+ * Fayl bo'lmasa — brauzer quyidagi zaxira shriftlarga o'tadi (sayt buzilmaydi).
+ */
+
+@font-face {
+  font-family: 'Actay';
+  src: url('/fonts/actay-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Actay Wide';
+  src: url('/fonts/actay-wide-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

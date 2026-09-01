@@ -1,0 +1,36 @@
+/** Sayt sarlavhasi va til almashtirgich. */
+export default {
+  uz: {
+    logoAlt: 'MARS IT School — bosh sahifa',
+    mainMenu: 'Asosiy menyu',
+    mobileMenu: 'Mobil menyu',
+    menu: 'Menyu',
+    skipToContent: 'Asosiy kontentga o‘tish',
+    languageLabel: 'Til: {code}',
+    languageTitle: 'Til',
+    chooseLanguage: 'Tilni tanlang',
+    close: 'Yopish',
+  },
+  ru: {
+    logoAlt: 'MARS IT School — главная страница',
+    mainMenu: 'Основное меню',
+    mobileMenu: 'Мобильное меню',
+    menu: 'Меню',
+    skipToContent: 'Перейти к содержимому',
+    languageLabel: 'Язык: {code}',
+    languageTitle: 'Язык',
+    chooseLanguage: 'Выбор языка',
+    close: 'Закрыть',
+  },
+  en: {
+    logoAlt: 'MARS IT School — home page',
+    mainMenu: 'Main menu',
+    mobileMenu: 'Mobile menu',
+    menu: 'Menu',
+    skipToContent: 'Skip to content',
+    languageLabel: 'Language: {code}',
+    languageTitle: 'Language',
+    chooseLanguage: 'Choose a language',
+    close: 'Close',
+  },
+}
