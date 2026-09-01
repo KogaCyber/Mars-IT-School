@@ -9,12 +9,12 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import aksessuar from '@/assets/images/aksessuar.png'
-import alisa from '@/assets/images/alisa.png'
-import coin from '@/assets/images/coin-front.png'
-import quloqchin from '@/assets/images/quloqchin.png'
-import smartfon from '@/assets/images/smartfon.png'
-import soat from '@/assets/images/soat.png'
+import aksessuar from '@/assets/images/aksessuar.webp'
+import alisa from '@/assets/images/alisa.webp'
+import coin from '@/assets/images/coin-front.webp'
+import quloqchin from '@/assets/images/quloqchin.webp'
+import smartfon from '@/assets/images/smartfon.webp'
+import soat from '@/assets/images/soat.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import { SPACE_SHOP } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'

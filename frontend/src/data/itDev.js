@@ -1,8 +1,8 @@
 import { L } from '@/i18n/localize'
 
-import gallery1 from '@/assets/images/1_card.png'
-import gallery2 from '@/assets/images/2_card.png'
-import gallery3 from '@/assets/images/3_card.png'
+import gallery1 from '@/assets/images/1_card.webp'
+import gallery2 from '@/assets/images/2_card.webp'
+import gallery3 from '@/assets/images/3_card.webp'
 
 /**
  * «IT-разработка» sahifasi ma'lumotlari.

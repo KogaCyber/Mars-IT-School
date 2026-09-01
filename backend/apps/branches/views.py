@@ -1,11 +1,13 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from apps.core.cache import PublicCacheMixin
+
 from .models import Branch
 from .serializers import BranchDetailSerializer, BranchListSerializer
 
 
-class BranchViewSet(ReadOnlyModelViewSet):
+class BranchViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     lookup_field = "slug"
     pagination_class = None

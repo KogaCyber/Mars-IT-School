@@ -11,7 +11,7 @@
  * Matnlar `data/quizOutcomes.js` dagi `profile` blokidan keladi — Frontend va
  * Backend uchun bir xil tuzilma, boshqa matn.
  */
-import astronaut from '@/assets/images/Layer-0 9.png'
+import astronaut from '@/assets/images/Layer-0 9.webp'
 
 defineProps({
   /** `QUIZ_OUTCOME_DETAILS[...].profile` obyekti. */

@@ -41,5 +41,9 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS += ["debug_toolbar"]
-    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    # GZipMiddleware dan keyin turishi kerak (debug_toolbar.W003).
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.gzip.GZipMiddleware") + 1,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    )
     INTERNAL_IPS = ["127.0.0.1"]

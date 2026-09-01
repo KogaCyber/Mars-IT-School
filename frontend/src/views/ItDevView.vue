@@ -8,7 +8,7 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import itDevHero from '@/assets/images/It_dasturlash.png'
+import itDevHero from '@/assets/images/It_dasturlash.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import CourseAboutSection from '@/components/courses/CourseAboutSection.vue'
 import CourseFactsStrip from '@/components/courses/CourseFactsStrip.vue'

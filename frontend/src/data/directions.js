@@ -7,8 +7,8 @@
  */
 import { L } from '@/i18n/localize'
 
-import itKidsImage from '@/assets/images/ItKids.png'
-import itDevImage from '@/assets/images/dasturlash.png'
+import itKidsImage from '@/assets/images/ItKids.webp'
+import itDevImage from '@/assets/images/dasturlash.webp'
 
 import cppIcon from '@/assets/icons/tech-cpp.svg'
 import cssIcon from '@/assets/icons/tech-css.svg'

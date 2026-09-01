@@ -67,6 +67,14 @@
     <meta name="apple-mobile-web-app-title" content="MARS IT School" />
     <meta name="format-detection" content="telephone=no" />
 
+    <!--
+      Backend (API va rasmlar) boshqa domenda. Ulanishni oldindan ochib qo'yish
+      birinchi so'rovdan DNS + TCP + TLS vaqtini (~0.25 s) olib tashlaydi:
+      brauzer HTML'ni o'qiyotgan paytda ulanish allaqachon tayyor bo'ladi.
+    -->
+    <link rel="preconnect" href="https://mars-it-school-production.up.railway.app" crossorigin />
+    <link rel="dns-prefetch" href="https://mars-it-school-production.up.railway.app" />
+
     <!-- Xarita plitkalari uchun ulanish oldindan ochiladi (LCP'ga yordam beradi) -->
     <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin />
     <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />

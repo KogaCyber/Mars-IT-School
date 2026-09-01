@@ -1,12 +1,14 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from apps.core.cache import PublicCacheMixin
+
 from .filters import CourseFilter
 from .models import Course, Direction
 from .serializers import CourseDetailSerializer, CourseListSerializer, DirectionSerializer
 
 
-class DirectionViewSet(ReadOnlyModelViewSet):
+class DirectionViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = DirectionSerializer
     lookup_field = "slug"
@@ -17,7 +19,7 @@ class DirectionViewSet(ReadOnlyModelViewSet):
         return Direction.objects.published()
 
 
-class CourseViewSet(ReadOnlyModelViewSet):
+class CourseViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     lookup_field = "slug"
     filterset_class = CourseFilter

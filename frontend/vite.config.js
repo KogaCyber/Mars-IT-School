@@ -31,9 +31,15 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           // Kutubxonalar alohida chunk'ga chiqadi — sahifalar tez yangilanadi.
+          //
+          // Leaflet (xarita, ~150 KB) faqat «Kontaktlar» sahifasida kerak.
+          // Ilgari u ham umumiy `vendor` ichida edi va HAR BIR sahifada,
+          // jumladan bosh sahifada yuklanardi. Endi u alohida chunk — xarita
+          // komponenti ochilgandagina yuklab olinadi.
           manualChunks(id) {
-            if (id.includes('node_modules')) return 'vendor'
-            return null
+            if (!id.includes('node_modules')) return null
+            if (id.includes('leaflet')) return 'leaflet'
+            return 'vendor'
           },
         },
       },

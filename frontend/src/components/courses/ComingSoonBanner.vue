@@ -4,7 +4,7 @@
  * gradient, chapda yirik sarlavha, o'rtada matn, o'ngda qo'l silkiyotgan
  * astronavt (blok chekkasidan biroz chiqib turadi).
  */
-import astronaut from '@/assets/images/skoro.png'
+import astronaut from '@/assets/images/skoro.webp'
 import { COMING_SOON } from '@/data/directions'
 import { useLocalized } from '@/i18n/localize'
 

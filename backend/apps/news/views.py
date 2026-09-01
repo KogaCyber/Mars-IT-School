@@ -4,11 +4,13 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from apps.core.cache import PublicCacheMixin
+
 from .models import News, NewsCategory
 from .serializers import NewsCategorySerializer, NewsDetailSerializer, NewsListSerializer
 
 
-class NewsCategoryViewSet(ReadOnlyModelViewSet):
+class NewsCategoryViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = NewsCategorySerializer
     lookup_field = "slug"
@@ -19,7 +21,10 @@ class NewsCategoryViewSet(ReadOnlyModelViewSet):
         return NewsCategory.objects.published()
 
 
-class NewsViewSet(ReadOnlyModelViewSet):
+class NewsViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
+    # `retrieve` keshlanmaydi — u ko'rishlar sonini oshiradi.
+    cache_actions = ("list",)
+
     permission_classes = [AllowAny]
     lookup_field = "slug"
     filterset_fields = ["category__slug", "is_featured"]

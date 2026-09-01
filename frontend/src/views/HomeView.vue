@@ -1,10 +1,9 @@
 <script setup>
 /** Bosh sahifa — Figma: «Главная». */
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import { fetchNews } from '@/api/news'
-import { fetchAdvantages, fetchFaqs, fetchParentReviews } from '@/api/site'
-import { fetchTeachers } from '@/api/teachers'
+import { fetchHome } from '@/api/site'
 import BaseButton from '@/components/base/BaseButton.vue'
 import InfiniteCarousel from '@/components/base/InfiniteCarousel.vue'
 import NewsCard from '@/components/cards/NewsCard.vue'
@@ -20,14 +19,16 @@ import { absoluteUrl, faqSchema, itemListSchema } from '@/utils/schema'
 
 const { t } = useI18n()
 
-const { data: advantages } = useAsyncData(fetchAdvantages, [])
-const { data: reviews } = useAsyncData(fetchParentReviews, [])
-const { data: faqs } = useAsyncData(fetchFaqs, [])
-const { data: teachers } = useAsyncData(
-  async () => (await fetchTeachers({ page_size: 12 })).results,
-  [],
-)
-const { data: news } = useAsyncData(async () => (await fetchNews({ page_size: 9 })).results, [])
+// Bosh sahifaning butun kontenti bitta so'rovda keladi (`/api/v1/home/`) —
+// ilgari bu 5 ta alohida so'rov edi va har biri backend javobini kutardi.
+const EMPTY_HOME = { advantages: [], reviews: [], faqs: [], teachers: [], news: [] }
+const { data: home } = useAsyncData(fetchHome, EMPTY_HOME)
+
+const advantages = computed(() => home.value.advantages ?? [])
+const reviews = computed(() => home.value.reviews ?? [])
+const faqs = computed(() => home.value.faqs ?? [])
+const teachers = computed(() => home.value.teachers ?? [])
+const news = computed(() => home.value.news ?? [])
 
 useSeo(() => ({
   title: t('seo.homeTitle'),

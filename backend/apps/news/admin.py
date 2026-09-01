@@ -25,6 +25,7 @@ class NewsCategoryAdmin(admin.ModelAdmin):
 class NewsAdmin(admin.ModelAdmin):
     list_display = ("title_ru", "category", "published_at", "views_count", "is_published")
     list_filter = ("category", "is_published", "is_featured")
+    list_select_related = ("category",)
     search_fields = ("title_ru", "excerpt_ru", "body_ru")
     date_hierarchy = "published_at"
     readonly_fields = ("views_count",)
@@ -35,8 +36,12 @@ class NewsAdmin(admin.ModelAdmin):
             "Chop etish",
             {
                 "fields": (
-                    "published_at", "reading_minutes", "is_featured",
-                    "is_published", "order", "views_count",
+                    "published_at",
+                    "reading_minutes",
+                    "is_featured",
+                    "is_published",
+                    "order",
+                    "views_count",
                 )
             },
         ),

@@ -7,7 +7,7 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import newsAstronaut from '@/assets/images/news-astronaut.png'
+import newsAstronaut from '@/assets/images/news-astronaut.webp'
 import PageHero from '@/components/layout/PageHero.vue'
 import NewsListSection from '@/components/news/NewsListSection.vue'
 import { useSeo } from '@/composables/useSeo'

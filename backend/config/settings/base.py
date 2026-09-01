@@ -99,6 +99,8 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # GZip — API javoblari va admin HTML simda ~4 barobar kichrayadi.
+    "django.middleware.gzip.GZipMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -226,6 +228,12 @@ USE_TZ = True
 # ---------------------------------------------------------------------------
 # Statik va media fayllar
 # ---------------------------------------------------------------------------
+# Nomida hash bo'lgan fayllarni (ManifestStaticFilesStorage) WhiteNoise o'zi
+# `immutable`, bir yillik kesh bilan beradi. Bu qiymat esa hashsiz fayllarga
+# tegishli — standart 60 soniya juda qisqa, lekin bir yil ham xavfli, shuning
+# uchun bir kun.
+WHITENOISE_MAX_AGE = 60 * 60 * 24
+
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
@@ -310,6 +318,16 @@ SPECTACULAR_SETTINGS = {
 # Ilova oldida turgan ishonchli proksilar soni (Railway/Vercel = 1).
 # Proksisiz (to'g'ridan-to'g'ri) ishlatilsa 0 qilinadi.
 NUM_PROXIES = env.int("NUM_PROXIES", default=1)
+
+# ---------------------------------------------------------------------------
+# Kesh
+# ---------------------------------------------------------------------------
+# Ochiq (autentifikatsiyasiz) API javoblari shuncha soniya keshlanadi —
+# apps/core/cache.py ga qarang. 0 qilinsa keshlash butunlay o'chadi.
+PUBLIC_CACHE_SECONDS = env.int("PUBLIC_CACHE_SECONDS", default=60)
+
+# Admin sessiyasi har so'rovda MongoDB'dan o'qilmasligi uchun kesh orqali.
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
 # ---------------------------------------------------------------------------
 # CORS / CSRF

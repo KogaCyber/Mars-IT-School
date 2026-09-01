@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from apps.core.cache import PublicCacheMixin
 from apps.leads.utils import client_ip
 
 from .models import Vacancy, VacancyApplication
@@ -16,7 +17,7 @@ from .serializers import (
 )
 
 
-class VacancyViewSet(ReadOnlyModelViewSet):
+class VacancyViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     lookup_field = "slug"
     pagination_class = None

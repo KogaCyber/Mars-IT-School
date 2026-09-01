@@ -17,7 +17,12 @@ from .services import evaluate
 
 
 class QuizViewSet(ReadOnlyModelViewSet):
-    """«Тест» sahifasi uchun savollar va variantlar."""
+    """«Тест» sahifasi uchun savollar va variantlar.
+
+    Ataylab keshlanmaydi: `sample_questions()` har so'rovda savollarning
+    tasodifiy qismini tanlab, variantlarni aralashtiradi. Keshlansa, bir
+    daqiqa ichida kelgan hamma foydalanuvchi bir xil testni ko'rardi.
+    """
 
     permission_classes = [AllowAny]
     serializer_class = QuizSerializer

@@ -8,7 +8,7 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import contactsAstronaut from '@/assets/images/Layer-3 2.png'
+import contactsAstronaut from '@/assets/images/Layer-3 2.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BranchesSection from '@/components/contacts/BranchesSection.vue'
 import ContactsInfoSection from '@/components/contacts/ContactsInfoSection.vue'

@@ -10,7 +10,7 @@
 import { computed, ref, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
 
-import checkBadge from '@/assets/images/Layer-02 1.png'
+import checkBadge from '@/assets/images/Layer-02 1.webp'
 import { TECH } from '@/data/directions'
 
 const { t } = useI18n()

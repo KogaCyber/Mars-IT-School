@@ -8,7 +8,7 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import vacanciesAstronaut from '@/assets/images/vacancies-astronaut.png'
+import vacanciesAstronaut from '@/assets/images/vacancies-astronaut.webp'
 import { fetchVacancies } from '@/api/vacancies'
 import BaseEmptyState from '@/components/base/BaseEmptyState.vue'
 import BaseSpinner from '@/components/base/BaseSpinner.vue'

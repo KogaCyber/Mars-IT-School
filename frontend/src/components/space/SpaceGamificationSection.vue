@@ -9,10 +9,10 @@
 import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
-import coinBlur from '@/assets/images/coin-blur.png'
-import coinFront from '@/assets/images/coin-front.png'
-import coinSide from '@/assets/images/coin-side.png'
-import coinTilt from '@/assets/images/coin-tilt.png'
+import coinBlur from '@/assets/images/coin-blur.webp'
+import coinFront from '@/assets/images/coin-front.webp'
+import coinSide from '@/assets/images/coin-side.webp'
+import coinTilt from '@/assets/images/coin-tilt.webp'
 import { SPACE_GAMIFICATION } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 

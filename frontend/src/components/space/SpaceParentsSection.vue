@@ -13,7 +13,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
-import phone from '@/assets/images/Layer-1 1.png'
+import phone from '@/assets/images/Layer-1 1.webp'
 import { SPACE_PARENTS } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 

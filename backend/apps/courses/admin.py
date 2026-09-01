@@ -31,6 +31,7 @@ class DirectionAdmin(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ("title_ru", "direction", "age_range", "price", "is_featured", "is_published")
     list_filter = ("direction", "is_featured", "is_published")
+    list_select_related = ("direction",)
     list_editable = ("is_featured", "is_published")
     search_fields = ("title_ru", "subtitle_ru")
     filter_horizontal = ("teachers",)

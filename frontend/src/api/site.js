@@ -57,3 +57,15 @@ export async function fetchSchoolFeatures() {
   const { data } = await http.get('/school-features/')
   return data
 }
+
+/**
+ * Bosh sahifa uchun barcha kontent — bitta so'rovda.
+ *
+ * Ilgari bosh sahifa 5–6 ta alohida so'rov yuborardi. Backend Railway'da,
+ * MongoDB esa Atlas'da bo'lgani uchun har bir so'rov ~1 soniya turardi, ya'ni
+ * kontent kechikib chiqardi. Endi bittasi yetadi.
+ */
+export async function fetchHome() {
+  const { data } = await http.get('/home/')
+  return data
+}

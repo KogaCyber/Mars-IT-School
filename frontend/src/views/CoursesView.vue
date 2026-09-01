@@ -8,7 +8,7 @@
  */
 import { useI18n } from 'vue-i18n'
 
-import coursesAstronaut from '@/assets/images/kurslar_marsman.png'
+import coursesAstronaut from '@/assets/images/kurslar_marsman.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import DirectionsSection from '@/components/courses/DirectionsSection.vue'
 import TrialLessonSection from '@/components/courses/TrialLessonSection.vue'

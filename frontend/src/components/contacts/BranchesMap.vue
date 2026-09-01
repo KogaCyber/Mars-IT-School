@@ -10,7 +10,7 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-import marsMarker from '@/assets/images/mars-planet.png'
+import marsMarker from '@/assets/images/mars-planet.webp'
 
 const props = defineProps({
   /** Koordinatasi bor filiallar. */

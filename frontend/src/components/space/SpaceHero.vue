@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n'
 
 import codeBackdrop from '@/assets/images/about-code.webp'
 import glow from '@/assets/images/about-glow.webp'
-import spaceHero from '@/assets/images/space-hero.png'
+import spaceHero from '@/assets/images/space-hero.webp'
 import BaseBreadcrumbs from '@/components/base/BaseBreadcrumbs.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
 

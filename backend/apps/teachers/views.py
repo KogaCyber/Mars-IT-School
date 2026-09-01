@@ -1,11 +1,13 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
+from apps.core.cache import PublicCacheMixin
+
 from .models import Teacher
 from .serializers import TeacherDetailSerializer, TeacherListSerializer
 
 
-class TeacherViewSet(ReadOnlyModelViewSet):
+class TeacherViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
     permission_classes = [AllowAny]
     lookup_field = "slug"
     search_fields = ("full_name", "position_ru", "company")
