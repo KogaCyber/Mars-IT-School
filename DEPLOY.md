@@ -51,8 +51,20 @@ MONGODB_NAME=mars_it_school
 ADMIN_URL=mars-panel-7fa2/
 
 NUM_PROXIES=1
+
+# Ikkala papka ham DOIMIY volume'da bo'lishi shart (Railway → Volumes).
+# Konteyner diski har deploy'da tozalanadi.
 MEDIA_ROOT=/data/media
+# Nomzodlar rezyumesi — SHAXSIY MA'LUMOT. Bu papka MEDIA_ROOT ichida
+# BO'LMASLIGI kerak: WhiteNoise butun MEDIA_ROOT ni ochiq uzatadi, ya'ni
+# u yerdagi fayl manzilini bilgan har kim yuklab olardi.
+PRIVATE_MEDIA_ROOT=/data/private-media
+
 REDIS_URL=<Railway Redis plugin URL>
+
+# Saytda ro'yxatdan o'tish sahifasi yo'q — manzil yopiq turadi.
+# O'quvchi kabineti qo'shilgandagina True qiling.
+PUBLIC_REGISTRATION_ENABLED=False
 
 EMAIL_HOST=smtp.yandex.com
 EMAIL_PORT=587
@@ -233,3 +245,47 @@ bo'lsa, DevTools → Network → Console'dagi xabarga qarang:
 * So'rovlar Vercel domeniga ketyapti — build'da `VITE_API_BASE_URL` bo'sh qolgan.
   Vite bu qiymatni **build vaqtida** bundle ichiga yozadi, shuning uchun
   o'zgartirgandan keyin Redeploy qilish shart.
+
+---
+
+## Xavfsizlik bo'yicha majburiy qadamlar
+
+### Rezyume fayllarini ko'chirish (bir marta)
+
+Yangilanishdan oldin yuklangan rezyumelar hali ham ochiq `MEDIA_ROOT/resumes/`
+ichida yotadi va `/media/resumes/...` manzilida hammaga ko'rinadi. Ularni
+himoyalangan papkaga ko'chiring:
+
+```bash
+# Avval nima ko'chishini ko'rib oling
+python manage.py move_resumes_private --dry-run
+
+# Keyin haqiqiy ko'chirish
+python manage.py move_resumes_private
+```
+
+Railway'da bu `railway run` orqali bajariladi. Ko'chirishdan keyin eski
+`/media/resumes/...` manzillari 404 qaytaradi — bu kutilgan natija. Fayl endi
+admin paneldagi «Rezyume» havolasi orqali, xodim huquqi bilan ochiladi.
+
+### Tekshiruv ro'yxati (deploy'dan keyin)
+
+| Tekshiruv | Kutilgan natija |
+| --- | --- |
+| `curl -I <domen>/media/resumes/<eski-fayl>` | `404` |
+| Admin panelda «Vakansiya arizasi» → «Rezyume» havolasi | fayl yuklanadi |
+| Chiqib turib o'sha havolani ochish | `403` |
+| `curl <domen>/api/v1/quiz-results/abc/` | `404` (`500` emas) |
+| Bosh sahifada video tugmasi | rolik modal ichida o'ynaydi |
+| `curl <domen>/robots.txt \| grep Sitemap` | domen sayt domeni bilan bir xil |
+| `python manage.py check --deploy` | 0 muammo |
+
+### Muhit o'zgaruvchilari — xavfsizlik uchun eng muhimlari
+
+| O'zgaruvchi | Nega muhim |
+| --- | --- |
+| `PRIVATE_MEDIA_ROOT` | Qo'yilmasa rezyumelar har deploy'da yo'qoladi (jarayon boshlanishida ogohlantirish chiqadi). |
+| `ADMIN_URL` | `/admin/` da qolsa botlar kuniga minglab marta uradi. |
+| `PUBLIC_REGISTRATION_ENABLED` | `True` bo'lsa istalgan odam hisob ocha oladi. |
+| `NUM_PROXIES` | Noto'g'ri bo'lsa so'rov cheklovi va IP aniqlash aylanib o'tiladi. |
+| `LEAD_THROTTLE_RATE` | Juda past qiymat CGNAT ortidagi haqiqiy mijozlarni bloklaydi. |

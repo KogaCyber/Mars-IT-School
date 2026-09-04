@@ -39,7 +39,24 @@ useSeo(() => ({
   ],
 }))
 
-const { data: quiz, isLoading, error } = useAsyncData(() => fetchQuiz(QUIZ_SLUG), null)
+/**
+ * Test ATAYLAB avtomatik qayta yuklanmaydi.
+ *
+ * `useAsyncData` standart bo'yicha kontent versiyasi o'zgarganda (admin panelda
+ * BIROR narsa saqlanganda — har 5 soniyada tekshiriladi) va til almashganda
+ * ma'lumotni qayta yuklaydi. Bu yerda bu — xatolik: `sample_questions()` har
+ * so'rovda YANGI tasodifiy savollar to'plamini beradi, `answers` esa eski
+ * savol ID'lariga bog'langan va `step` joyida qoladi. Foydalanuvchi uchun
+ * savollar o'rtada almashib ketardi va berilgan javoblar yo'qolardi.
+ */
+const {
+  data: quiz,
+  isLoading,
+  error,
+} = useAsyncData(() => fetchQuiz(QUIZ_SLUG), null, {
+  reloadOnContentChange: false,
+  reloadOnLanguageChange: false,
+})
 
 const answers = reactive({})
 const step = ref(0)
@@ -70,8 +87,10 @@ const greetingName = computed(() => contact.full_name.trim())
 
 function choose(questionId, optionId) {
   answers[questionId] = optionId
-  // Javob tanlangach avtomatik keyingi savolga o'tamiz.
-  step.value += 1
+  // Javob tanlangach avtomatik keyingi savolga o'tamiz. `Math.min` — orqaga
+  // qaytib javobni o'zgartirgan foydalanuvchi kontakt bosqichidan oshib
+  // ketmasligi uchun.
+  step.value = Math.min(step.value + 1, questions.value.length)
 }
 
 function back() {

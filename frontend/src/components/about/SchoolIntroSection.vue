@@ -3,20 +3,30 @@
  * «MARS IT — это не просто курсы».
  *
  * Figma: chapda yorliq, yirik sarlavha, belgilangan ro'yxat va tugma;
- * o'ngda tanishtiruv videosi (muqova + "play" tugmasi).
+ * o'ngda tanishtiruv videosi (muqova + "play" tugmasi) — bosilganda rolik
+ * saytdan chiqmasdan modal oyna ichida o'ynaydi.
  */
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BaseButton from '@/components/base/BaseButton.vue'
+import { isPlayable, openVideo } from '@/composables/useVideoModal'
 
 const { t } = useI18n()
 
-defineProps({
+const props = defineProps({
   items: { type: Array, default: () => [] },
   /** Video havolasi va muqovasi — sayt sozlamalaridan keladi. */
   videoUrl: { type: String, default: '' },
   videoCover: { type: String, default: '' },
 })
+
+/**
+ * Havola bor bo'lishi yetarli emas — u ichki pleyer TANIYDIGAN manba
+ * (YouTube, Vimeo yoki to'g'ridan-to'g'ri video fayl) bo'lishi kerak.
+ * Aks holda «play» tugmasi chizilib, bosilganda hech nima bo'lmasdi.
+ */
+const canPlay = computed(() => isPlayable(props.videoUrl))
 </script>
 
 <template>
@@ -55,26 +65,34 @@ defineProps({
         </BaseButton>
       </div>
 
-      <!-- Video -->
+      <!-- Video. Muqova qo'yilmagan bo'lsa ham, video bo'lsa blok ko'rinadi:
+           admin panelda faqat fayl yuklab qo'yish yetarli. -->
       <component
-        :is="videoUrl ? 'a' : 'div'"
-        v-if="videoCover"
-        :href="videoUrl || undefined"
-        :target="videoUrl ? '_blank' : undefined"
-        :rel="videoUrl ? 'noopener noreferrer' : undefined"
-        class="group rounded-block relative block overflow-hidden"
-        :aria-label="videoUrl ? t('about.watchVideo') : undefined"
+        :is="canPlay ? 'button' : 'div'"
+        v-if="videoCover || canPlay"
+        :type="canPlay ? 'button' : undefined"
+        class="group rounded-block bg-surface relative block w-full overflow-hidden"
+        :aria-label="canPlay ? t('about.watchVideo') : undefined"
+        @click="canPlay && openVideo(videoUrl, t('about.watchVideo'))"
       >
         <img
+          v-if="videoCover"
           :src="videoCover"
           alt=""
           loading="lazy"
           class="aspect-[4/3] w-full object-cover transition duration-500 group-hover:scale-105"
         />
+        <div v-else class="aspect-[4/3] w-full" aria-hidden="true" />
 
         <span
-          v-if="videoUrl"
-          class="bg-brand absolute top-1/2 left-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full text-white shadow-xl transition group-hover:scale-110"
+          v-if="canPlay"
+          class="absolute inset-0 bg-black/0 transition duration-300 group-hover:bg-black/25"
+          aria-hidden="true"
+        />
+
+        <span
+          v-if="canPlay"
+          class="bg-brand absolute top-1/2 left-1/2 grid size-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full text-white shadow-xl transition duration-300 group-hover:scale-110"
         >
           <svg
             class="size-5 translate-x-0.5"

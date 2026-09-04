@@ -1,3 +1,6 @@
+from bson import ObjectId
+from bson.errors import InvalidId
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -51,6 +54,8 @@ class QuizSubmitView(APIView):
         submission = evaluate(quiz, serializer.validated_data["answers"])
         submission.full_name = serializer.validated_data.get("full_name", "")
         submission.phone = serializer.validated_data.get("phone", "")
+        # `evaluate()` saqlanmagan obyekt qaytaradi — kontakt maydonlari
+        # qo'yilgandan keyin bitta marta yoziladi (ilgari ikki yozuv bo'lardi).
         submission.save()
 
         return Response(
@@ -67,5 +72,15 @@ class QuizResultView(APIView):
 
     @extend_schema(responses=SubmissionResultSerializer)
     def get(self, request, pk: str):
-        submission = get_object_or_404(Submission.objects.select_related("outcome"), pk=pk)
+        # Manzildagi qiymat foydalanuvchidan keladi (havola qo'lda tahrirlanishi
+        # mumkin). ObjectId bo'lmasa MongoDB maydoni `ValidationError` ko'tarib
+        # 500 berardi — buzuq havola uchun to'g'ri javob esa 404.
+        try:
+            object_id = ObjectId(str(pk))
+        except (InvalidId, TypeError, ValueError) as exc:
+            raise Http404("Natija topilmadi.") from exc
+
+        submission = get_object_or_404(
+            Submission.objects.select_related("outcome"), pk=object_id
+        )
         return Response(SubmissionResultSerializer(submission, context={"request": request}).data)

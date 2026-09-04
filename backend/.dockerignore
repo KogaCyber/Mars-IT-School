@@ -18,3 +18,8 @@ htmlcov/
 tests/
 *.log
 .DS_Store
+
+# Shaxsiy fayllar image ichiga tushmaydi
+private-media/
+.test-media/
+.test-private-media/

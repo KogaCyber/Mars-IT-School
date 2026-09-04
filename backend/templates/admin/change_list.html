@@ -1,0 +1,23 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% comment %}
+  Ro'yxat tepasida: bu bo'lim saytning qayerida ko'rinadi va nima o'zgaradi.
+  Yo'lda esa ilova nomi emas, saytning sahifasi ko'rsatiladi.
+{% endcomment %}
+
+{% block breadcrumbs %}
+  {% if mars_page_name %}
+    <div class="breadcrumbs">
+      <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+      &rsaquo; {{ mars_page_name }}
+      &rsaquo; {{ cl.opts.verbose_name_plural|capfirst }}
+    </div>
+  {% else %}
+    {{ block.super }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% include "admin/mars_section_help.html" %}
+  {{ block.super }}
+{% endblock %}

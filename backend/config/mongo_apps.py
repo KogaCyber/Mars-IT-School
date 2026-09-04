@@ -15,6 +15,8 @@ OBJECT_ID_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
 
 class MongoAdminConfig(AdminConfig):
     default_auto_field = OBJECT_ID_FIELD
+    # Admin panel sayt sahifalari bo'yicha guruhlanadi (apps/core/admin_site.py).
+    default_site = "apps.core.admin_site.MarsAdminSite"
 
 
 class MongoAuthConfig(AuthConfig):

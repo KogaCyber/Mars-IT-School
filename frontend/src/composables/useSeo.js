@@ -15,7 +15,7 @@ import { watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
-import { SITE, findStaticPage, isNoindexPath } from '@/data/seoConfig'
+import { SITE, findStaticPage, isNoindexPath, localeAlternates, localeUrl } from '@/data/seoConfig'
 import { useSiteStore } from '@/stores/site'
 import {
   absoluteUrl,
@@ -116,10 +116,12 @@ export function useSeo(source) {
     const meta = source() || {}
     const origin = siteOrigin()
     const path = route.path
-    const url = `${origin}${path === '/' ? '/' : path.replace(/\/$/, '')}`
 
     // Statik sahifa uchun oldindan yozilgan matn — sahifa o'zi bermasa zaxira bo'ladi.
     const locale = site.language || SITE.defaultLocale
+    // Canonical — AYNAN shu tildagi sahifa manzili. Uch til bir xil manzilni
+    // ko'rsatsa Google ularni dublikat deb hisoblardi (seoConfig.js:localeUrl).
+    const url = localeUrl(origin, path, locale)
     // JSON-LD ichidagi matnlar ham sayt tiliga ergashadi.
     setSchemaLocale(locale)
     const preset = findStaticPage(path, locale) || {}
@@ -147,10 +149,9 @@ export function useSeo(source) {
 
     // --- Canonical va tillar ---
     upsertLink('canonical', url)
-    SITE.locales.forEach((code) => {
-      upsertLink('alternate', url, { hreflang: code })
+    localeAlternates(origin, path).forEach(({ hreflang, href }) => {
+      upsertLink('alternate', href, { hreflang })
     })
-    upsertLink('alternate', url, { hreflang: 'x-default' })
 
     // --- Open Graph ---
     upsertMeta('property', 'og:type', meta.type || 'website')

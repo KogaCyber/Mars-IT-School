@@ -20,5 +20,6 @@ router.register("school-features", views.SchoolFeatureViewSet, basename="school-
 urlpatterns = [
     path("site-settings/", views.site_settings_view, name="site-settings"),
     path("home/", views.home_bootstrap_view, name="home-bootstrap"),
+    path("revision/", views.revision_view, name="revision"),
     path("", include(router.urls)),
 ]

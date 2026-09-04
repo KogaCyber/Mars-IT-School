@@ -67,7 +67,11 @@ useSeo(() => ({
       <p class="eyebrow">{{ t('home.newsEyebrow') }}</p>
 
       <div class="mt-5 flex flex-wrap items-end justify-between gap-6">
-        <h2 class="section-title text-white" v-html="t('home.newsTitle')" />
+        <h2 class="section-title text-white">
+          <span v-for="line in t('home.newsTitle').split('\n')" :key="line" class="block">
+            {{ line }}
+          </span>
+        </h2>
         <BaseButton :to="{ name: 'news' }" size="lg" class="font-wide font-bold">
           {{ t('home.newsAll') }}
         </BaseButton>
@@ -89,11 +93,15 @@ useSeo(() => ({
       <p class="eyebrow">{{ t('home.teamEyebrow') }}</p>
 
       <div class="mt-5 flex flex-wrap items-end justify-between gap-6">
-        <h2 class="section-title text-white" v-html="t('home.teamTitle')" />
+        <h2 class="section-title text-white">
+          <span v-for="line in t('home.teamTitle').split('\n')" :key="line" class="block">
+            {{ line }}
+          </span>
+        </h2>
       </div>
     </div>
 
-    <InfiniteCarousel class="mt-[6%]" :speed="100" direction="right">
+    <InfiniteCarousel class="mt-[6%]" :speed="100">
       <div v-for="teacher in teachers" :key="teacher.id" class="w-[min(92vw,38rem)] shrink-0">
         <TeacherCard :teacher="teacher" />
       </div>

@@ -153,3 +153,34 @@ class CourseStage(TranslatedModel, TimeStampedModel):
 
     def __str__(self) -> str:
         return f"{self.course.title_ru} — {self.title_ru}"
+
+
+class CourseFaq(TranslatedModel, TimeStampedModel):
+    """Kurs sahifasining pastidagi «Частые вопросы» bloki.
+
+    Har bir kursning savollari o'ziniki, shuning uchun ular admin panelda
+    kursning o'z sahifasi ichida — bosqichlar va imkoniyatlar bilan yonma-yon —
+    tahrirlanadi. Bosh sahifadagi umumiy FAQ esa alohida (`core.FAQ`) qoladi.
+    """
+
+    course = models.ForeignKey(
+        Course, verbose_name=_("kurs"), on_delete=models.CASCADE, related_name="faqs"
+    )
+
+    question_ru = models.CharField(_("savol (ru)"), max_length=255)
+    question_uz = models.CharField(_("savol (uz)"), max_length=255, blank=True)
+    question_en = models.CharField(_("savol (en)"), max_length=255, blank=True)
+
+    answer_ru = models.TextField(_("javob (ru)"))
+    answer_uz = models.TextField(_("javob (uz)"), blank=True)
+    answer_en = models.TextField(_("javob (en)"), blank=True)
+
+    order = models.PositiveIntegerField(_("tartib"), default=0)
+
+    class Meta:
+        verbose_name = _("Savol-javob")
+        verbose_name_plural = _("Savol-javoblar")
+        ordering = ["order", "id"]
+
+    def __str__(self) -> str:
+        return self.question_ru

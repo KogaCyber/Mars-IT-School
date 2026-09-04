@@ -1,5 +1,7 @@
 import random
 
+from bson import ObjectId
+from bson.errors import InvalidId
 from rest_framework import serializers
 
 from apps.accounts.validators import normalize_phone, validate_uz_phone
@@ -7,6 +9,15 @@ from apps.core.drf import TranslatedSerializerMixin
 
 from .models import Option, Outcome, Question, Quiz, Skill, Submission, skill_label
 from .services import sample_questions
+
+
+def _is_object_id(value) -> bool:
+    """Satr MongoDB identifikatori ko'rinishidami."""
+    try:
+        ObjectId(str(value))
+    except (InvalidId, TypeError, ValueError):
+        return False
+    return True
 
 
 class OptionSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
@@ -80,9 +91,20 @@ class SubmissionCreateSerializer(serializers.Serializer):
         return phone
 
     def validate_answers(self, value: dict) -> dict:
+        """Kalit va qiymat haqiqiy ObjectId bo'lishi shart.
+
+        Ular to'g'ridan-to'g'ri `question_id__in` so'roviga tushadi. Tekshirmasak,
+        `{"answers": {"abc": "def"}}` kabi so'rov MongoDB maydonida
+        `ValidationError` ko'tarib, 500 xatolik berardi. Noto'g'ri yozuv
+        jimgina tashlab yuboriladi — qolgan javoblar baribir hisoblanadi.
+        """
         if len(value) > 100:
             raise serializers.ValidationError("Javoblar soni juda ko'p.")
-        return value
+
+        cleaned = {key: item for key, item in value.items() if _is_object_id(key)}
+        if not cleaned:
+            raise serializers.ValidationError("Javoblar yaroqsiz.")
+        return cleaned
 
 
 class SubmissionResultSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):

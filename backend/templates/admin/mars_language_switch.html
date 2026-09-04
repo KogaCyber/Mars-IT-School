@@ -1,0 +1,22 @@
+{% comment %}
+  Til almashtirgichi: admin panel interfeysi ruscha va o'zbekcha bo'lishi mumkin.
+  Tanlov `django.views.i18n.set_language` orqali seansda saqlanadi, shuning
+  uchun keyingi kirishlarda ham o'sha til qoladi. JavaScript kerak emas —
+  har bir tugma o'zining `language` qiymatini yuboradi.
+{% endcomment %}
+{% if mars_admin_languages %}
+  <form class="mars-lang" method="post" action="{% url 'set_language' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    {% for language in mars_admin_languages %}
+      <button
+        type="submit"
+        name="language"
+        value="{{ language.code }}"
+        title="{{ language.title }}"
+        lang="{{ language.code }}"
+        {% if language.is_current %}class="is-current" aria-current="true"{% endif %}
+      >{{ language.short }}</button>
+    {% endfor %}
+  </form>
+{% endif %}

@@ -16,6 +16,12 @@ staticfiles/
 # (WhiteNoise `/media/` ni ochiq uzatadi, ya'ni serverga chiqsa hamma ko'radi).
 media/resumes/
 
+# Shaxsiy fayllar (rezyume) endi butunlay alohida papkada — u hech qachon
+# git'ga ham, statik uzatuvchiga ham tushmaydi (apps/core/storage.py).
+private-media/
+.test-media/
+.test-private-media/
+
 # --- Sirlar ---
 .env
 !.env.example

@@ -32,7 +32,11 @@ function displayNumber(item, index) {
       <p class="eyebrow">{{ t('home.advantagesEyebrow') }}</p>
 
       <div class="mt-5 grid gap-8 lg:grid-cols-2 lg:items-end">
-        <h2 class="section-title text-white" v-html="t('home.advantagesTitle')" />
+        <h2 class="section-title text-white">
+          <span v-for="line in t('home.advantagesTitle').split('\n')" :key="line" class="block">
+            {{ line }}
+          </span>
+        </h2>
         <p class="text-base leading-relaxed text-white/70 lg:text-right">
           {{ t('home.advantagesText') }}
         </p>

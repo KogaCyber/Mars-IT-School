@@ -17,6 +17,9 @@ const EMPTY_SETTINGS = {
   space_app_ios_url: '',
   space_app_android_url: '',
   privacy_policy_url: '',
+  promo_video_url: '',
+  promo_video: '',
+  promo_cover: '',
 }
 
 export const useSiteStore = defineStore('site', () => {
@@ -24,8 +27,8 @@ export const useSiteStore = defineStore('site', () => {
   const isLoaded = ref(false)
   const language = ref(getLanguage())
 
-  async function load() {
-    if (isLoaded.value) return
+  async function load({ force = false } = {}) {
+    if (isLoaded.value && !force) return
     try {
       settings.value = await fetchSiteSettings()
     } catch {
@@ -34,6 +37,11 @@ export const useSiteStore = defineStore('site', () => {
     } finally {
       isLoaded.value = true
     }
+  }
+
+  /** Admin panelda sozlamalar o'zgarganda — jimgina qayta yuklash. */
+  async function refresh() {
+    await load({ force: true })
   }
 
   /** Tilni almashtirib, kontentni qayta yuklaydi. */
@@ -46,5 +54,5 @@ export const useSiteStore = defineStore('site', () => {
     await load()
   }
 
-  return { settings, isLoaded, language, load, changeLanguage }
+  return { settings, isLoaded, language, load, refresh, changeLanguage }
 })

@@ -17,7 +17,14 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { SITE, STATIC_PAGES, pick, resolvePage } from '../src/data/seoConfig.js'
+import {
+  SITE,
+  STATIC_PAGES,
+  localeAlternates,
+  localeUrl,
+  pick,
+  resolvePage,
+} from '../src/data/seoConfig.js'
 import {
   absoluteUrl,
   articleSchema,
@@ -169,11 +176,12 @@ function sitemapEntry({ path, lastmod, changefreq, priority, image }) {
     `    <lastmod>${lastmod || TODAY}</lastmod>`,
     `    <changefreq>${changefreq || 'monthly'}</changefreq>`,
     `    <priority>${(priority ?? 0.5).toFixed(1)}</priority>`,
-    // Har bir til uchun bitta URL — sayt tilni foydalanuvchi tomonda almashtiradi.
-    ...SITE.locales.map(
-      (code) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${escapeXml(loc)}"/>`,
+    // Har bir tilning O'Z manzili (`?lang=`). Uchalasi bir xil URL bo'lsa
+    // hreflang qoidasi buziladi va Google belgini e'tiborsiz qoldiradi.
+    ...localeAlternates(ORIGIN, path).map(
+      ({ hreflang, href }) =>
+        `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeXml(href)}"/>`,
     ),
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${escapeXml(loc)}"/>`,
     ...(image
       ? [
           '    <image:image>',
@@ -324,7 +332,7 @@ const escapeHtml = (value) =>
  * o'zgarishsiz qoladi, shuning uchun brauzerdagi xatti-harakat bir xil.
  */
 function renderPage(template, page) {
-  const url = `${ORIGIN}${page.path}`
+  const url = localeUrl(ORIGIN, page.path, LOCALE)
   const image = absoluteUrl(page.image || SITE.ogImage, ORIGIN)
   const title = `${page.title} — ${SITE.name}`
 
@@ -390,12 +398,12 @@ function renderPage(template, page) {
     ],
     [
       /<link rel="alternate" hreflang="[a-z-]+"[^>]*>[\s\S]*?<link rel="alternate" hreflang="x-default"[^>]*>/,
-      [
-        ...SITE.locales.map(
-          (code) => `<link rel="alternate" hreflang="${code}" href="${escapeHtml(url)}" />`,
-        ),
-        `<link rel="alternate" hreflang="x-default" href="${escapeHtml(url)}" />`,
-      ].join('\n    '),
+      localeAlternates(ORIGIN, page.path)
+        .map(
+          ({ hreflang, href }) =>
+            `<link rel="alternate" hreflang="${hreflang}" href="${escapeHtml(href)}" />`,
+        )
+        .join('\n    '),
     ],
     [
       /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
@@ -535,6 +543,33 @@ function collectPages(dynamic) {
   return pages
 }
 
+// --- robots.txt -----------------------------------------------------------
+
+/**
+ * `public/robots.txt` ichidagi domenni haqiqiy manzilga moslaydi.
+ *
+ * Fayl statik nusxalanadi va u yerda domen qo'lda yozilgan edi. Natijada
+ * `Sitemap:` qatori BOSHQA domenni ko'rsatib turardi (`marsitschool.uz`),
+ * sitemap'ning o'zi esa deploy domenida (`…vercel.app`) yotardi — Google
+ * uchun bu ishonchsiz, boshqa saytga tegishli sitemap. Endi domen bitta
+ * manbadan (`VITE_SITE_URL`) keladi va uchala fayl bir-biriga mos bo'ladi.
+ */
+async function buildRobots() {
+  const path = join(DIST, 'robots.txt')
+  let content
+  try {
+    content = await readFile(path, 'utf8')
+  } catch {
+    log('⚠ robots.txt topilmadi — o‘tkazib yuborildi')
+    return null
+  }
+
+  // Fayldagi har qanday absolut manzil haqiqiy domenga almashtiriladi.
+  const replaced = content.replace(/https?:\/\/[a-z0-9.-]+(?=\/|\s|$)/gi, ORIGIN)
+  await writeFile(path, replaced, 'utf8')
+  return replaced
+}
+
 // --- Ishga tushirish ------------------------------------------------------
 
 async function main() {
@@ -543,6 +578,7 @@ async function main() {
 
   await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(dynamic), 'utf8')
   await writeFile(join(DIST, 'llms.txt'), buildLlmsTxt(dynamic), 'utf8')
+  await buildRobots()
 
   const pages = collectPages(dynamic)
   for (const page of pages) {

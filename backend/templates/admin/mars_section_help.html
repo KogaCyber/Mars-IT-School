@@ -1,0 +1,19 @@
+{% load i18n %}
+{# Bo'lim tepasidagi eslatma: bu bo'lim saytning qayerini o'zgartiradi. #}
+{% if mars_section_where %}
+  <div class="mars-help">
+    <p class="mars-help-where">
+      {{ mars_section_where }}
+      {% if mars_page_name %}
+        <span class="mars-help-page">
+          {{ mars_page_name }}{% if mars_page_url %} · {{ mars_page_url }}{% endif %}
+        </span>
+      {% endif %}
+    </p>
+    {% if mars_section_what %}
+      <p class="mars-help-what">
+        {% translate 'O‘zgartirish mumkin:' %} {{ mars_section_what }}
+      </p>
+    {% endif %}
+  </div>
+{% endif %}

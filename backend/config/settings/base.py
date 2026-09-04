@@ -104,6 +104,9 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # Til tanlash: admin panel tilini seansda saqlaydi (Ruscha / O'zbekcha).
+    # Tartib muhim — SessionMiddleware'dan keyin, CommonMiddleware'dan oldin.
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -128,6 +131,10 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # Admin bo'limi saytning qayerini o'zgartirishi haqidagi eslatma.
+                "apps.core.context_processors.admin_section_help",
+                # Admin paneldagi til almashtirgichi (Ruscha / O'zbekcha).
+                "apps.core.context_processors.admin_languages",
             ],
         },
     },
@@ -220,7 +227,13 @@ LANGUAGES = [
 # Kontent tarjimalari uchun ishlatiladigan tillar (model maydonlari: _ru/_uz/_en).
 CONTENT_LANGUAGES = ["ru", "uz", "en"]
 DEFAULT_CONTENT_LANGUAGE = "ru"
-LOCALE_PATHS = [BASE_DIR / "locale"]
+# Birinchi papkaga `makemessages` yozadi (loyihaning o'z satrlari).
+# Ikkinchisi qo'lda yuritiladi: Django'ning o'zbekcha admin tarjimasidagi
+# bo'shliqlarni to'ldiradi (u yerda satrlarning yarmi tarjimasiz va ular
+# `LANGUAGE_CODE` = ru katalogiga qaytib, ruscha chiqib qolardi).
+LOCALE_PATHS = [BASE_DIR / "locale", BASE_DIR / "locale_overrides"]
+# Admin panel interfeysi shu tillarda almashadi (sayt kontenti — CONTENT_LANGUAGES).
+ADMIN_LANGUAGES = ["ru", "uz"]
 TIME_ZONE = "Asia/Tashkent"
 USE_I18N = True
 USE_TZ = True
@@ -244,6 +257,33 @@ MEDIA_URL = "/media/"
 # (Railway → Volumes → mount path, masalan /data/media).
 MEDIA_ROOT = Path(env("MEDIA_ROOT", default=str(BASE_DIR / "media")))
 
+# --- Shaxsiy (himoyalangan) fayllar ----------------------------------------
+# `MEDIA_ROOT` ni WhiteNoise butunlay ochiq uzatadi (config/wsgi.py), ya'ni u
+# yerdagi har bir fayl manzilini bilgan odamga ko'rinadi. Nomzodlarning
+# rezyumesi esa shaxsiy ma'lumot. Shuning uchun u ALOHIDA, hech qachon
+# statik uzatilmaydigan papkada saqlanadi va faqat
+# `apps/vacancies/views.py:resume_download_view` orqali, xodim huquqi bilan
+# beriladi. Bu papka MEDIA_ROOT ichida BO'LMASLIGI shart.
+# `.env` da kalit bor-u qiymati bo'sh bo'lishi mumkin — bu ko'p uchraydigan
+# holat. `Path("")` esa joriy ishchi papkaga (`.`) aylanadi, ya'ni rezyumelar
+# tasodifiy joyga yozilardi. Shuning uchun bo'sh qiymat "berilmagan" deb
+# hisoblanadi va `resolve()` bilan har doim absolut yo'lga keltiriladi.
+PRIVATE_MEDIA_ROOT = Path(
+    env("PRIVATE_MEDIA_ROOT", default="").strip() or str(BASE_DIR / "private-media")
+).resolve()
+
+_media_root_resolved = MEDIA_ROOT.resolve()
+if (
+    _media_root_resolved == PRIVATE_MEDIA_ROOT
+    or _media_root_resolved in PRIVATE_MEDIA_ROOT.parents
+    or PRIVATE_MEDIA_ROOT in _media_root_resolved.parents
+):
+    raise ImproperlyConfigured(
+        f"PRIVATE_MEDIA_ROOT ({PRIVATE_MEDIA_ROOT}) va MEDIA_ROOT "
+        f"({_media_root_resolved}) biri ikkinchisining ichida bo'lmasligi kerak — "
+        "aks holda rezyume fayllari WhiteNoise orqali ommaga ochiq bo'lib qoladi."
+    )
+
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
@@ -259,7 +299,10 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 500
 # ---------------------------------------------------------------------------
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        # Standart sinf emas: bu sinf tokendagi `epoch` da'vosini ham
+        # tekshiradi, ya'ni parol o'zgarganda eski tokenlar darhol yaroqsiz
+        # bo'ladi (apps/accounts/authentication.py).
+        "apps.accounts.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_RENDERER_CLASSES": ("apps.core.drf.MongoJSONRenderer",),
@@ -277,8 +320,18 @@ REST_FRAMEWORK = {
     "DEFAULT_THROTTLE_RATES": {
         "anon": "60/min",
         "user": "240/min",
-        "lead": "5/hour",  # ariza yuborish formasi
+        # Ariza yuborish. O'zbekistonda mobil operatorlar va maktab/ofis
+        # tarmoqlari CGNAT ishlatadi — bitta IP ortida yuzlab odam turadi.
+        # 5/hour bunday tarmoqdagi haqiqiy mijozni bloklab qo'yardi.
+        # Spamga qarshi asosiy himoya honeypot va telefon validatsiyasi.
+        "lead": env("LEAD_THROTTLE_RATE", default="40/hour"),
         "auth": "10/min",  # login / register
+        # Kontent versiyasi: sayt uni har 5 soniyada so'raydi (12/min), javob
+        # server xotirasidan keladi. Limit shunchaki cheksiz so'rovni to'xtatadi.
+        "revision": "120/min",
+        # Railway healthcheck va monitoring — ular umumiy `anon` limitini
+        # to'ldirib, haqiqiy tashrifchilarni siqib chiqarmasligi kerak.
+        "health": "120/min",
     },
     # Proksi (Railway/Vercel) orqasida throttling kimni cheklashini aniqlash uchun.
     # `None` bo'lganda DRF butun X-Forwarded-For zanjirini kalit sifatida oladi —
@@ -313,6 +366,14 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     "COMPONENT_SPLIT_REQUEST": True,
     "SCHEMA_PATH_PREFIX": "/api/v1",
+    # `icon_name` maydoni uchta modelda bor va har birida BOSHQA ro'yxat.
+    # Generator ularni "IconNameDdeEnum" kabi tushunarsiz nom bilan ajratardi —
+    # bu yerda har biriga aniq nom beriladi.
+    "ENUM_NAME_OVERRIDES": {
+        "VacancyIconEnum": "apps.vacancies.models.Vacancy.Icon",
+        "ChildSkillIconEnum": "apps.core.models.ChildSkill.Icon",
+        "ProjectDefenceStepIconEnum": "apps.core.models.ProjectDefenceStep.Icon",
+    },
 }
 
 # Ilova oldida turgan ishonchli proksilar soni (Railway/Vercel = 1).
@@ -335,11 +396,22 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 CORS_ALLOWED_ORIGINS = env("CORS_ALLOWED_ORIGINS")
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 CORS_ALLOW_CREDENTIALS = False  # JWT header orqali ishlaydi, cookie kerak emas.
-CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+# Ommaviy API faqat o'qiydi va ariza qabul qiladi — o'chirish/yangilash yo'q.
+# Ortiqcha metodni ochib qo'yish keraksiz hujum yuzasi.
+CORS_ALLOW_METHODS = ["GET", "HEAD", "POST", "OPTIONS"]
 
 # ---------------------------------------------------------------------------
 # Xavfsizlik sarlavhalari (production.py da kuchaytiriladi)
 # ---------------------------------------------------------------------------
+# Tanishtiruv videosi shu manbalardan `iframe` bilan ko'rsatiladi. Ro'yxat
+# ataylab qisqa: `useVideoModal.js` ham aynan shularni tanidi, boshqa havola
+# oddiy tashqi havola bo'lib qoladi.
+VIDEO_EMBED_ORIGINS = [
+    "https://www.youtube-nocookie.com",
+    "https://www.youtube.com",
+    "https://player.vimeo.com",
+]
+
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
@@ -357,6 +429,10 @@ CONTENT_SECURITY_POLICY = {
         "img-src": ["'self'", "data:", "https:"],
         "font-src": ["'self'", "data:"],
         "connect-src": ["'self'"],
+        # Tanishtiruv videosi: YouTube/Vimeo `iframe` ichida ochiladi. Bu
+        # direktivalar bo'lmasa ular `default-src 'self'` ga tushib bloklanadi.
+        "frame-src": ["'self'", *VIDEO_EMBED_ORIGINS],
+        "media-src": ["'self'", "https:"],
         "frame-ancestors": ["'none'"],
         "base-uri": ["'self'"],
         "form-action": ["'self'"],
@@ -374,6 +450,11 @@ LEAD_NOTIFY_EMAILS = env.list("LEAD_NOTIFY_EMAILS", default=[])
 # Loyihaga oid sozlamalar
 # ---------------------------------------------------------------------------
 FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:5173")
+
+# Saytda ro'yxatdan o'tish sahifasi yo'q — `/api/v1/auth/register/` ochiq
+# qolsa u faqat spam hisob yaratish uchun ishlatiladigan hujum yuzasi bo'ladi.
+# Kelajakda o'quvchi kabineti qo'shilsa shu qiymat True qilinadi.
+PUBLIC_REGISTRATION_ENABLED = env.bool("PUBLIC_REGISTRATION_ENABLED", default=False)
 TELEGRAM_BOT_TOKEN = env("TELEGRAM_BOT_TOKEN", default="")
 TELEGRAM_CHAT_ID = env("TELEGRAM_CHAT_ID", default="")
 

@@ -81,6 +81,29 @@ esa faqat «Kontaktlar» sahifasida kerak.
 
 **Natija (mahalliy o'lchov):** keshdan kelgan javob 1.16 s → 0.007 s.
 
+## Jonli yangilanish (kesh va real vaqt)
+
+Keshlash tezlik beradi, lekin admin panelda o'zgartirilgan kontent shu muddat
+ichida saytda ko'rinmay turardi. Ikkalasi ham bo'lishi uchun kontentning
+**versiyasi** kiritildi:
+
+| Fayl | Vazifa |
+|---|---|
+| `apps/core/models.py` → `SiteRevision` | MongoDB'dagi yagona kichik hujjat — millisekundlardagi vaqt tamg'asi. Barcha gunicorn worker'lari uchun umumiy manba. |
+| `apps/core/signals.py` | Kontent ilovalaridagi har qanday saqlash/o'chirishda versiya ko'tariladi. Ariza va anketa (`Lead`, `Submission`, `VacancyApplication`) hisobga olinmaydi — ular saytdagi kontentni o'zgartirmaydi. |
+| `apps/core/revision.py` | Versiyani o'qish/ko'tarish. Qiymat 2 soniyaga mahalliy keshda saqlanadi — har so'rovda bazaga borilmaydi. |
+| `apps/core/cache.py` | Versiya kesh kalitining ichida: o'zgarishi bilan eski javob yaroqsiz bo'ladi. `_v` parametrisiz kelgan so'rov brauzerda keshlanmaydi (`max-age=0`), `_v` bilan kelgani esa xotirjam keshlanadi — manzilning o'zi o'zgaradi. |
+| `/api/v1/revision/` | Sayt shu manzilni 5 soniyada bir so'raydi (faqat oyna ko'rinib turganda). |
+| `frontend/src/stores/live.js`, `useAsyncData.js` | Raqam o'zgarsa — ochiq sahifadagi barcha yuklovchilar jimgina qayta ishga tushadi (spinner chiqmaydi, kontent joyida turadi). |
+
+Natijada admin paneldagi tahrir saytda ~5–7 soniya ichida, sahifani yangilamasdan
+ko'rinadi; kesh esa o'z ishini davom ettiradi.
+
+**Nega SSE/WebSocket emas:** gunicorn `gthread` bilan bir vaqtda 16 ta so'rovni
+oladi. Uzoq ochiq ulanishlar bu oqimlarni band qilib qo'yardi va bir necha
+o'nlab tashrifchidan keyin sayt umuman javob bermay qolardi. Kichik JSON so'rovi
+esa server xotirasidan javob oladi.
+
 ## Qolgan ishlar (kod emas, infratuzilma)
 
 Yuqoridagi 1-sabab hali kuchda. Ikkita yo'l bor, birinchisi afzal:

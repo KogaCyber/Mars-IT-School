@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.translation import translation_fieldset
 
@@ -32,7 +35,7 @@ class VacancyApplicationAdmin(admin.ModelAdmin):
         "phone",
         "email",
         "cover_letter",
-        "resume",
+        "resume_link",
         "resume_url",
         "ip_address",
         "created_at",
@@ -42,3 +45,17 @@ class VacancyApplicationAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request) -> bool:
         return False
+
+    @admin.display(description=_("rezyume"))
+    def resume_link(self, obj):
+        """Rezyumeni yuklab olish havolasi.
+
+        Fayl `PRIVATE_MEDIA_ROOT` ichida — uning ommaviy manzili YO'Q va
+        `obj.resume.url` ataylab xatolik beradi. Yuklab olish faqat xodim
+        huquqini tekshiradigan `resume-download` view orqali.
+        """
+        if not obj.resume:
+            return "—"
+        url = reverse("resume-download", args=[obj.pk])
+        name = obj.resume.name.rsplit("/", 1)[-1]
+        return format_html('<a href="{}" download>{}</a>', url, name)

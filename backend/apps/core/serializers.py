@@ -35,6 +35,7 @@ class SiteSettingsSerializer(TranslatedSerializerMixin, serializers.ModelSeriali
             "space_app_android_url",
             "privacy_policy_url",
             "promo_video_url",
+            "promo_video",
             "promo_cover",
         )
 

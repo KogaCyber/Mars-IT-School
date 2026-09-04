@@ -87,3 +87,16 @@ if ADMIN_URL == "admin/" and SERVICE_HAS_ADMIN:  # noqa: F405
         "ADMIN_URL standart '/admin/' da qolgan — uni maxfiy manzilga o'zgartiring.",
         stacklevel=1,
     )
+
+# Rezyume fayllari doimiy diskda turishi kerak. Railway konteyner diski har
+# deploy'da tozalanadi — volume ko'rsatilmasa nomzodlarning hujjatlari
+# jimgina yo'qolib ketardi va buni hech kim sezmasdi.
+if str(PRIVATE_MEDIA_ROOT).startswith(str(BASE_DIR)):  # noqa: F405
+    import warnings
+
+    warnings.warn(
+        "PRIVATE_MEDIA_ROOT konteyner ichida (vaqtinchalik disk) — rezyumelar "
+        "har deploy'da yo'qoladi. Railway Volume'ga yo'naltiring, masalan "
+        "PRIVATE_MEDIA_ROOT=/data/private-media.",
+        stacklevel=1,
+    )

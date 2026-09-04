@@ -1,15 +1,18 @@
 """Umumiy kontent uchun faqat o'qish API'lari."""
 
+import functools
 import logging
 
+from django.core.exceptions import PermissionDenied
 from django.db import connections
 from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 
 from .cache import PublicCacheMixin, public_cache
 from .models import (
@@ -25,6 +28,7 @@ from .models import (
     SpaceFeature,
     Statistic,
 )
+from .revision import current_revision
 from .serializers import (
     AdvantageSerializer,
     ChildSkillSerializer,
@@ -40,6 +44,25 @@ from .serializers import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def staff_required(view):
+    """Faqat tizimga kirgan xodim uchun.
+
+    `django.contrib.admin.views.decorators.staff_member_required` login
+    sahifasiga yo'naltiradi — bu shaxsiy faylni so'ragan bot uchun "manzil
+    mavjud" degan ma'lumot beradi. Bu yerda esa kirmagan foydalanuvchi ham,
+    xodim bo'lmagan foydalanuvchi ham bir xil 403 oladi.
+    """
+
+    @functools.wraps(view)
+    def wrapper(request, *args, **kwargs):
+        user = getattr(request, "user", None)
+        if not (user and user.is_authenticated and user.is_active and user.is_staff):
+            raise PermissionDenied
+        return view(request, *args, **kwargs)
+
+    return wrapper
 
 
 class PublicReadOnlyViewSet(PublicCacheMixin, viewsets.ReadOnlyModelViewSet):
@@ -154,9 +177,40 @@ def home_bootstrap_view(request):
     )
 
 
+class RevisionThrottle(ScopedRateThrottle):
+    scope = "revision"
+
+
+class HealthThrottle(ScopedRateThrottle):
+    scope = "health"
+
+
+@extend_schema(responses=OpenApiTypes.OBJECT)
+@api_view(["GET"])
+@permission_classes([AllowAny])
+# Umumiy `anon` limiti (60/min) bu yerga to'g'ri kelmaydi: sayt manzilni har 5
+# soniyada so'raydi (12/min) va bitta NAT ortidagi bir necha tashrifchi umumiy
+# limitni to'ldirib qo'yardi. Shuning uchun alohida, kengroq limit — lekin
+# butunlay cheklovsiz emas: aks holda bu manzil DoS kuchaytirgichi bo'lardi.
+@throttle_classes([RevisionThrottle])
+def revision_view(request):
+    """Kontentning joriy versiyasi — sayt jonli yangilanishi uchun.
+
+    Sayt shu manzilni qisqa oraliqda so'rab turadi va raqam o'zgarishi bilan
+    kontentni qayta yuklaydi (`apps/core/revision.py` ga qarang). Javob hech
+    qayerda keshlanmasligi kerak — aks holda o'zgarish sezilmay qolardi.
+    """
+    response = Response({"revision": current_revision()})
+    response["Cache-Control"] = "no-store"
+    return response
+
+
 @extend_schema(responses={200: None, 503: None})
 @api_view(["GET"])
 @permission_classes([AllowAny])
+# Alohida limit: Railway healthcheck va monitoring umumiy `anon` hisobini
+# to'ldirib, haqiqiy tashrifchilarni siqib chiqarmasligi kerak.
+@throttle_classes([HealthThrottle])
 def health_view(request):
     """Railway healthcheck uchun: MongoDB bilan aloqani ham tekshiradi.
 

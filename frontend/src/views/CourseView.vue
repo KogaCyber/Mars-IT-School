@@ -7,10 +7,11 @@ import { fetchCourse } from '@/api/courses'
 import BaseEmptyState from '@/components/base/BaseEmptyState.vue'
 import BaseSpinner from '@/components/base/BaseSpinner.vue'
 import TeacherCard from '@/components/cards/TeacherCard.vue'
+import FaqSection from '@/components/home/FaqSection.vue'
 import LeadForm from '@/components/forms/LeadForm.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
 import { useSeo } from '@/composables/useSeo'
-import { absoluteUrl, courseSchema } from '@/utils/schema'
+import { absoluteUrl, courseSchema, faqSchema } from '@/utils/schema'
 import { formatPrice } from '@/utils/format'
 
 const { t } = useI18n()
@@ -37,8 +38,12 @@ useSeo(() => ({
     { name: t('courses.coursesTitle'), path: '/kursy' },
     ...(course.value ? [{ name: course.value.title, path: `/kursy/${course.value.slug}` }] : []),
   ],
+  // Kurs kartasi + sahifadagi savol-javoblar — ikkalasi ham rich result beradi.
   schema: course.value
-    ? courseSchema(course.value, absoluteUrl(`/kursy/${course.value.slug}`))
+    ? [
+        courseSchema(course.value, absoluteUrl(`/kursy/${course.value.slug}`)),
+        ...(course.value.faqs?.length ? [faqSchema(course.value.faqs)] : []),
+      ]
     : null,
 }))
 </script>
@@ -119,7 +124,9 @@ useSeo(() => ({
           </p>
 
           <template v-if="course.features.length">
-            <h2 class="title-block mt-[6%] font-wide font-bold text-white">{{ t('pages.courseFeatures') }}</h2>
+            <h2 class="title-block mt-[6%] font-wide font-bold text-white">
+              {{ t('pages.courseFeatures') }}
+            </h2>
             <ul class="mt-6 grid gap-4 md:grid-cols-2">
               <li
                 v-for="feature in course.features"
@@ -197,5 +204,8 @@ useSeo(() => ({
         </div>
       </div>
     </section>
+
+    <!-- «Частые вопросы» — admin panelda kursning o'z ichida tahrirlanadi -->
+    <FaqSection v-if="course.faqs?.length" :items="course.faqs" />
   </template>
 </template>

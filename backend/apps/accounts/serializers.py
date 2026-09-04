@@ -13,6 +13,7 @@ from rest_framework_simplejwt.serializers import (
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from .authentication import EPOCH_CLAIM, token_epoch_is_current
 from .tokens import is_revoked, revoke
 from .validators import normalize_phone, validate_uz_phone
 
@@ -84,6 +85,9 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token["role"] = user.role
+        # Parol o'zgarganda barcha eski tokenlarni bekor qilish uchun
+        # (apps/accounts/authentication.py).
+        token[EPOCH_CLAIM] = user.session_epoch
         return token
 
     def validate(self, attrs: dict) -> dict:
@@ -106,9 +110,16 @@ class PasswordChangeSerializer(serializers.Serializer):
         return value
 
     def save(self, **kwargs) -> User:
+        """Parolni yangilaydi VA barcha eski sessiyalarni yopadi.
+
+        Parol almashtirish ko'pincha "hisobimga birov kirdi" degani. Eski
+        tokenlar yashab qolsa, buzg'unchi refresh token bilan yana bir hafta
+        kirib turardi — ya'ni amal hech narsani hal qilmasdi.
+        """
         user = self.context["request"].user
         user.set_password(self.validated_data["new_password"])
         user.save(update_fields=["password"])
+        user.revoke_all_tokens()
         return user
 
 
@@ -124,6 +135,13 @@ class TokenRefreshSerializer(BaseTokenRefreshSerializer):
 
         if is_revoked(refresh):
             raise InvalidToken("Token bekor qilingan. Qaytadan kiring.")
+
+        # Parol o'zgargan bo'lsa `session_epoch` oshgan va bu token — eski davrdan.
+        user = User.objects.filter(pk=refresh.payload.get("user_id")).first()
+        if user is None or not user.is_active:
+            raise InvalidToken("Hisob mavjud emas yoki bloklangan.")
+        if not token_epoch_is_current(refresh.payload, user):
+            raise InvalidToken("Sessiya yakunlangan. Qaytadan kiring.")
 
         data = {"access": str(refresh.access_token)}
 

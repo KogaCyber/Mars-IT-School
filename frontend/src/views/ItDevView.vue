@@ -3,11 +3,13 @@
  * «Курсы / IT-разработка» sahifasi.
  *
  * Kontent maketda qat'iy belgilangan (rasm ham loyiha ichida), shuning uchun
- * admin paneldan emas, `data/itDev.js` dan olinadi — `ItKidsView.vue` bilan
+ * FAQ blokidan tashqari admin paneldan emas, `data/itDev.js` dan olinadi — `ItKidsView.vue` bilan
  * bir xil yondashuv.
  */
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { fetchCourse } from '@/api/courses'
 import itDevHero from '@/assets/images/It_dasturlash.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import CourseAboutSection from '@/components/courses/CourseAboutSection.vue'
@@ -17,6 +19,7 @@ import CourseHero from '@/components/courses/CourseHero.vue'
 import CourseStagesSection from '@/components/courses/CourseStagesSection.vue'
 import TrialLessonSection from '@/components/courses/TrialLessonSection.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
+import { useAsyncData } from '@/composables/useAsyncData'
 import { useSeo } from '@/composables/useSeo'
 import { absoluteUrl, courseSchema, faqSchema } from '@/utils/schema'
 import {
@@ -28,6 +31,7 @@ import {
   IT_DEV_TOOLS,
   IT_DEV_TOPICS,
 } from '@/data/itDev'
+import { courseApiSlug } from '@/data/courseAliases'
 import { useLocalized } from '@/i18n/localize'
 
 const { t } = useI18n()
@@ -38,7 +42,12 @@ const topics = useLocalized(IT_DEV_TOPICS)
 const stages = useLocalized(IT_DEV_STAGES)
 const stagesSummary = useLocalized(IT_DEV_STAGES_SUMMARY)
 const gallery = useLocalized(IT_DEV_GALLERY)
-const faq = useLocalized(IT_DEV_FAQ)
+// FAQ bloki admin paneldan boshqariladi: Kurslar → shu kurs → sahifa
+// pastidagi «Savol-javoblar». Yozuv qo'shilmagan bo'lsa, maketdagi
+// standart ro'yxat ko'rinadi — blok hech qachon bo'sh qolmaydi.
+const staticFaq = useLocalized(IT_DEV_FAQ)
+const { data: course } = useAsyncData(() => fetchCourse(courseApiSlug('it-razrabotka')), null)
+const faq = computed(() => (course.value?.faqs?.length ? course.value.faqs : staticFaq.value))
 
 // Sarlavha va tavsif `data/seoConfig.js` dan joriy tilda olinadi.
 useSeo(() => ({

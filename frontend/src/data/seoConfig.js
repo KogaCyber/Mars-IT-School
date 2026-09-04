@@ -16,6 +16,31 @@
 /** Uch tilli qiymat. */
 const L = (uz, ru, en) => ({ uz, ru, en })
 
+/**
+ * Sahifaning MA'LUM BIR TILDAGI manzili.
+ *
+ * Nega kerak: ilgari `hreflang="uz"`, `hreflang="ru"` va `hreflang="en"`
+ * uchalasi BIR XIL manzilga ishora qilardi. Bu hreflang qoidasini buzadi —
+ * har bir til alohida URL'da bo'lishi shart, aks holda Google belgini
+ * butunlay e'tiborsiz qoldiradi va saytdan faqat bitta til indekslanadi.
+ *
+ * Til foydalanuvchi tomonida almashadi, shuning uchun eng kam qarshilikli
+ * to'g'ri yechim — `?lang=` parametri. Asosiy til (uz) parametrsiz qoladi,
+ * shunda mavjud havolalar va ulashilgan manzillar o'zgarmaydi.
+ */
+export function localeUrl(origin, path, locale) {
+  const base = `${origin}${path === '/' ? '/' : path.replace(/\/$/, '')}`
+  return locale === SITE.defaultLocale ? base : `${base}?lang=${locale}`
+}
+
+/** Sahifaning barcha til variantlari — `hreflang` va sitemap uchun. */
+export function localeAlternates(origin, path) {
+  return [
+    ...SITE.locales.map((code) => ({ hreflang: code, href: localeUrl(origin, path, code) })),
+    { hreflang: 'x-default', href: localeUrl(origin, path, SITE.defaultLocale) },
+  ]
+}
+
 export const SITE = {
   name: 'MARS IT School',
   legalName: 'MARS IT School',

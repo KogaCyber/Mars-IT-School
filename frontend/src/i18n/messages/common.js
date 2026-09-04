@@ -23,6 +23,8 @@ export default {
     lessons: 'dars',
     required: 'Majburiy maydon',
     scrollTop: 'Tepaga',
+    videoPlayer: 'Video pleyer',
+    playVideo: 'Videoni ko‘rish',
   },
   ru: {
     more: 'Подробнее',
@@ -47,6 +49,8 @@ export default {
     lessons: 'уроков',
     required: 'Обязательное поле',
     scrollTop: 'Наверх',
+    videoPlayer: 'Видеоплеер',
+    playVideo: 'Смотреть видео',
   },
   en: {
     more: 'Learn more',
@@ -71,5 +75,7 @@ export default {
     lessons: 'lessons',
     required: 'Required field',
     scrollTop: 'Back to top',
+    videoPlayer: 'Video player',
+    playVideo: 'Watch the video',
   },
 }

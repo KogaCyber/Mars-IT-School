@@ -9,14 +9,14 @@ export default {
     heroTextSecond: 'Birinchi qadamlardan ishonchli dasturchi darajasigacha.',
 
     newsEyebrow: 'Yangiliklar va tadbirlar',
-    newsTitle: 'Maktabda nimalar<br />bo‘lyapti',
+    newsTitle: 'Maktabda nimalar\nbo‘lyapti',
     newsAll: 'Barcha yangiliklar',
 
     teamEyebrow: 'Jamoa',
-    teamTitle: 'IT sohasida ishlaydigan<br />o‘qituvchilar',
+    teamTitle: 'IT sohasida ishlaydigan\no‘qituvchilar',
 
     advantagesEyebrow: 'Nega biz',
-    advantagesTitle: 'Nega MARS IT School<br />ni tanlashadi',
+    advantagesTitle: 'Nega MARS IT School\nni tanlashadi',
     advantagesText:
       'Biz bolaga o‘rganish, rivojlanish va bilimini amalda qo‘llash qiziqarli bo‘ladigan muhit yaratamiz.',
 
@@ -30,7 +30,7 @@ export default {
     faqTitle: 'Ko‘p beriladigan savollar',
 
     spaceEyebrow: 'Platforma',
-    spaceTitle: 'o‘quvchilar<br />va ota-onalar uchun',
+    spaceTitle: 'o‘quvchilar\nva ota-onalar uchun',
     spaceText:
       'SPACE o‘qish bilan bog‘liq hamma narsani bitta joyga jamlaydi va maktab, o‘quvchilar hamda ota-onalar o‘rtasidagi muloqotni maksimal darajada qulay qiladi.',
   },
@@ -43,14 +43,14 @@ export default {
     heroTextSecond: 'От первых шагов до уверенного уровня разработки.',
 
     newsEyebrow: 'Новости и мероприятия',
-    newsTitle: 'Что происходит<br />в школе',
+    newsTitle: 'Что происходит\nв школе',
     newsAll: 'Все новости',
 
     teamEyebrow: 'Команда',
-    teamTitle: 'Преподаватели,<br />которые работают в IT',
+    teamTitle: 'Преподаватели,\nкоторые работают в IT',
 
     advantagesEyebrow: 'Почему мы',
-    advantagesTitle: 'Почему выбирают<br />MARS IT School',
+    advantagesTitle: 'Почему выбирают\nMARS IT School',
     advantagesText:
       'Мы создаём среду, в которой ребёнку интересно учиться, развиваться и применять знания на практике.',
 
@@ -64,7 +64,7 @@ export default {
     faqTitle: 'Частые вопросы',
 
     spaceEyebrow: 'Платформа',
-    spaceTitle: 'для учеников<br />и родителей',
+    spaceTitle: 'для учеников\nи родителей',
     spaceText:
       'SPACE объединяет всё, что связано с обучением, в одном месте и делает взаимодействие между школой, учениками и родителями максимально удобным.',
   },
@@ -77,14 +77,14 @@ export default {
     heroTextSecond: 'From the very first steps to a confident developer level.',
 
     newsEyebrow: 'News and events',
-    newsTitle: 'What is happening<br />at the school',
+    newsTitle: 'What is happening\nat the school',
     newsAll: 'All news',
 
     teamEyebrow: 'Team',
-    teamTitle: 'Teachers who work<br />in the IT industry',
+    teamTitle: 'Teachers who work\nin the IT industry',
 
     advantagesEyebrow: 'Why us',
-    advantagesTitle: 'Why families choose<br />MARS IT School',
+    advantagesTitle: 'Why families choose\nMARS IT School',
     advantagesText:
       'We build an environment where children enjoy learning, growing and putting their knowledge into practice.',
 
@@ -98,7 +98,7 @@ export default {
     faqTitle: 'Frequently asked questions',
 
     spaceEyebrow: 'Platform',
-    spaceTitle: 'for students<br />and parents',
+    spaceTitle: 'for students\nand parents',
     spaceText:
       'SPACE brings everything related to learning into one place and makes communication between the school, students and parents as convenient as possible.',
   },

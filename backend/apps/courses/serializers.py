@@ -3,7 +3,7 @@ from rest_framework import serializers
 from apps.core.drf import TranslatedSerializerMixin
 from apps.teachers.serializers import TeacherListSerializer
 
-from .models import Course, CourseFeature, CourseStage, Direction
+from .models import Course, CourseFaq, CourseFeature, CourseStage, Direction
 
 
 class DirectionSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
@@ -28,6 +28,14 @@ class CourseStageSerializer(TranslatedSerializerMixin, serializers.ModelSerializ
     class Meta:
         model = CourseStage
         fields = ("id", "number", "image", "duration_months", "order")
+
+
+class CourseFaqSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
+    translated_fields = ("question", "answer")
+
+    class Meta:
+        model = CourseFaq
+        fields = ("id", "order")
 
 
 class CourseListSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
@@ -58,6 +66,7 @@ class CourseDetailSerializer(CourseListSerializer):
     teachers = TeacherListSerializer(many=True, read_only=True)
     features = CourseFeatureSerializer(many=True, read_only=True)
     stages = CourseStageSerializer(many=True, read_only=True)
+    faqs = CourseFaqSerializer(many=True, read_only=True)
 
     class Meta(CourseListSerializer.Meta):
         fields = CourseListSerializer.Meta.fields + (
@@ -66,4 +75,5 @@ class CourseDetailSerializer(CourseListSerializer):
             "teachers",
             "features",
             "stages",
+            "faqs",
         )

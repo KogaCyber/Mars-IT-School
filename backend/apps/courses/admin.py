@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from apps.core.translation import translation_fieldset
 
-from .models import Course, CourseFeature, CourseStage, Direction
+from .models import Course, CourseFaq, CourseFeature, CourseStage, Direction
 
 
 class CourseFeatureInline(admin.StackedInline):
@@ -15,6 +15,17 @@ class CourseStageInline(admin.StackedInline):
     model = CourseStage
     extra = 0
     fields = ("order", "number", "title_ru", "description_ru", "duration_months", "image")
+
+
+class CourseFaqInline(admin.StackedInline):
+    """Kurs sahifasining pastidagi savol-javoblar — shu kursning o'z ichida."""
+
+    model = CourseFaq
+    extra = 0
+    fields = ("order", "question_ru", "answer_ru", "question_uz", "answer_uz",
+              "question_en", "answer_en")
+    verbose_name = "Savol-javob"
+    verbose_name_plural = "Savol-javoblar (sahifaning pastida)"
 
 
 @admin.register(Direction)
@@ -35,7 +46,7 @@ class CourseAdmin(admin.ModelAdmin):
     list_editable = ("is_featured", "is_published")
     search_fields = ("title_ru", "subtitle_ru")
     filter_horizontal = ("teachers",)
-    inlines = [CourseFeatureInline, CourseStageInline]
+    inlines = [CourseFeatureInline, CourseStageInline, CourseFaqInline]
     fieldsets = (
         (None, {"fields": ("title_ru", "slug", "direction", "subtitle_ru", "description_ru")}),
         ("Ko'rinish", {"fields": ("card_image", "hero_image", "accent_color")}),

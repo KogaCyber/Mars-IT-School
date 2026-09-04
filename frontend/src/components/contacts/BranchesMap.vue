@@ -111,8 +111,16 @@ watch(
 </template>
 
 <style>
-/* Leaflet konteyneri — sayt foni va shrifti bilan uyg'un */
+/* Leaflet konteyneri — sayt foni va shrifti bilan uyg'un.
+
+   MUHIM: Leaflet o'z qatlamlariga `z-index: 400…700` beradi. Konteyner o'zi
+   alohida "stacking context" yaratmasa, bu qatlamlar modal oynalardan
+   (filial paneli — z-65, lightbox — z-70) ustun chiqib, ularning ustiga
+   chizilardi. `isolation` va `z-index: 0` xaritani o'z ichida ushlab turadi. */
 .branches-map {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
   background: #0d0d0d;
   font-family: inherit;
 }

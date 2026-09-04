@@ -3,8 +3,8 @@
  * «Новость» sahifasi — Figma: tepada yo'l, chapda yopishib qoladigan ustun
  * (sana va «Поделиться»), o'ngda sarlavha, muqova va matn.
  *
- * Pastda «Фотоотчет» — cheksiz aylanuvchi surat lentasi; suratdagi «+» tugmasi
- * umumiy ko'ruvchida (`BaseLightbox`) to'liq ekranda ochadi.
+ * Pastda «Фотоотчет» — cheksiz aylanuvchi surat lentasi; kartochkaga bosilsa
+ * surat umumiy ko'ruvchida (`BaseLightbox`) to'liq ekranda ochiladi.
  */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -118,12 +118,17 @@ async function share() {
       <div
         class="mt-[var(--spacing-block)] grid gap-[var(--spacing-block)] lg:grid-cols-[minmax(12rem,15rem)_minmax(0,1fr)] lg:gap-[6%]"
       >
-        <!-- Chap ustun: sana va ulashish (katta ekranda yopishib qoladi) -->
-        <aside class="flex flex-wrap gap-3 lg:sticky lg:top-28 lg:flex-col lg:self-start">
+        <!-- Chap ustun: sana va ulashish (katta ekranda yopishib qoladi).
+             Telefonda ikkita kapsula yonma-yon turadi; kichik ekranda hech
+             narsa chetdan chiqib ketmaydi. -->
+        <aside
+          data-no-reveal
+          class="stagger grid grid-cols-2 gap-2 sm:gap-3 lg:sticky lg:top-28 lg:grid-cols-1 lg:self-start"
+        >
           <p
-            class="bg-surface rounded-pill text-small flex items-center justify-between gap-3 px-[1.4em] py-[0.95em] font-medium text-white"
+            class="bg-surface rounded-pill text-small flex min-w-0 items-center justify-between gap-2 px-[1.2em] py-[0.9em] font-medium text-white sm:gap-3 sm:px-[1.4em] sm:py-[0.95em]"
           >
-            <span>{{ formatDate(news.published_at) }}</span>
+            <span class="truncate">{{ formatDate(news.published_at) }}</span>
             <svg
               class="text-brand size-[1.15em] shrink-0"
               viewBox="0 0 20 20"
@@ -150,10 +155,10 @@ async function share() {
 
           <button
             type="button"
-            class="bg-surface hover:bg-surface-2 rounded-pill text-small flex items-center justify-between gap-3 px-[1.4em] py-[0.95em] font-medium text-white transition"
+            class="bg-surface hover:bg-surface-2 rounded-pill text-small flex min-w-0 items-center justify-between gap-2 px-[1.2em] py-[0.9em] font-medium text-white transition sm:gap-3 sm:px-[1.4em] sm:py-[0.95em]"
             @click="share"
           >
-            <span>{{ t('news.share') }}</span>
+            <span class="truncate">{{ t('news.share') }}</span>
             <svg
               class="text-brand size-[1.15em] shrink-0"
               viewBox="0 0 20 20"
@@ -171,35 +176,13 @@ async function share() {
               />
             </svg>
           </button>
-
-          <!-- Qo'shimcha ma'lumot: turkum, o'qish vaqti, ko'rishlar -->
-          <dl
-            class="rounded-block bg-surface text-small flex w-full flex-col gap-3 px-[1.4em] py-[1.2em] lg:w-auto"
-          >
-            <div v-if="news.category" class="flex items-center justify-between gap-4">
-              <dt class="text-white/45">{{ t('news.category') }}</dt>
-              <dd class="text-right font-medium text-white">{{ news.category.title }}</dd>
-            </div>
-            <div v-if="news.reading_minutes" class="flex items-center justify-between gap-4">
-              <dt class="text-white/45">{{ t('news.reading') }}</dt>
-              <dd class="font-medium text-white">
-                {{ news.reading_minutes }} {{ t('news.readingMinutes') }}
-              </dd>
-            </div>
-            <div class="flex items-center justify-between gap-4">
-              <dt class="text-white/45">{{ t('news.views') }}</dt>
-              <dd class="font-medium text-white">{{ news.views_count }}</dd>
-            </div>
-            <div v-if="galleryImages.length" class="flex items-center justify-between gap-4">
-              <dt class="text-white/45">{{ t('news.photos') }}</dt>
-              <dd class="font-medium text-white">{{ galleryImages.length }}</dd>
-            </div>
-          </dl>
         </aside>
 
         <!-- O'ng ustun: sarlavha, muqova va matn -->
-        <div class="max-w-[52rem]">
-          <h1 v-reveal class="title-hero font-wide font-bold text-white">{{ news.title }}</h1>
+        <div class="min-w-0 max-w-[52rem]">
+          <h1 v-reveal class="title-hero font-wide font-bold break-words text-white">
+            {{ news.title }}
+          </h1>
 
           <p
             v-if="lead"
@@ -216,7 +199,7 @@ async function share() {
             :src="news.cover"
             :alt="news.title"
             fetchpriority="high"
-            class="rounded-block mt-[var(--spacing-block)] aspect-[16/10] w-full cursor-zoom-in object-cover"
+            class="rounded-block mt-[var(--spacing-block)] aspect-[4/3] w-full cursor-zoom-in object-cover transition duration-500 hover:brightness-110 sm:aspect-[16/10]"
             @click="openLightbox([{ src: news.cover, alt: news.title }])"
           />
 
@@ -224,47 +207,43 @@ async function share() {
             v-reveal
             class="text-lead mt-[var(--spacing-block)] flex flex-col gap-[1.4em] leading-relaxed text-white/75"
           >
-            <p v-for="(paragraph, index) in paragraphs" :key="index" class="whitespace-pre-line">
+            <p
+              v-for="(paragraph, index) in paragraphs"
+              :key="index"
+              class="break-words whitespace-pre-line"
+            >
               {{ paragraph }}
             </p>
           </div>
 
           <!-- Fotoreportaj: uzluksiz aylanuvchi lenta -->
-          <section v-if="galleryImages.length" class="mt-[var(--spacing-section)]">
+          <section v-if="galleryImages.length" class="mt-[var(--spacing-section)] min-w-0">
             <h2 class="title-block font-wide font-bold text-white">{{ t('news.galleryTitle') }}</h2>
 
             <InfiniteCarousel class="mt-[var(--spacing-gutter)]" :speed="34">
-              <figure
+              <!-- Butun kartochka bosiladi — alohida «+» tugmasi kerak emas -->
+              <button
                 v-for="(image, index) in galleryImages"
                 :key="image.src"
-                class="rounded-block group relative size-[min(72vw,16.5rem)] shrink-0 cursor-zoom-in overflow-hidden"
+                type="button"
+                class="rounded-block group relative size-[min(72vw,16.5rem)] shrink-0 cursor-zoom-in overflow-hidden transition duration-300 hover:-translate-y-1"
+                :aria-label="
+                  image.alt ? t('news.openPhotoNamed', { alt: image.alt }) : t('news.openPhoto')
+                "
                 @click="openLightbox(galleryImages, index)"
               >
                 <img
                   :src="image.src"
                   :alt="image.alt"
                   loading="lazy"
-                  class="size-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                  class="size-full object-cover transition duration-500 group-hover:scale-[1.06]"
                 />
 
-                <button
-                  type="button"
-                  class="bg-brand hover:bg-brand-hover absolute right-[10%] bottom-[10%] grid size-[2.75rem] place-items-center rounded-full text-white transition duration-300 hover:scale-110 focus-visible:scale-110 lg:size-[3.25rem]"
-                  :aria-label="
-                    image.alt ? t('news.openPhotoNamed', { alt: image.alt }) : t('news.openPhoto')
-                  "
-                  @click.stop="openLightbox(galleryImages, index)"
-                >
-                  <svg class="size-[45%]" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                    <path
-                      d="M10 4v12M4 10h12"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </button>
-              </figure>
+                <span
+                  class="absolute inset-0 bg-black/0 transition duration-300 group-hover:bg-black/25"
+                  aria-hidden="true"
+                />
+              </button>
             </InfiniteCarousel>
           </section>
         </div>

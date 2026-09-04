@@ -3,6 +3,7 @@
 import logging
 
 from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
@@ -24,6 +25,18 @@ def api_exception_handler(exc, context) -> Response | None:
             return Response({"detail": "Topilmadi."}, status=status.HTTP_404_NOT_FOUND)
         if isinstance(exc, PermissionDenied):
             return Response({"detail": "Ruxsat yo'q."}, status=status.HTTP_403_FORBIDDEN)
+        if isinstance(exc, DjangoValidationError):
+            # MongoDB backend'ida noto'g'ri ObjectId (masalan `/quiz-results/abc/`
+            # yoki javoblardagi soxta savol kaliti) DRF bilmaydigan Django
+            # `ValidationError` ko'taradi. Uni ushlamasak — foydalanuvchining
+            # oddiy xatosi 500 bo'lib chiqardi va logni to'ldirardi.
+            return Response(
+                {
+                    "detail": "Ma'lumotlar noto'g'ri.",
+                    "errors": {"detail": list(exc.messages)},
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         logger.exception("Kutilmagan xatolik: %s", exc, exc_info=exc)
         return Response(

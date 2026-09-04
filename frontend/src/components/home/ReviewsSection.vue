@@ -1,9 +1,15 @@
 <script setup>
-/** «Что говорят родители наших учеников» — video kartochkalar karuseli. */
+/**
+ * «Что говорят родители наших учеников» — video kartochkalar karuseli.
+ *
+ * Video havolasi bosilganda foydalanuvchi YouTube'ga o'tib ketmaydi —
+ * rolik shu sahifadagi modal oyna ichida o'ynaydi.
+ */
 import { useI18n } from 'vue-i18n'
 
 import reviewsBubble from '@/assets/images/reviews-bubble.webp'
 import InfiniteCarousel from '@/components/base/InfiniteCarousel.vue'
+import { isPlayable, openVideo } from '@/composables/useVideoModal'
 
 const { t } = useI18n()
 
@@ -53,22 +59,26 @@ defineProps({
           class="aspect-[9/16] w-full object-cover transition duration-500 group-hover:scale-105"
         />
 
-        <a
-          v-if="item.video_url"
-          :href="item.video_url"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="absolute inset-0 grid place-items-center"
+        <button
+          v-if="isPlayable(item.video_url)"
+          type="button"
+          class="absolute inset-0 grid place-items-center transition duration-300 hover:bg-black/25"
           :aria-label="t('home.reviewVideo', { name: item.full_name })"
+          @click="openVideo(item.video_url, item.full_name)"
         >
           <span
-            class="bg-brand grid size-[3.5rem] place-items-center rounded-full text-white transition group-hover:scale-110"
+            class="bg-brand grid size-[3.5rem] place-items-center rounded-full text-white shadow-lg transition duration-300 group-hover:scale-110"
           >
-            <svg class="size-[45%]" viewBox="0 0 12 14" fill="currentColor" aria-hidden="true">
+            <svg
+              class="size-[45%] translate-x-[8%]"
+              viewBox="0 0 12 14"
+              fill="currentColor"
+              aria-hidden="true"
+            >
               <path d="M0 0l12 7-12 7z" />
             </svg>
           </span>
-        </a>
+        </button>
 
         <figcaption class="p-[1.1rem]">
           <p class="font-wide font-bold text-white">{{ item.full_name }}</p>

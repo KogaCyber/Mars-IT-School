@@ -1,0 +1,84 @@
+# Har bir push va pull request'da ikkala qismning testlari yuriladi.
+#
+# Nega kerak: ilgari testlar `.env` dagi production Atlas klasteriga ulanardi va
+# 30 ta test 10 daqiqadan ko'proq davom etardi — shuning uchun ularni hech kim
+# muntazam yurgizmasdi. Endi baza konteynerda, to'plam bir necha soniyada
+# tugaydi va buzilgan kod main'ga tusha olmaydi.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    services:
+      mongo:
+        image: mongo:7
+        ports: ['27017:27017']
+        options: >-
+          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+
+      - name: Paketlarni o'rnatish
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Ruff (lint)
+        run: ruff check .
+
+      - name: Sozlamalar tekshiruvi
+        run: python manage.py check
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.test
+
+      - name: Testlar
+        run: pytest -q
+        env:
+          # `config/settings/test.py` baribir lokal manzilni majburlaydi —
+          # bu yerda faqat aniqlik uchun takrorlanadi.
+          TEST_MONGODB_URI: mongodb://localhost:27017
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Testlar
+        run: npm test
+
+      - name: Build
+        run: npm run build

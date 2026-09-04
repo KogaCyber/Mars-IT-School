@@ -24,6 +24,11 @@ export default defineConfig(({ mode }) => {
         '/media': { target: proxyTarget, changeOrigin: true },
       },
     },
+    // Testlar `@` aliasini va shu konfiguratsiyani ishlatadi (vitest).
+    test: {
+      environment: 'node',
+      include: ['tests/**/*.test.js'],
+    },
     build: {
       target: 'es2022',
       sourcemap: false,

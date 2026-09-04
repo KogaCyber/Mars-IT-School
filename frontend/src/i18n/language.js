@@ -10,7 +10,29 @@ export const SUPPORTED_LANGUAGES = ['uz', 'ru', 'en']
 /** Saytning asosiy tili — o'zbekcha. */
 export const DEFAULT_LANGUAGE = 'uz'
 
+/**
+ * Manzildagi `?lang=` parametri.
+ *
+ * `hreflang` belgilarida har bir til alohida URL bilan e'lon qilinadi
+ * (`seoConfig.js:localeUrl`). Bu manzillar haqiqatda ishlashi shart: qidiruv
+ * roboti yoki ulashilgan havola orqali kelgan odam darhol o'sha tildagi
+ * saytni ko'rishi kerak, aks holda hreflang yolg'on bo'lib qolardi.
+ */
+export function languageFromUrl() {
+  if (typeof window === 'undefined') return null
+  try {
+    const value = new URLSearchParams(window.location.search).get('lang')
+    return SUPPORTED_LANGUAGES.includes(value) ? value : null
+  } catch {
+    return null
+  }
+}
+
 export function getLanguage() {
+  // Manzildagi til saqlangan tanlovdan ustun — havola aynan shu tilni va'da qilgan.
+  const fromUrl = languageFromUrl()
+  if (fromUrl) return fromUrl
+
   try {
     const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY)
     if (SUPPORTED_LANGUAGES.includes(stored)) return stored

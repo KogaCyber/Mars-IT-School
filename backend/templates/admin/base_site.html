@@ -1,0 +1,146 @@
+{% extends "admin/base.html" %}
+{# Standart base_site.html ustiga: bo'lim izohlari uchun uslublar qo'shiladi. #}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></div>
+{% if user.is_anonymous %}
+  {% comment %}Kirish sahifasida ham tilni tanlash mumkin.{% endcomment %}
+  {% include "admin/mars_language_switch.html" %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{# Til almashtirgichi sarlavhaning o'ng tomonida, «Saytni ko'rish» dan oldin. #}
+{% block userlinks %}
+  {% include "admin/mars_language_switch.html" %}
+  {% if mars_admin_languages %} / {% endif %}
+  {{ block.super }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<style>
+  /* Til almashtirgichi — sarlavhadagi «RU | UZ» tugmalari */
+  .mars-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0 0.25em 0 0;
+    padding: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    vertical-align: middle;
+  }
+
+  .mars-lang button {
+    padding: 0.15em 0.7em;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+  }
+
+  .mars-lang button:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .mars-lang button.is-current {
+    background: var(--primary);
+    color: var(--header-link-color, #fff);
+    cursor: default;
+  }
+
+  /* Sahifa guruhi sarlavhasi yonidagi sayt manzili (masalan «/o-nas») */
+  .mars-page-url {
+    margin-left: 0.6em;
+    font-weight: 400;
+    font-size: 0.8em;
+    opacity: 0.75;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  /* Guruh ostidagi qisqa izoh */
+  td.mars-page-hint {
+    padding: 0.7em 1.2em 0.2em;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--body-quiet-color);
+    border-bottom: none;
+  }
+
+  /* Bo'lim nomi ostidagi tushuntirishlar */
+  .mars-section-where,
+  .mars-section-what {
+    display: block;
+    font-weight: 400;
+    line-height: 1.45;
+    white-space: normal;
+  }
+
+  .mars-section-where {
+    margin-top: 0.25em;
+    font-size: 0.82rem;
+    color: var(--body-quiet-color);
+  }
+
+  .mars-section-what {
+    margin-top: 0.15em;
+    font-size: 0.78rem;
+    opacity: 0.75;
+  }
+
+  /* Bo'lim qatorlari balandroq bo'ladi — izohlar sig'ishi uchun */
+  #content-main .module th[scope='row'] {
+    padding-top: 0.75em;
+    padding-bottom: 0.75em;
+    vertical-align: top;
+  }
+
+  /* Bo'lim (ro'yxat/tahrirlash) sahifasi tepasidagi eslatma */
+  .mars-help {
+    margin: 0 0 1.1rem;
+    padding: 0.85rem 1.1rem;
+    border-left: 4px solid var(--primary);
+    border-radius: 6px;
+    background: var(--darkened-bg);
+  }
+
+  .mars-help p {
+    margin: 0;
+  }
+
+  .mars-help-where {
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .mars-help-page {
+    display: inline-block;
+    margin-left: 0.5em;
+    font-weight: 400;
+    font-size: 0.82em;
+    opacity: 0.7;
+  }
+
+  .mars-help-what {
+    margin-top: 0.3rem !important;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--body-quiet-color);
+  }
+
+  /* Chap menyuda izohlar chiqmaydi — u yerda faqat nomlar qoladi */
+  #nav-sidebar .mars-section-where,
+  #nav-sidebar .mars-section-what,
+  #nav-sidebar .mars-page-url {
+    display: none;
+  }
+</style>
+{% endblock %}

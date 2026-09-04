@@ -1,8 +1,10 @@
 """Autentifikatsiya API'lari."""
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import generics, serializers, status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import ScopedRateThrottle
@@ -32,12 +34,23 @@ class LoginView(TokenObtainPairView):
 
 
 class RegisterView(generics.CreateAPIView):
+    """Ro'yxatdan o'tish.
+
+    Saytda ro'yxatdan o'tish sahifasi yo'q, shuning uchun bu manzil standart
+    bo'yicha YOPIQ (`PUBLIC_REGISTRATION_ENABLED = False`). Ochiq qolsa u
+    faqat spam hisob yaratish uchun ishlatilardi. O'quvchi kabineti
+    qo'shilganda sozlama yoqiladi.
+    """
+
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
     throttle_classes = [ScopedRateThrottle]
     throttle_scope = "auth"
 
     def create(self, request, *args, **kwargs):
+        if not settings.PUBLIC_REGISTRATION_ENABLED:
+            raise PermissionDenied("Ro'yxatdan o'tish hozircha yopiq.")
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -57,9 +70,17 @@ class LogoutSerializer(serializers.Serializer):
 
 
 class LogoutView(APIView):
-    """Refresh tokenni blacklist'ga qo'shadi."""
+    """Refresh tokenni bekor qilinganlar ro'yxatiga qo'shadi.
 
-    permission_classes = [IsAuthenticated]
+    `AllowAny` ataylab: access token muddati 15 daqiqa va u tugagach
+    foydalanuvchi chiqa olmay qolardi — ya'ni refresh token bekor qilinmasdan
+    brauzerda yotib qolardi. Bu yerda haqiqiy "kalit" — refresh tokenning
+    o'zi: uni bilgan odam baribir uning egasi.
+    """
+
+    permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "auth"
     serializer_class = LogoutSerializer
 
     @extend_schema(request=LogoutSerializer, responses={205: None})

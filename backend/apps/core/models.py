@@ -1,5 +1,6 @@
 """Sayt bo'ylab umumiy modellar: sozlamalar, afzalliklar, fikrlar, FAQ, SPACE bo'limi."""
 
+from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from slugify import slugify  # python-slugify: kirill matnini lotinga o'giradi
@@ -84,7 +85,18 @@ class SiteSettings(TranslatedModel):
     space_app_android_url = models.URLField(_("SPACE — Google Play"), blank=True)
     privacy_policy_url = models.URLField(_("Maxfiylik siyosati"), blank=True)
 
-    promo_video_url = models.URLField(_("tanishtiruv videosi"), blank=True)
+    promo_video_url = models.URLField(
+        _("tanishtiruv videosi — havola"),
+        blank=True,
+        help_text=_("YouTube yoki Vimeo havolasi. Fayl yuklansa, fayl ustun turadi."),
+    )
+    promo_video = models.FileField(
+        _("tanishtiruv videosi — fayl"),
+        upload_to="promo/",
+        blank=True,
+        validators=[FileExtensionValidator(["mp4", "webm", "ogv", "mov", "m4v"])],
+        help_text=_("Videoni to‘g‘ridan-to‘g‘ri yuklash (mp4, webm, mov)."),
+    )
     promo_cover = models.ImageField(_("video muqovasi"), upload_to="promo/", blank=True)
 
     class Meta:
@@ -103,7 +115,18 @@ class SiteSettings(TranslatedModel):
 
     @classmethod
     def load(cls) -> "SiteSettings":
-        return cls.objects.first() or cls.objects.create()
+        """Yagona sozlamalar yozuvini qaytaradi (bo'lmasa yaratadi).
+
+        `first() or create()` ikki worker bir vaqtda chaqirsa ikkita yozuv
+        yasashi mumkin edi (MongoDB'da tranzaksiya yo'q). `get_or_create`
+        ham to'liq kafolat bermaydi, shuning uchun `save()` dagi singleton
+        qo'rig'i ikkinchi yozuvni birinchisining ustiga qaytaradi.
+        """
+        instance = cls.objects.first()
+        if instance is not None:
+            return instance
+        instance, _created = cls.objects.get_or_create()
+        return instance
 
 
 class Advantage(TranslatedModel, PublishableModel):
@@ -346,3 +369,26 @@ class SchoolFeature(TranslatedModel, PublishableModel):
 
     def __str__(self) -> str:
         return self.title_ru
+
+
+class SiteRevision(models.Model):
+    """Kontent versiyasi — admin panelda biror narsa o'zgarsa o'sib boradi.
+
+    Sayt shu raqamni kuzatadi (`/api/v1/revision/`): raqam o'zgarishi bilan
+    ochiq turgan sahifa kontentni qayta yuklaydi. Shu tufayli admin paneldagi
+    tahrir foydalanuvchi sahifani yangilamasa ham ko'rinadi.
+
+    Qiymat — millisekundlardagi vaqt tamg'asi: u har doim o'sadi va bir nechta
+    gunicorn worker'i bir vaqtda yozsa ham qarama-qarshilik chiqmaydi. Yagona
+    hujjat barcha worker'lar uchun umumiy manba bo'lib xizmat qiladi.
+    """
+
+    value = models.BigIntegerField(_("versiya"), default=0, editable=False)
+    updated_at = models.DateTimeField(_("yangilangan vaqt"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("Kontent versiyasi")
+        verbose_name_plural = _("Kontent versiyasi")
+
+    def __str__(self) -> str:
+        return str(self.value)

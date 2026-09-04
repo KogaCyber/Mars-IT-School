@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.accounts.validators import validate_uz_phone
 from apps.core.models import PublishableModel, SluggedModel, TimeStampedModel
+from apps.core.storage import private_storage
 from apps.core.translation import TranslatedModel
 
 
@@ -89,7 +90,15 @@ class VacancyApplication(TimeStampedModel):
     phone = models.CharField(_("telefon"), max_length=13, validators=[validate_uz_phone])
     email = models.EmailField(_("email"), blank=True)
     cover_letter = models.TextField(_("xat"), max_length=2000, blank=True)
-    resume = models.FileField(_("rezyume"), upload_to="resumes/%Y/%m/", blank=True)
+    # Rezyume — SHAXSIY MA'LUMOT. `MEDIA_ROOT` dan tashqarida, ommaga
+    # ochilmaydigan papkada saqlanadi va faqat xodim `resume_download_view`
+    # orqali yuklab oladi (apps/core/storage.py ga qarang).
+    resume = models.FileField(
+        _("rezyume"),
+        upload_to="resumes/%Y/%m/",
+        blank=True,
+        storage=private_storage,
+    )
     resume_url = models.URLField(_("rezyume havolasi"), max_length=500, blank=True)
     status = models.CharField(
         _("holat"), max_length=16, choices=Status.choices, default=Status.NEW, db_index=True

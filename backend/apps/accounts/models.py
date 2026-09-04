@@ -31,6 +31,14 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         _("rol"), max_length=16, choices=Role.choices, default=Role.STUDENT, db_index=True
     )
 
+    # Chiqarilgan barcha tokenlarni bir zarbada bekor qilish uchun hisoblagich.
+    # Har bir JWT ichida shu qiymat `epoch` da'vosi sifatida yuriydi. Parol
+    # o'zgarganda (yoki hisob bloklanganda) raqam oshadi va eski tokenlarning
+    # da'vosi endi mos kelmaydi — ular darhol yaroqsiz bo'ladi.
+    # `RevokedRefreshToken` faqat bitta ma'lum tokenni bekor qila oladi;
+    # o'g'irlangan token esa bizga noma'lum, shuning uchun shu qiymat kerak.
+    session_epoch = models.PositiveIntegerField(_("sessiya davri"), default=0, editable=False)
+
     is_active = models.BooleanField(_("faol"), default=True)
     is_staff = models.BooleanField(_("xodim"), default=False)
     date_joined = models.DateTimeField(_("ro'yxatdan o'tgan sana"), default=timezone.now)
@@ -58,6 +66,11 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     def get_short_name(self) -> str:
         return self.first_name
+
+    def revoke_all_tokens(self) -> None:
+        """Shu foydalanuvchining barcha chiqarilgan JWT'larini yaroqsiz qiladi."""
+        User.objects.filter(pk=self.pk).update(session_epoch=models.F("session_epoch") + 1)
+        self.refresh_from_db(fields=["session_epoch"])
 
 
 class RevokedRefreshToken(models.Model):

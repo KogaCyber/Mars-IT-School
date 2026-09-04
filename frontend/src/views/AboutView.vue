@@ -71,7 +71,7 @@ const { data: teachers } = useAsyncData(async () => (await fetchTeachers()).resu
 
   <SchoolIntroSection
     :items="schoolFeatures"
-    :video-url="settings.promo_video_url || ''"
+    :video-url="settings.promo_video || settings.promo_video_url || ''"
     :video-cover="settings.promo_cover || ''"
   />
 

@@ -25,6 +25,7 @@ export default {
     foundersEyebrow: 'Asoschilar',
     foundersTitle: 'Maktab ortida\nkim turadi',
     nextFounder: 'Keyingi asoschi',
+    prevFounder: 'Oldingi asoschi',
 
     teachersEyebrow: 'Jamoa',
     teachersTitle: 'IT sohasida\nishlaydigan\no‘qituvchilar',
@@ -56,6 +57,7 @@ export default {
     foundersEyebrow: 'Основатели',
     foundersTitle: 'Кто стоит\nза школой',
     nextFounder: 'Следующий основатель',
+    prevFounder: 'Предыдущий основатель',
 
     teachersEyebrow: 'Команда',
     teachersTitle: 'Преподаватели,\nкоторые\nработают в IT',
@@ -87,6 +89,7 @@ export default {
     foundersEyebrow: 'Founders',
     foundersTitle: 'Who is behind\nthe school',
     nextFounder: 'Next founder',
+    prevFounder: 'Previous founder',
 
     teachersEyebrow: 'Team',
     teachersTitle: 'Teachers who\nwork in the\nIT industry',

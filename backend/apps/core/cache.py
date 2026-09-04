@@ -9,7 +9,9 @@ deyarli o'zgarmaydi. Shuning uchun ochiq GET javoblari:
      so'rov umuman serverga yetib bormaydi.
 
 Kesh muddati `PUBLIC_CACHE_SECONDS` orqali boshqariladi (0 — keshlash o'chadi).
-Admin panelda o'zgartirilgan kontent shu muddat ichida saytda ko'rinadi.
+Admin panelda kontent o'zgarsa esa kutish shart emas: kesh kalitiga kontent
+versiyasi qo'shilgan (`revision.py`), shuning uchun o'zgarish bilanoq eski
+javob yaroqsiz bo'ladi va sayt yangi ma'lumotni oladi.
 
 **Kesh kaliti va til.** Sayt uch tilda ishlaydi va til `?lang=` yoki
 `Accept-Language` orqali keladi. Django'ning tayyor `cache_page` dekoratori
@@ -27,9 +29,13 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.utils.cache import patch_cache_control, patch_vary_headers
 
+from .revision import current_revision
 from .translation import resolve_language
 
 CACHE_KEY_PREFIX = "publicapi"
+
+#: Sayt so'rovlariga qo'shadigan kontent versiyasi parametri.
+VERSION_PARAM = "_v"
 
 
 def _ttl(explicit=None) -> int:
@@ -41,25 +47,38 @@ def _ttl(explicit=None) -> int:
 def _cache_key(request) -> str:
     # `get_full_path()` ichida `?lang=` ham bor, `resolve_language()` esa
     # `Accept-Language` sarlavhasini hisobga oladi — ikkalasi ham kalitda.
-    raw = f"{request.get_full_path()}|{resolve_language(request)}"
+    # Kontent versiyasi ham kalitda: admin panelda biror narsa o'zgarishi bilan
+    # kalit o'zgaradi va eski javob o'z-o'zidan yaroqsiz bo'ladi.
+    raw = f"{request.get_full_path()}|{resolve_language(request)}|{current_revision()}"
     digest = hashlib.md5(raw.encode("utf-8"), usedforsecurity=False).hexdigest()
     return f"{CACHE_KEY_PREFIX}:{digest}"
 
 
-def _patch_headers(response, ttl: int) -> None:
+def _patch_headers(response, ttl: int, request) -> None:
     """Brauzer/CDN uchun keshlash sarlavhalari.
 
-    `stale-while-revalidate` — muddati tugagan javobni CDN darhol beradi va
-    fonda yangilaydi, ya'ni foydalanuvchi kutib turmaydi.
+    Sayt har bir so'rovga kontent versiyasini (`_v`) qo'shib yuboradi. Bunday
+    manzil kontent o'zgarganda o'zi ham o'zgaradi, shuning uchun javobni
+    brauzer va CDN xotirjam keshlashi mumkin — eskirgan nusxa qayta
+    so'ralmaydi. `stale-while-revalidate` — muddati tugagan javobni CDN darhol
+    beradi va fonda yangilaydi, ya'ni foydalanuvchi kutib turmaydi.
+
+    Versiyasiz so'rov (qidiruv roboti, tashqi mijoz) esa har safar serverdan
+    tekshiriladi: aks holda o'zgarish brauzer keshi tufayli bir necha
+    daqiqagacha ko'rinmay qolardi. Server javobni o'z xotirasidan beradi,
+    shuning uchun bu qimmatga tushmaydi.
     """
     patch_vary_headers(response, ("Accept-Language",))
-    patch_cache_control(
-        response,
-        public=True,
-        max_age=ttl,
-        s_maxage=ttl * 5,
-        stale_while_revalidate=ttl * 10,
-    )
+    if request.GET.get(VERSION_PARAM):
+        patch_cache_control(
+            response,
+            public=True,
+            max_age=ttl,
+            s_maxage=ttl * 5,
+            stale_while_revalidate=ttl * 10,
+        )
+    else:
+        patch_cache_control(response, public=True, max_age=0, must_revalidate=True)
 
 
 def cached_public_view(view, ttl: int):
@@ -94,7 +113,7 @@ def cached_public_view(view, ttl: int):
                 )
 
         if response.status_code == 200:
-            _patch_headers(response, ttl)
+            _patch_headers(response, ttl, request)
         return response
 
     return wrapper

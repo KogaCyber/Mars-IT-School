@@ -3,8 +3,8 @@
  * «Галерея» bo'limi — Figma: oq fonda chapda qisqa izoh, markazda yorliq va
  * yirik sarlavha; ostida cheksiz aylanuvchi surat kartochkalari.
  *
- * Har bir kartochkadagi to'q sariq «+» tugmasi suratni umumiy ko'ruvchida
- * (`BaseLightbox`) ochadi.
+ * Kartochkaning istalgan joyiga bosilsa, surat umumiy ko'ruvchida
+ * (`BaseLightbox`) to'liq ekranda ochiladi.
  */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -63,37 +63,31 @@ function hideBroken(event) {
         :speed="34"
         style="mask-image: linear-gradient(to right, #000 0, #000 90%, transparent 100%)"
       >
-        <figure
+        <!-- Butun kartochka bosiladi — alohida «+» tugmasi kerak emas -->
+        <button
           v-for="(image, index) in images"
           :key="image.src"
-          class="rounded-block group relative size-[min(78vw,17rem)] shrink-0 overflow-hidden lg:size-[19rem]"
+          type="button"
+          class="rounded-block group relative size-[min(78vw,17rem)] shrink-0 cursor-zoom-in overflow-hidden transition duration-300 hover:-translate-y-1 lg:size-[19rem]"
+          :aria-label="
+            image.alt ? t('courses.openPhoto', { alt: image.alt }) : t('courses.openPhotoPlain')
+          "
+          @click="openLightbox(images, index)"
         >
           <img
             :src="image.src"
             :alt="image.alt || ''"
             loading="lazy"
-            class="size-full object-cover transition duration-500 group-hover:scale-[1.04]"
+            class="size-full object-cover transition duration-500 group-hover:scale-[1.06]"
             @error="hideBroken"
           />
 
-          <button
-            type="button"
-            class="bg-brand hover:bg-brand-hover absolute right-[13%] bottom-[15%] grid size-[3.25rem] place-items-center rounded-full text-white transition duration-300 hover:scale-110 focus-visible:scale-110 lg:size-[3.75rem]"
-            :aria-label="
-              image.alt ? t('courses.openPhoto', { alt: image.alt }) : t('courses.openPhotoPlain')
-            "
-            @click="openLightbox(images, index)"
-          >
-            <svg class="size-[45%]" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-              <path
-                d="M10 4v12M4 10h12"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-          </button>
-        </figure>
+          <!-- Kursor ustiga kelganda yumshoq qoraytirish: bosiladigani seziladi -->
+          <span
+            class="absolute inset-0 bg-black/0 transition duration-300 group-hover:bg-black/25"
+            aria-hidden="true"
+          />
+        </button>
       </InfiniteCarousel>
     </div>
   </section>

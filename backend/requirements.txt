@@ -16,6 +16,12 @@ pymongo==4.17.0
 # --- Media / images -----------------------------------------------------
 Pillow==11.3.0
 
+# --- Kesh ---------------------------------------------------------------
+# Django'ning `RedisCache` backend'i shu paketni talab qiladi. Railway'da
+# REDIS_URL qo'yilgan zahoti `production.py` uni yoqadi — paket bo'lmasa
+# sayt keshga birinchi murojaatda qulardi.
+redis==5.2.1
+
 # --- Security -----------------------------------------------------------
 django-axes==7.0.2
 django-csp==4.0

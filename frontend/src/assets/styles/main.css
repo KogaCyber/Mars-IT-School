@@ -69,6 +69,22 @@
     line-height: 1.5;
   }
 
+  /* Sahifa faqat vertikal aylanadi.
+
+     Maketda bezak elementlari (blob'lar, karusel lentalari, `vw` o'lchamli
+     kartochkalar) atayin chetdan chiqib turadi — ular kesilishi kerak, aks
+     holda hujjat kengayib, butun sayt chapga-o'ngga surilib qoladi.
+
+     `clip` tanlangan, `hidden` emas: `hidden` `html`/`body` ni scroll
+     konteyneriga aylantiradi va `position: sticky`, `scroll-behavior: smooth`
+     hamda router'ning skroll boshqaruvi buziladi. `clip` esa vertikal o'qni
+     `visible` holida qoldiradi. Eski brauzerlar uchun `hidden` — zaxira. */
+  html,
+  body {
+    overflow-x: hidden;
+    overflow-x: clip;
+  }
+
   h1,
   h2,
   h3,
@@ -296,12 +312,61 @@
     transition:
       opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
       transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
+  }
+
+  /* Sarlavha, matn, rasm kabi mayda elementlar uchun — qisqaroq va yumshoqroq.
+     Sahifada bunday elementlar ko'p, shuning uchun harakat ham kamtarona. */
+  .reveal-soft {
+    transform: translateY(0.75rem);
+    transition-duration: 0.5s;
+  }
+
+  /* Yo'nalish variantlari: `v-reveal="{ variant: 'left' }"` */
+  .reveal-left {
+    transform: translateX(-2rem);
+  }
+
+  .reveal-right {
+    transform: translateX(2rem);
+  }
+
+  .reveal-zoom {
+    transform: scale(0.94);
+  }
+
+  .reveal-fade {
+    transform: none;
   }
 
   .is-revealed {
     opacity: 1;
     transform: none;
+    /* Animatsiya tugagach brauzerni ortiqcha qatlam saqlashdan ozod qilamiz. */
+    will-change: auto;
+  }
+
+  /* Bo'lim ichidagi elementlar ketma-ket (zinapoyasimon) chiqadi. */
+  .stagger > * {
+    animation: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .stagger > *:nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  .stagger > *:nth-child(2) {
+    animation-delay: 0.13s;
+  }
+  .stagger > *:nth-child(3) {
+    animation-delay: 0.21s;
+  }
+  .stagger > *:nth-child(4) {
+    animation-delay: 0.29s;
+  }
+  .stagger > *:nth-child(5) {
+    animation-delay: 0.37s;
+  }
+  .stagger > *:nth-child(n + 6) {
+    animation-delay: 0.45s;
   }
 
   .animate-float {
@@ -334,9 +399,17 @@
     animation: none !important;
   }
 
-  .reveal {
+  .reveal,
+  .reveal-soft,
+  .reveal-left,
+  .reveal-right,
+  .reveal-zoom {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .stagger > * {
+    animation: none;
   }
 }

@@ -182,22 +182,43 @@ watch(
             </Transition>
 
             <div class="mt-[2.5vw] flex items-end justify-between gap-4">
-              <button
-                type="button"
-                class="text-brand hover:bg-brand grid size-11 place-items-center rounded-full bg-white/[0.07] transition hover:text-white"
-                :aria-label="t('about.nextFounder')"
-                @click="goManually(1)"
-              >
-                <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path
-                    d="M9.5 3 4.5 8l5 5M4.5 8H13"
-                    stroke="currentColor"
-                    stroke-width="1.4"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
+              <!-- Ikki yo'nalish: chapga — lenta odatdagidek suriladi,
+                   o'ngga — teskarisi (surat chapdan chiqib, o'ngdan ketadi) -->
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  class="text-brand hover:bg-brand grid size-11 place-items-center rounded-full bg-white/[0.07] transition hover:text-white"
+                  :aria-label="t('about.nextFounder')"
+                  @click="goManually(1)"
+                >
+                  <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="M9.5 3 4.5 8l5 5M4.5 8H13"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  class="text-brand hover:bg-brand grid size-11 place-items-center rounded-full bg-white/[0.07] transition hover:text-white"
+                  :aria-label="t('about.prevFounder')"
+                  @click="goManually(-1)"
+                >
+                  <svg class="size-4" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path
+                      d="m6.5 3 5 5-5 5M11.5 8H3"
+                      stroke="currentColor"
+                      stroke-width="1.4"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
 
               <p class="font-wide text-[1.6rem] leading-none font-bold" aria-live="polite">
                 <span class="text-brand">{{ activeIndex + 1 }}</span>

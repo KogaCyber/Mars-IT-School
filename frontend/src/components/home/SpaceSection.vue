@@ -45,7 +45,9 @@ const ICONS = {
             aria-hidden="true"
             class="animate-float absolute top-[-25%] right-0 w-[32%] max-w-[11rem] lg:top-[-30%] lg:right-auto lg:left-[42%] lg:w-[34%]"
           />
-          <span class="block" v-html="t('home.spaceTitle')" />
+          <span v-for="line in t('home.spaceTitle').split('\n')" :key="line" class="block">
+            {{ line }}
+          </span>
         </h2>
 
         <div>

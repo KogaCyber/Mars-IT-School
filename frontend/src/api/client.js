@@ -9,6 +9,8 @@
  */
 import axios from 'axios'
 
+import { getContentVersion } from './contentVersion'
+
 import { i18n } from '@/i18n'
 import {
   DEFAULT_LANGUAGE,
@@ -61,6 +63,12 @@ export const http = axios.create({
 http.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
+  }
+  // Kontent versiyasi manzilga qo'shiladi — admin paneldagi o'zgarishdan keyin
+  // brauzer/CDN keshidagi eski javob emas, yangisi olinadi (contentVersion.js).
+  const version = getContentVersion()
+  if (version && !config.skipVersion && (config.method || 'get').toLowerCase() === 'get') {
+    config.params = { ...config.params, _v: version }
   }
   // Sayt tili har bir so'rovga qo'shiladi — backend shu tildagi matnni qaytaradi.
   const language = getLanguage()

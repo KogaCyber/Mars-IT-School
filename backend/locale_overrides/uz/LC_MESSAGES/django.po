@@ -1,0 +1,300 @@
+# Django admin panelining o'zbekcha tarjimasidagi bo'shliqlarni to'ldiradi.
+#
+# Django bilan kelgan `uz` katalogda admin satrlarining yarmidan ko'pi
+# tarjimasiz (msgstr bo'sh). Bunday satrlar `LANGUAGE_CODE` (ru) katalogiga
+# qaytadi va o'zbekcha rejimda ruscha matn chiqib qolardi. Shu yerda eng
+# ko'p ko'rinadigan satrlar to'ldirilgan.
+#
+# MUHIM: bu fayl qo'lda yuritiladi. `makemessages` faqat `LOCALE_PATHS`
+# dagi BIRINCHI papkaga (locale/) yozadi, shuning uchun bu katalog
+# hech qachon qayta yozilmaydi.
+msgid ""
+msgstr ""
+"Project-Id-Version: mars-it-school\n"
+"Report-Msgid-Bugs-To: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: uz\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# --- Umumiy navigatsiya -------------------------------------------------
+# «Home» — admin panelning boshi. Saytning «Bosh sahifa» guruhi bilan
+# chalkashmasligi uchun boshqacha nomlanadi.
+msgid "Home"
+msgstr "Boshqaruv paneli"
+
+msgid "Site administration"
+msgstr "Sayt boshqaruvi"
+
+msgid "%(app)s administration"
+msgstr "%(app)s boshqaruvi"
+
+msgid "Breadcrumbs"
+msgstr "Yo‘l"
+
+msgid "Sidebar"
+msgstr "Yon menyu"
+
+msgid "Start typing to filter…"
+msgstr "Filtrlash uchun yozing…"
+
+msgid "Filter navigation items"
+msgstr "Menyu bandlarini filtrlash"
+
+msgid "Skip to main content"
+msgstr "Asosiy kontentga o‘tish"
+
+msgid "Models in the %(name)s application"
+msgstr "«%(name)s» bo‘limidagi ro‘yxatlar"
+
+msgid "You don’t have permission to view or edit anything."
+msgstr "Sizda hech narsani ko‘rish yoki tahrirlash huquqi yo‘q."
+
+msgid "Toggle theme (current theme: auto)"
+msgstr "Mavzuni almashtirish (hozir: avtomatik)"
+
+msgid "Toggle theme (current theme: light)"
+msgstr "Mavzuni almashtirish (hozir: yorug‘)"
+
+msgid "Toggle theme (current theme: dark)"
+msgstr "Mavzuni almashtirish (hozir: to‘q)"
+
+# --- Ro'yxat sahifasi ---------------------------------------------------
+msgid "Select %s to change"
+msgstr "O‘zgartirish uchun %s tanlang"
+
+msgid "Select %s to view"
+msgstr "Ko‘rish uchun %s tanlang"
+
+msgid "Go"
+msgstr "Bajarish"
+
+# Django'ning o'zbekcha tarjimasida bo'shliq tushib qolgan («%(name)sqo'shish»)
+msgid "Add %(name)s"
+msgstr "%(name)s qo‘shish"
+
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] "%(counter)s ta natija"
+
+msgid "Show all"
+msgstr "Barchasini ko‘rsatish"
+
+msgid "%(full_result_count)s total"
+msgstr "jami %(full_result_count)s ta"
+
+msgid "0 of %(cnt)s selected"
+msgstr "%(cnt)s tadan 0 tasi tanlandi"
+
+msgid "Select all objects on this page for an action"
+msgstr "Shu sahifadagi barcha yozuvlarni tanlash"
+
+msgid "Select this object for an action - {}"
+msgstr "Shu yozuvni tanlash - {}"
+
+msgid "Click here to select the objects across all pages"
+msgstr "Barcha sahifalardagi yozuvlarni tanlash uchun bosing"
+
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr "Barcha %(total_count)s ta %(module_name)s ni tanlash"
+
+msgid "Clear selection"
+msgstr "Tanlovni bekor qilish"
+
+msgid "Items must be selected in order to perform actions on them. No items have been changed."
+msgstr "Amalni bajarish uchun avval yozuvlarni tanlang. Hech narsa o‘zgartirilmadi."
+
+msgid "No action selected."
+msgstr "Amal tanlanmadi."
+
+msgid " By %(filter_title)s "
+msgstr " %(filter_title)s bo‘yicha "
+
+msgid "Clear all filters"
+msgstr "Barcha filtrlarni tozalash"
+
+msgid "Hide counts"
+msgstr "Sonlarni yashirish"
+
+msgid "Show counts"
+msgstr "Sonlarni ko‘rsatish"
+
+msgid "Toggle sorting"
+msgstr "Saralashni almashtirish"
+
+msgid "Sorting priority: %(priority_number)s"
+msgstr "Saralash tartibi: %(priority_number)s"
+
+msgid "None available"
+msgstr "Hech narsa yo‘q"
+
+# --- Tahrirlash oynasi --------------------------------------------------
+msgid "Save as new"
+msgstr "Yangi yozuv sifatida saqlash"
+
+msgid "Save and add another"
+msgstr "Saqlash va yana qo‘shish"
+
+msgid "Save and continue editing"
+msgstr "Saqlash va tahrirni davom ettirish"
+
+msgid "Save and view"
+msgstr "Saqlash va ko‘rish"
+
+msgid "Close"
+msgstr "Yopish"
+
+msgid "History"
+msgstr "Tarix"
+
+msgid "Change selected %(model)s"
+msgstr "Tanlangan %(model)s ni o‘zgartirish"
+
+msgid "Add another %(model)s"
+msgstr "Yana bitta %(model)s qo‘shish"
+
+msgid "Delete selected %(model)s"
+msgstr "Tanlangan %(model)s ni o‘chirish"
+
+msgid "View selected %(model)s"
+msgstr "Tanlangan %(model)s ni ko‘rish"
+
+msgid "Hold down “Control”, or “Command” on a Mac, to select more than one."
+msgstr "Bir nechtasini tanlash uchun «Control» (Mac’da «Command») tugmasini bosib turing."
+
+msgid "No fields changed."
+msgstr "Hech qanday maydon o‘zgarmadi."
+
+msgid "Added."
+msgstr "Qo‘shildi."
+
+msgid "Added:"
+msgstr "Qo‘shildi:"
+
+msgid "Changed:"
+msgstr "O‘zgartirildi:"
+
+msgid "Deleted:"
+msgstr "O‘chirildi:"
+
+msgid "The {name} “{obj}” was added successfully."
+msgstr "{name} «{obj}» qo‘shildi."
+
+msgid "You may edit it again below."
+msgstr "Uni quyida yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was added successfully. You may add another {name} below."
+msgstr "{name} «{obj}» qo‘shildi. Quyida yana bitta {name} qo‘shishingiz mumkin."
+
+msgid "The {name} “{obj}” was added successfully. You may edit it again below."
+msgstr "{name} «{obj}» qo‘shildi. Uni quyida yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was changed successfully. You may edit it again below."
+msgstr "{name} «{obj}» o‘zgartirildi. Uni quyida yana tahrirlashingiz mumkin."
+
+msgid "The {name} “{obj}” was changed successfully. You may add another {name} below."
+msgstr "{name} «{obj}» o‘zgartirildi. Quyida yana bitta {name} qo‘shishingiz mumkin."
+
+msgid "Added {name} “{object}”."
+msgstr "{name} «{object}» qo‘shildi."
+
+msgid "Changed {fields} for {name} “{object}”."
+msgstr "{name} «{object}» uchun {fields} o‘zgartirildi."
+
+msgid "Changed {fields}."
+msgstr "{fields} o‘zgartirildi."
+
+msgid "Deleted {name} “{object}”."
+msgstr "{name} «{object}» o‘chirildi."
+
+msgid "%(name)s with ID “%(key)s” doesn’t exist. Perhaps it was deleted?"
+msgstr "ID «%(key)s» bo‘lgan %(name)s topilmadi. Ehtimol u o‘chirilgan?"
+
+# --- O'chirish tasdig'i -------------------------------------------------
+msgid "Objects"
+msgstr "Yozuvlar"
+
+msgid "Yes, I’m sure"
+msgstr "Ha, o‘chirilsin"
+
+msgid "No, take me back"
+msgstr "Yo‘q, orqaga qaytaraman"
+
+msgid "Delete multiple objects"
+msgstr "Bir nechta yozuvni o‘chirish"
+
+msgid "Are you sure you want to delete the selected %(objects_name)s? All of the following objects and their related items will be deleted:"
+msgstr "Tanlangan %(objects_name)s o‘chirilsinmi? Quyidagi barcha yozuvlar va ular bilan bog‘liq ma’lumotlar o‘chiriladi:"
+
+# --- Tarix --------------------------------------------------------------
+msgid "Date/time"
+msgstr "Sana/vaqt"
+
+msgid "User"
+msgstr "Foydalanuvchi"
+
+msgid "Action"
+msgstr "Amal"
+
+msgid "Change history: %s"
+msgstr "O‘zgarishlar tarixi: %s"
+
+msgid "This object doesn’t have a change history. It probably wasn’t added via this admin site."
+msgstr "Bu yozuvda o‘zgarishlar tarixi yo‘q. Ehtimol u admin panel orqali qo‘shilmagan."
+
+msgid "Unknown content"
+msgstr "Noma’lum ma’lumot"
+
+# --- Kirish va parol ----------------------------------------------------
+msgid "Log in"
+msgstr "Kirish"
+
+msgid "Log in again"
+msgstr "Qaytadan kirish"
+
+msgid "Thanks for spending some quality time with the web site today."
+msgstr "Bugun sayt bilan ishlaganingiz uchun rahmat."
+
+msgid "Forgotten your password or username?"
+msgstr "Parol yoki loginni unutdingizmi?"
+
+msgid "You are authenticated as %(username)s, but are not authorized to access this page. Would you like to login to a different account?"
+msgstr "Siz %(username)s sifatida kirdingiz, lekin bu sahifaga huquqingiz yo‘q. Boshqa hisob bilan kirasizmi?"
+
+msgid "Password change"
+msgstr "Parolni o‘zgartirish"
+
+msgid "Change my password"
+msgstr "Parolimni o‘zgartirish"
+
+msgid "Your password was changed."
+msgstr "Parolingiz o‘zgartirildi."
+
+msgid "Please enter your old password, for security’s sake, and then enter your new password twice so we can verify you typed it in correctly."
+msgstr "Xavfsizlik uchun avval eski parolni, so‘ng yangi parolni ikki marta kiriting."
+
+msgid "New password:"
+msgstr "Yangi parol:"
+
+msgid "Confirm password:"
+msgstr "Parolni tasdiqlang:"
+
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr "<strong>%(username)s</strong> foydalanuvchisi uchun yangi parol kiriting."
+
+msgid "First, enter a username and password. Then, you’ll be able to edit more user options."
+msgstr "Avval login va parolni kiriting. Keyin qolgan sozlamalarni tahrirlash mumkin bo‘ladi."
+
+# --- Xatoliklar ---------------------------------------------------------
+msgid "Page not found"
+msgstr "Sahifa topilmadi"
+
+msgid "We’re sorry, but the requested page could not be found."
+msgstr "Kechirasiz, so‘ralgan sahifa topilmadi."
+
+msgid "There’s been an error. It’s been reported to the site administrators via email and should be fixed shortly. Thanks for your patience."
+msgstr "Xatolik yuz berdi. U administratorlarga xabar qilindi va tez orada tuzatiladi. Sabringiz uchun rahmat."
+
+msgid "Popup closing…"
+msgstr "Oyna yopilmoqda…"

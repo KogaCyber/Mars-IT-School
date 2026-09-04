@@ -37,7 +37,7 @@ defineProps({
     </div>
 
     <!-- Kartochkalar cheksiz aylanadi -->
-    <InfiniteCarousel class="mt-10 lg:mt-14" :speed="100" direction="right">
+    <InfiniteCarousel class="mt-10 lg:mt-14" :speed="100">
       <div v-for="teacher in items" :key="teacher.id" class="w-[min(92vw,38rem)] shrink-0">
         <TeacherCard :teacher="teacher" />
       </div>
