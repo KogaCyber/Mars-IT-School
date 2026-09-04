@@ -1,5 +1,6 @@
 """«Контакты / Филиалы / Карта» sahifasi modellari."""
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -25,16 +26,25 @@ class Branch(TranslatedModel, SluggedModel, PublishableModel):
     working_hours_en = models.CharField(_("ish vaqti (en)"), max_length=160, blank=True)
     phone = models.CharField(_("telefon"), max_length=32, blank=True)
 
+    # Koordinata chegaradan chiqsa xarita nishoni okean o'rtasida paydo
+    # bo'lardi va buni faqat sayt ochilganda sezish mumkin edi. Validator
+    # xatoni admin panelning o'zida ushlaydi.
     latitude = models.FloatField(
         _("kenglik (latitude)"),
         null=True,
         blank=True,
+        validators=[MinValueValidator(-90), MaxValueValidator(90)],
         help_text=_(
             "Xaritadagi nishon shu koordinatada turadi. "
             "Bo'sh qoldirsangiz — havoladan yoki manzildan avtomatik topiladi."
         ),
     )
-    longitude = models.FloatField(_("uzunlik (longitude)"), null=True, blank=True)
+    longitude = models.FloatField(
+        _("uzunlik (longitude)"),
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(-180), MaxValueValidator(180)],
+    )
 
     map_url_yandex = models.URLField(
         _("Yandex Maps havolasi"),

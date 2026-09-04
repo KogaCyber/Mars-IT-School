@@ -28,15 +28,16 @@ const {
 })
 
 useSeo(() => ({
-  title: branch.value?.name
-    ? t('contacts.branchSeoTitle', { name: branch.value.name })
-    : undefined,
+  title: branch.value?.name ? t('contacts.branchSeoTitle', { name: branch.value.name }) : undefined,
   description: branch.value
     ? t('contacts.branchSeoDescription', {
         name: branch.value.name,
         address: branch.value.address || t('contacts.branchDefaultCity'),
       })
     : undefined,
+  // Filial o'chirilgan bo'lsa sahifa baribir HTTP 200 qaytaradi (SPA) —
+  // Google uchun bu "yumshoq 404". Kontent yo'q ekan, indekslanmasin.
+  noindex: !branch.value,
   breadcrumbs: [
     { name: t('pages.breadcrumbHome'), path: '/' },
     { name: t('nav.contacts'), path: '/kontakty' },

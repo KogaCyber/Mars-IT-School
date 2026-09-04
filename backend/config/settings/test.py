@@ -29,6 +29,17 @@ PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 AXES_ENABLED = False
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 
+# Statik fayllar: productionda `CompressedManifestStaticFilesStorage` har bir
+# fayl nomini `staticfiles.json` manifestidan qidiradi. Testlarda `collectstatic`
+# yurgizilmagani uchun admin sahifasini render qilishga urinish
+# «Missing staticfiles manifest entry» xatoligi bilan tugardi — ya'ni admin
+# panelni umuman sinab bo'lmasdi. Testlarda oddiy saqlagich yetarli.
+STORAGES = {
+    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+    "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+}
+WHITENOISE_AUTOREFRESH = True
+
 # Testlarda vaqtinchalik papkalar — haqiqiy media/ ga tegilmaydi.
 MEDIA_ROOT = BASE_DIR / ".test-media"
 PRIVATE_MEDIA_ROOT = BASE_DIR / ".test-private-media"

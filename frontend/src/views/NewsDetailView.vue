@@ -44,6 +44,11 @@ useSeo(() => ({
   type: 'article',
   publishedAt: news.value?.published_at,
   modifiedAt: news.value?.updated_at || news.value?.published_at,
+  // Kurs o'chirilgan yoki slug xato bo'lsa sahifa baribir HTTP 200 qaytaradi
+  // (SPA), ya'ni Google uchun bu "yumshoq 404" — mavjud bo'lmagan sahifa
+  // indeksga tushardi. Kontent yo'q ekan, sahifa indekslanmasligini aniq
+  // aytamiz.
+  noindex: !news.value,
   breadcrumbs: [
     { name: t('pages.breadcrumbHome'), path: '/' },
     { name: t('nav.news'), path: '/novosti' },

@@ -21,8 +21,10 @@ import {
   absoluteUrl,
   breadcrumbSchema,
   buildGraph,
+  jsonLdScriptContent,
   organizationSchema,
   setSchemaLocale,
+  setSchemaOrigin,
   webPageSchema,
   websiteSchema,
 } from '@/utils/schema'
@@ -80,7 +82,10 @@ function writeJsonLd(graph) {
   const script = existing || document.createElement('script')
   script.id = JSONLD_ID
   script.type = 'application/ld+json'
-  script.textContent = JSON.stringify(graph)
+  // `textContent` HTML'ni tahlil qilmaydi, lekin bir xil seriyalashdan
+  // foydalanamiz: prerender bilan natija bir xil bo'lsin va kimdir keyinchalik
+  // buni `innerHTML` ga o'zgartirsa ham xavf paydo bo'lmasin.
+  script.textContent = jsonLdScriptContent(graph)
   if (!existing) document.head.appendChild(script)
 }
 
@@ -118,6 +123,11 @@ export function useSeo(source) {
     const path = route.path
 
     // Statik sahifa uchun oldindan yozilgan matn — sahifa o'zi bermasa zaxira bo'ladi.
+    // JSON-LD ichidagi `@id`, `url` va rasm manzillari ham AYNAN shu domendan
+    // qurilishi kerak — canonical bilan farq qilsa qidiruv tizimi ularni
+    // boshqa sayt deb hisoblaydi.
+    setSchemaOrigin(origin)
+
     const locale = site.language || SITE.defaultLocale
     // Canonical — AYNAN shu tildagi sahifa manzili. Uch til bir xil manzilni
     // ko'rsatsa Google ularni dublikat deb hisoblardi (seoConfig.js:localeUrl).
@@ -161,7 +171,11 @@ export function useSeo(source) {
     upsertMeta('property', 'og:url', url)
     upsertMeta('property', 'og:image', image)
     upsertMeta('property', 'og:image:alt', title || SITE.name)
-    upsertMeta('property', 'og:locale', SITE.ogLocales[locale] || SITE.ogLocales[SITE.defaultLocale])
+    upsertMeta(
+      'property',
+      'og:locale',
+      SITE.ogLocales[locale] || SITE.ogLocales[SITE.defaultLocale],
+    )
     if (meta.publishedAt) upsertMeta('property', 'article:published_time', meta.publishedAt)
     if (meta.modifiedAt) upsertMeta('property', 'article:modified_time', meta.modifiedAt)
 

@@ -45,6 +45,9 @@ from .serializers import (
 
 logger = logging.getLogger(__name__)
 
+#: Bosh sahifa javobidagi har bir ro'yxatning eng ko'p elementi.
+HOME_SECTION_LIMIT = 24
+
 
 def staff_required(view):
     """Faqat tizimga kirgan xodim uchun.
@@ -153,16 +156,22 @@ def home_bootstrap_view(request):
     from apps.teachers.serializers import TeacherListSerializer
 
     ctx = {"request": request}
+    # Har bir bo'limga aniq chegara qo'yiladi. Bosh sahifa bularning hammasini
+    # baribir bitta ekranda ko'rsatadi, lekin admin panelda 200 ta savol-javob
+    # yig'ilib qolsa javob hajmi jimgina o'sib ketardi — va bu eng ko'p
+    # so'raladigan manzil.
     return Response(
         {
             "settings": SiteSettingsSerializer(SiteSettings.load(), context=ctx).data,
             "advantages": AdvantageSerializer(
-                Advantage.objects.published(), many=True, context=ctx
+                Advantage.objects.published()[:HOME_SECTION_LIMIT], many=True, context=ctx
             ).data,
             "reviews": ParentReviewSerializer(
-                ParentReview.objects.published(), many=True, context=ctx
+                ParentReview.objects.published()[:HOME_SECTION_LIMIT], many=True, context=ctx
             ).data,
-            "faqs": FAQSerializer(FAQ.objects.published(), many=True, context=ctx).data,
+            "faqs": FAQSerializer(
+                FAQ.objects.published()[:HOME_SECTION_LIMIT], many=True, context=ctx
+            ).data,
             "teachers": TeacherListSerializer(
                 Teacher.objects.published()[:12], many=True, context=ctx
             ).data,

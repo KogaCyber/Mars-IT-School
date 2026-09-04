@@ -29,6 +29,42 @@ from whitenoise import WhiteNoise  # noqa: E402
 # ishlatilmaydi — bir yilga keshlash xavfsiz.
 MEDIA_MAX_AGE = 60 * 60 * 24 * 365
 
+
+def add_media_headers(headers, path, url):
+    """Media fayllariga xavfsizlik sarlavhalarini qo'shadi.
+
+    WhiteNoise Django ilovasini TASHQARIDAN o'raydi, ya'ni `/media/` so'rovi
+    Django middleware zanjiriga umuman kirmaydi. Natijada rasmlar
+    `X-Content-Type-Options`, `Content-Security-Policy` va `X-Frame-Options`
+    sarlavhalarisiz uzatilardi — API javoblarida esa ularning hammasi bor edi
+    (o'lchandi).
+
+    Nima uchun muhim:
+
+    * `nosniff` — brauzer fayl mazmuniga qarab turini "taxmin qilmaydi".
+      Nosniff bo'lmasa, `image/*` deb belgilangan, lekin ichida HTML yotgan
+      fayl ba'zi brauzerlarda sahifa sifatida bajarilishi mumkin — u ham
+      backend domenida, ya'ni admin sessiyasi bilan bir manbada.
+    * `Content-Disposition: attachment` + tor CSP — fayl baribir sahifa bo'lib
+      ochilsa ham, undagi hech qanday skript ishlamaydi.
+    * `X-Frame-Options` — rasm manzilini boshqa saytda `iframe` qilib
+      ishlatishning oldini oladi.
+    """
+    headers["X-Content-Type-Options"] = "nosniff"
+    headers["X-Frame-Options"] = "DENY"
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    # Media — statik resurs; unda hech qachon aktiv mazmun bo'lmasligi kerak.
+    headers["Content-Security-Policy"] = (
+        "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'none'; "
+        "script-src 'none'; sandbox"
+    )
+
+
 if not settings.DEBUG and settings.MEDIA_ROOT:
-    application = WhiteNoise(application, autorefresh=True, max_age=MEDIA_MAX_AGE)
+    application = WhiteNoise(
+        application,
+        autorefresh=True,
+        max_age=MEDIA_MAX_AGE,
+        add_headers_function=add_media_headers,
+    )
     application.add_files(str(settings.MEDIA_ROOT), prefix=settings.MEDIA_URL)

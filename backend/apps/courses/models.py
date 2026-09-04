@@ -1,6 +1,6 @@
 """Kurslar, o'qish bosqichlari va kurs imkoniyatlari."""
 
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -66,6 +66,16 @@ class Course(TranslatedModel, SluggedModel, PublishableModel):
         max_length=7,
         default="#E94921",
         help_text=_("HEX формат: #E94921"),
+        # Qiymat saytda to'g'ridan-to'g'ri CSS rangi sifatida ishlatiladi.
+        # Validatorsiz «red» yoki «E94921» (panjarasiz) kabi yozuv jimgina
+        # qabul qilinardi va kurs sahifasidagi rang yo'qolib qolardi — admin
+        # esa nima noto'g'ri ekanini bilmasdi.
+        validators=[
+            RegexValidator(
+                r"^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$",
+                message=_("Rang #RGB yoki #RRGGBB ko'rinishida bo'lishi kerak, masalan #E94921."),
+            )
+        ],
     )
 
     age_from = models.PositiveSmallIntegerField(_("yosh (dan)"), default=7)

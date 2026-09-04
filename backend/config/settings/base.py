@@ -417,7 +417,10 @@ SECURE_REFERRER_POLICY = "same-origin"
 X_FRAME_OPTIONS = "DENY"
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_HTTPONLY = False
+# Sayt JWT bilan ishlaydi va CSRF tokenini JavaScript'dan o'qimaydi (faqat
+# admin panelning o'z formalari ishlatadi, ular esa tokenni HTML ichidan
+# oladi). Cookie'ni JS uchun yopish XSS holatida bitta qadamni qiyinlashtiradi.
+CSRF_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = "Lax"
 
 # Content-Security-Policy (django-csp 4.x formati)

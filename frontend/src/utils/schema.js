@@ -22,6 +22,27 @@ export function setSchemaLocale(locale) {
 /** Joriy sxema tili. */
 export const schemaLang = () => schemaLocale
 
+/**
+ * Sxemalardagi barcha absolyut manzillar shu domendan quriladi.
+ *
+ * Ilgari ular `SITE.url` — fayl ichidagi qattiq yozilgan zaxira domen — dan
+ * olinardi. Natijada canonical bir domenni, JSON-LD ichidagi `@id`, `url` va
+ * `logo` esa BOSHQA domenni ko'rsatardi. Qidiruv tizimi uchun bu ikki xil
+ * sayt: tashkilot tuguni hech qaysi sahifaga bog'lanmay qolardi.
+ *
+ * Endi domen bitta manbadan (`VITE_SITE_URL`) keladi va ish vaqtida ham,
+ * build vaqtida ham shu yerga o'rnatiladi.
+ */
+let schemaOrigin = SITE.url
+
+export function setSchemaOrigin(origin) {
+  const value = String(origin || '').replace(/\/$/, '')
+  if (value) schemaOrigin = value
+}
+
+/** Joriy sxema domeni. */
+export const schemaHost = () => schemaOrigin
+
 /** Uch tilli qiymatni joriy sxema tilida beradi. */
 const loc = (value) => pick(value, schemaLocale)
 
@@ -47,14 +68,14 @@ const SCHEMA_TEXT = {
 const text = (key) => (SCHEMA_TEXT[schemaLocale] || SCHEMA_TEXT[SITE.defaultLocale])[key]
 
 /** Nisbiy manzilni absolyutga aylantiradi. */
-export function absoluteUrl(path = '/', origin = SITE.url) {
+export function absoluteUrl(path = '/', origin = schemaOrigin) {
   if (!path) return origin
   if (/^https?:\/\//i.test(path)) return path
   return `${String(origin).replace(/\/$/, '')}${path.startsWith('/') ? path : `/${path}`}`
 }
 
-const ORG_ID = () => `${SITE.url}/#organization`
-const SITE_ID = () => `${SITE.url}/#website`
+const ORG_ID = () => `${schemaOrigin}/#organization`
+const SITE_ID = () => `${schemaOrigin}/#website`
 
 /** Maktabning o'zi — barcha boshqa tugunlar shu `@id`ga havola qiladi. */
 export function organizationSchema(overrides = {}) {
@@ -63,7 +84,7 @@ export function organizationSchema(overrides = {}) {
     '@id': ORG_ID(),
     name: SITE.name,
     legalName: SITE.legalName,
-    url: SITE.url,
+    url: schemaOrigin,
     logo: { '@type': 'ImageObject', url: absoluteUrl(SITE.logo), width: 500, height: 500 },
     image: absoluteUrl(SITE.ogImage),
     description: text('orgDescription'),
@@ -102,7 +123,7 @@ export function websiteSchema() {
   return {
     '@type': 'WebSite',
     '@id': SITE_ID(),
-    url: SITE.url,
+    url: schemaOrigin,
     name: SITE.name,
     inLanguage: schemaLocale,
     publisher: { '@id': ORG_ID() },
@@ -129,7 +150,7 @@ export function webPageSchema({ url, title, description, image, locale, datePubl
  * Non-havola zanjiri.
  * @param {Array<{name: string, path: string}>} items
  */
-export function breadcrumbSchema(items, origin = SITE.url) {
+export function breadcrumbSchema(items, origin = schemaOrigin) {
   return {
     '@type': 'BreadcrumbList',
     itemListElement: items.map((item, index) => ({
@@ -310,4 +331,27 @@ export function buildGraph(nodes) {
   const graph = nodes.filter(Boolean)
   if (!graph.length) return null
   return { '@context': 'https://schema.org', '@graph': graph }
+}
+
+/**
+ * JSON-LD ni HTML `<script>` tegi ichiga XAVFSIZ yozish uchun seriyalash.
+ *
+ * `JSON.stringify` `<` belgisini o'zgartirmaydi, ya'ni admin paneldagi matnda
+ * `</script>` bo'lsa (masalan kurs nomida) u HTML ichida script tegini ERTA
+ * yopadi va undan keyingi hamma narsa oddiy HTML — jumladan hujumchi yozgan
+ * skript — bo'lib bajariladi. Bu build vaqtidagi prerender uchun haqiqiy
+ * xavf: kontent muharriri huquqi saytdagi doimiy XSS'ga aylanardi.
+ *
+ * Yechim — `<`, `>` va `&` ni JSON qochish ketma-ketligiga o'tkazish. JSON
+ * uchun ular baribir bir xil satr, HTML tahlilchisi esa endi teg ko'rmaydi.
+ * U+2028/U+2029 ham qochiriladi: ular JSON'da haqiqiy, lekin JavaScript
+ * manbasida qator uzilishi hisoblanadi.
+ */
+export function jsonLdScriptContent(graph) {
+  return JSON.stringify(graph)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
 }

@@ -33,6 +33,11 @@ useSeo(() => ({
   title: course.value?.title,
   description: course.value?.subtitle,
   image: course.value?.hero_image || course.value?.card_image,
+  // Kurs o'chirilgan yoki slug xato bo'lsa sahifa baribir HTTP 200 qaytaradi
+  // (SPA), ya'ni Google uchun bu "yumshoq 404" — mavjud bo'lmagan sahifa
+  // indeksga tushardi. Kontent yo'q ekan, sahifa indekslanmasligini aniq
+  // aytamiz.
+  noindex: !course.value,
   breadcrumbs: [
     { name: t('pages.breadcrumbHome'), path: '/' },
     { name: t('courses.coursesTitle'), path: '/kursy' },

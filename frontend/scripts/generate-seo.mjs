@@ -34,7 +34,9 @@ import {
   courseSchema,
   faqSchema,
   jobPostingSchema,
+  jsonLdScriptContent,
   organizationSchema,
+  setSchemaOrigin,
   webPageSchema,
   websiteSchema,
 } from '../src/utils/schema.js'
@@ -66,6 +68,9 @@ function loadEnvFile(path) {
 const ORIGIN = (process.env.VITE_SITE_URL || process.env.SITE_URL || SITE.url).replace(/\/$/, '')
 const API = (process.env.VITE_API_BASE_URL || process.env.API_BASE_URL || '').replace(/\/$/, '')
 const TODAY = new Date().toISOString().slice(0, 10)
+
+// Sxemalardagi absolyut manzillar ham shu domendan qurilsin (schema.js).
+setSchemaOrigin(ORIGIN)
 
 /** Prerender qilinadigan HTML sayt asosiy tilida (o'zbekcha) yoziladi. */
 const LOCALE = SITE.defaultLocale
@@ -107,8 +112,7 @@ const TEXT = {
     addressLabel: 'Manzil',
     tel: 'tel.',
     branchTitle: '{name} — Toshkentdagi filial',
-    branchDescription:
-      '{name}: {address}. MARS IT School — bolalar uchun dasturlash maktabi.',
+    branchDescription: '{name}: {address}. MARS IT School — bolalar uchun dasturlash maktabi.',
     branchSummary: 'MARS IT School maktabining {name} filiali. Manzil: {address}.',
     branchKeywords: ['Toshkent IT maktabi', 'yaqin atrofdagi dasturlash kurslari'],
     courseDescription: '{title} — MARS IT School kursi.',
@@ -274,7 +278,9 @@ function buildLlmsTxt(dynamic) {
     lines.push(`## ${TEXT.courses}`, '')
     dynamic.courses.forEach((course) => {
       const facts = [
-        course.age_range ? `${TEXT.ageLabel.toLowerCase()} ${course.age_range} ${TEXT.ageOf}` : null,
+        course.age_range
+          ? `${TEXT.ageLabel.toLowerCase()} ${course.age_range} ${TEXT.ageOf}`
+          : null,
         course.duration_months ? `${course.duration_months} ${TEXT.monthsShort}` : null,
         course.lessons_per_week ? `${course.lessons_per_week} ${TEXT.perWeek}` : null,
       ]
@@ -407,7 +413,7 @@ function renderPage(template, page) {
     ],
     [
       /<script type="application\/ld\+json">[\s\S]*?<\/script>/,
-      `<script type="application/ld+json">${JSON.stringify(graph)}</script>`,
+      `<script type="application/ld+json">${jsonLdScriptContent(graph)}</script>`,
     ],
     [
       /<noscript>[\s\S]*?<\/noscript>/,
@@ -490,10 +496,16 @@ function collectPages(dynamic) {
       image: course.card_image ? absoluteUrl(course.card_image, ORIGIN) : undefined,
       facts: [
         course.age_range ? `${TEXT.ageLabel}: ${course.age_range} ${TEXT.ageOf}` : null,
-        course.duration_months ? `${TEXT.durationLabel}: ${course.duration_months} ${TEXT.monthsShort}` : null,
+        course.duration_months
+          ? `${TEXT.durationLabel}: ${course.duration_months} ${TEXT.monthsShort}`
+          : null,
         course.lessons_per_week ? `${TEXT.perWeekLabel}: ${course.lessons_per_week}` : null,
       ].filter(Boolean),
-      breadcrumbs: [crumbHome, { name: TEXT.courses, path: '/kursy' }, { name: course.title, path }],
+      breadcrumbs: [
+        crumbHome,
+        { name: TEXT.courses, path: '/kursy' },
+        { name: course.title, path },
+      ],
       schema: [courseSchema(course, `${ORIGIN}${path}`)],
     })
   })
