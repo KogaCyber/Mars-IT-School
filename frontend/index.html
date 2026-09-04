@@ -75,9 +75,11 @@
     <link rel="preconnect" href="https://mars-it-school-production.up.railway.app" crossorigin />
     <link rel="dns-prefetch" href="https://mars-it-school-production.up.railway.app" />
 
-    <!-- Xarita plitkalari uchun ulanish oldindan ochiladi (LCP'ga yordam beradi) -->
-    <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin />
-    <link rel="dns-prefetch" href="https://tile.openstreetmap.org" />
+    <!-- Xarita plitkalari uchun ulanish oldindan ochiladi (LCP'ga yordam beradi).
+         Manba — Esri Dark Gray Canvas (BranchesMap.vue); CSP `img-src` da ham
+         aynan shu domen ochilgan. -->
+    <link rel="preconnect" href="https://server.arcgisonline.com" crossorigin />
+    <link rel="dns-prefetch" href="https://server.arcgisonline.com" />
 
     <!--
       Boshlang'ich strukturali ma'lumot. JS ishlamaydigan crawler'lar (jumladan

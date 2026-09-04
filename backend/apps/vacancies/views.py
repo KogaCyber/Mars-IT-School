@@ -1,6 +1,10 @@
+import logging
+from pathlib import Path
+
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import never_cache
+from django.views.decorators.http import require_safe
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -10,6 +14,7 @@ from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from apps.core.cache import PublicCacheMixin
+from apps.core.uploads import RESUME_SIGNATURES
 from apps.core.views import staff_required
 from apps.leads.utils import client_ip
 
@@ -19,6 +24,10 @@ from .serializers import (
     VacancyDetailSerializer,
     VacancyListSerializer,
 )
+
+#: Shaxsiy ma'lumotga murojaat aynan shu loggerga yoziladi — uni monitoringda
+#: alohida kuzatish mumkin (kim, qachon, kimning hujjatini oldi).
+audit_log = logging.getLogger("security.audit")
 
 
 class VacancyViewSet(PublicCacheMixin, ReadOnlyModelViewSet):
@@ -54,6 +63,7 @@ class VacancyApplicationCreateView(CreateAPIView):
         )
 
 
+@require_safe
 @never_cache
 @staff_required
 def resume_download_view(request, pk: str):
@@ -75,10 +85,34 @@ def resume_download_view(request, pk: str):
     except FileNotFoundError as exc:  # fayl volume'dan yo'qolgan bo'lishi mumkin
         raise Http404("Fayl topilmadi.") from exc
 
-    # `as_attachment` — brauzer faylni ochib emas, yuklab oladi. Bu HTML yoki
-    # SVG ko'rinishidagi fayl admin domenida bajarilib ketishining oldini oladi.
-    return FileResponse(
-        handle,
-        as_attachment=True,
-        filename=application.resume.name.rsplit("/", 1)[-1],
+    # Shaxsiy ma'lumotga har bir murojaat qayd etiladi. Bu ma'lumotlar
+    # sizib chiqqan taqdirda «kim ko'rgan» degan savolga javob beradigan
+    # yagona manba — hujjat yuklab olingandan keyin uni kuzatib bo'lmaydi.
+    audit_log.info(
+        "Rezyume yuklab olindi: application=%s kandidat=%s xodim=%s ip=%s",
+        application.pk,
+        application.full_name,
+        request.user.email,
+        client_ip(request),
     )
+
+    # Fayl diskda tasodifiy nom bilan yotadi; yuklab olishda esa xodim uchun
+    # tushunarli nom beriladi. Kengaytma faqat oq ro'yxatdan olinadi —
+    # `Content-Disposition` ga ixtiyoriy satr tushishi mumkin emas.
+    suffix = Path(application.resume.name).suffix.lower()
+    if suffix not in RESUME_SIGNATURES:
+        suffix = ".bin"
+
+    response = FileResponse(
+        handle,
+        # `as_attachment` — brauzer faylni ochib emas, yuklab oladi. Bu HTML
+        # yoki SVG ko'rinishidagi fayl admin domenida bajarilib ketishining
+        # oldini oladi.
+        as_attachment=True,
+        filename=f"rezyume-{application.pk}{suffix}",
+        # Turi baribir aniqlanmasin: brauzer mazmunga qarab «taxmin qilmaydi».
+        content_type="application/octet-stream",
+    )
+    response["X-Content-Type-Options"] = "nosniff"
+    response["Content-Security-Policy"] = "default-src 'none'; sandbox"
+    return response

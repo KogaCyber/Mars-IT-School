@@ -1,6 +1,9 @@
 # --- Core ---------------------------------------------------------------
-Django==5.2.6
-djangorestframework==3.16.1
+# Django LTS 5.2 liniyasi (django-mongodb-backend shu versiyaga bog'langan).
+# Patch versiyalar — xavfsizlik tuzatishlari; CI'da `pip-audit` har yurishda
+# ma'lum zaifliklarni tekshiradi, shuning uchun bu qiymatlar eskirib qolmaydi.
+Django==5.2.17
+djangorestframework==3.17.2
 django-cors-headers==4.7.0
 django-filter==25.1
 djangorestframework-simplejwt==5.5.1
@@ -14,7 +17,10 @@ django-mongodb-backend==5.2.4
 pymongo==4.17.0
 
 # --- Media / images -----------------------------------------------------
-Pillow==11.3.0
+# Pillow foydalanuvchi yuklagan rasmni O'ZI tahlil qiladi — ya'ni undagi har
+# bir zaiflik bevosita hujum yuzasi. Shuning uchun bu paket har doim eng
+# so'nggi versiyada bo'lishi kerak.
+Pillow==12.3.0
 
 # --- Kesh ---------------------------------------------------------------
 # Django'ning `RedisCache` backend'i shu paketni talab qiladi. Railway'da

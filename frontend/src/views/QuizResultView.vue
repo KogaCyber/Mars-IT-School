@@ -37,16 +37,17 @@ import { useQuizContent } from '@/utils/quizContent'
 const { t } = useI18n()
 
 const props = defineProps({
-  id: { type: String, required: true },
+  /** Natijaning maxfiy kaliti — manzildan keladi (`/test/rezultat/:token`). */
+  token: { type: String, required: true },
 })
 
-const id = computed(() => props.id)
+const token = computed(() => props.token)
 const {
   data: result,
   isLoading,
   error,
-} = useAsyncData(() => fetchQuizResult(id.value), null, {
-  watchSource: id,
+} = useAsyncData(() => fetchQuizResult(token.value), null, {
+  watchSource: token,
 })
 
 const outcome = computed(() => result.value?.outcome || null)

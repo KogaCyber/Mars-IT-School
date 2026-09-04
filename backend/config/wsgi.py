@@ -53,6 +53,10 @@ def add_media_headers(headers, path, url):
     headers["X-Content-Type-Options"] = "nosniff"
     headers["X-Frame-Options"] = "DENY"
     headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    # Rasm boshqa saytga resurs sifatida tortilishi mumkin (sayt Vercel'da,
+    # rasmlar Railway'da), lekin brauzer imkoniyatlari bu yerda kerak emas.
+    headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     # Media — statik resurs; unda hech qachon aktiv mazmun bo'lmasligi kerak.
     headers["Content-Security-Policy"] = (
         "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'none'; "

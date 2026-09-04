@@ -5,6 +5,7 @@ Muhitga bog'liq qiymatlar `local.py` va `production.py` da qayta belgilanadi.
 Hech qanday maxfiy qiymat (secret) shu faylga yozilmaydi — faqat .env orqali.
 """
 
+import ipaddress
 from datetime import timedelta
 from pathlib import Path
 
@@ -58,6 +59,19 @@ ADMIN_URL = env("ADMIN_URL", default="admin/")
 if not ADMIN_URL.endswith("/"):
     ADMIN_URL += "/"
 
+# Admin panelga kirish ruxsat etilgan IP manzillar yoki tarmoqlar
+# (masalan: "84.54.72.10,84.54.73.0/24"). Bo'sh bo'lsa — cheklov yo'q.
+# To'ldirilsa, parol o'g'irlangan taqdirda ham hujumchi admin paneliga
+# umuman yeta olmaydi (`apps/core/middleware.py`).
+ADMIN_ALLOWED_IPS = env.list("ADMIN_ALLOWED_IPS", default=[])
+for _network in ADMIN_ALLOWED_IPS:
+    try:
+        ipaddress.ip_network(_network.strip(), strict=False)
+    except ValueError as _exc:
+        raise ImproperlyConfigured(
+            f"ADMIN_ALLOWED_IPS ichida noto'g'ri manzil: {_network!r}"
+        ) from _exc
+
 # ---------------------------------------------------------------------------
 # Ilovalar
 # ---------------------------------------------------------------------------
@@ -99,6 +113,10 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 # ---------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Django qo'ymaydigan sarlavhalar (Permissions-Policy, CORP) va
+    # `Server` sarlavhasini olib tashlash. Eng tashqarida turadi — shunda
+    # ichkaridagi HAR QANDAY javob (xatoliklar ham) sarlavhalarni oladi.
+    "apps.core.middleware.SecurityHeadersMiddleware",
     # GZip — API javoblari va admin HTML simda ~4 barobar kichrayadi.
     "django.middleware.gzip.GZipMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -110,6 +128,9 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    # Autentifikatsiyadan KEYIN: admin panelga kirish urinishini qayd etishda
+    # foydalanuvchi ma'lum bo'lishi kerak.
+    "apps.core.middleware.AdminAccessMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "csp.middleware.CSPMiddleware",
@@ -326,6 +347,9 @@ REST_FRAMEWORK = {
         # Spamga qarshi asosiy himoya honeypot va telefon validatsiyasi.
         "lead": env("LEAD_THROTTLE_RATE", default="40/hour"),
         "auth": "10/min",  # login / register
+        # Test natijasi havolasi. Kalit taxmin qilib bo'lmaydigan bo'lsa ham,
+        # cheklov sanash urinishini (enumeration) butunlay ma'nosiz qiladi.
+        "result": "30/min",
         # Kontent versiyasi: sayt uni har 5 soniyada so'raydi (12/min), javob
         # server xotirasidan keladi. Limit shunchaki cheksiz so'rovni to'xtatadi.
         "revision": "120/min",
@@ -480,5 +504,11 @@ LOGGING = {
     "loggers": {
         "django.security": {"handlers": ["console"], "level": "WARNING", "propagate": False},
         "axes": {"handlers": ["console"], "level": "WARNING", "propagate": False},
+        # Shaxsiy ma'lumotga murojaat, admin paneliga urinish, parol
+        # o'zgartirish — hammasi shu kanalga tushadi. `INFO` darajasi
+        # ataylab: bu voqealar hech qachon o'tkazib yuborilmasligi kerak.
+        # Railway/monitoringda "security.audit" bo'yicha ogohlantirish
+        # qo'yish uchun alohida logger sifatida ajratilgan.
+        "security.audit": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }

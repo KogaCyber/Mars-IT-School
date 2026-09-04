@@ -54,5 +54,5 @@ CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"
 # Testlarda so'rov cheklovlari (throttling) o'chiriladi.
 REST_FRAMEWORK["DEFAULT_THROTTLE_CLASSES"] = ()
 REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = dict.fromkeys(
-    ("anon", "user", "lead", "auth", "revision", "health")
+    ("anon", "user", "lead", "auth", "revision", "health", "result")
 )

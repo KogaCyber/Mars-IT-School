@@ -7,6 +7,7 @@ from apps.accounts.validators import validate_uz_phone
 from apps.core.models import PublishableModel, SluggedModel, TimeStampedModel
 from apps.core.storage import private_storage
 from apps.core.translation import TranslatedModel
+from apps.core.uploads import resume_upload_to
 
 
 class Vacancy(TranslatedModel, SluggedModel, PublishableModel):
@@ -93,9 +94,11 @@ class VacancyApplication(TimeStampedModel):
     # Rezyume — SHAXSIY MA'LUMOT. `MEDIA_ROOT` dan tashqarida, ommaga
     # ochilmaydigan papkada saqlanadi va faqat xodim `resume_download_view`
     # orqali yuklab oladi (apps/core/storage.py ga qarang).
+    # Fayl nomi ATAYLAB tasodifiy: `Ivanov_Ivan_rezyume.pdf` diskda ham,
+    # `Content-Disposition` sarlavhasida ham nomzodning ismini oshkor qilardi.
     resume = models.FileField(
         _("rezyume"),
-        upload_to="resumes/%Y/%m/",
+        upload_to=resume_upload_to,
         blank=True,
         storage=private_storage,
     )

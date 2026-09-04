@@ -6,3 +6,7 @@ pytest-cov==6.2.1
 factory-boy==3.3.3
 ruff==0.12.7
 django-debug-toolbar==5.2.0
+
+# Paketlardagi ma'lum zaifliklarni tekshirish (CI'da ham yuriladi):
+#     pip-audit --requirement requirements.txt --strict
+pip-audit==2.9.0

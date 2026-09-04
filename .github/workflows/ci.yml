@@ -57,6 +57,30 @@ jobs:
           # bu yerda faqat aniqlik uchun takrorlanadi.
           TEST_MONGODB_URI: mongodb://localhost:27017
 
+      # Production sozlamalari bilan Django'ning o'z xavfsizlik tekshiruvi.
+      # Bu qadam `.env` ga bog'liq bo'lmasligi uchun barcha qiymatlar shu
+      # yerda beriladi — maqsad kodni tekshirish, sirlarni emas.
+      - name: Xavfsizlik tekshiruvi (check --deploy)
+        run: python manage.py check --deploy --fail-level WARNING
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.production
+          DJANGO_SECRET_KEY: ci-uchun-uzun-va-tasodifiy-kalit-0123456789abcdefghijklmnop
+          ALLOWED_HOSTS: api.example.com
+          CORS_ALLOWED_ORIGINS: https://example.com
+          CSRF_TRUSTED_ORIGINS: https://example.com
+          ADMIN_URL: ci-maxfiy-panel/
+          MEDIA_ROOT: /tmp/ci-media
+          PRIVATE_MEDIA_ROOT: /tmp/ci-private-media
+          MONGODB_URI: mongodb://localhost:27017
+
+      # Ma'lum zaifliklari bor paketlar main'ga tushmasligi kerak.
+      # Zaiflik bazasi kundan kunga o'zgaradi, ya'ni kod o'zgarmasa ham
+      # yangi CVE paydo bo'lishi mumkin — shuning uchun har bir yurishda.
+      - name: Paketlardagi zaifliklar (pip-audit)
+        run: |
+          pip install pip-audit==2.9.0
+          pip-audit --requirement requirements.txt --strict
+
   frontend:
     runs-on: ubuntu-latest
     defaults:
@@ -76,6 +100,9 @@ jobs:
 
       - name: ESLint
         run: npm run lint
+
+      - name: Paketlardagi zaifliklar (npm audit)
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Testlar
         run: npm test

@@ -108,13 +108,22 @@ class SubmissionCreateSerializer(serializers.Serializer):
 
 
 class SubmissionResultSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
+    """Natija javobi.
+
+    MongoDB `_id` si ATAYLAB chiqarilmaydi: sayt natija havolasini shu
+    javobdan quradi va u yerda faqat taxmin qilib bo'lmaydigan `token`
+    ishlatilishi kerak. `id` ham qaytarilsa, kimdir uni havolaga qo'yib
+    qo'yishi va IDOR qaytib kelishi mumkin edi.
+    """
+
+    token = serializers.CharField(source="public_token", read_only=True)
     outcome = OutcomeSerializer(read_only=True)
     matches = serializers.SerializerMethodField()
     skills = serializers.SerializerMethodField()
 
     class Meta:
         model = Submission
-        fields = ("id", "outcome", "matches", "skills", "scores", "created_at")
+        fields = ("token", "outcome", "matches", "skills", "scores", "created_at")
 
     def get_skills(self, obj) -> list[dict]:
         """Ko'nikmalar tahlili — foiz bo'yicha kamayish tartibida.

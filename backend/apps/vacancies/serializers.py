@@ -1,12 +1,14 @@
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
 from apps.accounts.validators import normalize_phone, validate_uz_phone
 from apps.core.drf import TranslatedSerializerMixin
+from apps.core.uploads import RESUME_SIGNATURES, validate_upload
 
 from .models import Vacancy, VacancyApplication
 
 # Rezyume uchun ruxsat etilgan kengaytmalar va maksimal hajm (5 MB).
-ALLOWED_RESUME_EXTENSIONS = {".pdf", ".doc", ".docx", ".rtf"}
+ALLOWED_RESUME_EXTENSIONS = set(RESUME_SIGNATURES)
 MAX_RESUME_SIZE = 5 * 1024 * 1024
 
 
@@ -74,16 +76,22 @@ class VacancyApplicationSerializer(serializers.ModelSerializer):
         return phone
 
     def validate_resume(self, file):
-        """Faqat hujjat fayllari va 5 MB gacha — zararli fayl yuklashning oldini oladi."""
+        """Kengaytma, hajm VA fayl mazmunini tekshiradi.
+
+        Kengaytmani tekshirishning o'zi yetarli emas: `cv.pdf` deb nomlangan
+        HTML yoki SVG fayl ichida skript bo'lishi mumkin. Shuning uchun
+        faylning dastlabki baytlari (magic number) ham tekshiriladi —
+        `apps/core/uploads.py`.
+        """
         if file is None:
             return file
 
-        name = (file.name or "").lower()
-        if not any(name.endswith(ext) for ext in ALLOWED_RESUME_EXTENSIONS):
-            raise serializers.ValidationError("Faqat PDF, DOC, DOCX yoki RTF fayl yuklash mumkin.")
-        if file.size > MAX_RESUME_SIZE:
-            raise serializers.ValidationError("Fayl hajmi 5 MB dan oshmasligi kerak.")
-        return file
+        try:
+            return validate_upload(
+                file, signatures=RESUME_SIGNATURES, max_bytes=MAX_RESUME_SIZE
+            )
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError(list(exc.messages)) from exc
 
     def validate(self, attrs: dict) -> dict:
         if attrs.pop("website", ""):

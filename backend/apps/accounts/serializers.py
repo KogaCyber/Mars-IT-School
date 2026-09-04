@@ -1,7 +1,10 @@
 """Autentifikatsiya va profil serializerlari."""
 
+import logging
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.serializers import (
@@ -13,11 +16,18 @@ from rest_framework_simplejwt.serializers import (
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.core.uploads import IMAGE_SIGNATURES, validate_upload
+
 from .authentication import EPOCH_CLAIM, token_epoch_is_current
 from .tokens import is_revoked, revoke
 from .validators import normalize_phone, validate_uz_phone
 
 User = get_user_model()
+
+audit_log = logging.getLogger("security.audit")
+
+#: Avatar uchun maksimal hajm (2 MB) — profil surati uchun bundan ko'pi kerak emas.
+MAX_AVATAR_SIZE = 2 * 1024 * 1024
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -37,6 +47,22 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
         )
         read_only_fields = ("id", "email", "role", "date_joined")
+
+    def validate_avatar(self, file):
+        """Avatar — haqiqiy rasm bo'lishi va 2 MB dan oshmasligi kerak.
+
+        `ImageField` Pillow orqali rasmni ochib ko'radi, lekin hajmni
+        cheklamaydi va polyglot fayllarni (bir vaqtda ham rasm, ham HTML)
+        o'tkazib yuborishi mumkin. Shuning uchun signatura ham tekshiriladi.
+        """
+        if file is None:
+            return file
+        try:
+            return validate_upload(
+                file, signatures=IMAGE_SIGNATURES, max_bytes=MAX_AVATAR_SIZE
+            )
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError(list(exc.messages)) from exc
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -120,6 +146,12 @@ class PasswordChangeSerializer(serializers.Serializer):
         user.set_password(self.validated_data["new_password"])
         user.save(update_fields=["password"])
         user.revoke_all_tokens()
+        # Parol o'zgarishi — hisobni egallab olish (account takeover) ning
+        # asosiy belgisi. Qayd bo'lmasa, «qachon va qayerdan o'zgardi»
+        # degan savolga javob beradigan hech narsa qolmasdi.
+        audit_log.info(
+            "Parol o'zgartirildi: user=%s epoch=%s", user.email, user.session_epoch
+        )
         return user
 
 

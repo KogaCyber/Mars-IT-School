@@ -119,9 +119,9 @@ def test_result_can_be_reopened_by_link(api, quiz):
         format="json",
     )
 
-    response = api.get(reverse("v1:quiz-result", args=[created.data["id"]]))
+    response = api.get(reverse("v1:quiz-result", args=[created.data["token"]]))
     assert response.status_code == 200
-    assert response.data["id"] == created.data["id"]
+    assert response.data["token"] == created.data["token"]
 
 
 def test_result_returns_match_percentages(api, quiz):

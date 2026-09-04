@@ -30,7 +30,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+          "value": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()"
         },
         {
           "key": "Strict-Transport-Security",
@@ -38,7 +38,15 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://api.marsitschool.uz https://*.up.railway.app; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com; media-src 'self' https://api.marsitschool.uz https://*.up.railway.app; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://api.marsitschool.uz https://mars-it-school-production.up.railway.app https://server.arcgisonline.com; font-src 'self' data:; connect-src 'self' https://api.marsitschool.uz https://mars-it-school-production.up.railway.app; frame-src 'self' https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com; media-src 'self' https://api.marsitschool.uz https://mars-it-school-production.up.railway.app; worker-src 'self' blob:; manifest-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "X-DNS-Prefetch-Control",
+          "value": "off"
         }
       ]
     },

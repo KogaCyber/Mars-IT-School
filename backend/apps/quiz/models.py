@@ -1,5 +1,7 @@
 """«Тест» va «Результаты теста» sahifalari — proforientatsiya testi."""
 
+import secrets
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -199,8 +201,28 @@ class Option(TranslatedModel, TimeStampedModel):
         return self.text_ru
 
 
+def new_public_token() -> str:
+    """Natija havolasi uchun taxmin qilib bo'lmaydigan identifikator (256 bit)."""
+    return secrets.token_urlsafe(32)
+
+
 class Submission(TimeStampedModel):
     """Foydalanuvchi topshirgan test va uning natijasi."""
+
+    # Natija sahifasi havola orqali ochiladi va hech qanday autentifikatsiya
+    # talab qilmaydi (odam natijani do'stiga yuborishi mumkin). Manzilda
+    # MongoDB `_id` sini ishlatib bo'lmaydi: ObjectId — vaqt tamg'asi,
+    # mashina identifikatori va ketma-ket hisoblagichdan iborat, ya'ni bitta
+    # natija havolasini bilgan odam qo'shnisinikini ham taxmin qila oladi.
+    # Bu maydon esa 256 bitlik kriptografik tasodifiy qiymat.
+    public_token = models.CharField(
+        "havola kaliti",
+        max_length=64,
+        unique=True,
+        db_index=True,
+        default=new_public_token,
+        editable=False,
+    )
 
     quiz = models.ForeignKey(
         Quiz, verbose_name=_("test"), on_delete=models.CASCADE, related_name="submissions"

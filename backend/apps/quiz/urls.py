@@ -8,6 +8,7 @@ router.register("quizzes", QuizViewSet, basename="quiz")
 
 urlpatterns = [
     path("quizzes/<slug:slug>/submit/", QuizSubmitView.as_view(), name="quiz-submit"),
-    path("quiz-results/<str:pk>/", QuizResultView.as_view(), name="quiz-result"),
+    # Manzilda `Submission.public_token` (URL-safe base64, 43 belgi).
+    path("quiz-results/<str:token>/", QuizResultView.as_view(), name="quiz-result"),
     path("", include(router.urls)),
 ]

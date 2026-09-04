@@ -44,6 +44,7 @@ from .serializers import (
 )
 
 logger = logging.getLogger(__name__)
+audit_log = logging.getLogger("security.audit")
 
 #: Bosh sahifa javobidagi har bir ro'yxatning eng ko'p elementi.
 HOME_SECTION_LIMIT = 24
@@ -62,6 +63,14 @@ def staff_required(view):
     def wrapper(request, *args, **kwargs):
         user = getattr(request, "user", None)
         if not (user and user.is_authenticated and user.is_active and user.is_staff):
+            # Xodimga mo'ljallangan manzilga urinish — o'z-o'zidan shubhali
+            # voqea. Qayd etilmasa, sekin va uzoq davom etadigan qidiruvni
+            # (manzillarni birma-bir sinab ko'rish) hech kim sezmasdi.
+            audit_log.warning(
+                "Xodim huquqisiz murojaat: path=%s user=%s",
+                request.path,
+                getattr(user, "email", "anonim"),
+            )
             raise PermissionDenied
         return view(request, *args, **kwargs)
 

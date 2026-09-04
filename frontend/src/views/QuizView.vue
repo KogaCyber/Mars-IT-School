@@ -109,7 +109,7 @@ async function submit() {
       full_name: contact.full_name.trim(),
       phone: contact.phone.trim() ? toPhonePayload(contact.phone) : '',
     })
-    router.push({ name: 'quiz-result', params: { id: result.id } })
+    router.push({ name: 'quiz-result', params: { token: result.token } })
   } catch (err) {
     ui.notify(normalizeError(err).detail, 'error')
   } finally {

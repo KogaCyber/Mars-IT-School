@@ -1,6 +1,3 @@
-from bson import ObjectId
-from bson.errors import InvalidId
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
@@ -64,23 +61,36 @@ class QuizSubmitView(APIView):
         )
 
 
+class ResultThrottle(ScopedRateThrottle):
+    """Natijalarni ketma-ket so'rab ko'rishga (sanashga) qarshi cheklov."""
+
+    scope = "result"
+
+
 class QuizResultView(APIView):
-    """Natija sahifasini havola orqali qayta ochish uchun."""
+    """Natija sahifasini havola orqali qayta ochish uchun.
+
+    Manzilda `Submission.public_token` turadi — 256 bitlik tasodifiy qiymat.
+    Ilgari bu yerda MongoDB `_id` si ishlatilardi; ObjectId esa vaqt tamg'asi
+    va ketma-ket hisoblagichdan tuzilgani uchun bitta havolani bilgan odam
+    boshqalarnikini ham taxmin qila olardi (IDOR). Endi taxmin qilish
+    amaliy jihatdan imkonsiz, ustiga cheklov ham qo'yilgan.
+    """
 
     permission_classes = [AllowAny]
+    throttle_classes = [ResultThrottle]
     serializer_class = SubmissionResultSerializer
 
     @extend_schema(responses=SubmissionResultSerializer)
-    def get(self, request, pk: str):
-        # Manzildagi qiymat foydalanuvchidan keladi (havola qo'lda tahrirlanishi
-        # mumkin). ObjectId bo'lmasa MongoDB maydoni `ValidationError` ko'tarib
-        # 500 berardi — buzuq havola uchun to'g'ri javob esa 404.
-        try:
-            object_id = ObjectId(str(pk))
-        except (InvalidId, TypeError, ValueError) as exc:
-            raise Http404("Natija topilmadi.") from exc
-
+    def get(self, request, token: str):
         submission = get_object_or_404(
-            Submission.objects.select_related("outcome"), pk=object_id
+            Submission.objects.select_related("outcome"), public_token=token
         )
-        return Response(SubmissionResultSerializer(submission, context={"request": request}).data)
+        response = Response(
+            SubmissionResultSerializer(submission, context={"request": request}).data
+        )
+        # Natija — shaxsiy havola. Uni CDN yoki proksi keshlab qo'ymasligi va
+        # tashqi saytga `Referer` orqali sizib chiqmasligi kerak.
+        response["Cache-Control"] = "no-store, private"
+        response["Referrer-Policy"] = "no-referrer"
+        return response

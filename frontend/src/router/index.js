@@ -50,7 +50,10 @@ const routes = [
       { path: 'space', name: 'space', component: () => import('@/views/SpaceView.vue') },
       { path: 'test', name: 'quiz', component: () => import('@/views/QuizView.vue') },
       {
-        path: 'test/rezultat/:id',
+        // Manzilda natijaning MAXFIY kaliti turadi (`Submission.public_token`),
+        // MongoDB `_id` si emas: ObjectId ketma-ket o'sadi va bitta havolani
+        // bilgan odam boshqalarnikini taxmin qila olardi.
+        path: 'test/rezultat/:token',
         name: 'quiz-result',
         component: () => import('@/views/QuizResultView.vue'),
         props: true,

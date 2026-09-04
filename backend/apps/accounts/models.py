@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from apps.core.models import TimeStampedModel
+from apps.core.uploads import avatar_upload_to
 
 from .managers import UserManager
 from .validators import validate_uz_phone
@@ -26,7 +27,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     )
     first_name = models.CharField(_("ism"), max_length=60)
     last_name = models.CharField(_("familiya"), max_length=60, blank=True)
-    avatar = models.ImageField(_("avatar"), upload_to="avatars/", blank=True)
+    avatar = models.ImageField(_("avatar"), upload_to=avatar_upload_to, blank=True)
     role = models.CharField(
         _("rol"), max_length=16, choices=Role.choices, default=Role.STUDENT, db_index=True
     )

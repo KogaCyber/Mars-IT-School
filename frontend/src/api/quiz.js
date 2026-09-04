@@ -16,8 +16,11 @@ export async function submitQuiz(slug, payload) {
   return data
 }
 
-/** Natijani havola orqali qayta ochish. */
-export async function fetchQuizResult(id) {
-  const { data } = await http.get(`/quiz-results/${id}/`)
+/**
+ * Natijani havola orqali qayta ochish.
+ * @param {string} token Natijaning maxfiy kaliti (`Submission.public_token`).
+ */
+export async function fetchQuizResult(token) {
+  const { data } = await http.get(`/quiz-results/${encodeURIComponent(token)}/`)
   return data
 }

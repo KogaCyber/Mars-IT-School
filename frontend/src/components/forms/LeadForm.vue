@@ -1,7 +1,7 @@
 <script setup>
 /**
  * Ariza formasi — saytdagi barcha formalar shu komponentdan foydalanadi.
- * Xavfsizlik: honeypot maydoni + serverda so'rovlar cheklovi (5 ta / soat).
+ * Xavfsizlik: honeypot maydoni + serverda so'rovlar cheklovi (`lead` scope, standart 40 ta / soat).
  */
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'

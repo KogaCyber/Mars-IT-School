@@ -2,7 +2,7 @@
 /**
  * «Анализ способностей» — testda o'lchangan sakkizta ko'nikma.
  *
- * Foizlar backenddan keladi (`/quiz-results/<id>/` → `skills`): har bir javob
+ * Foizlar backenddan keladi (`/quiz-results/<token>/` → `skills`): har bir javob
  * varianti bitta ko'nikmani ko'rsatadi, foiz — shu ko'nikma taklif qilingan
  * savollarda to'plangan ballning maksimumga nisbati.
  *

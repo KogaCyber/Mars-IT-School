@@ -2,7 +2,7 @@
 /**
  * «Совпадение с Frontend / Backend» — natija sahifasidagi moslik kartochkalari.
  *
- * Foizlar backenddan keladi (`/quiz-results/<id>/` → `matches`): ballar 100% ga
+ * Foizlar backenddan keladi (`/quiz-results/<token>/` → `matches`): ballar 100% ga
  * keltirilgan. Har bir kartochkada foiz paneli, shu foizga mos progress chizig'i
  * va yo'nalishning texnologiya yorliqlari bor.
  *

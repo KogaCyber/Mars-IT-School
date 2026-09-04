@@ -37,6 +37,36 @@ CACHE_KEY_PREFIX = "publicapi"
 #: Sayt so'rovlariga qo'shadigan kontent versiyasi parametri.
 VERSION_PARAM = "_v"
 
+#: Kesh kalitiga KIRADIGAN so'rov parametrlari (oq ro'yxat).
+#:
+#: Nega oq ro'yxat: ilgari kalit butun `get_full_path()` dan qurilardi, ya'ni
+#: `?zzz=1`, `?zzz=2`, … kabi ahamiyatsiz parametr har safar YANGI kalit
+#: yasardi. Javob esa har biri uchun alohida saqlanardi — bir necha ming
+#: so'rov keshdagi haqiqiy javoblarni siqib chiqarishi va butun saytni
+#: MongoDB'ga qaytarib yuborishi mumkin edi (kesh to'ldirish orqali DoS).
+#: Endi kalitga faqat javobga HAQIQATAN ta'sir qiladigan parametrlar kiradi,
+#: qolganlari e'tiborga olinmaydi.
+CACHE_KEY_PARAMS = frozenset(
+    {
+        "lang",  # kontent tili
+        "page",  # sahifalash
+        "page_size",
+        "search",  # qidiruv
+        "ordering",  # tartiblash
+        "category__slug",  # yangiliklar filtri
+        "is_featured",
+        "direction",  # kurslar filtri
+        "age",
+        "min_age",
+        "max_age",
+        "branch",
+    }
+)
+
+#: Bitta parametr qiymati shuncha belgidan uzun bo'lsa qisqartiriladi —
+#: uzun qiymat bilan ham cheksiz kalit yasab bo'lmasin.
+MAX_PARAM_VALUE = 64
+
 
 def _ttl(explicit=None) -> int:
     if explicit is not None:
@@ -44,13 +74,34 @@ def _ttl(explicit=None) -> int:
     return getattr(settings, "PUBLIC_CACHE_SECONDS", 60)
 
 
+def _normalized_query(request) -> str:
+    """Kalitga kiradigan so'rov parametrlari — tartiblangan va cheklangan holda.
+
+    Faqat `CACHE_KEY_PARAMS` dagi nomlar olinadi, qiymatlar uzunligi
+    cheklanadi va tartib doimiy bo'ladi (`?a=1&b=2` va `?b=2&a=1` — bitta
+    kalit). Shu tufayli kalitlar to'plami cheklangan bo'lib qoladi.
+    """
+    params = getattr(request, "GET", None)
+    if not params:
+        return ""
+
+    pairs = []
+    for name in sorted(CACHE_KEY_PARAMS & set(params.keys())):
+        for value in sorted(params.getlist(name)):
+            pairs.append(f"{name}={value[:MAX_PARAM_VALUE]}")
+    return "&".join(pairs)
+
+
 def _cache_key(request) -> str:
-    # `get_full_path()` ichida `?lang=` ham bor, `resolve_language()` esa
-    # `Accept-Language` sarlavhasini hisobga oladi — ikkalasi ham kalitda.
-    # Kontent versiyasi ham kalitda: admin panelda biror narsa o'zgarishi bilan
-    # kalit o'zgaradi va eski javob o'z-o'zidan yaroqsiz bo'ladi.
-    raw = f"{request.get_full_path()}|{resolve_language(request)}|{current_revision()}"
-    digest = hashlib.md5(raw.encode("utf-8"), usedforsecurity=False).hexdigest()
+    # Kalitga kiradiganlar: manzil yo'li, oq ro'yxatdagi parametrlar, til
+    # (`?lang=` yoki `Accept-Language`) va kontent versiyasi. Versiya tufayli
+    # admin panelda biror narsa o'zgarishi bilan barcha eski kalitlar
+    # o'z-o'zidan yaroqsiz bo'ladi.
+    raw = (
+        f"{request.path}?{_normalized_query(request)}"
+        f"|{resolve_language(request)}|{current_revision()}"
+    )
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
     return f"{CACHE_KEY_PREFIX}:{digest}"
 
 
