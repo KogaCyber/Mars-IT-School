@@ -6,7 +6,7 @@
  * skrolldan keyin biroz to'qroq (`bg-ink/60`) — oq bo'limlar ustida ham
  * oq matn o'qiladi. Chuqurlikni rang emas, `backdrop-filter` beradi.
  */
-import { useScrollLock, useWindowScroll } from '@vueuse/core'
+import { useWindowScroll } from '@vueuse/core'
 import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -14,6 +14,7 @@ import { useRoute } from 'vue-router'
 import logoMars from '@/assets/icons/logo-mars.svg'
 import rocketIcon from '@/assets/icons/rocket.svg'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue'
+import { useScrollLock } from '@/composables/useScrollLock'
 import { useSiteStore } from '@/stores/site'
 import { useUiStore } from '@/stores/ui'
 
@@ -35,7 +36,7 @@ const site = useSiteStore()
 const { y } = useWindowScroll()
 
 // Menyu ochiq bo'lganda orqa fon skroll qilinmaydi.
-const isScrollLocked = useScrollLock(document.body)
+const isScrollLocked = useScrollLock()
 
 const isScrolled = computed(() => y.value > 20)
 const phone = computed(() => site.settings.phone || '+78 777 77 57')
@@ -142,7 +143,7 @@ watch(
         <nav
           v-if="ui.isMobileMenuOpen"
           id="mobile-menu"
-          class="border-line bg-ink/80 pointer-events-auto mt-3 overflow-hidden rounded-block border backdrop-blur-xl xl:hidden"
+          class="border-line bg-ink/80 pointer-events-auto mt-3 max-h-[calc(100dvh-5.5rem)] overflow-y-auto rounded-block border backdrop-blur-xl xl:hidden"
           :aria-label="t('header.mobileMenu')"
         >
           <ul class="divide-line divide-y px-5">

@@ -2,6 +2,7 @@ import random
 
 from bson import ObjectId
 from bson.errors import InvalidId
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.accounts.validators import normalize_phone, validate_uz_phone
@@ -99,11 +100,11 @@ class SubmissionCreateSerializer(serializers.Serializer):
         jimgina tashlab yuboriladi — qolgan javoblar baribir hisoblanadi.
         """
         if len(value) > 100:
-            raise serializers.ValidationError("Javoblar soni juda ko'p.")
+            raise serializers.ValidationError(_("Javoblar soni juda ko'p."))
 
         cleaned = {key: item for key, item in value.items() if _is_object_id(key)}
         if not cleaned:
-            raise serializers.ValidationError("Javoblar yaroqsiz.")
+            raise serializers.ValidationError(_("Javoblar yaroqsiz."))
         return cleaned
 
 

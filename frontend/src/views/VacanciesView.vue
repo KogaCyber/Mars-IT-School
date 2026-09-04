@@ -17,8 +17,15 @@ import VacanciesSection from '@/components/vacancies/VacanciesSection.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
 import { useSeo } from '@/composables/useSeo'
 import { absoluteUrl, jobPostingSchema } from '@/utils/schema'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Sahifa tepasidagi matn admin paneldan («Vakansiyalar» sahifasi bo'limlari → «Hero»).
+const hero = useSection('vacancies.hero', {
+  title: 'vacancies.heroTitle',
+  text: 'vacancies.heroDescription',
+})
 
 const { data: vacancies, isLoading } = useAsyncData(fetchVacancies, [])
 
@@ -36,13 +43,13 @@ useSeo(() => ({
 
 <template>
   <PageHero
-    :title="t('vacancies.heroTitle').split('\n')"
+    :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },
       { label: t('nav.vacancies') },
     ]"
-    :image="vacanciesAstronaut"
-    :description="t('vacancies.heroDescription')"
+    :image="hero.image || vacanciesAstronaut"
+    :description="hero.text"
   />
 
   <div v-if="isLoading" class="bg-ink"><BaseSpinner /></div>

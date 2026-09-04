@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
-from apps.core.translation import translation_fieldset
+from apps.core.translation import translated_fields, translation_fieldset
 
 from .models import Course, CourseFaq, CourseFeature, CourseStage, Direction
 
@@ -8,13 +9,16 @@ from .models import Course, CourseFaq, CourseFeature, CourseStage, Direction
 class CourseFeatureInline(admin.StackedInline):
     model = CourseFeature
     extra = 0
-    fields = ("order", "title_ru", "description_ru", "icon")
+    fields = ("order", *translated_fields("title", "description"), "icon")
 
 
 class CourseStageInline(admin.StackedInline):
     model = CourseStage
     extra = 0
-    fields = ("order", "number", "title_ru", "description_ru", "duration_months", "image")
+    fields = (
+        "order", "number", *translated_fields("title", "description"),
+        "duration_months", "image",
+    )
 
 
 class CourseFaqInline(admin.StackedInline):
@@ -22,10 +26,9 @@ class CourseFaqInline(admin.StackedInline):
 
     model = CourseFaq
     extra = 0
-    fields = ("order", "question_ru", "answer_ru", "question_uz", "answer_uz",
-              "question_en", "answer_en")
-    verbose_name = "Savol-javob"
-    verbose_name_plural = "Savol-javoblar (sahifaning pastida)"
+    fields = ("order", *translated_fields("question", "answer"))
+    verbose_name = _("Savol-javob")
+    verbose_name_plural = _("Savol-javoblar (sahifaning pastida)")
 
 
 @admin.register(Direction)
@@ -49,9 +52,9 @@ class CourseAdmin(admin.ModelAdmin):
     inlines = [CourseFeatureInline, CourseStageInline, CourseFaqInline]
     fieldsets = (
         (None, {"fields": ("title_ru", "slug", "direction", "subtitle_ru", "description_ru")}),
-        ("Ko'rinish", {"fields": ("card_image", "hero_image", "accent_color")}),
+        (_("Ko'rinish"), {"fields": ("card_image", "hero_image", "accent_color")}),
         (
-            "Shartlar",
+            _("Shartlar"),
             {
                 "fields": (
                     "age_from",
@@ -63,7 +66,7 @@ class CourseAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("O'qituvchilar", {"fields": ("teachers",)}),
-        ("Chop etish", {"fields": ("order", "is_featured", "is_published")}),
+        (_("O'qituvchilar"), {"fields": ("teachers",)}),
+        (_("Chop etish"), {"fields": ("order", "is_featured", "is_published")}),
         translation_fieldset("title", "subtitle", "description"),
     )

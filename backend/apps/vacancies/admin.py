@@ -16,9 +16,9 @@ class VacancyAdmin(admin.ModelAdmin):
     search_fields = ("title_ru", "description_ru")
     fieldsets = (
         (None, {"fields": ("title_ru", "slug", "branch", "employment_type", "icon_name")}),
-        ("Matn", {"fields": ("description_ru", "requirements_ru", "conditions_ru")}),
-        ("Maosh", {"fields": ("salary_from", "salary_to")}),
-        ("Chop etish", {"fields": ("order", "is_open", "is_published")}),
+        (_("Matn"), {"fields": ("description_ru", "requirements_ru", "conditions_ru")}),
+        (_("Maosh"), {"fields": ("salary_from", "salary_to")}),
+        (_("Chop etish"), {"fields": ("order", "is_open", "is_published")}),
         translation_fieldset("title", "description", "requirements", "conditions"),
     )
 

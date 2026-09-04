@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 
 from .models import (
     FAQ,
@@ -10,10 +11,19 @@ from .models import (
     ProjectDefenceStep,
     SchoolFeature,
     SiteSettings,
-    SpaceFeature,
     Statistic,
 )
+from .section_admin import register_section_admins
 from .translation import translation_fieldset
+
+# «Huquqlar guruhlari» (auth.Group) admin menyudan olib tashlandi: maktab
+# panelida bir nechta xodim ishlaydi va huquqlar bevosita foydalanuvchi
+# kartochkasida beriladi — guruhlar faqat menyuni chalkashtirardi.
+if Group in admin.site._registry:
+    admin.site.unregister(Group)
+
+# Sahifa bo'limlari (matn, rasm, tugmalar) — har bir sahifa uchun alohida ro'yxat.
+register_section_admins(admin.site)
 
 
 @admin.register(SiteSettings)
@@ -75,21 +85,10 @@ class FAQAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(SpaceFeature)
-class SpaceFeatureAdmin(admin.ModelAdmin):
-    list_display = ("title_ru", "order", "is_published")
-    list_editable = ("order", "is_published")
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "title_ru", "description_ru", "icon", "screenshot", "order", "is_published",
-                )
-            },
-        ),
-        translation_fieldset("title", "description"),
-    )
+# «SPACE imkoniyatlari» (SpaceFeature) admin menyudan olib tashlandi: sayt bu
+# ro'yxatni hech qachon o'qimasdi — SPACE sahifasidagi kartochkalar endi
+# «SPACE sahifasi bo'limlari → Imkoniyatlar» ichida tahrirlanadi. Model va uning
+# API'si eski yozuvlar yo'qolmasligi uchun joyida qoldirildi.
 
 
 @admin.register(Statistic)

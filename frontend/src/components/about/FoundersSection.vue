@@ -18,8 +18,15 @@ import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Blok sarlavhasi admin paneldan («Biz haqimizda» → «Asoschilar»).
+const section = useSection('about.founders', {
+  eyebrow: 'about.foundersEyebrow',
+  title: 'about.foundersTitle',
+})
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -121,9 +128,9 @@ watch(
 
     <div class="container-page relative">
       <header class="lg:text-center">
-        <p class="eyebrow">{{ t('about.foundersEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
         <h2 class="section-title mt-5 text-white">
-          <span v-for="line in t('about.foundersTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>

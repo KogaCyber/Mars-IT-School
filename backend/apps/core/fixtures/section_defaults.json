@@ -1,0 +1,1214 @@
+{
+  "home.hero": {
+    "fields": {
+      "title_ru": "Учимся создавать будущее",
+      "title_uz": "Kelajakni yaratishni o‘rganamiz",
+      "title_en": "Learning to build the future",
+      "text_ru": "Обучаем детей программированию, созданию сайтов, современным цифровым технологиям и развиваем навыки, которые пригодятся в будущем.",
+      "text_uz": "Bolalarni dasturlash, sayt yaratish va zamonaviy raqamli texnologiyalarga o‘rgatamiz hamda kelajakda asqotadigan ko‘nikmalarni rivojlantiramiz.",
+      "text_en": "We teach children programming, web development and modern digital technology, building skills that will matter in the future.",
+      "subtitle_ru": "От первых шагов до уверенного уровня разработки.",
+      "subtitle_uz": "Birinchi qadamlardan ishonchli dasturchi darajasigacha.",
+      "subtitle_en": "From the very first steps to a confident developer level.",
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson",
+      "button2_label_ru": "Посмотреть курсы",
+      "button2_label_uz": "Kurslarni ko‘rish",
+      "button2_label_en": "Browse courses"
+    }
+  },
+  "home.advantages": {
+    "fields": {
+      "eyebrow_ru": "Почему мы",
+      "eyebrow_uz": "Nega biz",
+      "eyebrow_en": "Why us",
+      "title_ru": "Почему выбирают\nMARS IT School",
+      "title_uz": "Nega MARS IT School\nni tanlashadi",
+      "title_en": "Why families choose\nMARS IT School",
+      "text_ru": "Мы создаём среду, в которой ребёнку интересно учиться, развиваться и применять знания на практике.",
+      "text_uz": "Biz bolaga o‘rganish, rivojlanish va bilimini amalda qo‘llash qiziqarli bo‘ladigan muhit yaratamiz.",
+      "text_en": "We build an environment where children enjoy learning, growing and putting their knowledge into practice."
+    }
+  },
+  "home.space": {
+    "fields": {
+      "eyebrow_ru": "Платформа",
+      "eyebrow_uz": "Platforma",
+      "eyebrow_en": "Platform",
+      "title_ru": "для учеников\nи родителей",
+      "title_uz": "o‘quvchilar\nva ota-onalar uchun",
+      "title_en": "for students\nand parents",
+      "text_ru": "SPACE объединяет всё, что связано с обучением, в одном месте и делает взаимодействие между школой, учениками и родителями максимально удобным.",
+      "text_uz": "SPACE o‘qish bilan bog‘liq hamma narsani bitta joyga jamlaydi va maktab, o‘quvchilar hamda ota-onalar o‘rtasidagi muloqotni maksimal darajada qulay qiladi.",
+      "text_en": "SPACE brings everything related to learning into one place and makes communication between the school, students and parents as convenient as possible."
+    }
+  },
+  "home.news": {
+    "fields": {
+      "eyebrow_ru": "Новости и мероприятия",
+      "eyebrow_uz": "Yangiliklar va tadbirlar",
+      "eyebrow_en": "News and events",
+      "title_ru": "Что происходит\nв школе",
+      "title_uz": "Maktabda nimalar\nbo‘lyapti",
+      "title_en": "What is happening\nat the school",
+      "button_label_ru": "Все новости",
+      "button_label_uz": "Barcha yangiliklar",
+      "button_label_en": "All news"
+    }
+  },
+  "home.team": {
+    "fields": {
+      "eyebrow_ru": "Команда",
+      "eyebrow_uz": "Jamoa",
+      "eyebrow_en": "Team",
+      "title_ru": "Преподаватели,\nкоторые работают в IT",
+      "title_uz": "IT sohasida ishlaydigan\no‘qituvchilar",
+      "title_en": "Teachers who work\nin the IT industry"
+    }
+  },
+  "home.reviews": {
+    "fields": {
+      "eyebrow_ru": "Отзывы",
+      "eyebrow_uz": "Fikrlar",
+      "eyebrow_en": "Reviews",
+      "title_ru": "Что говорят родители наших учеников",
+      "title_uz": "Ota-onalar bizning o‘quvchilarimiz haqida nima deydi",
+      "title_en": "What parents of our students say",
+      "text_ru": "Лучше всего о школе рассказывают родители, чьи дети уже проходят обучение в MARS IT School.",
+      "text_uz": "Maktab haqida eng yaxshisini farzandlari allaqachon o‘qiyotgan ota-onalar aytib beradi.",
+      "text_en": "The best stories about the school come from parents whose children already study at MARS IT School."
+    }
+  },
+  "home.faq": {
+    "fields": {
+      "eyebrow_ru": "F.A.Q",
+      "eyebrow_uz": "F.A.Q",
+      "eyebrow_en": "F.A.Q",
+      "title_ru": "Частые вопросы",
+      "title_uz": "Ko‘p beriladigan savollar",
+      "title_en": "Frequently asked questions"
+    }
+  },
+  "about.hero": {
+    "fields": {
+      "title_ru": "Учимся.\nСоздаём.\nРазвиваемся.",
+      "title_uz": "O‘rganamiz.\nYaratamiz.\nRivojlanamiz.",
+      "title_en": "Learn.\nCreate.\nGrow."
+    }
+  },
+  "about.future": {
+    "fields": {
+      "eyebrow_ru": "Для родителей",
+      "eyebrow_uz": "Ota-onalar uchun",
+      "eyebrow_en": "For parents",
+      "title_ru": "Почему это важно для будущего",
+      "title_uz": "Nega bu kelajak uchun muhim",
+      "title_en": "Why this matters for the future",
+      "text_ru": "IT-навыки сегодня — это базовая грамотность, которая пригодится ребёнку независимо от того, станет он разработчиком или нет.",
+      "text_uz": "Bugungi kunda IT-ko‘nikmalar — bu bazaviy savodxonlik bo‘lib, bola dasturchi bo‘ladimi yoki yo‘qmi, baribir asqotadi.",
+      "text_en": "IT skills today are basic literacy — useful to a child whether or not they become a developer.",
+      "note_ru": "Чем раньше ребёнок начнёт, тем спокойнее и увереннее он будет чувствовать себя в цифровом мире.",
+      "note_uz": "Bola qanchalik erta boshlasa, raqamli dunyoda o‘zini shunchalik xotirjam va ishonchli his qiladi.",
+      "note_en": "The earlier a child starts, the calmer and more confident they will feel in the digital world."
+    }
+  },
+  "about.skills": {
+    "fields": {
+      "eyebrow_ru": "Влияние обучения",
+      "eyebrow_uz": "O‘qishning ta’siri",
+      "eyebrow_en": "The impact of learning",
+      "title_ru": "Какие навыки развивает ребёнок",
+      "title_uz": "Bola qanday ko‘nikmalarni rivojlantiradi",
+      "title_en": "Which skills a child develops"
+    }
+  },
+  "about.demoday": {
+    "fields": {
+      "eyebrow_ru": "Demo Day",
+      "eyebrow_uz": "Demo Day",
+      "eyebrow_en": "Demo Day",
+      "title_ru": "День, когда\nребёнок\nзащищает\nсвой проект",
+      "title_uz": "Bola o‘z loyihasini\nhimoya qiladigan\nkun",
+      "title_en": "The day a child\ndefends\ntheir own\nproject",
+      "text_ru": "Раз в несколько месяцев ученики презентуют свои работы родителям и приглашённым экспертам из IT-компаний. Это тренировка публичных выступлений, обратная связь и главная мотивация продолжать.",
+      "text_uz": "Bir necha oyda bir marta o‘quvchilar o‘z ishlarini ota-onalarga va IT-kompaniyalardan taklif etilgan ekspertlarga taqdim etadi. Bu — ommaviy nutq mashqi, teskari aloqa va davom etish uchun asosiy motivatsiya.",
+      "text_en": "Every few months students present their work to parents and invited experts from IT companies. It is practice in public speaking, a source of feedback and the main motivation to keep going."
+    }
+  },
+  "about.school": {
+    "fields": {
+      "eyebrow_ru": "О школе",
+      "eyebrow_uz": "Maktab haqida",
+      "eyebrow_en": "About the school",
+      "title_ru": "MARS IT —\nэто не просто\nкурсы",
+      "title_uz": "MARS IT — bu\noddiy kurslar\nemas",
+      "title_en": "MARS IT is\nnot just\na course",
+      "button_label_ru": "Смотреть видео о школе",
+      "button_label_uz": "Maktab haqidagi videoni ko‘rish",
+      "button_label_en": "Watch a video about the school"
+    }
+  },
+  "about.founders": {
+    "fields": {
+      "eyebrow_ru": "Основатели",
+      "eyebrow_uz": "Asoschilar",
+      "eyebrow_en": "Founders",
+      "title_ru": "Кто стоит\nза школой",
+      "title_uz": "Maktab ortida\nkim turadi",
+      "title_en": "Who is behind\nthe school"
+    }
+  },
+  "about.teachers": {
+    "fields": {
+      "eyebrow_ru": "Команда",
+      "eyebrow_uz": "Jamoa",
+      "eyebrow_en": "Team",
+      "title_ru": "Преподаватели,\nкоторые\nработают в IT",
+      "title_uz": "IT sohasida\nishlaydigan\no‘qituvchilar",
+      "title_en": "Teachers who\nwork in the\nIT industry",
+      "text_ru": "Занятия проводят действующие специалисты крупных компаний с опытом работы не менее 5 лет. Они помогают ученикам не только освоить теорию, но и понять, как технологии применяются на практике.",
+      "text_uz": "Darslarni yirik kompaniyalarda kamida 5 yillik tajribaga ega amaldagi mutaxassislar olib boradi. Ular o‘quvchilarga nafaqat nazariyani o‘zlashtirishga, balki texnologiyalar amalda qanday qo‘llanishini tushunishga ham yordam beradi.",
+      "text_en": "Classes are taught by working specialists from major companies with at least five years of experience. They help students not only master the theory, but also see how the technology is used in practice."
+    }
+  },
+  "courses.hero": {
+    "fields": {
+      "title_ru": "Курсы\nMARS IT School",
+      "title_uz": "Kurslar\nMARS IT School",
+      "title_en": "Courses at\nMARS IT School",
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson"
+    }
+  },
+  "courses.directions": {
+    "fields": {
+      "title_ru": "Направления",
+      "title_uz": "Yo‘nalishlar",
+      "title_en": "Tracks"
+    },
+    "items": [
+      {
+        "title_ru": "IT Kids",
+        "title_uz": "IT Kids",
+        "title_en": "IT Kids",
+        "label_ru": "Первые шаги в мир IT через робототехнику",
+        "label_uz": "Robototexnika orqali IT olamiga birinchi qadamlar",
+        "label_en": "First steps into IT through robotics",
+        "text_ru": "Ребёнок изучает IT через игру — собирает роботов, программирует и создаёт умные дома. Осваивает C++ и Python, работает с Arduino.",
+        "text_uz": "Bola IT’ni o‘yin orqali o‘rganadi — robotlar yig‘adi, dasturlaydi va aqlli uy yaratadi. C++ va Python’ni o‘zlashtiradi, Arduino bilan ishlaydi.",
+        "text_en": "Children learn IT through play — building robots, writing code and creating smart homes. They pick up C++ and Python and work with Arduino.",
+        "value_ru": "9–11 лет",
+        "value_uz": "9–11 yosh",
+        "value_en": "ages 9–11",
+        "url": "/kursy/it-kids",
+        "icon_name": "html,css,js"
+      },
+      {
+        "title_ru": "IT-разработка",
+        "title_uz": "IT-dasturlash",
+        "title_en": "IT Development",
+        "label_ru": "Сайты, боты и ИИ — всё в одном курсе",
+        "label_uz": "Saytlar, botlar va sun’iy intellekt — hammasi bitta kursda",
+        "label_en": "Websites, bots and AI — all in one course",
+        "text_ru": "Ребёнок научится создавать сайты, Telegram-боты, работать с базами данных и использовать ИИ. Формирует прочную базу программирования и мышления разработчика.",
+        "text_uz": "Bola saytlar va Telegram-botlar yaratishni, ma’lumotlar bazasi bilan ishlashni va sun’iy intellektdan foydalanishni o‘rganadi. Dasturlashning mustahkam poydevorini va dasturchi tafakkurini shakllantiradi.",
+        "text_en": "Children learn to build websites and Telegram bots, work with databases and use AI. They build a solid programming foundation and a developer’s way of thinking.",
+        "value_ru": "12–17 лет",
+        "value_uz": "12–17 yosh",
+        "value_en": "ages 12–17",
+        "url": "/kursy/it-razrabotka",
+        "icon_name": "html,css,js,react"
+      }
+    ]
+  },
+  "courses.coming_soon": {
+    "fields": {
+      "title_ru": "Скоро...",
+      "title_uz": "Tez orada...",
+      "title_en": "Coming soon...",
+      "text_ru": "Готовим новые направления: AI, Game Development, Design и расширенную Robotics.",
+      "text_uz": "Yangi yo‘nalishlar tayyorlanmoqda: AI, Game Development, Design va kengaytirilgan Robotics.",
+      "text_en": "New tracks are on the way: AI, Game Development, Design and extended Robotics."
+    }
+  },
+  "itkids.hero": {
+    "fields": {
+      "title_ru": "IT KIDS\nразработка",
+      "title_uz": "IT KIDS\ndasturlash",
+      "title_en": "IT KIDS\ndevelopment",
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson",
+      "button2_label_ru": "Программа обучения",
+      "button2_label_uz": "O‘quv dasturi",
+      "button2_label_en": "Course program"
+    }
+  },
+  "itkids.facts": {
+    "items": [
+      {
+        "value_ru": "9–11 лет",
+        "value_uz": "9–11 yosh",
+        "value_en": "ages 9–11",
+        "label_ru": "возраст",
+        "label_uz": "yosh",
+        "label_en": "age"
+      },
+      {
+        "value_ru": "до 24 мес.",
+        "value_uz": "24 oygacha",
+        "value_en": "up to 24 mo.",
+        "label_ru": "Продолжительность",
+        "label_uz": "Davomiyligi",
+        "label_en": "Duration"
+      },
+      {
+        "value_ru": "Практика",
+        "value_uz": "Amaliyot",
+        "value_en": "Hands-on",
+        "label_ru": "Формат",
+        "label_uz": "Format",
+        "label_en": "Format"
+      },
+      {
+        "value_ru": "до 12 уч.",
+        "value_uz": "12 tagacha",
+        "value_en": "up to 12",
+        "label_ru": "Группа",
+        "label_uz": "Guruh",
+        "label_en": "Group"
+      }
+    ]
+  },
+  "itkids.about": {
+    "fields": {
+      "eyebrow_ru": "О курсе",
+      "eyebrow_uz": "Kurs haqida",
+      "eyebrow_en": "About the course",
+      "title_ru": "Сначала пробуем, потом объясняем",
+      "title_uz": "Avval sinab ko‘ramiz, keyin tushuntiramiz",
+      "title_en": "Try first, explain after",
+      "text_ru": "Каждое занятие сочетает короткую теорию и много практики. Ребёнок знакомится с компьютером, визуальным программированием и электроникой, а каждый модуль заканчивает собственным мини-проектом, который защищает перед группой.",
+      "text_uz": "Har bir dars qisqa nazariya va ko‘p amaliyotni birlashtiradi. Bola kompyuter, vizual dasturlash va elektronika bilan tanishadi, har bir modulni esa guruh oldida himoya qiladigan shaxsiy mini-loyiha bilan yakunlaydi.",
+      "text_en": "Every lesson mixes a short theory part with plenty of practice. Children get to know the computer, visual programming and electronics, and finish each module with their own mini-project, presented to the group."
+    },
+    "items": [
+      {
+        "title_ru": "Визуальное\nпрограммирование",
+        "title_uz": "Vizual\ndasturlash",
+        "title_en": "Visual\nprogramming",
+        "text_ru": "Scratch: игры, анимации, первые алгоритмы.",
+        "text_uz": "Scratch: o‘yinlar, animatsiyalar, dastlabki algoritmlar.",
+        "text_en": "Scratch: games, animations, first algorithms.",
+        "icon_name": "blocks"
+      },
+      {
+        "title_ru": "Робототехника",
+        "title_uz": "Robototexnika",
+        "title_en": "Robotics",
+        "text_ru": "Сборка роботов, датчики, моторы, соревнования.",
+        "text_uz": "Robot yig‘ish, datchiklar, motorlar, musobaqalar.",
+        "text_en": "Building robots, sensors, motors, competitions.",
+        "icon_name": "robot"
+      },
+      {
+        "title_ru": "Электроника\nи Arduino",
+        "title_uz": "Elektronika\nva Arduino",
+        "title_en": "Electronics\nand Arduino",
+        "text_ru": "Умный дом, светофор, сигнализация.",
+        "text_uz": "Aqlli uy, svetofor, signalizatsiya.",
+        "text_en": "Smart home, traffic lights, an alarm system.",
+        "icon_name": "wrench"
+      },
+      {
+        "title_ru": "Основы\nпрограммирования",
+        "title_uz": "Dasturlash\nasoslari",
+        "title_en": "Programming\nfundamentals",
+        "text_ru": "Переменные, условия, циклы на понятных примерах.",
+        "text_uz": "O‘zgaruvchilar, shartlar, sikllar — tushunarli misollarda.",
+        "text_en": "Variables, conditionals and loops through clear examples.",
+        "icon_name": "chip"
+      },
+      {
+        "title_ru": "Логика и алгоритмы",
+        "title_uz": "Mantiq va algoritmlar",
+        "title_en": "Logic and algorithms",
+        "text_ru": "Разбиение задачи на шаги, поиск ошибок.",
+        "text_uz": "Masalani qadamlarga bo‘lish, xatolarni topish.",
+        "text_en": "Breaking a task into steps and finding mistakes.",
+        "icon_name": "brain"
+      }
+    ]
+  },
+  "itkids.stages": {
+    "fields": {
+      "eyebrow_ru": "Программа",
+      "eyebrow_uz": "Dastur",
+      "eyebrow_en": "Program",
+      "title_ru": "Три этапа обучения",
+      "title_uz": "O‘qishning uch bosqichi",
+      "title_en": "Three stages of learning",
+      "text_ru": "Раскройте этап, чтобы посмотреть темы, программы и результат модуля.",
+      "text_uz": "Mavzular, dasturlar va modul natijasini ko‘rish uchun bosqichni oching.",
+      "text_en": "Open a stage to see its topics, tools and outcome.",
+      "note_ru": "Всего 9 месяцев · 3 этапа",
+      "note_uz": "Jami 9 oy · 3 bosqich",
+      "note_en": "9 months in total · 3 stages"
+    },
+    "items": [
+      {
+        "value_ru": "01",
+        "value_uz": "01",
+        "value_en": "01",
+        "title_ru": "Знакомство с IT и Scratch",
+        "title_uz": "IT va Scratch bilan tanishuv",
+        "title_en": "Getting to know IT and Scratch",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Ребёнок осваивает компьютер и создаёт первые игры в визуальной среде программирования.",
+        "text_uz": "Bola kompyuterni o‘zlashtiradi va vizual dasturlash muhitida birinchi o‘yinlarini yaratadi.",
+        "text_en": "Children get comfortable with the computer and build their first games in a visual programming environment.",
+        "list_ru": "Устройство компьютера и безопасная работа в интернете\nАлгоритмы и последовательности\nСпрайты, сцены и события в Scratch\nПеременные, условия и циклы\nПервая игра и анимация",
+        "list_uz": "Kompyuter tuzilishi va internetda xavfsiz ishlash\nAlgoritmlar va ketma-ketliklar\nScratch’da spraytlar, sahnalar va hodisalar\nO‘zgaruvchilar, shartlar va sikllar\nBirinchi o‘yin va animatsiya",
+        "list_en": "How a computer works and staying safe online\nAlgorithms and sequences\nSprites, stages and events in Scratch\nVariables, conditionals and loops\nA first game and animation",
+        "note_ru": "Собственная мини-игра, опубликованная в профиле ученика на платформе SPACE.",
+        "note_uz": "SPACE platformasidagi o‘quvchi profilida chop etilgan shaxsiy mini-o‘yin.",
+        "note_en": "Their own mini-game, published on the student’s profile in the SPACE platform.",
+        "icon_name": "html,css,js"
+      },
+      {
+        "value_ru": "02",
+        "value_uz": "02",
+        "value_en": "02",
+        "title_ru": "Робототехника",
+        "title_uz": "Robototexnika",
+        "title_en": "Robotics",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Переход от экрана к реальным устройствам: сборка и программирование роботов.",
+        "text_uz": "Ekrandan haqiqiy qurilmalarga o‘tish: robotlarni yig‘ish va dasturlash.",
+        "text_en": "Moving from the screen to real devices: assembling and programming robots.",
+        "list_ru": "Конструкции, моторы и передачи\nДатчики расстояния, света и касания\nБлочное программирование робота\nДвижение по линии и обход препятствий\nКомандные соревнования",
+        "list_uz": "Konstruksiyalar, motorlar va uzatmalar\nMasofa, yorug‘lik va tegish datchiklari\nRobotni blokli dasturlash\nChiziq bo‘ylab harakat va to‘siqlarni aylanib o‘tish\nJamoaviy musobaqalar",
+        "list_en": "Structures, motors and gears\nDistance, light and touch sensors\nBlock-based robot programming\nLine following and obstacle avoidance\nTeam competitions",
+        "note_ru": "Собранный робот, который проходит трассу и защищается перед группой.",
+        "note_uz": "Trassani bosib o‘tadigan va guruh oldida himoya qilinadigan yig‘ilgan robot.",
+        "note_en": "An assembled robot that completes the course and is presented to the group.",
+        "icon_name": "cpp,python"
+      },
+      {
+        "value_ru": "03",
+        "value_uz": "03",
+        "value_en": "03",
+        "title_ru": "Arduino и умные устройства",
+        "title_uz": "Arduino va aqlli qurilmalar",
+        "title_en": "Arduino and smart devices",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Ребёнок собирает электронные устройства и пишет для них первый настоящий код.",
+        "text_uz": "Bola elektron qurilmalar yig‘adi va ular uchun birinchi haqiqiy kodini yozadi.",
+        "text_en": "Children assemble electronic devices and write their first real code for them.",
+        "list_ru": "Электрические цепи и макетная плата\nСветодиоды, кнопки и зуммеры\nДатчики температуры, света и движения\nПервый код на C++ для Arduino\nУмный дом: светофор и сигнализация",
+        "list_uz": "Elektr zanjirlari va maket plata\nSvetodiodlar, tugmalar va zummerlar\nHarorat, yorug‘lik va harakat datchiklari\nArduino uchun C++’dagi birinchi kod\nAqlli uy: svetofor va signalizatsiya",
+        "list_en": "Electric circuits and the breadboard\nLEDs, buttons and buzzers\nTemperature, light and motion sensors\nFirst C++ code for Arduino\nSmart home: traffic lights and an alarm",
+        "note_ru": "Работающее умное устройство и презентация проекта на Demo Day.",
+        "note_uz": "Ishlaydigan aqlli qurilma va Demo Day’da loyiha taqdimoti.",
+        "note_en": "A working smart device and a project presentation at Demo Day.",
+        "icon_name": "cpp,python"
+      }
+    ]
+  },
+  "itkids.gallery": {
+    "fields": {
+      "eyebrow_ru": "Галерея",
+      "eyebrow_uz": "Galereya",
+      "eyebrow_en": "Gallery",
+      "title_ru": "Атмосфера\nзанятий",
+      "title_uz": "Darslar\nmuhiti",
+      "title_en": "Life in\nthe classroom",
+      "text_ru": "Учебные классы, работа над проектами, Demo Day и видеоотчёты с защит.",
+      "text_uz": "O‘quv sinflari, loyihalar ustidagi ish, Demo Day va himoyalardan videohisobotlar.",
+      "text_en": "Classrooms, project work, Demo Day and video reports from project defences."
+    },
+    "items": [
+      {
+        "text_ru": "Занятие в учебном классе",
+        "text_uz": "O‘quv sinfidagi dars",
+        "text_en": "A lesson in the classroom"
+      },
+      {
+        "text_ru": "Работа над проектом в группе",
+        "text_uz": "Guruhda loyiha ustida ish",
+        "text_en": "Working on a project as a group"
+      },
+      {
+        "text_ru": "Сборка робота на занятии",
+        "text_uz": "Darsda robot yig‘ish",
+        "text_en": "Assembling a robot in class"
+      }
+    ]
+  },
+  "itdev.hero": {
+    "fields": {
+      "title_ru": "IT-разработка",
+      "title_uz": "IT-dasturlash",
+      "title_en": "IT Development",
+      "text_ru": "Комплексная программа для подростков: шаг за шагом от первых строк кода до собственных IT-проектов — сайтов, Telegram-ботов и сервисов с базами данных.",
+      "text_uz": "O‘smirlar uchun kompleks dastur: birinchi kod satrlaridan o‘z IT-loyihalarigacha — saytlar, Telegram-botlar va ma’lumotlar bazasiga ega servislar.",
+      "text_en": "A complete program for teenagers: step by step from the first lines of code to their own IT projects — websites, Telegram bots and database-backed services.",
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson",
+      "button2_label_ru": "Программа обучения",
+      "button2_label_uz": "O‘quv dasturi",
+      "button2_label_en": "Course program"
+    }
+  },
+  "itdev.facts": {
+    "items": [
+      {
+        "value_ru": "12–17 лет",
+        "value_uz": "12–17 yosh",
+        "value_en": "ages 12–17",
+        "label_ru": "возраст",
+        "label_uz": "yosh",
+        "label_en": "age"
+      },
+      {
+        "value_ru": "до 24 мес.",
+        "value_uz": "24 oygacha",
+        "value_en": "up to 24 mo.",
+        "label_ru": "Продолжительность",
+        "label_uz": "Davomiyligi",
+        "label_en": "Duration"
+      },
+      {
+        "value_ru": "Проекты",
+        "value_uz": "Loyihalar",
+        "value_en": "Projects",
+        "label_ru": "Формат",
+        "label_uz": "Format",
+        "label_en": "Format"
+      },
+      {
+        "value_ru": "до 12 уч.",
+        "value_uz": "12 tagacha",
+        "value_en": "up to 12",
+        "label_ru": "Группа",
+        "label_uz": "Guruh",
+        "label_en": "Group"
+      }
+    ]
+  },
+  "itdev.about": {
+    "fields": {
+      "eyebrow_ru": "О курсе",
+      "eyebrow_uz": "Kurs haqida",
+      "eyebrow_en": "About the course",
+      "title_ru": "От первой строки кода до своего проекта",
+      "title_uz": "Birinchi kod satridan o‘z loyihasigacha",
+      "title_en": "From the first line of code to your own project",
+      "text_ru": "Каждое занятие строится вокруг практики: короткая теория, разбор примера и работа над собственным проектом. Ученик проходит путь от вёрстки сайта до сервиса с базой данных и AI-функциями, а каждый модуль завершает защитой своей работы перед группой.",
+      "text_uz": "Har bir dars amaliyot atrofida quriladi: qisqa nazariya, misolni tahlil qilish va shaxsiy loyiha ustida ish. O‘quvchi sayt verstkasidan ma’lumotlar bazasi va AI funksiyalariga ega servisgacha yo‘lni bosib o‘tadi, har bir modulni esa guruh oldida ishini himoya qilish bilan tugatadi.",
+      "text_en": "Every lesson is built around practice: a short theory part, a worked example and time on your own project. Students go from building a website to a service with a database and AI features, finishing each module by presenting their work to the group."
+    },
+    "items": [
+      {
+        "title_ru": "Вёрстка\nсайтов",
+        "title_uz": "Saytlarni\nverstka qilish",
+        "title_en": "Website\nlayout",
+        "text_ru": "HTML и CSS: макеты, адаптивность, анимации.",
+        "text_uz": "HTML va CSS: maketlar, moslashuvchanlik, animatsiyalar.",
+        "text_en": "HTML and CSS: layouts, responsiveness, animations.",
+        "icon_name": "layers"
+      },
+      {
+        "title_ru": "JavaScript\nи интерактив",
+        "title_uz": "JavaScript\nva interaktiv",
+        "title_en": "JavaScript\nand interaction",
+        "text_ru": "Логика в браузере, работа с DOM и API.",
+        "text_uz": "Brauzerdagi mantiq, DOM va API bilan ishlash.",
+        "text_en": "Logic in the browser, working with the DOM and APIs.",
+        "icon_name": "spark"
+      },
+      {
+        "title_ru": "Python\nи Telegram-боты",
+        "title_uz": "Python\nva Telegram-botlar",
+        "title_en": "Python\nand Telegram bots",
+        "text_ru": "Первый бэкенд и собственный бот в Telegram.",
+        "text_uz": "Birinchi backend va Telegram’dagi shaxsiy bot.",
+        "text_en": "A first backend and your own bot on Telegram.",
+        "icon_name": "chat"
+      },
+      {
+        "title_ru": "Базы данных",
+        "title_uz": "Ma’lumotlar bazasi",
+        "title_en": "Databases",
+        "text_ru": "Хранение данных, SQL-запросы, связи таблиц.",
+        "text_uz": "Ma’lumot saqlash, SQL so‘rovlari, jadval bog‘lanishlari.",
+        "text_en": "Storing data, SQL queries, table relationships.",
+        "icon_name": "cubes"
+      },
+      {
+        "title_ru": "ИИ в разработке",
+        "title_uz": "Dasturlashda AI",
+        "title_en": "AI in development",
+        "text_ru": "Подключение AI-сервисов и работа с промптами.",
+        "text_uz": "AI-servislarni ulash va promptlar bilan ishlash.",
+        "text_en": "Connecting AI services and working with prompts.",
+        "icon_name": "brain"
+      },
+      {
+        "title_ru": "Git и командная\nработа",
+        "title_uz": "Git va jamoaviy\nish",
+        "title_en": "Git and team\nwork",
+        "text_ru": "Репозитории, ветки, ревью и совместные проекты.",
+        "text_uz": "Repozitoriylar, branchlar, ko‘rib chiqish va birgalikdagi loyihalar.",
+        "text_en": "Repositories, branches, reviews and shared projects.",
+        "icon_name": "checklist"
+      }
+    ]
+  },
+  "itdev.stages": {
+    "fields": {
+      "eyebrow_ru": "Программа",
+      "eyebrow_uz": "Dastur",
+      "eyebrow_en": "Program",
+      "title_ru": "Три этапа обучения",
+      "title_uz": "O‘qishning uch bosqichi",
+      "title_en": "Three stages of learning",
+      "text_ru": "Раскройте этап, чтобы посмотреть темы, программы и результат модуля.",
+      "text_uz": "Mavzular, dasturlar va modul natijasini ko‘rish uchun bosqichni oching.",
+      "text_en": "Open a stage to see its topics, tools and outcome.",
+      "note_ru": "Всего 9 месяцев · 3 этапа",
+      "note_uz": "Jami 9 oy · 3 bosqich",
+      "note_en": "9 months in total · 3 stages"
+    },
+    "items": [
+      {
+        "value_ru": "01",
+        "value_uz": "01",
+        "value_en": "01",
+        "title_ru": "Frontend: первый сайт",
+        "title_uz": "Frontend: birinchi sayt",
+        "title_en": "Frontend: the first website",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Ученик с нуля собирает сайты — от разметки и стилей до интерактивных элементов на JavaScript.",
+        "text_uz": "O‘quvchi noldan sayt yig‘adi — belgilash va uslublardan tortib JavaScript’dagi interaktiv elementlargacha.",
+        "text_en": "Students build websites from scratch — from markup and styles to interactive elements in JavaScript.",
+        "list_ru": "HTML: структура страницы и семантика\nCSS: макеты, Flexbox и адаптивность\nАнимации и современные приёмы вёрстки\nJavaScript: переменные, условия, циклы\nРабота с DOM и событиями",
+        "list_uz": "HTML: sahifa strukturasi va semantika\nCSS: maketlar, Flexbox va moslashuvchanlik\nAnimatsiyalar va zamonaviy verstka usullari\nJavaScript: o‘zgaruvchilar, shartlar, sikllar\nDOM va hodisalar bilan ishlash",
+        "list_en": "HTML: page structure and semantics\nCSS: layouts, Flexbox and responsiveness\nAnimations and modern layout techniques\nJavaScript: variables, conditionals, loops\nWorking with the DOM and events",
+        "note_ru": "Собственный адаптивный сайт, опубликованный в профиле ученика на платформе SPACE.",
+        "note_uz": "SPACE platformasidagi o‘quvchi profilida chop etilgan shaxsiy moslashuvchan sayt.",
+        "note_en": "Their own responsive website, published on the student’s SPACE profile.",
+        "icon_name": "html,css,js"
+      },
+      {
+        "value_ru": "02",
+        "value_uz": "02",
+        "value_en": "02",
+        "title_ru": "Python и Telegram-боты",
+        "title_uz": "Python va Telegram-botlar",
+        "title_en": "Python and Telegram bots",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Переход к серверной части: ученик пишет на Python и запускает собственного Telegram-бота.",
+        "text_uz": "Server tomoniga o‘tish: o‘quvchi Python’da yozadi va o‘z Telegram-botini ishga tushiradi.",
+        "text_en": "Moving to the server side: students write Python and launch their own Telegram bot.",
+        "list_ru": "Синтаксис Python и структуры данных\nФункции, модули и обработка ошибок\nРабота с внешними API\nTelegram Bot API: команды и сценарии\nПубликация и запуск бота на сервере",
+        "list_uz": "Python sintaksisi va ma’lumot tuzilmalari\nFunksiyalar, modullar va xatolarni qayta ishlash\nTashqi API’lar bilan ishlash\nTelegram Bot API: buyruqlar va stsenariylar\nBotni serverda chop etish va ishga tushirish",
+        "list_en": "Python syntax and data structures\nFunctions, modules and error handling\nWorking with external APIs\nTelegram Bot API: commands and flows\nDeploying and running a bot on a server",
+        "note_ru": "Работающий Telegram-бот с несколькими командами и понятным сценарием диалога.",
+        "note_uz": "Bir nechta buyruqqa ega va tushunarli dialog stsenariysi bo‘lgan ishlaydigan Telegram-bot.",
+        "note_en": "A working Telegram bot with several commands and a clear conversation flow.",
+        "icon_name": "python"
+      },
+      {
+        "value_ru": "03",
+        "value_uz": "03",
+        "value_en": "03",
+        "title_ru": "Базы данных, React и ИИ",
+        "title_uz": "Ma’lumotlar bazasi, React va AI",
+        "title_en": "Databases, React and AI",
+        "label_ru": "3 месяца",
+        "label_uz": "3 oy",
+        "label_en": "3 months",
+        "text_ru": "Финальный этап: полноценный сервис с хранением данных, современным интерфейсом и AI-функциями.",
+        "text_uz": "Yakuniy bosqich: ma’lumot saqlash, zamonaviy interfeys va AI funksiyalariga ega to‘laqonli servis.",
+        "text_en": "The final stage: a complete service with data storage, a modern interface and AI features.",
+        "list_ru": "Базы данных и SQL-запросы\nСвязь бэкенда и базы данных\nReact: компоненты и состояние\nПодключение AI-сервисов к проекту\nGit, ревью кода и командная работа",
+        "list_uz": "Ma’lumotlar bazasi va SQL so‘rovlari\nBackend va ma’lumotlar bazasi bog‘lanishi\nReact: komponentlar va holat\nLoyihaga AI-servislarni ulash\nGit, kodni ko‘rib chiqish va jamoaviy ish",
+        "list_en": "Databases and SQL queries\nConnecting the backend to the database\nReact: components and state\nAdding AI services to the project\nGit, code review and teamwork",
+        "note_ru": "Итоговый IT-проект с базой данных и презентация на Demo Day.",
+        "note_uz": "Ma’lumotlar bazasiga ega yakuniy IT-loyiha va Demo Day’dagi taqdimot.",
+        "note_en": "A final IT project with a database and a presentation at Demo Day.",
+        "icon_name": "react,python"
+      }
+    ]
+  },
+  "itdev.gallery": {
+    "fields": {
+      "eyebrow_ru": "Галерея",
+      "eyebrow_uz": "Galereya",
+      "eyebrow_en": "Gallery",
+      "title_ru": "Атмосфера\nзанятий",
+      "title_uz": "Darslar\nmuhiti",
+      "title_en": "Life in\nthe classroom",
+      "text_ru": "Учебные классы, работа над проектами, Demo Day и видеоотчёты с защит.",
+      "text_uz": "O‘quv sinflari, loyihalar ustidagi ish, Demo Day va himoyalardan videohisobotlar.",
+      "text_en": "Classrooms, project work, Demo Day and video reports from project defences."
+    },
+    "items": [
+      {
+        "text_ru": "Занятие по программированию в учебном классе",
+        "text_uz": "O‘quv sinfidagi dasturlash darsi",
+        "text_en": "A programming lesson in the classroom"
+      },
+      {
+        "text_ru": "Работа над проектом в группе",
+        "text_uz": "Guruhda loyiha ustida ish",
+        "text_en": "Working on a project as a group"
+      },
+      {
+        "text_ru": "Защита проекта перед группой",
+        "text_uz": "Guruh oldida loyiha himoyasi",
+        "text_en": "Presenting a project to the group"
+      }
+    ]
+  },
+  "space.hero": {
+    "fields": {
+      "title_ru": "SPACE —\nучись, играя",
+      "title_uz": "SPACE —\no‘ynab o‘rgan",
+      "title_en": "SPACE —\nlearn by playing",
+      "button_label_ru": "Перейти в SPACE",
+      "button_label_uz": "SPACE’ga o‘tish",
+      "button_label_en": "Go to SPACE"
+    }
+  },
+  "space.features": {
+    "fields": {
+      "eyebrow_ru": "Возможности",
+      "eyebrow_uz": "Imkoniyatlar",
+      "eyebrow_en": "Features",
+      "title_ru": "Что умеет\nSPACE",
+      "title_uz": "SPACE nimalarga\nqodir",
+      "title_en": "What SPACE\ncan do",
+      "text_ru": "Личный кабинет ученика, дополнительные курсы, практика на реальных кейсах, сообщество и оплата — всё внутри одной платформы.",
+      "text_uz": "O‘quvchining shaxsiy kabineti, qo‘shimcha kurslar, real keyslarda amaliyot, hamjamiyat va to‘lov — barchasi bitta platforma ichida.",
+      "text_en": "A personal student dashboard, extra courses, practice on real cases, a community and payments — all inside one platform."
+    },
+    "items": [
+      {
+        "title_ru": "Мои курсы",
+        "title_uz": "Mening kurslarim",
+        "title_en": "My courses",
+        "text_ru": "Ученик видит прогресс по курсу: пройденные модули, уроки и процент выполнения. Можно продолжить обучение с того места, где остановился.",
+        "text_uz": "O‘quvchi kurs bo‘yicha taraqqiyotini ko‘radi: o‘tilgan modullar, darslar va bajarilish foizi. O‘qishni to‘xtagan joyidan davom ettirish mumkin.",
+        "text_en": "Students see their course progress: finished modules, lessons and completion percentage — and can pick up right where they left off.",
+        "icon_name": "notes"
+      },
+      {
+        "title_ru": "Эдуверс",
+        "title_uz": "Eduverse",
+        "title_en": "Eduverse",
+        "text_ru": "Библиотека дополнительных видеокурсов: HTML, CSS, Python, Blender, C#, создание игр на C++ и Unity — для развития вне основной программы.",
+        "text_uz": "Qo‘shimcha videokurslar kutubxonasi: HTML, CSS, Python, Blender, C#, C++ va Unity’da o‘yin yaratish — asosiy dasturdan tashqarida rivojlanish uchun.",
+        "text_en": "A library of extra video courses: HTML, CSS, Python, Blender, C#, and game development in C++ and Unity — for growth beyond the main program.",
+        "icon_name": "book"
+      },
+      {
+        "title_ru": "MarsCode",
+        "title_uz": "MarsCode",
+        "title_en": "MarsCode",
+        "text_ru": "Практические задачи в стиле топ-IT-компаний (Amazon, Google, Netflix, Facebook) — навыки прокачиваются на реальных кейсах.",
+        "text_uz": "Yetakchi IT-kompaniyalar (Amazon, Google, Netflix, Facebook) uslubidagi amaliy masalalar — ko‘nikmalar haqiqiy keyslarda oshadi.",
+        "text_en": "Practice problems in the style of top IT companies (Amazon, Google, Netflix, Facebook) — skills grow on real cases.",
+        "icon_name": "code"
+      },
+      {
+        "title_ru": "Блог",
+        "title_uz": "Blog",
+        "title_en": "Blog",
+        "text_ru": "Внутренняя лента: ученики делятся достижениями, результатами и проектами, общаются и получают отклик от других ребят школы.",
+        "text_uz": "Ichki lenta: o‘quvchilar yutuqlari, natijalari va loyihalarini baham ko‘radi, muloqot qiladi va maktabning boshqa bolalaridan fikr oladi.",
+        "text_en": "An internal feed: students share achievements, results and projects, talk to each other and get feedback from other students.",
+        "icon_name": "feed"
+      },
+      {
+        "title_ru": "Оплата онлайн",
+        "title_uz": "Onlayn to‘lov",
+        "title_en": "Online payment",
+        "text_ru": "Родители и ученики оплачивают обучение прямо на платформе, видят детали задолженности и историю платежей.",
+        "text_uz": "Ota-onalar va o‘quvchilar to‘g‘ridan-to‘g‘ri platformada to‘laydi, qarzdorlik tafsilotlari va to‘lovlar tarixini ko‘radi.",
+        "text_en": "Parents and students pay for tuition right on the platform and can see balance details and payment history.",
+        "icon_name": "card"
+      }
+    ]
+  },
+  "space.gamification": {
+    "fields": {
+      "eyebrow_ru": "Геймификация",
+      "eyebrow_uz": "Geymifikatsiya",
+      "eyebrow_en": "Gamification",
+      "title_ru": "Учиться — это увлекательно",
+      "title_uz": "O‘qish — bu qiziqarli",
+      "title_en": "Learning is fun",
+      "text_ru": "SPACE превращает обучение в игру: за активность и результаты ученик получает баллы, поднимается в рейтинге и получает награды.",
+      "text_uz": "SPACE o‘qishni o‘yinga aylantiradi: faollik va natijalar uchun o‘quvchi ball oladi, reytingda ko‘tariladi va mukofotlarga ega bo‘ladi.",
+      "text_en": "SPACE turns learning into a game: students earn points for activity and results, climb the leaderboard and unlock rewards."
+    },
+    "items": [
+      {
+        "title_ru": "Баллы и коины",
+        "title_uz": "Ballar va koinlar",
+        "title_en": "Points and coins",
+        "text_ru": "Начисляются за активность на уроке, задания и посещаемость.",
+        "text_uz": "Darsdagi faollik, vazifalar va davomat uchun beriladi.",
+        "text_en": "Awarded for taking part in lessons, assignments and attendance.",
+        "icon_name": "coins"
+      },
+      {
+        "title_ru": "Ежедневный стрик",
+        "title_uz": "Kunlik strik",
+        "title_en": "Daily streak",
+        "text_ru": "Серия дней подряд на платформе — привычка учиться каждый день.",
+        "text_uz": "Platformada ketma-ket kunlar seriyasi — har kuni o‘qish odati.",
+        "text_en": "A run of consecutive days on the platform — the habit of learning daily.",
+        "icon_name": "flame"
+      },
+      {
+        "title_ru": "Общий рейтинг",
+        "title_uz": "Umumiy reyting",
+        "title_en": "Overall ranking",
+        "text_ru": "Сезонные турниры между учениками и призовые места по итогам сезона.",
+        "text_uz": "O‘quvchilar orasidagi mavsumiy turnirlar va mavsum yakunidagi sovrinli o‘rinlar.",
+        "text_en": "Seasonal tournaments between students, with prizes at the end of each season.",
+        "icon_name": "trophy"
+      },
+      {
+        "title_ru": "Мини-игры",
+        "title_uz": "Mini-o‘yinlar",
+        "title_en": "Mini-games",
+        "text_ru": "Игровые тренажёры по IT прямо на платформе — между занятиями.",
+        "text_uz": "IT bo‘yicha o‘yin-mashqlar to‘g‘ridan-to‘g‘ri platformada — darslar orasida.",
+        "text_en": "Playful IT drills right on the platform — between lessons.",
+        "icon_name": "gamepad"
+      }
+    ]
+  },
+  "space.premium": {
+    "fields": {
+      "eyebrow_ru": "Подписка",
+      "eyebrow_uz": "Obuna",
+      "eyebrow_en": "Subscription",
+      "title_ru": "Space Premium —\nбольше возможностей",
+      "title_uz": "Space Premium —\nko‘proq imkoniyat",
+      "title_en": "Space Premium —\nmore possibilities",
+      "text_ru": "Подписка, которая расширяет обучение на платформе и даёт дополнительные бонусы.",
+      "text_uz": "Platformadagi o‘qishni kengaytiruvchi va qo‘shimcha bonuslar beruvchi obuna.",
+      "text_en": "A subscription that extends learning on the platform and adds extra bonuses.",
+      "note_ru": "Premium — дополнительная опция: все уроки и домашние задания остаются доступны каждому ученику школы.",
+      "note_uz": "Premium — qo‘shimcha imkoniyat: barcha darslar va uy vazifalari maktabning har bir o‘quvchisiga ochiq qoladi.",
+      "note_en": "Premium is an optional extra: all lessons and homework stay available to every student of the school.",
+      "button_label_ru": "Отправить заявку",
+      "button_label_uz": "Ariza yuborish",
+      "button_label_en": "Send request"
+    },
+    "items": [
+      {
+        "title_ru": "4 коина за посещаемость",
+        "title_uz": "Davomat uchun 4 koin",
+        "title_en": "4 coins for attendance",
+        "text_ru": "В 2 раза больше коинов за каждое посещённое занятие.",
+        "text_uz": "Har bir qatnashgan dars uchun 2 barobar ko‘p koin.",
+        "text_en": "Twice as many coins for every lesson attended.",
+        "icon_name": "coins"
+      },
+      {
+        "title_ru": "Безлимитный MarsCode",
+        "title_uz": "Cheksiz MarsCode",
+        "title_en": "Unlimited MarsCode",
+        "text_ru": "Решай задачи без ограничений и получай до 60 коинов.",
+        "text_uz": "Masalalarni cheklovsiz yech va 60 tagacha koin ol.",
+        "text_en": "Solve problems without limits and earn up to 60 coins.",
+        "icon_name": "code"
+      },
+      {
+        "title_ru": "Безлимитный Eduverse",
+        "title_uz": "Cheksiz Eduverse",
+        "title_en": "Unlimited Eduverse",
+        "text_ru": "Проходи онлайн-курсы и получай до 80 коинов.",
+        "text_uz": "Onlayn kurslarni o‘t va 80 tagacha koin ol.",
+        "text_en": "Take online courses and earn up to 80 coins.",
+        "icon_name": "book"
+      },
+      {
+        "title_ru": "Marsiana",
+        "title_uz": "Marsiana",
+        "title_en": "Marsiana",
+        "text_ru": "Выполняй задания с помощью AI-ассистента платформы.",
+        "text_uz": "Vazifalarni platformaning AI-yordamchisi bilan bajar.",
+        "text_en": "Work through assignments with the platform’s AI assistant.",
+        "icon_name": "robot"
+      },
+      {
+        "title_ru": "Значок Премиум",
+        "title_uz": "Premium nishoni",
+        "title_en": "Premium badge",
+        "text_ru": "Эксклюзивный значок рядом с именем ученика.",
+        "text_uz": "O‘quvchi ismi yonidagi eksklyuziv nishon.",
+        "text_en": "An exclusive badge next to the student’s name.",
+        "icon_name": "badge"
+      },
+      {
+        "title_ru": "Эксклюзивные скины",
+        "title_uz": "Eksklyuziv skinlar",
+        "title_en": "Exclusive skins",
+        "text_ru": "Оформление профиля, доступное только Премиум-пользователям.",
+        "text_uz": "Faqat Premium foydalanuvchilarga ochiq profil bezaklari.",
+        "text_en": "Profile themes available only to Premium users.",
+        "icon_name": "palette"
+      },
+      {
+        "title_ru": "Безлимитный SpaceTyping",
+        "title_uz": "Cheksiz SpaceTyping",
+        "title_en": "Unlimited SpaceTyping",
+        "text_ru": "Больше возможностей улучшить скорость набора текста.",
+        "text_uz": "Matn terish tezligini oshirish uchun ko‘proq imkoniyat.",
+        "text_en": "More ways to improve your typing speed.",
+        "icon_name": "keyboard"
+      },
+      {
+        "title_ru": "Безлимитный SpaceBlog",
+        "title_uz": "Cheksiz SpaceBlog",
+        "title_en": "Unlimited SpaceBlog",
+        "text_ru": "Делись интересными постами с друзьями без ограничений.",
+        "text_uz": "Qiziqarli postlarni do‘stlaring bilan cheklovsiz baham ko‘r.",
+        "text_en": "Share interesting posts with friends without limits.",
+        "icon_name": "feed"
+      }
+    ]
+  },
+  "space.shop": {
+    "fields": {
+      "eyebrow_ru": "Награды",
+      "eyebrow_uz": "Mukofotlar",
+      "eyebrow_en": "Rewards",
+      "title_ru": "MARS Shop —\nобменивай баллы\nна подарки",
+      "title_uz": "MARS Shop —\nballarni sovg‘aga\nalmashtir",
+      "title_en": "MARS Shop —\nswap points\nfor gifts",
+      "text_ru": "Накопленные коины можно обменять на реальные призы: умную колонку Яндекс Алиса, смарт-часы, наушники, смартфоны и другие подарки.",
+      "text_uz": "To‘plangan koinlarni haqiqiy sovrinlarga almashtirish mumkin: Yandex Alisa aqlli kolonkasi, smart-soat, quloqchin, smartfon va boshqa sovg‘alar.",
+      "text_en": "Coins you collect can be exchanged for real prizes: a Yandex Alice smart speaker, a smart watch, headphones, smartphones and other gifts.",
+      "button_label_ru": "Начать обучение",
+      "button_label_uz": "O‘qishni boshlash",
+      "button_label_en": "Start learning",
+      "subtitle_ru": "Копи коины в SPACE",
+      "subtitle_uz": "SPACE’da koin to‘pla",
+      "subtitle_en": "Collect coins in SPACE",
+      "note_ru": "Посещай занятия, выполняй задания и участвуй в турнирах — коины начисляются автоматически.",
+      "note_uz": "Darslarga qatnash, vazifalarni bajar va turnirlarda ishtirok et — koinlar avtomatik hisoblanadi.",
+      "note_en": "Attend lessons, complete assignments and join tournaments — coins are credited automatically."
+    },
+    "items": [
+      {
+        "title_ru": "Умная колонка Яндекс Алиса",
+        "title_uz": "Yandex Alisa aqlli kolonkasi",
+        "title_en": "Yandex Alice smart speaker",
+        "value_ru": "2490",
+        "value_uz": "2490",
+        "value_en": "2490",
+        "icon_name": "alisa"
+      },
+      {
+        "title_ru": "Смарт-часы",
+        "title_uz": "Smart-soat",
+        "title_en": "Smart watch",
+        "value_ru": "949",
+        "value_uz": "949",
+        "value_en": "949",
+        "icon_name": "soat"
+      },
+      {
+        "title_ru": "Наушники",
+        "title_uz": "Quloqchinlar",
+        "title_en": "Headphones",
+        "value_ru": "599",
+        "value_uz": "599",
+        "value_en": "599",
+        "icon_name": "quloqchin"
+      },
+      {
+        "title_ru": "Смартфоны",
+        "title_uz": "Smartfonlar",
+        "title_en": "Smartphones",
+        "value_ru": "5400",
+        "value_uz": "5400",
+        "value_en": "5400",
+        "icon_name": "smartfon"
+      },
+      {
+        "title_ru": "Мерч и аксессуары школы",
+        "title_uz": "Maktab merchi va aksessuarlari",
+        "title_en": "School merch and accessories",
+        "value_ru": "499",
+        "value_uz": "499",
+        "value_en": "499",
+        "icon_name": "aksessuar"
+      }
+    ]
+  },
+  "space.parents": {
+    "fields": {
+      "eyebrow_ru": "Для родителей",
+      "eyebrow_uz": "Ota-onalar uchun",
+      "eyebrow_en": "For parents",
+      "title_ru": "Родителям —\nполный контроль\nв одном приложении",
+      "title_uz": "Ota-onalarga —\nbitta ilovada\nto‘liq nazorat",
+      "title_en": "Parents get\nfull oversight\nin one app",
+      "text_ru": "Родитель получает собственный аккаунт и может в любое время следить за посещаемостью, успеваемостью, выполненными заданиями и общим прогрессом ребёнка, а также оплачивать обучение онлайн.",
+      "text_uz": "Ota-ona o‘z akkauntiga ega bo‘ladi va istalgan vaqtda farzandining davomati, o‘zlashtirishi, bajarilgan vazifalari va umumiy taraqqiyotini kuzatishi, shuningdek o‘qishni onlayn to‘lashi mumkin.",
+      "text_en": "Parents get their own account and can check attendance, grades, completed assignments and overall progress at any time — and pay for tuition online."
+    },
+    "items": [
+      {
+        "title_ru": "Посещаемость",
+        "title_uz": "Davomat",
+        "title_en": "Attendance",
+        "text_ru": "Отметки о занятиях и пропусках — без звонков администратору.",
+        "text_uz": "Darslar va qoldirilgan kunlar belgisi — administratorga qo‘ng‘iroq qilmasdan.",
+        "text_en": "Lesson and absence records — without calling the administrator.",
+        "icon_name": "attendance"
+      },
+      {
+        "title_ru": "Успеваемость",
+        "title_uz": "O‘zlashtirish",
+        "title_en": "Progress",
+        "text_ru": "Оценки за модули и средний балл ребёнка — в динамике по месяцам.",
+        "text_uz": "Modullar bo‘yicha baholar va bolaning o‘rtacha bali — oylar kesimida dinamikada.",
+        "text_en": "Module grades and the child’s average score — tracked month by month.",
+        "icon_name": "progress"
+      },
+      {
+        "title_ru": "Домашние задания",
+        "title_uz": "Uy vazifalari",
+        "title_en": "Homework",
+        "text_ru": "Видно, что задано, что сдано и что проверил преподаватель.",
+        "text_uz": "Nima berilgani, nima topshirilgani va o‘qituvchi nimani tekshirgani ko‘rinadi.",
+        "text_en": "You can see what was set, what was handed in and what the teacher has marked.",
+        "icon_name": "homework"
+      },
+      {
+        "title_ru": "Оплата обучения",
+        "title_uz": "O‘qish to‘lovi",
+        "title_en": "Tuition payment",
+        "text_ru": "Оплата курса онлайн из приложения — квитанции и история платежей внутри.",
+        "text_uz": "Kursni ilovadan onlayn to‘lash — kvitansiyalar va to‘lovlar tarixi ichida.",
+        "text_en": "Pay for the course online from the app — receipts and payment history included.",
+        "icon_name": "payment"
+      }
+    ]
+  },
+  "space.application": {
+    "fields": {
+      "eyebrow_ru": "Заявка",
+      "eyebrow_uz": "Ariza",
+      "eyebrow_en": "Request",
+      "title_ru": "Начните обучение\nс поддержкой\nSPACE",
+      "title_uz": "SPACE ko‘magida\no‘qishni\nboshlang",
+      "title_en": "Start learning\nwith SPACE\nbehind you",
+      "text_ru": "Оставьте заявку, и мы расскажем подробнее о платформе SPACE и подберём подходящий курс для вашего ребёнка.",
+      "text_uz": "Ariza qoldiring — SPACE platformasi haqida batafsil gapirib beramiz va farzandingizga mos kursni tanlab beramiz.",
+      "text_en": "Leave a request and we will tell you more about the SPACE platform and help pick the right course for your child."
+    }
+  },
+  "news.hero": {
+    "fields": {
+      "title_ru": "Жизнь школы\nMARS IT",
+      "title_uz": "MARS IT maktabi\nhayoti",
+      "title_en": "Life at\nMARS IT School",
+      "text_ru": "Мы учим не только программировать: турниры, Demo Day, экскурсии и воскресные мероприятия — часть обучения в MARS IT School.",
+      "text_uz": "Biz faqat dasturlashni o‘rgatmaymiz: turnirlar, Demo Day, ekskursiyalar va yakshanba tadbirlari ham MARS IT School ta’limining bir qismi.",
+      "text_en": "We teach more than programming: tournaments, Demo Day, excursions and Sunday events are all part of studying at MARS IT School."
+    }
+  },
+  "news.list": {
+    "fields": {
+      "eyebrow_ru": "Новости и мероприятия",
+      "eyebrow_uz": "Yangiliklar va tadbirlar",
+      "eyebrow_en": "News and events",
+      "title_ru": "Что происходит\nв школе",
+      "title_uz": "Maktabda\nnimalar bo‘lyapti",
+      "title_en": "What is happening\nat the school",
+      "subtitle_ru": "Пока ничего нет",
+      "subtitle_uz": "Hozircha hech narsa yo‘q",
+      "subtitle_en": "Nothing here yet",
+      "note_ru": "Скоро здесь появятся новости и мероприятия школы.",
+      "note_uz": "Tez orada bu yerda maktab yangiliklari va tadbirlari paydo bo‘ladi.",
+      "note_en": "School news and events will appear here soon."
+    }
+  },
+  "contacts.hero": {
+    "fields": {
+      "title_ru": "Всегда\nна связи",
+      "title_uz": "Doim\naloqada",
+      "title_en": "Always\nin touch",
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson"
+    }
+  },
+  "contacts.info": {
+    "fields": {
+      "eyebrow_ru": "Для связи",
+      "eyebrow_uz": "Bog‘lanish uchun",
+      "eyebrow_en": "Get in touch",
+      "title_ru": "Контакты\nMARS\nIT School",
+      "title_uz": "MARS\nIT School\nkontaktlari",
+      "title_en": "MARS\nIT School\ncontacts",
+      "text_ru": "Свяжитесь с нами любым удобным способом — мы всегда готовы ответить на ваши вопросы.",
+      "text_uz": "Biz bilan o‘zingizga qulay har qanday usulda bog‘laning — savollaringizga javob berishga doim tayyormiz.",
+      "text_en": "Reach us in whichever way suits you — we are always happy to answer your questions."
+    }
+  },
+  "contacts.branches": {
+    "fields": {
+      "eyebrow_ru": "Филиалы",
+      "eyebrow_uz": "Filiallar",
+      "eyebrow_en": "Branches",
+      "title_ru": "Адреса школ\nв Ташкенте",
+      "title_uz": "Toshkentdagi\nmaktab manzillari",
+      "title_en": "School addresses\nin Tashkent",
+      "text_ru": "Выберите филиал, который подходит именно вам.",
+      "text_uz": "O‘zingizga mos filialni tanlang.",
+      "text_en": "Choose the branch that works best for you.",
+      "note_ru": "Филиалы скоро появятся",
+      "note_uz": "Filiallar tez orada paydo bo‘ladi",
+      "note_en": "Branches are coming soon"
+    }
+  },
+  "contacts.trial": {
+    "fields": {
+      "title_ru": "Запишитесь\nна пробное\nзанятие",
+      "title_uz": "Sinov\ndarsiga\nyoziling",
+      "title_en": "Book\na trial\nlesson",
+      "text_ru": "Оставьте контакты — перезвоним в течение 24 часов, подберём филиал и удобное время.",
+      "text_uz": "Kontaktlaringizni qoldiring — 24 soat ichida qo‘ng‘iroq qilamiz, filial va qulay vaqtni tanlab beramiz.",
+      "text_en": "Leave your contact details — we will call within 24 hours and help pick a branch and a convenient time."
+    }
+  },
+  "vacancies.hero": {
+    "fields": {
+      "title_ru": "Работа в MARS\nIT School",
+      "title_uz": "MARS IT School’da\nishlash",
+      "title_en": "Working at MARS\nIT School",
+      "text_ru": "Мы строим школу, где детям интересно учиться, а взрослым — работать. Если вам близко технологичное образование, присоединяйтесь к команде.",
+      "text_uz": "Biz bolalar qiziqib o‘qiydigan, kattalar esa zavq bilan ishlaydigan maktab quramiz. Texnologik ta’lim sizga yaqin bo‘lsa — jamoamizga qo‘shiling.",
+      "text_en": "We are building a school where children enjoy learning and adults enjoy working. If technology education is close to your heart, join the team."
+    }
+  },
+  "vacancies.list": {
+    "fields": {
+      "eyebrow_ru": "Вакансии",
+      "eyebrow_uz": "Vakansiyalar",
+      "eyebrow_en": "Careers",
+      "title_ru": "Найдите своё место\nв команде",
+      "title_uz": "Jamoada o‘z o‘rningizni\ntoping",
+      "title_en": "Find your place\non the team",
+      "text_ru": "Станьте частью команды, которая помогает детям открывать мир технологий и создавать будущее.",
+      "text_uz": "Bolalarga texnologiyalar dunyosini ochishga va kelajakni yaratishga yordam beradigan jamoaning bir qismiga aylaning.",
+      "text_en": "Become part of a team that helps children discover the world of technology and build the future.",
+      "subtitle_ru": "Открытых вакансий нет",
+      "subtitle_uz": "Ochiq vakansiyalar yo‘q",
+      "subtitle_en": "No open roles right now",
+      "note_ru": "Загляните позже — мы регулярно обновляем список.",
+      "note_uz": "Keyinroq kiring — ro‘yxatni muntazam yangilab boramiz.",
+      "note_en": "Check back later — we update the list regularly."
+    }
+  },
+  "quiz.intro": {
+    "fields": {
+      "title_ru": "будущий айтишник!",
+      "title_uz": "bo‘lajak dasturchi!",
+      "title_en": "future developer!",
+      "subtitle_ru": "Привет",
+      "subtitle_uz": "Salom",
+      "subtitle_en": "Hello",
+      "text_ru": "Ответьте на несколько вопросов, чтобы узнать, какое направление обучения будет интересно и полезно вашему ребёнку.",
+      "text_uz": "Farzandingizga qaysi o‘quv yo‘nalishi qiziqarli va foydali bo‘lishini bilish uchun bir necha savolga javob bering.",
+      "text_en": "Answer a few questions to find out which learning track will be interesting and useful for your child."
+    }
+  },
+  "quiz.contact": {
+    "fields": {
+      "title_ru": "Почти готово!",
+      "title_uz": "Deyarli tayyor!",
+      "title_en": "Almost done!",
+      "text_ru": "Оставьте контакты, чтобы мы отправили результат и рассказали о подходящих курсах. Это необязательно — результат можно посмотреть сразу.",
+      "text_uz": "Natijani yuborishimiz va mos kurslar haqida gapirib berishimiz uchun kontaktlaringizni qoldiring. Bu shart emas — natijani darrov ko‘rish mumkin.",
+      "text_en": "Leave your contact details so we can send the result and tell you about suitable courses. It is optional — you can see the result right away.",
+      "button_label_ru": "Показать результат",
+      "button_label_uz": "Natijani ko‘rsatish",
+      "button_label_en": "Show the result"
+    }
+  },
+  "quiz.result": {
+    "fields": {
+      "title_ru": "Ваш результат готов!",
+      "title_uz": "Natijangiz tayyor!",
+      "title_en": "Your result is ready!",
+      "eyebrow_ru": "Анализ способностей",
+      "eyebrow_uz": "Qobiliyatlar tahlili",
+      "eyebrow_en": "Ability analysis",
+      "subtitle_ru": "Навыки, определённые на основе психологического теста",
+      "subtitle_uz": "Psixologik test asosida aniqlangan ko‘nikmalar",
+      "subtitle_en": "Skills identified from the psychological test",
+      "text_ru": "3 самые сильные сферы",
+      "text_uz": "Eng kuchli 3 ta soha",
+      "text_en": "Top 3 strongest areas"
+    }
+  },
+  "common.trial": {
+    "fields": {
+      "eyebrow_ru": "Заявка",
+      "eyebrow_uz": "Ariza",
+      "eyebrow_en": "Request",
+      "title_ru": "Бесплатное\nпробное\nзанятие",
+      "title_uz": "Bepul\nsinov\ndarsi",
+      "title_en": "A free\ntrial\nlesson",
+      "text_ru": "Оставьте заявку на пробное занятие — поможем подобрать образовательный путь, расскажем о программе и ответим на все вопросы. Менеджер свяжется с вами в течение 24 часов.",
+      "text_uz": "Sinov darsiga ariza qoldiring — o‘quv yo‘lini tanlashda yordam beramiz, dastur haqida gapirib beramiz va barcha savollarga javob beramiz. Menejer 24 soat ichida siz bilan bog‘lanadi.",
+      "text_en": "Request a trial lesson — we will help choose a learning path, walk you through the program and answer all your questions. A manager will contact you within 24 hours."
+    }
+  },
+  "common.buttons": {
+    "fields": {
+      "button_label_ru": "Записаться на пробный урок",
+      "button_label_uz": "Bepul sinov darsiga yozilish",
+      "button_label_en": "Book a free trial lesson",
+      "button2_label_ru": "Посмотреть курсы",
+      "button2_label_uz": "Kurslarni ko‘rish",
+      "button2_label_en": "Browse courses"
+    }
+  },
+  "common.footer": {
+    "fields": {
+      "text_ru": "Современная школа программирования для детей и подростков",
+      "text_uz": "Bolalar va o‘smirlar uchun zamonaviy dasturlash maktabi",
+      "text_en": "A modern programming school for kids and teens",
+      "note_ru": "© {year} MARS IT School. Все права защищены.",
+      "note_uz": "© {year} MARS IT School. Barcha huquqlar himoyalangan.",
+      "note_en": "© {year} MARS IT School. All rights reserved."
+    }
+  }
+}

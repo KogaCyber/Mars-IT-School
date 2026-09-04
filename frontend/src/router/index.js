@@ -88,6 +88,10 @@ export const router = createRouter({
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
     if (to.hash) return { el: to.hash, behavior: 'smooth', top: 96 }
+    // Faqat so'rov parametri o'zgargan bo'lsa (masalan til almashganda
+    // qo'shiladigan `?lang=`) sahifa o'z joyida qoladi — foydalanuvchi
+    // o'qiyotgan bo'limidan tepaga otilib ketmaydi.
+    if (to.path === from.path) return false
     return { top: 0 }
   },
 })

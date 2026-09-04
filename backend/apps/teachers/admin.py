@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.translation import translation_fieldset
 
@@ -21,9 +22,12 @@ class TeacherAdmin(admin.ModelAdmin):
     filter_horizontal = ("skills",)
     fieldsets = (
         (None, {"fields": ("full_name", "slug", "photo", "position_ru", "badge", "bio_ru")}),
-        ("Tajriba", {"fields": ("company", "company_logo", "experience_years", "students_count")}),
-        ("Texnologiyalar", {"fields": ("skills",)}),
-        ("Havolalar", {"fields": ("telegram_url", "linkedin_url", "instagram_url")}),
-        ("Chop etish", {"fields": ("order", "is_published")}),
+        (
+            _("Tajriba"),
+            {"fields": ("company", "company_logo", "experience_years", "students_count")},
+        ),
+        (_("Texnologiyalar"), {"fields": ("skills",)}),
+        (_("Havolalar"), {"fields": ("telegram_url", "linkedin_url", "instagram_url")}),
+        (_("Chop etish"), {"fields": ("order", "is_published")}),
         translation_fieldset("position", "bio"),
     )

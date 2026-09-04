@@ -6,18 +6,25 @@
  * ko'rinishidagi kartochka (o'ng chetida yirik chiziqli ikonka).
  * Orqa fonda to'q sariq nur va uchib yurgan «raketa-tanga»lar.
  */
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 import glow from '@/assets/images/about-glow.webp'
 import coinBlur from '@/assets/images/coin-blur.webp'
 import coinFront from '@/assets/images/coin-front.webp'
 import coinSide from '@/assets/images/coin-side.webp'
 import coinTilt from '@/assets/images/coin-tilt.webp'
+import { toCards, useSection } from '@/composables/useSection'
 import { SPACE_GAMIFICATION } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 
-const { t } = useI18n()
-const gamification = useLocalized(SPACE_GAMIFICATION)
+// Blok matni va kartochkalari admin paneldan («SPACE» bo'limlari → «Geymifikatsiya»).
+const section = useSection('space.gamification', {
+  eyebrow: 'space.gamificationEyebrow',
+  title: 'space.gamificationTitle',
+  text: 'space.gamificationText',
+})
+const fallback = useLocalized(SPACE_GAMIFICATION)
+const gamification = computed(() => toCards(section.value.items, fallback.value))
 
 /** Kartochka ikonkalari — maketdagi chiziqli belgilar. */
 const ICONS = {
@@ -86,14 +93,14 @@ const ICONS = {
     <div class="container-page relative grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
       <!-- Matn -->
       <div>
-        <p class="eyebrow">{{ t('space.gamificationEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
 
         <h2 class="title-gamification font-wide mt-6 font-bold text-white">
-          {{ t('space.gamificationTitle') }}
+          {{ section.title }}
         </h2>
 
         <p class="mt-8 max-w-[46ch] leading-relaxed text-white/70">
-          {{ t('space.gamificationText') }}
+          {{ section.text }}
         </p>
       </div>
 

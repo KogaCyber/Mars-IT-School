@@ -17,6 +17,8 @@ import logging
 import re
 import urllib.parse
 
+from django.utils.translation import gettext as _
+
 from apps.core.net import host_of, is_allowed_host, safe_open
 
 logger = logging.getLogger(__name__)
@@ -211,10 +213,10 @@ def resolve_coordinates(branch, changed_fields: set[str]) -> tuple[bool, str]:
             return False, ""
         branch.latitude, branch.longitude = coords
         label = "Google Maps" if field == "map_url_google" else "Yandex Maps"
-        return True, (
-            f"Xaritadagi nishon ko'chirildi — koordinata {label} havolasidan olindi: "
-            f"{coords[0]}, {coords[1]}."
-        )
+        return True, _(
+            "Xaritadagi nishon ko'chirildi — koordinata %(source)s havolasidan olindi: "
+            "%(lat)s, %(lon)s."
+        ) % {"source": label, "lat": coords[0], "lon": coords[1]}
 
     address = branch.address_ru
     if branch.landmark_ru:
@@ -226,19 +228,19 @@ def resolve_coordinates(branch, changed_fields: set[str]) -> tuple[bool, str]:
         if (branch.latitude, branch.longitude) == (lat, lon):
             return False, ""
         branch.latitude, branch.longitude = lat, lon
-        return False, (
-            f"Koordinata manzil bo'yicha taxminan topildi: {lat}, {lon} — «{place}». "
+        return False, _(
+            "Koordinata manzil bo'yicha taxminan topildi: %(lat)s, %(lon)s — «%(place)s». "
             "Xaritada tekshiring! Noto'g'ri bo'lsa, Yandex yoki Google havolasini "
             "qo'ying — havoladan olingan koordinata aniq bo'ladi."
-        )
+        ) % {"lat": lat, "lon": lon, "place": place}
 
     if not has_coords:
-        return False, (
+        return False, _(
             "Koordinata topilmadi — filial xaritada ko'rinmaydi. "
             "Yandex yoki Google havolasini qo'ying, yoki kenglik/uzunlikni qo'lda kiriting."
         )
 
-    return False, (
+    return False, _(
         "Manzil o'zgardi, lekin koordinata topilmadi — xaritadagi nishon eski joyida qoldi. "
         "Xarita havolasini yangilang yoki kenglik/uzunlikni qo'lda to'g'rilang."
     )

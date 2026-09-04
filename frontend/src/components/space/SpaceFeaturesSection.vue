@@ -9,14 +9,21 @@
  * Kartochka uslubi «О нас» sahifasidagi «Почему это важно для будущего» bilan
  * bir xil: gradientli oq kartochka, tepada ikonka, so'ng sarlavha va izoh.
  */
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 import InfiniteCarousel from '@/components/base/InfiniteCarousel.vue'
+import { toCards, useSection } from '@/composables/useSection'
 import { SPACE_FEATURES } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 
-const { t } = useI18n()
-const features = useLocalized(SPACE_FEATURES)
+// Blok matni va kartochkalari admin paneldan («SPACE» bo'limlari → «Imkoniyatlar»).
+const section = useSection('space.features', {
+  eyebrow: 'space.featuresEyebrow',
+  title: 'space.featuresTitle',
+  text: 'space.featuresText',
+})
+const fallback = useLocalized(SPACE_FEATURES)
+const features = computed(() => toCards(section.value.items, fallback.value))
 
 /** Kartochka ikonkalari — maketdagi chiziqli belgilar. */
 const ICONS = {
@@ -36,10 +43,10 @@ const ICONS = {
       <header>
         <div class="lg:flex lg:items-center justify-between px-4.5 block">
           <div class="mb-10 lg:mb-0">
-            <p class="eyebrow">{{ t('space.featuresEyebrow') }}</p>
+            <p class="eyebrow">{{ section.eyebrow }}</p>
             <h2 class="text-ink font-wide mt-5 font-bold text-5xl">
               <span
-                v-for="line in t('space.featuresTitle').split('\n')"
+                v-for="line in section.titleLines"
                 :key="line"
                 class="block"
               >
@@ -49,7 +56,7 @@ const ICONS = {
           </div>
 
           <p class="max-w-[34ch] leading-relaxed text-neutral-500">
-            {{ t('space.featuresText') }}
+            {{ section.text }}
           </p>
         </div>
       </header>

@@ -18,7 +18,11 @@ const props = defineProps({
   variant: { type: String, default: 'pill' },
 })
 
-const model = defineModel({ type: String, required: true })
+// `<input type="number">` da Vue qiymatni AVTOMATIK songa aylantiradi
+// (`v-model` ning ichki xatti-harakati). Shuning uchun model faqat String
+// bo'lsa, yosh maydoniga har bir bosishda prop turi haqida ogohlantirish
+// chiqardi va tur bo'yicha kelishuv buzilardi.
+const model = defineModel({ type: [String, Number], required: true })
 const id = useId()
 
 const isLine = computed(() => props.variant === 'line')

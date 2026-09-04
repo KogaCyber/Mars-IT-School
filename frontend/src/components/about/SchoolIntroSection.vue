@@ -7,12 +7,23 @@
  * saytdan chiqmasdan modal oyna ichida o'ynaydi.
  */
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-
 import BaseButton from '@/components/base/BaseButton.vue'
+import { useSection } from '@/composables/useSection'
 import { isPlayable, openVideo } from '@/composables/useVideoModal'
 
-const { t } = useI18n()
+
+// «Kurslarni ko'rish» tugmasi matni — «Sayt sozlamalari» → «Umumiy bloklar».
+const buttons = useSection('common.buttons', {
+  buttonLabel: 'common.trialLesson',
+  button2Label: 'common.viewCourses',
+})
+
+// Blok matni admin paneldan («Biz haqimizda» → «Oddiy kurslar emas»).
+const section = useSection('about.school', {
+  eyebrow: 'about.schoolEyebrow',
+  title: 'about.schoolTitle',
+  buttonLabel: 'about.watchVideo',
+})
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -33,11 +44,11 @@ const canPlay = computed(() => isPlayable(props.videoUrl))
   <section v-reveal class="section bg-ink">
     <div class="container-page grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div>
-        <p class="eyebrow">{{ t('about.schoolEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
 
         <!-- Qatorlarga bo'linish Figma'dagidek aniq belgilangan -->
         <h2 class="section-title mt-6 text-white">
-          <span v-for="line in t('about.schoolTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
@@ -61,7 +72,7 @@ const canPlay = computed(() => isPlayable(props.videoUrl))
         </ul>
 
         <BaseButton :to="{ name: 'courses' }" size="lg" class="mt-10 font-wide font-bold">
-          {{ t('common.viewCourses') }}
+          {{ buttons.button2Label }}
         </BaseButton>
       </div>
 
@@ -72,8 +83,8 @@ const canPlay = computed(() => isPlayable(props.videoUrl))
         v-if="videoCover || canPlay"
         :type="canPlay ? 'button' : undefined"
         class="group rounded-block bg-surface relative block w-full overflow-hidden"
-        :aria-label="canPlay ? t('about.watchVideo') : undefined"
-        @click="canPlay && openVideo(videoUrl, t('about.watchVideo'))"
+        :aria-label="canPlay ? section.buttonLabel : undefined"
+        @click="canPlay && openVideo(videoUrl, section.buttonLabel)"
       >
         <img
           v-if="videoCover"

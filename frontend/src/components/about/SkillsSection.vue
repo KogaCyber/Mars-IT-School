@@ -5,12 +5,15 @@
  * Figma: chapda yorliq va yirik sarlavha, o'ngda ustma-ust joylashgan kartochkalar,
  * orqasida to'q sariq–ko'k nur.
  */
-import { useI18n } from 'vue-i18n'
-
 import glow from '@/assets/images/about-glow.webp'
+import { useSection } from '@/composables/useSection'
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 
-const { t } = useI18n()
+// Blok sarlavhasi admin paneldan («Biz haqimizda» → «Ko'nikmalar»).
+const section = useSection('about.skills', {
+  eyebrow: 'about.skillsEyebrow',
+  title: 'about.skillsTitle',
+})
 
 defineProps({
   items: { type: Array, default: () => [] },
@@ -31,9 +34,9 @@ defineProps({
 
     <div class="container-page relative grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div>
-        <p class="eyebrow">{{ t('about.skillsEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
         <h2 class="section-title mt-6 max-w-[14ch] text-white text-5xl sm:text-7xl">
-          {{ t('about.skillsTitle') }}
+          {{ section.title }}
         </h2>
       </div>
 

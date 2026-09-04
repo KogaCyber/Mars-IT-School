@@ -6,18 +6,19 @@
  * sensorli ekranda chapga/o'ngga surish. O'ng yuqorida yopish tugmasi,
  * chetlarda strelkalar, pastda «joriy/jami» hisoblagichi.
  */
-import { onKeyStroke, useScrollLock, useSwipe } from '@vueuse/core'
+import { onKeyStroke, useSwipe } from '@vueuse/core'
 import { nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { useLightbox } from '@/composables/useLightbox'
+import { useScrollLock } from '@/composables/useScrollLock'
 
 const { t } = useI18n()
 const { images, index, isOpen, current, step, close } = useLightbox()
 
 const panel = ref(null)
 const frame = ref(null)
-const isLocked = useScrollLock(document.body)
+const isLocked = useScrollLock()
 
 /** Sensorli ekranda surish — 60px dan katta harakat suratni almashtiradi. */
 useSwipe(frame, {

@@ -9,6 +9,7 @@ import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
 import LeadForm from '@/components/forms/LeadForm.vue'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
 
@@ -25,8 +26,16 @@ const props = defineProps({
   headingLevel: { type: String, default: 'h2' },
 })
 
-const titleLines = computed(() => props.title || t('forms.trialTitle').split('\n'))
-const descriptionText = computed(() => props.description || t('forms.trialDescription'))
+// Blok matni admin paneldan («Sayt sozlamalari» → «Umumiy bloklar»).
+// Sahifa o'z sarlavhasini bersa (masalan Kontaktlar), u ustun turadi.
+const section = useSection('common.trial', {
+  eyebrow: 'forms.trialEyebrow',
+  title: 'forms.trialTitle',
+  text: 'forms.trialDescription',
+})
+
+const titleLines = computed(() => props.title || section.value.titleLines)
+const descriptionText = computed(() => props.description || section.value.text)
 </script>
 
 <template>
@@ -45,7 +54,7 @@ const descriptionText = computed(() => props.description || t('forms.trialDescri
       class="container-page relative grid items-center gap-[8%] lg:grid-cols-[1.15fr_1fr] lg:gap-[6%]"
     >
       <div>
-        <p v-reveal class="eyebrow">{{ t('forms.trialEyebrow') }}</p>
+        <p v-reveal class="eyebrow">{{ section.eyebrow }}</p>
 
         <component
           :is="headingLevel"

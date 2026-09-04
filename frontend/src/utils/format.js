@@ -6,9 +6,19 @@ export function formatPrice(value) {
   return new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(amount)
 }
 
-export function formatDate(iso, locale = 'ru-RU') {
+/** Sayt tili → `Intl` uchun to'liq lokal nomi. */
+const DATE_LOCALES = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-GB' }
+
+/**
+ * Sanani tanlangan tilda yozadi ("4-sentabr, 2026" / "4 сентября 2026").
+ *
+ * @param {string} iso ISO sana
+ * @param {string} [language] sayt tili (`uz` | `ru` | `en`); berilmasa — ruscha
+ */
+export function formatDate(iso, language = 'ru') {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) return ''
+  const locale = DATE_LOCALES[language] || language || 'ru-RU'
   return new Intl.DateTimeFormat(locale, {
     day: 'numeric',
     month: 'long',

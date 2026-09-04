@@ -6,10 +6,13 @@
  * Kichik ekranda: pastdan ko'tariladigan panel (bottom sheet) — barcha tillar
  * to'liq nomi bilan, orqa fon xiralashadi va sahifa skroll qilinmaydi.
  */
-import { onClickOutside, onKeyStroke, useMediaQuery, useScrollLock } from '@vueuse/core'
+import { onClickOutside, onKeyStroke, useMediaQuery } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter } from 'vue-router'
 
+import { useScrollLock } from '@/composables/useScrollLock'
+import { DEFAULT_LANGUAGE } from '@/i18n/language'
 import { useSiteStore } from '@/stores/site'
 
 // Tillar ro'yxati o'z nomida yoziladi — bu tarjima qilinmaydi.
@@ -21,11 +24,13 @@ const LANGUAGES = [
 
 const { t } = useI18n()
 const site = useSiteStore()
+const route = useRoute()
+const router = useRouter()
 const isOpen = ref(false)
 const root = ref(null)
 
 const isDesktop = useMediaQuery('(min-width: 1024px)')
-const isScrollLocked = useScrollLock(document.body)
+const isScrollLocked = useScrollLock()
 
 const currentShort = computed(
   () => LANGUAGES.find((item) => item.code === site.language)?.short ?? "O'z",
@@ -52,6 +57,27 @@ watch([isOpen, isDesktop], ([open, desktop]) => {
 async function choose(code) {
   isOpen.value = false
   await site.changeLanguage(code)
+  syncUrlLanguage(code)
+}
+
+/**
+ * Manzildagi `?lang=` tanlangan tilga ergashadi.
+ *
+ * Saytda har bir tilning o'z manzili bor (`seoConfig.js:localeUrl`,
+ * `hreflang`): asosiy til — parametrsiz, qolganlari `?lang=` bilan. Manzil
+ * yangilanmasa `?lang=ru` bilan ochilgan sahifada til inglizchaga
+ * o'zgartirilsa ham havola ruscha bo'lib qolardi — ulashilgan havola
+ * ekrandagidan boshqa tilni ochardi.
+ */
+function syncUrlLanguage(code) {
+  const current = route.query.lang
+  const next = code === DEFAULT_LANGUAGE ? undefined : code
+  if (current === next) return
+
+  const query = { ...route.query }
+  if (next) query.lang = next
+  else delete query.lang
+  router.replace({ path: route.path, query, hash: route.hash })
 }
 </script>
 

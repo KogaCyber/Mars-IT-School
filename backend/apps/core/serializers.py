@@ -9,9 +9,11 @@ from .models import (
     ChildSkill,
     Founder,
     FutureBenefit,
+    PageSection,
     ParentReview,
     ProjectDefenceStep,
     SchoolFeature,
+    SectionItem,
     SiteSettings,
     SpaceFeature,
     Statistic,
@@ -118,3 +120,44 @@ class SchoolFeatureSerializer(TranslatedSerializerMixin, serializers.ModelSerial
     class Meta:
         model = SchoolFeature
         fields = ("id",)
+
+
+class SectionItemSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
+    """Bo'lim ichidagi kartochka/bosqich/rasm."""
+
+    translated_fields = ("value", "label", "title", "text", "note", "list")
+
+    class Meta:
+        model = SectionItem
+        fields = ("id", "order", "icon_name", "icon", "image", "url")
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        # «Ro'yxat» maydoni admin panelda har bir band alohida qatorda yoziladi —
+        # saytga massiv bo'lib boradi.
+        raw_list = data.get("list") or ""
+        data["list"] = [line.strip() for line in raw_list.splitlines() if line.strip()]
+        return data
+
+
+class PageSectionSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
+    """Sahifa bo'limi: sarlavhalar, matnlar, tugmalar, rasmlar va elementlar."""
+
+    translated_fields = (
+        "eyebrow",
+        "title",
+        "subtitle",
+        "text",
+        "note",
+        "button_label",
+        "button2_label",
+    )
+    items = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PageSection
+        fields = ("key", "page", "order", "button_url", "button2_url", "image", "image2", "items")
+
+    def get_items(self, obj) -> list:
+        items = [item for item in obj.items.all() if item.is_published]
+        return SectionItemSerializer(items, many=True, context=self.context).data

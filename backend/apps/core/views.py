@@ -21,6 +21,7 @@ from .models import (
     ChildSkill,
     Founder,
     FutureBenefit,
+    PageSection,
     ParentReview,
     ProjectDefenceStep,
     SchoolFeature,
@@ -35,6 +36,7 @@ from .serializers import (
     FAQSerializer,
     FounderSerializer,
     FutureBenefitSerializer,
+    PageSectionSerializer,
     ParentReviewSerializer,
     ProjectDefenceStepSerializer,
     SchoolFeatureSerializer,
@@ -172,6 +174,8 @@ def home_bootstrap_view(request):
     return Response(
         {
             "settings": SiteSettingsSerializer(SiteSettings.load(), context=ctx).data,
+            # Bosh sahifa bloklarining matni va rasmlari (admin panelda tahrirlanadi).
+            "sections": _sections_payload(request, pages=["home", "common"]),
             "advantages": AdvantageSerializer(
                 Advantage.objects.published()[:HOME_SECTION_LIMIT], many=True, context=ctx
             ).data,
@@ -248,3 +252,31 @@ def health_view(request):
         {"status": "ok" if db_ok else "degraded", "database": db_ok},
         status=status.HTTP_200_OK if db_ok else status.HTTP_503_SERVICE_UNAVAILABLE,
     )
+
+
+def _sections_payload(request, pages=None) -> dict:
+    """Sahifa bo'limlarini `{"home.hero": {...}}` ko'rinishida qaytaradi.
+
+    Sayt bo'limni kaliti bo'yicha oladi. Bo'sh maydon javobda ham bo'sh qoladi —
+    frontend bunday joyda maketdagi standart matnni ko'rsatadi, ya'ni admin
+    panelda hech narsa yozilmagan bo'lim ham to'g'ri ko'rinadi.
+    """
+    queryset = PageSection.objects.filter(is_published=True).prefetch_related("items")
+    if pages:
+        queryset = queryset.filter(page__in=pages)
+
+    serializer = PageSectionSerializer(queryset, many=True, context={"request": request})
+    return {item["key"]: item for item in serializer.data}
+
+
+@extend_schema(responses=OpenApiTypes.OBJECT)
+@public_cache
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def content_view(request):
+    """Barcha sahifalarning matn/rasm bo'limlari — bitta so'rovda.
+
+    Sayt ochilganda bir marta yuklanadi: bo'limlar soni oz va hajmi kichik,
+    shuning uchun sahifama-sahifa so'rash tarmoqqa ortiqcha yuk bo'lardi.
+    """
+    return Response(_sections_payload(request))

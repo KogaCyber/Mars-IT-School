@@ -42,6 +42,11 @@ import {
 } from '../src/utils/schema.js'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+// Production deploy'da (Vercel) `SEO_STRICT=1` qo'yiladi: backend javob
+// bermasa build to'xtaydi va eski, to'liq sitemap saytda qolib turadi.
+// Lokalda va CI'da backend umuman bo'lmaydi — u yerda build to'xtamaydi,
+// faqat ko'zga tashlanadigan ogohlantirish chiqadi.
+const SEO_STRICT = process.env.SEO_STRICT === '1'
 const DIST = join(ROOT, 'dist')
 
 // Vite `.env.production` ni o'zi o'qiydi, bu skript esa alohida Node jarayoni —
@@ -155,12 +160,28 @@ async function collectDynamic() {
     fetchList('vacancies/?page_size=100'),
     fetchList('faqs/?page_size=100'),
   ])
+
+  // Backend javob bermagan bo'limlar alohida sanaladi: ular sitemap'ga
+  // tushmaydi, ya'ni kurs va yangilik sahifalari Google uchun ko'rinmay
+  // qoladi. Ilgari bu faqat ogohlantirish edi va build muvaffaqiyatli
+  // tugagani uchun hech kim sezmasdi (`SEO_STRICT` pastda).
+  const failed = [
+    ['courses', courses],
+    ['news', news],
+    ['branches', branches],
+    ['vacancies', vacancies],
+    ['faqs', faqs],
+  ]
+    .filter(([, value]) => value === null)
+    .map(([name]) => name)
+
   return {
     courses: courses || [],
     news: news || [],
     branches: branches || [],
     vacancies: vacancies || [],
     faqs: faqs || [],
+    failed,
   }
 }
 
@@ -605,6 +626,22 @@ async function main() {
   }
 
   log(`sitemap.xml, llms.txt va ${pages.length} ta statik sahifa yaratildi (${ORIGIN})`)
+
+  if (!dynamic.failed.length) return
+
+  // API manzili berilgan, lekin backend javob bermadi — bu deploy'dagi
+  // haqiqiy nosozlik, "shunchaki lokal muhit" emas.
+  const list = dynamic.failed.join(', ')
+  const message =
+    `Backend javob bermadi (${list}) — sitemap.xml faqat statik sahifalardan iborat. ` +
+    'Kurs, yangilik va filial sahifalari qidiruv tizimlariga ko\u2018rinmaydi.'
+
+  if (SEO_STRICT) {
+    console.error(`[seo] XATOLIK: ${message}`)
+    process.exit(1)
+  }
+
+  console.warn(`\n[seo] \u26a0\ufe0f  DIQQAT: ${message}\n`)
 }
 
 main().catch((error) => {

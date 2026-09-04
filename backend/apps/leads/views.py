@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -28,6 +29,6 @@ class LeadCreateView(CreateAPIView):
         )
         notify_new_lead(lead)
         return Response(
-            {"detail": "Arizangiz qabul qilindi. Tez orada bog'lanamiz."},
+            {"detail": _("Arizangiz qabul qilindi. Tez orada bog'lanamiz.")},
             status=status.HTTP_201_CREATED,
         )

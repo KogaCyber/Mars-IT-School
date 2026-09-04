@@ -14,11 +14,20 @@ import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
 import phone from '@/assets/images/Layer-1 1.webp'
+import { toCards, useSection } from '@/composables/useSection'
 import { SPACE_PARENTS } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 
 const { t } = useI18n()
-const parents = useLocalized(SPACE_PARENTS)
+
+// Blok matni va slaydlari admin paneldan («SPACE» bo'limlari → «Ota-onalar»).
+const section = useSection('space.parents', {
+  eyebrow: 'space.parentsEyebrow',
+  title: 'space.parentsTitle',
+  text: 'space.parentsText',
+})
+const fallback = useLocalized(SPACE_PARENTS)
+const parents = computed(() => toCards(section.value.items, fallback.value))
 
 const index = ref(0)
 /** Oxirgi harakat yo'nalishi — animatsiya qaysi tomonga ketishini belgilaydi. */
@@ -50,16 +59,16 @@ function go(step) {
     >
       <!-- Chap ustun: sarlavha bloki -->
       <div>
-        <p class="eyebrow">{{ t('space.parentsEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
 
         <h2 class="title-parents font-wide mt-[5%] font-bold text-white">
-          <span v-for="line in t('space.parentsTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
 
         <p class="mt-[7%] max-w-[46ch] leading-relaxed text-white/70">
-          {{ t('space.parentsText') }}
+          {{ section.text }}
         </p>
       </div>
 
@@ -70,7 +79,7 @@ function go(step) {
           <Transition :name="`phone-${direction}`">
             <div :key="active.id" class="mx-auto w-[58%] sm:w-[42%] lg:w-[58%]">
               <img
-                :src="phone"
+                :src="section.image || phone"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"

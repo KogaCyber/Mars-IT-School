@@ -5,6 +5,7 @@ import { ref } from 'vue'
 import { fetchSiteSettings } from '@/api/site'
 import { setI18nLanguage } from '@/i18n'
 import { getLanguage, setLanguage as persistLanguage } from '@/i18n/language'
+import { useContentStore } from '@/stores/content'
 
 const EMPTY_SETTINGS = {
   phone: '',
@@ -51,7 +52,8 @@ export const useSiteStore = defineStore('site', () => {
     language.value = next
     setI18nLanguage(next)
     isLoaded.value = false
-    await load()
+    // Sahifa bo'limlari ham tarjimalanadi — yangi tilda qayta olinadi.
+    await Promise.all([load(), useContentStore().load({ force: true })])
   }
 
   return { settings, isLoaded, language, load, refresh, changeLanguage }

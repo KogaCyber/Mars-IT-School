@@ -34,16 +34,39 @@ export function useAsyncData(loader, initialValue, options = {}) {
   const error = ref(null)
   const isLoading = ref(false)
 
+  /**
+   * Oxirgi so'rovning tartib raqami.
+   *
+   * Bir necha yuklash ustma-ust ketishi mumkin: til almashdi, admin panelda
+   * kontent o'zgardi, filtr bosildi. Javoblar esa yuborilgan tartibda
+   * qaytmaydi — sekinroq ESKI javob keyinroq kelib, yangisining ustiga
+   * yozilib qolardi (til almashtirilgach eski tildagi matn qaytib qolishi —
+   * aynan shundan). Faqat eng oxirgi so'rovning javobi qabul qilinadi.
+   */
+  let requestId = 0
+  /** Spinner ko'rsatayotgan so'rovlar soni — oxirgisi tugagach spinner o'chadi. */
+  let visibleRequests = 0
+
   /** @param {boolean} silent spinner ko'rsatilmasin (fonda yangilash). */
   async function execute(silent = false) {
-    if (!silent) isLoading.value = true
+    const id = ++requestId
+    if (!silent) {
+      visibleRequests += 1
+      isLoading.value = true
+    }
     error.value = null
     try {
-      data.value = await loader()
+      const result = await loader()
+      if (id !== requestId) return
+      data.value = result
     } catch (err) {
+      if (id !== requestId) return
       error.value = normalizeError(err).detail
     } finally {
-      if (!silent) isLoading.value = false
+      if (!silent) {
+        visibleRequests -= 1
+        if (visibleRequests === 0) isLoading.value = false
+      }
     }
   }
 

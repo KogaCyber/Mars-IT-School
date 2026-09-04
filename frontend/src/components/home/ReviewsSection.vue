@@ -9,9 +9,17 @@ import { useI18n } from 'vue-i18n'
 
 import reviewsBubble from '@/assets/images/reviews-bubble.webp'
 import InfiniteCarousel from '@/components/base/InfiniteCarousel.vue'
+import { useSection } from '@/composables/useSection'
 import { isPlayable, openVideo } from '@/composables/useVideoModal'
 
 const { t } = useI18n()
+
+// Blok sarlavhasi admin paneldan (Bosh sahifa → «Ota-onalar nima deydi»).
+const section = useSection('home.reviews', {
+  eyebrow: 'home.reviewsEyebrow',
+  title: 'home.reviewsTitle',
+  text: 'home.reviewsText',
+})
 
 defineProps({
   items: { type: Array, default: () => [] },
@@ -23,7 +31,7 @@ defineProps({
     <div class="container-page">
       <div class="grid items-center gap-[4%] lg:grid-cols-[1fr_auto_1.1fr]">
         <p class="max-w-sm leading-relaxed text-white/60">
-          {{ t('home.reviewsText') }}
+          {{ section.text }}
         </p>
 
         <img
@@ -36,9 +44,9 @@ defineProps({
         />
 
         <div>
-          <p class="eyebrow">{{ t('home.reviewsEyebrow') }}</p>
+          <p class="eyebrow">{{ section.eyebrow }}</p>
           <h2 class="section-title mt-[3%] max-w-[14ch] text-white">
-            {{ t('home.reviewsTitle') }}
+            {{ section.title }}
           </h2>
         </div>
       </div>

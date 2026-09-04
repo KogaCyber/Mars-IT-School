@@ -6,14 +6,28 @@
  * tepada, astronavt esa uning ostida ko'rinadi — matn ustiga tushmaydi.
  * Kata ekranda ikki ustunli tarmoqqa joylashadi.
  */
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import heroAstronaut from '@/assets/images/hero-astronaut.webp'
 import orbit1 from '@/assets/images/hero-orbit-1.svg'
 import orbit2 from '@/assets/images/hero-orbit-2.svg'
 import BaseButton from '@/components/base/BaseButton.vue'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Matn, tugmalar va astronavt rasmi admin paneldan keladi
+// (Bosh sahifa bo'limlari → «Hero»). Bo'sh qoldirilsa — maketdagi qiymat.
+const hero = useSection('home.hero', {
+  title: 'home.heroTitle',
+  text: 'home.heroText',
+  subtitle: 'home.heroTextSecond',
+  buttonLabel: 'common.trialLesson',
+  button2Label: 'common.viewCourses',
+})
+
+const heroImage = computed(() => hero.value.image || heroAstronaut)
 </script>
 
 <template>
@@ -24,14 +38,14 @@ const { t } = useI18n()
       <!-- Matn -->
       <div class="order-1">
         <h1 v-reveal class="title-hero font-wide font-bold text-white">
-          {{ t('home.heroTitle') }}
+          <span v-for="line in hero.titleLines" :key="line" class="block">{{ line }}</span>
           <span class="sr-only">{{ t('home.heroTitleSr') }}</span>
         </h1>
 
         <p v-reveal="{ delay: 120 }" class="text-lead mt-[4%] leading-relaxed text-white">
-          {{ t('home.heroText') }}
+          {{ hero.text }}
           <br />
-          {{ t('home.heroTextSecond') }}
+          {{ hero.subtitle }}
         </p>
 
         <div v-reveal="{ delay: 240 }" class="mt-[7%] flex flex-wrap gap-3">
@@ -40,7 +54,7 @@ const { t } = useI18n()
             class="h-[3.5rem] min-w-[15rem] font-wide font-bold lg:h-[4.17vw] lg:min-w-[17.7vw]"
             :to="{ name: 'application', query: { source: 'home' } }"
           >
-            {{ t('common.trialLesson') }}
+            {{ hero.buttonLabel }}
           </BaseButton>
 
           <BaseButton
@@ -49,7 +63,7 @@ const { t } = useI18n()
             :to="{ name: 'courses' }"
             class="bg-surface h-[3.5rem] min-w-[12rem] font-wide font-bold lg:h-[4.17vw] lg:min-w-[13vw]"
           >
-            {{ t('common.viewCourses') }}
+            {{ hero.button2Label }}
           </BaseButton>
         </div>
       </div>
@@ -58,7 +72,7 @@ const { t } = useI18n()
       <div class="relative order-2 mt-[8%] lg:mt-0" aria-hidden="true">
         <img
           decoding="async"
-          :src="heroAstronaut"
+          :src="heroImage"
           alt=""
           fetchpriority="high"
           class="animate-float mx-auto w-[78%] max-w-[32rem] object-contain sm:w-[62%] lg:w-full lg:max-w-none"

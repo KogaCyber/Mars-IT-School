@@ -64,16 +64,29 @@ http.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`
   }
+  const isGet = (config.method || 'get').toLowerCase() === 'get'
   // Kontent versiyasi manzilga qo'shiladi — admin paneldagi o'zgarishdan keyin
   // brauzer/CDN keshidagi eski javob emas, yangisi olinadi (contentVersion.js).
   const version = getContentVersion()
-  if (version && !config.skipVersion && (config.method || 'get').toLowerCase() === 'get') {
+  if (version && !config.skipVersion && isGet) {
     config.params = { ...config.params, _v: version }
   }
   // Sayt tili har bir so'rovga qo'shiladi — backend shu tildagi matnni qaytaradi.
   const language = getLanguage()
   if (language) {
     config.headers['Accept-Language'] = language
+    // Til MANZILGA ham yoziladi (backend `?lang=` ni to'liq qo'llaydi:
+    // `apps/core/translation.py:resolve_language`).
+    //
+    // Nega sarlavhaning o'zi yetmaydi: ochiq GET javoblari `Cache-Control:
+    // public, max-age=...` bilan keladi (`apps/core/cache.py`). Til faqat
+    // sarlavhada bo'lsa, uch tilning ham manzili bir xil bo'lib qoladi va
+    // brauzer (hamda CDN) birinchi tildagi javobni keyingi tilga ham berib
+    // yuboradi — til almashadi-yu, kontent eski tilda qolib ketadi. Faqat
+    // sahifani yangilash yordam berardi, chunki qayta yuklashda brauzer
+    // keshni chetlab o'tadi. Manzilda til bo'lsa, har bir til alohida
+    // kesh yozuvi bo'ladi va bunday holat umuman yuzaga kelmaydi.
+    if (isGet) config.params = { ...config.params, lang: language }
   }
   return config
 })

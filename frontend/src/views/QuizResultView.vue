@@ -33,8 +33,17 @@ import QuizTopSkillsSection from '@/components/quiz/QuizTopSkillsSection.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
 import { useSeo } from '@/composables/useSeo'
 import { useQuizContent } from '@/utils/quizContent'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Natija sahifasi sarlavhalari admin paneldan («Test» sahifasi bo'limlari → «Natija»).
+const resultTexts = useSection('quiz.result', {
+  title: 'quiz.resultTitle',
+  eyebrow: 'quiz.skillsEyebrow',
+  subtitle: 'quiz.skillsSubtitle',
+  text: 'quiz.topSkillsTitle',
+})
 
 const props = defineProps({
   /** Natijaning maxfiy kaliti — manzildan keladi (`/test/rezultat/:token`). */
@@ -98,7 +107,7 @@ useSeo(() => ({
         />
 
         <h1 v-reveal class="title-result font-wide mt-[4%] font-bold text-white">
-          {{ t('quiz.resultTitle') }}
+          {{ resultTexts.title }}
         </h1>
 
         <!-- Katta kartochka -->

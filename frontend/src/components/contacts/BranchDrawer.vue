@@ -5,11 +5,12 @@
  * Tepada filial rasmi va yopish tugmasi, ostida nomi, manzili (mo'ljal bilan)
  * va xaritada ochish tugmalari: Yandex Maps va Google Maps.
  */
-import { onKeyStroke, useScrollLock } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 import { nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BranchMapLinks from '@/components/contacts/BranchMapLinks.vue'
+import { useScrollLock } from '@/composables/useScrollLock'
 
 const { t } = useI18n()
 
@@ -21,7 +22,7 @@ defineProps({
 const open = defineModel('open', { type: Boolean, required: true })
 
 const panel = ref(null)
-const isLocked = useScrollLock(document.documentElement)
+const isLocked = useScrollLock()
 
 watch(open, async (value) => {
   isLocked.value = value

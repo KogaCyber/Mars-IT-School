@@ -5,12 +5,16 @@
  * Figma: chapda izoh matni va raqamlar kartochkasi, o'ngda yorliq bilan
  * yirik sarlavha; orqasida rangli nur.
  */
-import { useI18n } from 'vue-i18n'
-
 import glow from '@/assets/images/about-glow.webp'
+import { useSection } from '@/composables/useSection'
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 
-const { t } = useI18n()
+// Blok matni admin paneldan («Biz haqimizda» → «Demo Day»).
+const section = useSection('about.demoday', {
+  eyebrow: 'about.demoDayEyebrow',
+  title: 'about.demoDayTitle',
+  text: 'about.demoDayText',
+})
 
 defineProps({
   items: { type: Array, default: () => [] },
@@ -32,7 +36,7 @@ defineProps({
       <!-- Chap ustun: izoh va raqamlar -->
       <div class="order-2 lg:order-1">
         <p class="max-w-[42ch] text-[1.0625rem] leading-relaxed text-white/60">
-          {{ t('about.demoDayText') }}
+          {{ section.text }}
         </p>
 
         <ul
@@ -61,9 +65,9 @@ defineProps({
 
       <!-- O'ng ustun: sarlavha -->
       <div class="order-1 lg:order-2">
-        <p class="eyebrow">{{ t('about.demoDayEyebrow') }}</p>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
         <h2 class="section-title mt-6 font-wide font-bold text-white text-5xl">
-          <span v-for="line in t('about.demoDayTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>

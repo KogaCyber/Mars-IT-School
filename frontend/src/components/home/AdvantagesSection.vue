@@ -4,8 +4,16 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import BaseButton from '@/components/base/BaseButton.vue'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Blok sarlavhasi admin paneldan (Bosh sahifa → «Nega MARS IT School ni tanlashadi»).
+const section = useSection('home.advantages', {
+  eyebrow: 'home.advantagesEyebrow',
+  title: 'home.advantagesTitle',
+  text: 'home.advantagesText',
+})
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -29,16 +37,16 @@ function displayNumber(item, index) {
 <template>
   <section v-if="props.items.length" v-reveal class="section bg-ink">
     <div class="container-page">
-      <p class="eyebrow">{{ t('home.advantagesEyebrow') }}</p>
+      <p class="eyebrow">{{ section.eyebrow }}</p>
 
       <div class="mt-5 grid gap-8 lg:grid-cols-2 lg:items-end">
         <h2 class="section-title text-white">
-          <span v-for="line in t('home.advantagesTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
         <p class="text-base leading-relaxed text-white/70 lg:text-right">
-          {{ t('home.advantagesText') }}
+          {{ section.text }}
         </p>
       </div>
 

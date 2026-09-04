@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-03 17:45+0500\n"
+"POT-Creation-Date: 2026-09-04 17:20+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,566 +32,788 @@ msgstr "Права доступа"
 msgid "Sanalar"
 msgstr "Даты"
 
-#: apps/accounts/models.py:16
+#: apps/accounts/models.py:17
 msgid "O'quvchi"
 msgstr "Ученик"
 
-#: apps/accounts/models.py:17 apps/teachers/models.py:55
+#: apps/accounts/models.py:18 apps/teachers/models.py:55
 msgid "O'qituvchi"
 msgstr "Преподаватель"
 
-#: apps/accounts/models.py:18
+#: apps/accounts/models.py:19
 msgid "Administrator"
 msgstr "Администратор"
 
-#: apps/accounts/models.py:20 apps/core/models.py:71
-#: apps/vacancies/models.py:90
+#: apps/accounts/models.py:21 apps/core/models.py:71
+#: apps/vacancies/models.py:92
 msgid "email"
 msgstr "email"
 
-#: apps/accounts/models.py:22 apps/branches/models.py:26 apps/core/models.py:69
-#: apps/leads/models.py:27 apps/quiz/models.py:218 apps/vacancies/models.py:89
+#: apps/accounts/models.py:23 apps/branches/models.py:27 apps/core/models.py:69
+#: apps/leads/models.py:27 apps/quiz/models.py:240 apps/vacancies/models.py:91
 msgid "telefon"
 msgstr "телефон"
 
-#: apps/accounts/models.py:27
+#: apps/accounts/models.py:28
 msgid "ism"
 msgstr "имя"
 
-#: apps/accounts/models.py:28
+#: apps/accounts/models.py:29
 msgid "familiya"
 msgstr "фамилия"
 
-#: apps/accounts/models.py:29
+#: apps/accounts/models.py:30
 msgid "avatar"
 msgstr "аватар"
 
-#: apps/accounts/models.py:31
+#: apps/accounts/models.py:32
 msgid "rol"
 msgstr "роль"
 
-#: apps/accounts/models.py:34
+#: apps/accounts/models.py:41
+msgid "sessiya davri"
+msgstr "срок сессии"
+
+#: apps/accounts/models.py:43
 msgid "faol"
 msgstr "активен"
 
-#: apps/accounts/models.py:35
+#: apps/accounts/models.py:44
 msgid "xodim"
 msgstr "сотрудник"
 
-#: apps/accounts/models.py:36
+#: apps/accounts/models.py:45
 msgid "ro'yxatdan o'tgan sana"
 msgstr "дата регистрации"
 
-#: apps/accounts/models.py:44
+#: apps/accounts/models.py:53
 msgid "Foydalanuvchi"
 msgstr "Пользователь"
 
-#: apps/accounts/models.py:45
+#: apps/accounts/models.py:54
 msgid "Foydalanuvchilar"
 msgstr "Пользователи"
 
-#: apps/accounts/models.py:71
+#: apps/accounts/models.py:85
 msgid "token identifikatori"
 msgstr "идентификатор токена"
 
-#: apps/accounts/models.py:74
+#: apps/accounts/models.py:88
 msgid "foydalanuvchi"
 msgstr "пользователь"
 
-#: apps/accounts/models.py:80
+#: apps/accounts/models.py:94
 msgid "amal qilish muddati"
 msgstr "срок действия"
 
-#: apps/accounts/models.py:81
+#: apps/accounts/models.py:95
 msgid "bekor qilingan vaqt"
 msgstr "время отзыва"
 
-#: apps/accounts/models.py:84
+#: apps/accounts/models.py:98
 msgid "Bekor qilingan token"
 msgstr "Отозванный токен"
 
-#: apps/accounts/models.py:85
+#: apps/accounts/models.py:99
 msgid "Bekor qilingan tokenlar"
 msgstr "Отозванные токены"
+
+#: apps/accounts/serializers.py:83
+msgid "Bu email allaqachon ro'yxatdan o'tgan."
+msgstr "Этот email уже зарегистрирован."
+
+#: apps/accounts/serializers.py:92
+msgid "Bu telefon raqam allaqachon band."
+msgstr "Этот номер телефона уже занят."
+
+#: apps/accounts/serializers.py:132
+msgid "Joriy parol noto'g'ri."
+msgstr "Текущий пароль неверен."
 
 #: apps/accounts/validators.py:15
 msgid "Telefon raqam +998XXXXXXXXX ko'rinishida bo'lishi kerak."
 msgstr "Номер телефона должен быть в формате +998XXXXXXXXX."
 
-#: apps/branches/models.py:11 apps/courses/models.py:14
-#: apps/courses/models.py:50 apps/news/models.py:12 apps/quiz/models.py:12
+#: apps/branches/admin.py:24
+msgid "Aloqa"
+msgstr "Контакты"
+
+#: apps/branches/admin.py:26
+msgid "Xarita"
+msgstr "Карта"
+
+#: apps/branches/admin.py:30
+msgid ""
+"Xaritadagi nishon <b>kenglik/uzunlik</b> bo'yicha chiziladi. Manzilni "
+"o'zgartirsangiz, koordinata avtomatik yangilanadi: avval xarita havolasidan "
+"olinadi, bo'lmasa manzil bo'yicha qidiriladi. Kenglik/uzunlikni qo'lda "
+"kiritsangiz — avtomatik qidiruv o'chadi."
+msgstr ""
+"Метка на карте ставится по <b>широте/долготе</b>. Если изменить адрес, "
+"координаты обновятся автоматически: сначала берутся из ссылки на карту, "
+"иначе ищутся по адресу. Если ввести широту/долготу вручную — автоматический "
+"поиск отключается."
+
+#: apps/branches/admin.py:37 apps/courses/admin.py:70 apps/teachers/admin.py:31
+#: apps/vacancies/admin.py:21
+msgid "Chop etish"
+msgstr "Публикация"
+
+#: apps/branches/admin.py:41
+msgid "Koordinata"
+msgstr "Координаты"
+
+#: apps/branches/admin.py:44
+msgid "— (xaritada ko'rinmaydi)"
+msgstr "— (не показан на карте)"
+
+#: apps/branches/models.py:12 apps/courses/models.py:14
+#: apps/courses/models.py:50 apps/news/models.py:12 apps/quiz/models.py:14
 msgid "nomi (ru)"
 msgstr "название (ru)"
 
-#: apps/branches/models.py:12 apps/courses/models.py:15
-#: apps/courses/models.py:51 apps/news/models.py:13 apps/quiz/models.py:13
+#: apps/branches/models.py:13 apps/courses/models.py:15
+#: apps/courses/models.py:51 apps/news/models.py:13 apps/quiz/models.py:15
 msgid "nomi (uz)"
 msgstr "название (uz)"
 
-#: apps/branches/models.py:13 apps/courses/models.py:16
-#: apps/courses/models.py:52 apps/news/models.py:14 apps/quiz/models.py:14
+#: apps/branches/models.py:14 apps/courses/models.py:16
+#: apps/courses/models.py:52 apps/news/models.py:14 apps/quiz/models.py:16
 msgid "nomi (en)"
 msgstr "название (en)"
 
-#: apps/branches/models.py:15
+#: apps/branches/models.py:16
 msgid "manzil (ru)"
 msgstr "адрес (ru)"
 
-#: apps/branches/models.py:16
+#: apps/branches/models.py:17
 msgid "manzil (uz)"
 msgstr "адрес (uz)"
 
-#: apps/branches/models.py:17
+#: apps/branches/models.py:18
 msgid "manzil (en)"
 msgstr "адрес (en)"
 
-#: apps/branches/models.py:19
+#: apps/branches/models.py:20
 msgid "mo'ljal (ru)"
 msgstr "ориентир (ru)"
 
-#: apps/branches/models.py:20
+#: apps/branches/models.py:21
 msgid "mo'ljal (uz)"
 msgstr "ориентир (uz)"
 
-#: apps/branches/models.py:21
+#: apps/branches/models.py:22
 msgid "mo'ljal (en)"
 msgstr "ориентир (en)"
 
-#: apps/branches/models.py:23 apps/core/models.py:73
+#: apps/branches/models.py:24 apps/core/models.py:73
 msgid "ish vaqti (ru)"
 msgstr "часы работы (ru)"
 
-#: apps/branches/models.py:24 apps/core/models.py:78
+#: apps/branches/models.py:25 apps/core/models.py:78
 msgid "ish vaqti (uz)"
 msgstr "часы работы (uz)"
 
-#: apps/branches/models.py:25 apps/core/models.py:79
+#: apps/branches/models.py:26 apps/core/models.py:79
 msgid "ish vaqti (en)"
 msgstr "часы работы (en)"
 
-#: apps/branches/models.py:29
+#: apps/branches/models.py:33
 msgid "kenglik (latitude)"
 msgstr "широта (latitude)"
 
-#: apps/branches/models.py:33
+#: apps/branches/models.py:38
 msgid ""
 "Xaritadagi nishon shu koordinatada turadi. Bo'sh qoldirsangiz — havoladan "
 "yoki manzildan avtomatik topiladi."
-msgstr "Метка на карте встанет по этим координатам. Если оставить пустым — определятся автоматически по ссылке или адресу."
+msgstr ""
+"Метка на карте встанет по этим координатам. Если оставить пустым — "
+"определятся автоматически по ссылке или адресу."
 
-#: apps/branches/models.py:37
+#: apps/branches/models.py:43
 msgid "uzunlik (longitude)"
 msgstr "долгота (longitude)"
 
-#: apps/branches/models.py:40
+#: apps/branches/models.py:50
 msgid "Yandex Maps havolasi"
 msgstr "Ссылка на Яндекс Карты"
 
-#: apps/branches/models.py:42
+#: apps/branches/models.py:52
 msgid "Masalan: https://yandex.uz/maps/?ll=69.240562,41.311081&z=17"
 msgstr "Например: https://yandex.uz/maps/?ll=69.240562,41.311081&z=17"
 
-#: apps/branches/models.py:45
+#: apps/branches/models.py:55
 msgid "Google Maps havolasi"
 msgstr "Ссылка на Google Maps"
 
-#: apps/branches/models.py:47
+#: apps/branches/models.py:57
 msgid "Masalan: https://www.google.com/maps/@41.311081,69.240562,17z"
 msgstr "Например: https://www.google.com/maps/@41.311081,69.240562,17z"
 
-#: apps/branches/models.py:50
+#: apps/branches/models.py:60
 msgid "asosiy rasm"
 msgstr "основное изображение"
 
-#: apps/branches/models.py:51
+#: apps/branches/models.py:61
 msgid "bosh filial"
 msgstr "главный филиал"
 
-#: apps/branches/models.py:54
+#: apps/branches/models.py:64
 msgid "Filial"
 msgstr "Филиал"
 
-#: apps/branches/models.py:55
+#: apps/branches/models.py:65
 msgid "Filiallar"
 msgstr "Филиалы"
 
-#: apps/branches/models.py:68 apps/leads/models.py:38
-#: apps/vacancies/models.py:28
+#: apps/branches/models.py:78 apps/leads/models.py:38
+#: apps/vacancies/models.py:30
 msgid "filial"
 msgstr "филиал"
 
-#: apps/branches/models.py:70 apps/core/models.py:134 apps/core/models.py:153
-#: apps/core/models.py:230 apps/courses/models.py:145 apps/news/models.py:69
-#: apps/quiz/models.py:46 apps/quiz/models.py:76 apps/teachers/models.py:28
+#: apps/branches/models.py:80 apps/core/models.py:145 apps/core/models.py:164
+#: apps/core/models.py:241 apps/core/models.py:445 apps/core/models.py:512
+#: apps/courses/models.py:155 apps/news/models.py:69 apps/quiz/models.py:48
+#: apps/quiz/models.py:78 apps/teachers/models.py:28
 msgid "rasm"
 msgstr "изображение"
 
-#: apps/branches/models.py:71 apps/core/models.py:30 apps/courses/models.py:118
-#: apps/courses/models.py:147 apps/news/models.py:73 apps/quiz/models.py:47
-#: apps/quiz/models.py:191 apps/teachers/models.py:15
+#: apps/branches/models.py:81 apps/core/models.py:30 apps/core/models.py:411
+#: apps/core/models.py:483 apps/courses/models.py:128
+#: apps/courses/models.py:157 apps/courses/models.py:188 apps/news/models.py:73
+#: apps/quiz/models.py:49 apps/quiz/models.py:193 apps/teachers/models.py:15
 msgid "tartib"
 msgstr "порядок"
 
-#: apps/branches/models.py:74
+#: apps/branches/models.py:84
 msgid "Filial rasmi"
 msgstr "Изображение филиала"
 
-#: apps/branches/models.py:75
+#: apps/branches/models.py:85
 msgid "Filial rasmlari"
 msgstr "Изображения филиала"
 
-#: apps/core/admin_site.py:28 apps/leads/models.py:18
+#: apps/branches/services.py:217
+#, python-format
+msgid ""
+"Xaritadagi nishon ko'chirildi — koordinata %(source)s havolasidan olindi: "
+"%(lat)s, %(lon)s."
+msgstr ""
+"Метка на карте перемещена — координаты взяты из ссылки %(source)s: %(lat)s, "
+"%(lon)s."
+
+#: apps/branches/services.py:232
+#, python-format
+msgid ""
+"Koordinata manzil bo'yicha taxminan topildi: %(lat)s, %(lon)s — «%(place)s». "
+"Xaritada tekshiring! Noto'g'ri bo'lsa, Yandex yoki Google havolasini qo'ying "
+"— havoladan olingan koordinata aniq bo'ladi."
+msgstr ""
+"Координаты найдены приблизительно по адресу: %(lat)s, %(lon)s — «%(place)s». "
+"Проверьте на карте! Если неверно — вставьте ссылку Yandex или Google: "
+"координаты из ссылки точные."
+
+#: apps/branches/services.py:239
+msgid ""
+"Koordinata topilmadi — filial xaritada ko'rinmaydi. Yandex yoki Google "
+"havolasini qo'ying, yoki kenglik/uzunlikni qo'lda kiriting."
+msgstr ""
+"Координаты не найдены — филиал не показан на карте. Вставьте ссылку Yandex "
+"или Google либо введите широту/долготу вручную."
+
+#: apps/branches/services.py:244
+msgid ""
+"Manzil o'zgardi, lekin koordinata topilmadi — xaritadagi nishon eski joyida "
+"qoldi. Xarita havolasini yangilang yoki kenglik/uzunlikni qo'lda to'g'rilang."
+msgstr ""
+"Адрес изменился, но координаты не найдены — метка осталась на прежнем месте. "
+"Обновите ссылку на карту или исправьте широту/долготу вручную."
+
+#: apps/core/admin_site.py:28 apps/core/sections.py:25 apps/leads/models.py:18
 msgid "Bosh sahifa"
 msgstr "Главная"
 
 #: apps/core/admin_site.py:30
-msgid "Saytning bosh sahifasida ko‘rinadigan bloklar."
-msgstr "Блоки, которые видны на главной странице сайта."
+msgid "Saytning bosh sahifasi — bloklar saytdagi tartibda."
+msgstr "Главная страница сайта — блоки в том же порядке, что и на сайте."
 
 #: apps/core/admin_site.py:34
-msgid ""
-"«Nega aynan MARS IT School» — raqamlangan kartochkalar («Biz haqimizda» "
-"sahifasida ham ko‘rinadi)"
-msgstr "«Почему выбирают MARS IT School» — нумерованные карточки (также видны на странице «О нас»)"
+msgid "Sahifa bo‘limlari: hero, sarlavhalar, matnlar va rasmlar"
+msgstr "Блоки страницы: hero, заголовки, тексты и изображения"
 
-#: apps/core/admin_site.py:36
+#: apps/core/admin_site.py:35
+msgid ""
+"Hero (sarlavha, matn, tugmalar, astronavt rasmi), SPACE bloki, yangiliklar "
+"va o‘qituvchilar sarlavhalari, fikrlar va F.A.Q."
+msgstr ""
+"Hero (заголовок, текст, кнопки, изображение астронавта), блок SPACE, "
+"заголовки новостей и преподавателей, отзывы и F.A.Q."
+
+#: apps/core/admin_site.py:40
+msgid "«Nega aynan MARS IT School» — raqamlangan kartochkalar"
+msgstr "«Почему именно MARS IT School» — нумерованные карточки"
+
+#: apps/core/admin_site.py:41
 msgid "Raqam (01…06), sarlavha, tavsif, rasm, tartib, chop etish"
 msgstr "Номер (01…06), заголовок, описание, изображение, порядок, публикация"
 
-#: apps/core/admin_site.py:40
+#: apps/core/admin_site.py:45
 msgid "«Ota-onalar nima deydi» — video kartochkalar karuseli"
 msgstr "«Что говорят родители» — карусель видеокарточек"
 
-#: apps/core/admin_site.py:41
+#: apps/core/admin_site.py:46
 msgid "Ism, kimligi (ona/ota), surat, video havolasi, matn, tartib"
 msgstr "Имя, кем приходится (мама/папа), фото, ссылка на видео, текст, порядок"
 
-#: apps/core/admin_site.py:45
+#: apps/core/admin_site.py:50
 msgid "«Ko‘p beriladigan savollar» — akkordeon"
 msgstr "«Частые вопросы» — аккордеон"
 
-#: apps/core/admin_site.py:46
+#: apps/core/admin_site.py:51
 msgid "Savol, javob, tartib, chop etish"
 msgstr "Вопрос, ответ, порядок, публикация"
 
-#: apps/core/admin_site.py:50
+#: apps/core/admin_site.py:55
 msgid "«Maktabda nima bo‘lyapti» — oxirgi yangiliklar lentasi"
 msgstr "«Что происходит в школе» — лента последних новостей"
 
-#: apps/core/admin_site.py:51
+#: apps/core/admin_site.py:56
 msgid "Bu yerga «Yangiliklar» sahifasidagi yozuvlar tushadi"
 msgstr "Сюда попадают записи со страницы «Новости»"
 
-#: apps/core/admin_site.py:55
+#: apps/core/admin_site.py:60
 msgid "«IT’da ishlaydigan o‘qituvchilar» — karusel"
 msgstr "«Преподаватели, которые работают в IT» — карусель"
 
-#: apps/core/admin_site.py:56
+#: apps/core/admin_site.py:61
 msgid "Bu yerga «Biz haqimizda» sahifasidagi o‘qituvchilar tushadi"
 msgstr "Сюда попадают преподаватели со страницы «О нас»"
 
-#: apps/core/admin_site.py:62
+#: apps/core/admin_site.py:67 apps/core/sections.py:26
 msgid "Biz haqimizda"
 msgstr "О нас"
 
-#: apps/core/admin_site.py:64
-msgid "«O нас» sahifasidagi bloklar."
-msgstr "Блоки страницы «О нас»."
+#: apps/core/admin_site.py:69
+msgid "«O нас» sahifasi — bloklar saytdagi tartibda."
+msgstr "Страница «О нас» — блоки в том же порядке, что и на сайте."
 
-#: apps/core/admin_site.py:68
-msgid "«Nima uchun bu kelajak uchun muhim» bo‘limi"
-msgstr "Раздел «Почему это важно для будущего»"
+#: apps/core/admin_site.py:73
+msgid "Sahifa bo‘limlari: sarlavhalar, matnlar va rasmlar"
+msgstr "Блоки страницы: заголовки, тексты и изображения"
 
-#: apps/core/admin_site.py:69 apps/core/admin_site.py:74
+#: apps/core/admin_site.py:74
+msgid ""
+"Hero, «Nega bu muhim», ko‘nikmalar, Demo Day, «Oddiy kurslar emas», "
+"asoschilar va o‘qituvchilar bloklarining matni"
+msgstr ""
+"Тексты блоков: hero, «Почему это важно», навыки, Demo Day, «Не просто "
+"курсы», основатели и преподаватели"
+
+#: apps/core/admin_site.py:79
+msgid "«Nima uchun bu kelajak uchun muhim» — kartochkalar"
+msgstr "«Почему это важно для будущего» — карточки"
+
+#: apps/core/admin_site.py:80 apps/core/admin_site.py:85
 msgid "Sarlavha, tavsif, ikonka, tartib"
 msgstr "Заголовок, описание, иконка, порядок"
 
-#: apps/core/admin_site.py:73
-msgid "«Bola qanday ko‘nikmalarni egallaydi» bo‘limi"
-msgstr "Раздел «Какие навыки развивает ребёнок»"
+#: apps/core/admin_site.py:84
+msgid "«Bola qanday ko‘nikmalarni egallaydi» — kartochkalar"
+msgstr "«Какие навыки развивает ребёнок» — карточки"
 
-#: apps/core/admin_site.py:78
-msgid "«Demo Day — bola loyihasini himoya qiladi» raqamlari"
-msgstr "Цифры блока «День, когда ребёнок защищает свой проект»"
+#: apps/core/admin_site.py:89
+msgid "«Demo Day» raqamlari"
+msgstr "Цифры блока «Demo Day»"
 
-#: apps/core/admin_site.py:79
+#: apps/core/admin_site.py:90
 msgid "Raqam/yorliq, izoh, ikonka, tartib"
 msgstr "Значение, подпись, иконка, порядок"
 
-#: apps/core/admin_site.py:83
+#: apps/core/admin_site.py:94
 msgid "Statistika chizig‘i (o‘quvchilar soni, yillar…)"
 msgstr "Строка статистики (число учеников, годы…)"
 
-#: apps/core/admin_site.py:84
+#: apps/core/admin_site.py:95
 msgid "Qiymat, izoh, tartib"
 msgstr "Значение, подпись, порядок"
 
-#: apps/core/admin_site.py:88
+#: apps/core/admin_site.py:99
 msgid "«MARS IT — bu oddiy kurslar emas» ro‘yxati"
 msgstr "Список блока «MARS IT — это не просто курсы»"
 
-#: apps/core/admin_site.py:89
+#: apps/core/admin_site.py:100
 msgid "Ro‘yxat bandlari, tartib. Yonidagi video — «Sayt sozlamalari»da"
 msgstr "Пункты списка, порядок. Видео рядом — в «Настройках сайта»"
 
-#: apps/core/admin_site.py:93
+#: apps/core/admin_site.py:104
 msgid "«Maktab ortida kim turadi» — asoschilar lentasi"
 msgstr "«Кто стоит за школой» — лента основателей"
 
-#: apps/core/admin_site.py:94
+#: apps/core/admin_site.py:105
 msgid "Ism, lavozim, surat, izoh, tartib"
 msgstr "Имя, должность, фото, описание, порядок"
 
-#: apps/core/admin_site.py:98
+#: apps/core/admin_site.py:109
 msgid "«O‘qituvchilar» — kartochkalar karuseli"
 msgstr "«Преподаватели» — карусель карточек"
 
-#: apps/core/admin_site.py:99
+#: apps/core/admin_site.py:110
 msgid "Ism, lavozim, surat, tajriba, texnologiyalar, tartib"
 msgstr "Имя, должность, фото, опыт, технологии, порядок"
 
-#: apps/core/admin_site.py:103
+#: apps/core/admin_site.py:114
 msgid "O‘qituvchi kartochkasidagi texnologiya yorliqlari"
 msgstr "Теги технологий в карточке преподавателя"
 
-#: apps/core/admin_site.py:104
+#: apps/core/admin_site.py:115
 msgid "Texnologiya nomi (Python, Figma…) — o‘qituvchiga biriktiriladi"
 msgstr "Название технологии (Python, Figma…) — привязывается к преподавателю"
 
-#: apps/core/admin_site.py:110 apps/courses/models.py:91
-msgid "Kurslar"
-msgstr "Курсы"
+#: apps/core/admin_site.py:121
+msgid "Kurslar (ro‘yxat sahifasi)"
+msgstr "Курсы (страница со списком)"
 
-#: apps/core/admin_site.py:112
-msgid "Kurslar sahifasi va har bir kursning ichki sahifasi."
-msgstr "Страница курсов и внутренняя страница каждого курса."
+#: apps/core/admin_site.py:123
+msgid "«Kurslar» sahifasi: hero, yo‘nalish kartochkalari va banner."
+msgstr "Страница «Курсы»: hero, карточки направлений и баннер."
 
-#: apps/core/admin_site.py:116
-msgid "«Yo‘nalishlar» — IT Kids va IT Dasturlash kartochkalari"
-msgstr "«Направления» — карточки IT Kids и IT Разработка"
+#: apps/core/admin_site.py:127
+msgid "Sahifa bo‘limlari: hero, «Yo‘nalishlar» kartochkalari, «Tez orada»"
+msgstr "Блоки страницы: hero, карточки «Направления», «Скоро»"
 
-#: apps/core/admin_site.py:117
+#: apps/core/admin_site.py:128
+msgid ""
+"Sarlavhalar, matnlar, kartochka rasmlari, yosh, texnologiyalar va havolalar"
+msgstr "Заголовки, тексты, изображения карточек, возраст, технологии и ссылки"
+
+#: apps/core/admin_site.py:132
+msgid "Yo‘nalish yozuvlari (kurs sahifalari uchun ma’lumotnoma)"
+msgstr "Записи направлений (справочник для страниц курсов)"
+
+#: apps/core/admin_site.py:133
 msgid "Nom, tavsif, rasm, tartib, chop etish"
 msgstr "Название, описание, изображение, порядок, публикация"
 
-#: apps/core/admin_site.py:121
-msgid "Kurs sahifasi (hero, narx, davomiylik, galereya, bosqichlar)"
-msgstr "Страница курса (шапка, цена, длительность, галерея, этапы)"
-
-#: apps/core/admin_site.py:123
-msgid ""
-"Nom, yo‘nalish, yosh, narx, davomiylik, tavsif, rasm, galereya; ichida — "
-"imkoniyatlar va o‘qish bosqichlari"
-msgstr "Название, направление, возраст, цена, длительность, описание, изображение, галерея; внутри — возможности и этапы обучения"
-
-#: apps/core/admin_site.py:131
-msgid "SPACE platformasi"
-msgstr "Платформа SPACE"
-
-#: apps/core/admin_site.py:133
-msgid "SPACE ilovasi haqidagi sahifa."
-msgstr "Страница о приложении SPACE."
-
 #: apps/core/admin_site.py:137
-msgid "«SPACE imkoniyatlari» — kartochkalar lentasi"
-msgstr "«Возможности SPACE» — лента карточек"
+msgid "Kurs yozuvi: narx, davomiylik va sahifa pastidagi savol-javoblar"
+msgstr "Запись курса: цена, длительность и вопросы-ответы внизу страницы"
 
 #: apps/core/admin_site.py:138
 msgid ""
-"Sarlavha, tavsif, ikonka, tartib. Ilova havolalari — «Sayt sozlamalari»da"
-msgstr "Заголовок, описание, иконка, порядок. Ссылки на приложение — в «Настройках сайта»"
+"Nom, yo‘nalish, yosh, narx, davomiylik, tavsif, rasm; ichida — imkoniyatlar, "
+"bosqichlar va savol-javoblar"
+msgstr ""
+"Название, направление, возраст, цена, длительность, описание, изображение; "
+"внутри — возможности, этапы обучения и вопросы-ответы"
 
-#: apps/core/admin_site.py:144 apps/news/models.py:56
+#: apps/core/admin_site.py:145 apps/core/sections.py:28
+msgid "Kurs — IT Kids"
+msgstr "Курс — IT Kids"
+
+#: apps/core/admin_site.py:147
+msgid ""
+"«IT Kids» sahifasi: hero, ko‘rsatkichlar, mavzular, bosqichlar, galereya."
+msgstr "Страница «IT Kids»: hero, показатели, темы, этапы, галерея."
+
+#: apps/core/admin_site.py:151 apps/core/admin_site.py:171
+msgid "Sahifa bo‘limlari — barcha matn va rasmlar"
+msgstr "Блоки страницы — все тексты и изображения"
+
+#: apps/core/admin_site.py:152
+msgid ""
+"Hero (sarlavha, rasm, tugmalar), ko‘rsatkichlar tasmasi, «Kurs haqida» "
+"mavzulari, o‘qish bosqichlari va galereya"
+msgstr ""
+"Hero (заголовок, изображение, кнопки), лента показателей, темы блока «О "
+"курсе», этапы обучения и галерея"
+
+#: apps/core/admin_site.py:157
+msgid "Sahifa pastidagi savol-javoblar — «IT Kids» kursi yozuvida"
+msgstr "Вопросы-ответы внизу страницы — в записи курса «IT Kids»"
+
+#: apps/core/admin_site.py:158
+msgid "Kursni oching va «Savol-javoblar» blokini to‘ldiring"
+msgstr "Откройте курс и заполните блок «Вопросы-ответы»"
+
+#: apps/core/admin_site.py:164 apps/core/sections.py:29
+msgid "Kurs — IT dasturlash"
+msgstr "Курс — IT Разработка"
+
+#: apps/core/admin_site.py:166
+msgid ""
+"«IT-dasturlash» sahifasi: hero, ko‘rsatkichlar, mavzular, bosqichlar, "
+"galereya."
+msgstr "Страница «IT-разработка»: hero, показатели, темы, этапы, галерея."
+
+#: apps/core/admin_site.py:172
+msgid ""
+"Hero, ko‘rsatkichlar tasmasi, «Kurs haqida» mavzulari, o‘qish bosqichlari va "
+"galereya"
+msgstr ""
+"Hero, лента показателей, темы блока «О курсе», этапы обучения и галерея"
+
+#: apps/core/admin_site.py:179 apps/core/sections.py:30
+msgid "SPACE platformasi"
+msgstr "Платформа SPACE"
+
+#: apps/core/admin_site.py:181
+msgid "SPACE ilovasi haqidagi sahifa."
+msgstr "Страница о приложении SPACE."
+
+#: apps/core/admin_site.py:185
+msgid "Sahifa bo‘limlari — barcha matn, kartochka va rasmlar"
+msgstr "Блоки страницы — все тексты, карточки и изображения"
+
+#: apps/core/admin_site.py:186
+msgid ""
+"Hero, imkoniyatlar, geymifikatsiya, Premium, MARS Shop sovg‘alari, ota-"
+"onalar bloki va ariza bloki"
+msgstr ""
+"Hero, возможности, геймификация, Premium, подарки MARS Shop, блок для "
+"родителей и блок заявки"
+
+#: apps/core/admin_site.py:193 apps/core/sections.py:31 apps/news/models.py:56
 msgid "Yangiliklar"
 msgstr "Новости"
 
-#: apps/core/admin_site.py:146
+#: apps/core/admin_site.py:195
 msgid "Yangiliklar ro‘yxati va har bir yangilikning ichki sahifasi."
 msgstr "Список новостей и внутренняя страница каждой новости."
 
-#: apps/core/admin_site.py:150
+#: apps/core/admin_site.py:199 apps/core/admin_site.py:242
+msgid "Sahifa bo‘limlari: hero va ro‘yxat sarlavhasi"
+msgstr "Блоки страницы: hero и заголовок списка"
+
+#: apps/core/admin_site.py:200 apps/core/admin_site.py:243
+msgid "Sarlavha, izoh, rasm va ro‘yxat bo‘sh bo‘lgandagi matn"
+msgstr "Заголовок, описание, изображение и текст, когда список пуст"
+
+#: apps/core/admin_site.py:204
 msgid "Ro‘yxat tepasidagi filtr tugmalari (Yangiliklar / Tadbirlar)"
 msgstr "Кнопки фильтра над списком (Новости / Мероприятия)"
 
-#: apps/core/admin_site.py:151
+#: apps/core/admin_site.py:205
 msgid "Turkum nomi, tartib"
 msgstr "Название рубрики, порядок"
 
-#: apps/core/admin_site.py:155
+#: apps/core/admin_site.py:209
 msgid "Yangilik: sarlavha, muqova, matn va fotoreportaj"
 msgstr "Новость: заголовок, обложка, текст и фоторепортаж"
 
-#: apps/core/admin_site.py:157
+#: apps/core/admin_site.py:210
 msgid ""
 "Sarlavha, turkum, qisqa matn, to‘liq matn, muqova, chop etilgan sana; ichida "
 "— galereya rasmlari"
-msgstr "Заголовок, рубрика, краткий текст, полный текст, обложка, дата публикации; внутри — изображения галереи"
+msgstr ""
+"Заголовок, рубрика, краткий текст, полный текст, обложка, дата публикации; "
+"внутри — изображения галереи"
 
-#: apps/core/admin_site.py:165
+#: apps/core/admin_site.py:217
 msgid "Kontaktlar va filiallar"
 msgstr "Контакты и филиалы"
 
-#: apps/core/admin_site.py:167
+#: apps/core/admin_site.py:219
 msgid "Kontaktlar sahifasi, xarita va filial kartochkalari."
 msgstr "Страница контактов, карта и карточки филиалов."
 
-#: apps/core/admin_site.py:171
+#: apps/core/admin_site.py:223
+msgid "Sahifa bo‘limlari: hero, kontaktlar bloki, filiallar sarlavhasi, ariza"
+msgstr "Блоки страницы: hero, блок контактов, заголовок филиалов, заявка"
+
+#: apps/core/admin_site.py:224
+msgid "Sarlavhalar, matnlar va rasmlar"
+msgstr "Заголовки, тексты и изображения"
+
+#: apps/core/admin_site.py:228
 msgid "Xaritadagi nishon va filial kartochkasi"
 msgstr "Метка на карте и карточка филиала"
 
-#: apps/core/admin_site.py:173
+#: apps/core/admin_site.py:229
 msgid ""
 "Nom, manzil, mo‘ljal, telefon, ish vaqti, koordinatalar, muqova; ichida — "
 "filial galereyasi"
-msgstr "Название, адрес, ориентир, телефон, часы работы, координаты, обложка; внутри — галерея филиала"
+msgstr ""
+"Название, адрес, ориентир, телефон, часы работы, координаты, обложка; внутри "
+"— галерея филиала"
 
-#: apps/core/admin_site.py:181 apps/vacancies/models.py:66
+#: apps/core/admin_site.py:236 apps/core/sections.py:33
+#: apps/vacancies/models.py:68
 msgid "Vakansiyalar"
 msgstr "Вакансии"
 
-#: apps/core/admin_site.py:183
+#: apps/core/admin_site.py:238
 msgid "Vakansiyalar sahifasi va undan kelgan arizalar."
 msgstr "Страница вакансий и отклики с неё."
 
-#: apps/core/admin_site.py:187
+#: apps/core/admin_site.py:247
 msgid "Vakansiya kartochkasi va uning ichki sahifasi"
 msgstr "Карточка вакансии и её внутренняя страница"
 
-#: apps/core/admin_site.py:188
+#: apps/core/admin_site.py:248
 msgid "Lavozim, bo‘lim, ish turi, talablar, shartlar, chop etish"
 msgstr "Должность, отдел, тип занятости, требования, условия, публикация"
 
-#: apps/core/admin_site.py:192
+#: apps/core/admin_site.py:252
 msgid "Vakansiyaga kelgan arizalar (faqat o‘qish uchun)"
 msgstr "Отклики на вакансии (только для чтения)"
 
-#: apps/core/admin_site.py:193
+#: apps/core/admin_site.py:253
 msgid "Nomzod ma’lumotlari, rezyume, holati"
 msgstr "Данные кандидата, резюме, статус"
 
-#: apps/core/admin_site.py:199
+#: apps/core/admin_site.py:259 apps/core/sections.py:34
 msgid "Proforientatsiya testi"
 msgstr "Профориентационный тест"
 
-#: apps/core/admin_site.py:201
+#: apps/core/admin_site.py:261
 msgid "«Kim bo‘lish kerak» testi: savollar, javoblar va natijalar."
 msgstr "Тест «Кем быть»: вопросы, ответы и результаты."
 
-#: apps/core/admin_site.py:205
+#: apps/core/admin_site.py:265
+msgid "Sahifa bo‘limlari: salomlashuv, kontakt qadami, natija sarlavhalari"
+msgstr "Блоки страницы: приветствие, шаг с контактами, заголовки результата"
+
+#: apps/core/admin_site.py:266
+msgid "Test sahifasidagi matnlar"
+msgstr "Тексты страницы теста"
+
+#: apps/core/admin_site.py:270
 msgid "Test: nomi va tavsifi"
 msgstr "Тест: название и описание"
 
-#: apps/core/admin_site.py:206
+#: apps/core/admin_site.py:271
 msgid "Nom, tavsif, chop etish"
 msgstr "Название, описание, публикация"
 
-#: apps/core/admin_site.py:210
+#: apps/core/admin_site.py:275
 msgid "Test savollari va javob variantlari"
 msgstr "Вопросы теста и варианты ответов"
 
-#: apps/core/admin_site.py:211
+#: apps/core/admin_site.py:276
 msgid "Savol matni, tartib; ichida — javob variantlari va ballari"
 msgstr "Текст вопроса, порядок; внутри — варианты ответов и их баллы"
 
-#: apps/core/admin_site.py:215
+#: apps/core/admin_site.py:280
 msgid "Test natijasi sahifasi (kasb tavsiyasi)"
 msgstr "Страница результата теста (рекомендация профессии)"
 
-#: apps/core/admin_site.py:216
+#: apps/core/admin_site.py:281
 msgid "Natija nomi, tavsifi, tavsiya etilgan kurs, ko‘nikmalar"
 msgstr "Название результата, описание, рекомендуемый курс, навыки"
 
-#: apps/core/admin_site.py:220
+#: apps/core/admin_site.py:285
 msgid "Foydalanuvchilar topshirgan testlar (faqat o‘qish uchun)"
 msgstr "Пройденные пользователями тесты (только для чтения)"
 
-#: apps/core/admin_site.py:221
+#: apps/core/admin_site.py:286
 msgid "Javoblar va chiqqan natija"
 msgstr "Ответы и полученный результат"
 
-#: apps/core/admin_site.py:227 apps/leads/models.py:60
+#: apps/core/admin_site.py:292 apps/leads/models.py:60
 msgid "Arizalar"
 msgstr "Заявки"
 
-#: apps/core/admin_site.py:229
+#: apps/core/admin_site.py:294
 msgid "Saytdagi barcha shakllardan kelgan arizalar."
 msgstr "Заявки со всех форм сайта."
 
-#: apps/core/admin_site.py:233
+#: apps/core/admin_site.py:298
 msgid "Sinov darsi va boshqa shakllardan kelgan arizalar"
 msgstr "Заявки с пробного урока и других форм"
 
-#: apps/core/admin_site.py:234
+#: apps/core/admin_site.py:299
 msgid "Ism, telefon, kurs, filial, izoh, holati (yangi/bog‘lanildi)"
 msgstr "Имя, телефон, курс, филиал, комментарий, статус (новая/связались)"
 
-#: apps/core/admin_site.py:240 apps/core/models.py:103 apps/core/models.py:104
+#: apps/core/admin_site.py:305 apps/core/models.py:103 apps/core/models.py:104
 msgid "Sayt sozlamalari"
 msgstr "Настройки сайта"
 
-#: apps/core/admin_site.py:242
+#: apps/core/admin_site.py:307
 msgid "Butun sayt bo‘ylab takrorlanadigan ma’lumotlar."
 msgstr "Данные, которые повторяются на всём сайте."
 
-#: apps/core/admin_site.py:246
+#: apps/core/admin_site.py:311
 msgid "Sarlavha, futer va «Biz haqimizda» sahifasidagi video"
 msgstr "Шапка, футер и видео на странице «О нас»"
 
-#: apps/core/admin_site.py:248
+#: apps/core/admin_site.py:312
 msgid ""
 "Telefonlar, email, ish vaqti, ijtimoiy tarmoqlar, SPACE ilova havolalari, "
 "tanishtiruv videosi (havola yoki fayl) va uning muqovasi"
-msgstr "Телефоны, email, часы работы, соцсети, ссылки на приложение SPACE, презентационное видео (ссылка или файл) и его обложка"
+msgstr ""
+"Телефоны, email, часы работы, соцсети, ссылки на приложение SPACE, "
+"презентационное видео (ссылка или файл) и его обложка"
 
-#: apps/core/admin_site.py:256
+#: apps/core/admin_site.py:317
+msgid "Umumiy bloklar: «Bepul sinov darsi» ariza bloki, tugmalar, futer matni"
+msgstr "Общие блоки: блок заявки «Бесплатный пробный урок», кнопки, текст футера"
+"Общие блоки: блок заявки «Бесплатный пробный урок», кнопки, текст "
+"футераОбщие блоки: блок заявки «Бесплатный пробный урок», кнопки, текст "
+"футера"
+
+#: apps/core/admin_site.py:318
+msgid "Barcha sahifalarda takrorlanadigan sarlavha va tugma matnlari"
+msgstr "Заголовки и тексты кнопок, повторяющиеся на всех страницах"
+
+#: apps/core/admin_site.py:324
 msgid "Xodimlar va xavfsizlik"
 msgstr "Сотрудники и доступ"
 
-#: apps/core/admin_site.py:258
+#: apps/core/admin_site.py:326
 msgid "Admin panelga kirish huquqlari."
 msgstr "Права доступа в панель управления."
 
-#: apps/core/admin_site.py:262
+#: apps/core/admin_site.py:330
 msgid "Admin panel foydalanuvchilari"
 msgstr "Пользователи панели управления"
 
-#: apps/core/admin_site.py:263
+#: apps/core/admin_site.py:331
 msgid "Email, ism, huquqlar, parol"
 msgstr "Email, имя, права, пароль"
 
-#: apps/core/admin_site.py:265
-msgid "Huquqlar guruhlari"
-msgstr "Группы прав"
-
-#: apps/core/admin_site.py:265
-msgid "Guruh nomi va ruxsatlar"
-msgstr "Название группы и разрешения"
-
-#: apps/core/admin_site.py:309
+#: apps/core/admin_site.py:377
 msgid "Mars IT School — boshqaruv paneli"
 msgstr "Mars IT School — панель управления"
 
-#: apps/core/admin_site.py:310
+#: apps/core/admin_site.py:378
 msgid "Mars IT School"
 msgstr ""
 
-#: apps/core/admin_site.py:311
+#: apps/core/admin_site.py:379
 msgid "Sahifalar bo‘yicha boshqaruv"
 msgstr "Управление по страницам"
 
-#: apps/core/admin_site.py:364
+#: apps/core/admin_site.py:437
 msgid "Boshqa"
 msgstr "Прочее"
 
-#: apps/core/admin_site.py:370
+#: apps/core/admin_site.py:443
 msgid "Texnik bo‘limlar."
 msgstr "Технические разделы."
+
+#: apps/core/exceptions.py:26 apps/core/exceptions.py:54
+msgid "Topilmadi."
+msgstr "Не найдено."
+
+#: apps/core/exceptions.py:28
+msgid "Ruxsat yo'q."
+msgstr "Доступ запрещён."
+
+#: apps/core/exceptions.py:36 apps/core/exceptions.py:60
+#: apps/core/exceptions.py:62
+msgid "Ma'lumotlar noto'g'ri."
+msgstr "Некорректные данные."
+
+#: apps/core/exceptions.py:44
+msgid "Serverda xatolik yuz berdi. Keyinroq urinib ko'ring."
+msgstr "Произошла ошибка на сервере. Попробуйте позже."
 
 #: apps/core/models.py:14
 msgid "yaratilgan vaqt"
 msgstr "создано"
 
-#: apps/core/models.py:15
+#: apps/core/models.py:15 apps/core/models.py:387 apps/core/models.py:449
 msgid "yangilangan vaqt"
 msgstr "обновлено"
 
@@ -659,335 +881,1124 @@ msgstr "Загрузить видео напрямую (mp4, webm, mov)."
 msgid "video muqovasi"
 msgstr "обложка видео"
 
-#: apps/core/models.py:124 apps/courses/models.py:135
+#: apps/core/models.py:135 apps/courses/models.py:145
 msgid "raqam"
 msgstr "номер"
 
-#: apps/core/models.py:124
+#: apps/core/models.py:135
 msgid "Masalan: 01"
 msgstr "Например: 01"
 
-#: apps/core/models.py:126 apps/core/models.py:190 apps/core/models.py:251
-#: apps/courses/models.py:109 apps/news/models.py:36
+#: apps/core/models.py:137 apps/core/models.py:201 apps/core/models.py:262
+#: apps/core/models.py:419 apps/core/models.py:493 apps/courses/models.py:119
+#: apps/news/models.py:36
 msgid "sarlavha (ru)"
 msgstr "заголовок (ru)"
 
-#: apps/core/models.py:127 apps/core/models.py:191 apps/core/models.py:252
-#: apps/courses/models.py:110 apps/news/models.py:37
+#: apps/core/models.py:138 apps/core/models.py:202 apps/core/models.py:263
+#: apps/core/models.py:420 apps/core/models.py:494 apps/courses/models.py:120
+#: apps/news/models.py:37
 msgid "sarlavha (uz)"
 msgstr "заголовок (uz)"
 
-#: apps/core/models.py:128 apps/core/models.py:192 apps/core/models.py:253
-#: apps/courses/models.py:111 apps/news/models.py:38
+#: apps/core/models.py:139 apps/core/models.py:203 apps/core/models.py:264
+#: apps/core/models.py:421 apps/core/models.py:495 apps/courses/models.py:121
+#: apps/news/models.py:38
 msgid "sarlavha (en)"
 msgstr "заголовок (en)"
 
-#: apps/core/models.py:130 apps/core/models.py:194 apps/core/models.py:255
-#: apps/core/models.py:280 apps/core/models.py:336 apps/courses/models.py:18
-#: apps/courses/models.py:58 apps/courses/models.py:113
-#: apps/courses/models.py:141 apps/quiz/models.py:16 apps/quiz/models.py:72
-#: apps/vacancies/models.py:39
+#: apps/core/models.py:141 apps/core/models.py:205 apps/core/models.py:266
+#: apps/core/models.py:291 apps/core/models.py:347 apps/courses/models.py:18
+#: apps/courses/models.py:58 apps/courses/models.py:123
+#: apps/courses/models.py:151 apps/quiz/models.py:18 apps/quiz/models.py:74
+#: apps/vacancies/models.py:41
 msgid "tavsif (ru)"
 msgstr "описание (ru)"
 
-#: apps/core/models.py:131 apps/core/models.py:195 apps/core/models.py:256
-#: apps/core/models.py:281 apps/core/models.py:337 apps/courses/models.py:19
-#: apps/courses/models.py:59 apps/courses/models.py:114
-#: apps/courses/models.py:142 apps/quiz/models.py:17 apps/quiz/models.py:73
-#: apps/vacancies/models.py:40
+#: apps/core/models.py:142 apps/core/models.py:206 apps/core/models.py:267
+#: apps/core/models.py:292 apps/core/models.py:348 apps/courses/models.py:19
+#: apps/courses/models.py:59 apps/courses/models.py:124
+#: apps/courses/models.py:152 apps/quiz/models.py:19 apps/quiz/models.py:75
+#: apps/vacancies/models.py:42
 msgid "tavsif (uz)"
 msgstr "описание (uz)"
 
-#: apps/core/models.py:132 apps/core/models.py:196 apps/core/models.py:257
-#: apps/core/models.py:282 apps/core/models.py:338 apps/courses/models.py:20
-#: apps/courses/models.py:60 apps/courses/models.py:115
-#: apps/courses/models.py:143 apps/quiz/models.py:18 apps/quiz/models.py:74
-#: apps/vacancies/models.py:41
+#: apps/core/models.py:143 apps/core/models.py:207 apps/core/models.py:268
+#: apps/core/models.py:293 apps/core/models.py:349 apps/courses/models.py:20
+#: apps/courses/models.py:60 apps/courses/models.py:125
+#: apps/courses/models.py:153 apps/quiz/models.py:20 apps/quiz/models.py:76
+#: apps/vacancies/models.py:43
 msgid "tavsif (en)"
 msgstr "описание (en)"
 
-#: apps/core/models.py:137
+#: apps/core/models.py:148
 msgid "Afzallik"
 msgstr "Преимущество"
 
-#: apps/core/models.py:138
+#: apps/core/models.py:149
 msgid "Afzalliklar"
 msgstr "Преимущества"
 
-#: apps/core/models.py:147 apps/core/models.py:229 apps/leads/models.py:26
-#: apps/quiz/models.py:216 apps/teachers/models.py:27
-#: apps/vacancies/models.py:88
+#: apps/core/models.py:158 apps/core/models.py:240 apps/leads/models.py:26
+#: apps/quiz/models.py:238 apps/teachers/models.py:27
+#: apps/vacancies/models.py:90
 msgid "ism familiya"
 msgstr "имя и фамилия"
 
-#: apps/core/models.py:149
+#: apps/core/models.py:160
 msgid "kim (ru)"
 msgstr "кем приходится (ru)"
 
-#: apps/core/models.py:149
+#: apps/core/models.py:160
 msgid "Masalan: Ali ning onasi"
 msgstr "Например: мама Али"
 
-#: apps/core/models.py:151
+#: apps/core/models.py:162
 msgid "kim (uz)"
 msgstr "кем приходится (uz)"
 
-#: apps/core/models.py:152
+#: apps/core/models.py:163
 msgid "kim (en)"
 msgstr "кем приходится (en)"
 
-#: apps/core/models.py:154
+#: apps/core/models.py:165
 msgid "video havola"
 msgstr "ссылка на видео"
 
-#: apps/core/models.py:156
+#: apps/core/models.py:167
 msgid "fikr (ru)"
 msgstr "отзыв (ru)"
 
-#: apps/core/models.py:157
+#: apps/core/models.py:168
 msgid "fikr (uz)"
 msgstr "отзыв (uz)"
 
-#: apps/core/models.py:158
+#: apps/core/models.py:169
 msgid "fikr (en)"
 msgstr "отзыв (en)"
 
-#: apps/core/models.py:161
+#: apps/core/models.py:172
 msgid "Ota-ona fikri"
 msgstr "Отзыв родителя"
 
-#: apps/core/models.py:162
+#: apps/core/models.py:173
 msgid "Ota-onalar fikri"
 msgstr "Отзывы родителей"
 
-#: apps/core/models.py:171 apps/quiz/models.py:42
+#: apps/core/models.py:182 apps/courses/models.py:180 apps/quiz/models.py:44
 msgid "savol (ru)"
 msgstr "вопрос (ru)"
 
-#: apps/core/models.py:172 apps/quiz/models.py:43
+#: apps/core/models.py:183 apps/courses/models.py:181 apps/quiz/models.py:45
 msgid "savol (uz)"
 msgstr "вопрос (uz)"
 
-#: apps/core/models.py:173 apps/quiz/models.py:44
+#: apps/core/models.py:184 apps/courses/models.py:182 apps/quiz/models.py:46
 msgid "savol (en)"
 msgstr "вопрос (en)"
 
-#: apps/core/models.py:175 apps/quiz/models.py:178
+#: apps/core/models.py:186 apps/courses/models.py:184 apps/quiz/models.py:180
 msgid "javob (ru)"
 msgstr "ответ (ru)"
 
-#: apps/core/models.py:176 apps/quiz/models.py:179
+#: apps/core/models.py:187 apps/courses/models.py:185 apps/quiz/models.py:181
 msgid "javob (uz)"
 msgstr "ответ (uz)"
 
-#: apps/core/models.py:177 apps/quiz/models.py:180
+#: apps/core/models.py:188 apps/courses/models.py:186 apps/quiz/models.py:182
 msgid "javob (en)"
 msgstr "ответ (en)"
 
-#: apps/core/models.py:180
+#: apps/core/models.py:191 apps/courses/admin.py:30 apps/courses/models.py:191
 msgid "Savol-javob"
 msgstr "Вопрос-ответ"
 
-#: apps/core/models.py:181
+#: apps/core/models.py:192 apps/courses/models.py:192
 msgid "Savol-javoblar"
 msgstr "Вопросы и ответы"
 
-#: apps/core/models.py:198 apps/core/models.py:259 apps/core/models.py:293
-#: apps/core/models.py:329 apps/courses/models.py:22 apps/courses/models.py:117
-#: apps/teachers/models.py:14 apps/vacancies/models.py:58
+#: apps/core/models.py:209 apps/core/models.py:270 apps/core/models.py:304
+#: apps/core/models.py:340 apps/courses/models.py:22 apps/courses/models.py:127
+#: apps/teachers/models.py:14 apps/vacancies/models.py:60
 msgid "ikonka"
 msgstr "иконка"
 
-#: apps/core/models.py:199
+#: apps/core/models.py:210
 msgid "ekran rasmi"
 msgstr "скриншот"
 
-#: apps/core/models.py:202
+#: apps/core/models.py:213
 msgid "SPACE imkoniyati"
 msgstr "Возможность SPACE"
 
-#: apps/core/models.py:203
+#: apps/core/models.py:214
 msgid "SPACE imkoniyatlari"
 msgstr "Возможности SPACE"
 
-#: apps/core/models.py:212
+#: apps/core/models.py:223
 msgid "qiymat"
 msgstr "значение"
 
-#: apps/core/models.py:214 apps/core/models.py:332 apps/news/models.py:70
+#: apps/core/models.py:225 apps/core/models.py:343 apps/core/models.py:489
+#: apps/news/models.py:70
 msgid "izoh (ru)"
 msgstr "подпись (ru)"
 
-#: apps/core/models.py:215 apps/core/models.py:333 apps/news/models.py:71
+#: apps/core/models.py:226 apps/core/models.py:344 apps/core/models.py:490
+#: apps/news/models.py:71
 msgid "izoh (uz)"
 msgstr "подпись (uz)"
 
-#: apps/core/models.py:216 apps/core/models.py:334 apps/news/models.py:72
+#: apps/core/models.py:227 apps/core/models.py:345 apps/core/models.py:491
+#: apps/news/models.py:72
 msgid "izoh (en)"
 msgstr "подпись (en)"
 
-#: apps/core/models.py:219 apps/core/models.py:220
+#: apps/core/models.py:230 apps/core/models.py:231
 msgid "Statistika"
 msgstr "Статистика"
 
-#: apps/core/models.py:232 apps/teachers/models.py:30
-#: apps/vacancies/models.py:35
+#: apps/core/models.py:243 apps/teachers/models.py:30
+#: apps/vacancies/models.py:37
 msgid "lavozim (ru)"
 msgstr "должность (ru)"
 
-#: apps/core/models.py:233 apps/teachers/models.py:31
-#: apps/vacancies/models.py:36
+#: apps/core/models.py:244 apps/teachers/models.py:31
+#: apps/vacancies/models.py:38
 msgid "lavozim (uz)"
 msgstr "должность (uz)"
 
-#: apps/core/models.py:234 apps/teachers/models.py:32
-#: apps/vacancies/models.py:37
+#: apps/core/models.py:245 apps/teachers/models.py:32
+#: apps/vacancies/models.py:39
 msgid "lavozim (en)"
 msgstr "должность (en)"
 
-#: apps/core/models.py:236
+#: apps/core/models.py:247
 msgid "bio (ru)"
 msgstr "био (ru)"
 
-#: apps/core/models.py:237
+#: apps/core/models.py:248
 msgid "bio (uz)"
 msgstr "био (uz)"
 
-#: apps/core/models.py:238
+#: apps/core/models.py:249
 msgid "bio (en)"
 msgstr "био (en)"
 
-#: apps/core/models.py:241
+#: apps/core/models.py:252
 msgid "Asoschi"
 msgstr "Основатель"
 
-#: apps/core/models.py:242
+#: apps/core/models.py:253
 msgid "Asoschilar"
 msgstr "Основатели"
 
-#: apps/core/models.py:262
+#: apps/core/models.py:273
 msgid "Kelajak uchun afzallik"
 msgstr "Преимущество для будущего"
 
-#: apps/core/models.py:263
+#: apps/core/models.py:274
 msgid "Kelajak uchun afzalliklar"
 msgstr "Преимущества для будущего"
 
-#: apps/core/models.py:276
+#: apps/core/models.py:287
 msgid "ko'nikma (ru)"
 msgstr "навык (ru)"
 
-#: apps/core/models.py:277
+#: apps/core/models.py:288
 msgid "ko'nikma (uz)"
 msgstr "навык (uz)"
 
-#: apps/core/models.py:278
+#: apps/core/models.py:289
 msgid "ko'nikma (en)"
 msgstr "навык (en)"
 
-#: apps/core/models.py:285
+#: apps/core/models.py:296
 msgid "Miya (mantiq)"
 msgstr "Мозг (логика)"
 
-#: apps/core/models.py:286
+#: apps/core/models.py:297
 msgid "Qatlamlar (tizimlilik)"
 msgstr "Слои (системность)"
 
-#: apps/core/models.py:287
+#: apps/core/models.py:298
 msgid "Nishon (tahlil)"
 msgstr "Мишень (анализ)"
 
-#: apps/core/models.py:288
+#: apps/core/models.py:299
 msgid "Kublar (loyiha)"
 msgstr "Кубики (проект)"
 
-#: apps/core/models.py:289
+#: apps/core/models.py:300
 msgid "Suhbat (muloqot)"
 msgstr "Диалог (коммуникация)"
 
-#: apps/core/models.py:290
+#: apps/core/models.py:301
 msgid "Uchqun (ijod)"
 msgstr "Искра (творчество)"
 
-#: apps/core/models.py:296
+#: apps/core/models.py:307
 msgid "o'z ikonkasi"
 msgstr "своя иконка"
 
-#: apps/core/models.py:299
+#: apps/core/models.py:310
 msgid "Yuklansa, tayyor ikonka o'rniga shu rasm ko'rsatiladi"
 msgstr "Если загрузить, вместо готовой иконки покажется это изображение"
 
-#: apps/core/models.py:303
+#: apps/core/models.py:314
 msgid "Ko'nikma"
 msgstr "Навык"
 
-#: apps/core/models.py:304
+#: apps/core/models.py:315
 msgid "Ko'nikmalar"
 msgstr "Навыки"
 
-#: apps/core/models.py:318
+#: apps/core/models.py:329
 msgid "Kalendar"
 msgstr "Календарь"
 
-#: apps/core/models.py:319
+#: apps/core/models.py:330
 msgid "Ro'yxat"
 msgstr "Список"
 
-#: apps/core/models.py:320
+#: apps/core/models.py:331
 msgid "Soat"
 msgstr "Часы"
 
-#: apps/core/models.py:321
+#: apps/core/models.py:332
 msgid "Ishtirokchilar"
 msgstr "Участники"
 
-#: apps/core/models.py:324
+#: apps/core/models.py:335 apps/core/models.py:485
 msgid "qiymat (ru)"
 msgstr "значение (ru)"
 
-#: apps/core/models.py:324
+#: apps/core/models.py:335
 msgid "Masalan: «1 раз», «34»"
 msgstr "Например: «1 раз», «34»"
 
-#: apps/core/models.py:326
+#: apps/core/models.py:337 apps/core/models.py:486
 msgid "qiymat (uz)"
 msgstr "значение (uz)"
 
-#: apps/core/models.py:327
+#: apps/core/models.py:338 apps/core/models.py:487
 msgid "qiymat (en)"
 msgstr "значение (en)"
 
-#: apps/core/models.py:341
+#: apps/core/models.py:352
 msgid "Loyiha himoyasi bosqichi"
 msgstr "Этап защиты проекта"
 
-#: apps/core/models.py:342
+#: apps/core/models.py:353
 msgid "Loyiha himoyasi bosqichlari"
 msgstr "Этапы защиты проекта"
 
-#: apps/core/models.py:351
+#: apps/core/models.py:362
 msgid "band (ru)"
 msgstr "пункт (ru)"
 
-#: apps/core/models.py:352
+#: apps/core/models.py:363
 msgid "band (uz)"
 msgstr "пункт (uz)"
 
-#: apps/core/models.py:353
+#: apps/core/models.py:364
 msgid "band (en)"
 msgstr "пункт (en)"
 
-#: apps/core/models.py:356
+#: apps/core/models.py:367
 msgid "Maktab afzalligi"
 msgstr "Преимущество школы"
 
-#: apps/core/models.py:357
+#: apps/core/models.py:368
 msgid "Maktab afzalliklari"
 msgstr "Преимущества школы"
+
+#: apps/core/models.py:386
+msgid "versiya"
+msgstr "версия"
+
+#: apps/core/models.py:390 apps/core/models.py:391
+msgid "Kontent versiyasi"
+msgstr "Версия контента"
+
+#: apps/core/models.py:409
+msgid "bo'lim kaliti"
+msgstr "ключ блока"
+
+#: apps/core/models.py:410
+msgid "sahifa"
+msgstr "страница"
+
+#: apps/core/models.py:413
+msgid "yorliq (ru)"
+msgstr "надзаголовок (ru)"
+
+#: apps/core/models.py:414
+msgid "yorliq (uz)"
+msgstr "надзаголовок (uz)"
+
+#: apps/core/models.py:415
+msgid "yorliq (en)"
+msgstr "надзаголовок (en)"
+
+#: apps/core/models.py:423
+msgid "qo'shimcha sarlavha (ru)"
+msgstr "подзаголовок (ru)"
+
+#: apps/core/models.py:424
+msgid "qo'shimcha sarlavha (uz)"
+msgstr "подзаголовок (uz)"
+
+#: apps/core/models.py:425
+msgid "qo'shimcha sarlavha (en)"
+msgstr "подзаголовок (en)"
+
+#: apps/core/models.py:427 apps/core/models.py:497 apps/news/models.py:44
+msgid "matn (ru)"
+msgstr "текст (ru)"
+
+#: apps/core/models.py:428 apps/core/models.py:498 apps/news/models.py:45
+msgid "matn (uz)"
+msgstr "текст (uz)"
+
+#: apps/core/models.py:429 apps/core/models.py:499 apps/news/models.py:46
+msgid "matn (en)"
+msgstr "текст (en)"
+
+#: apps/core/models.py:431
+msgid "eslatma (ru)"
+msgstr "примечание (ru)"
+
+#: apps/core/models.py:432
+msgid "eslatma (uz)"
+msgstr "примечание (uz)"
+
+#: apps/core/models.py:433
+msgid "eslatma (en)"
+msgstr "примечание (en)"
+
+#: apps/core/models.py:435
+msgid "tugma matni (ru)"
+msgstr "текст кнопки (ru)"
+
+#: apps/core/models.py:436
+msgid "tugma matni (uz)"
+msgstr "текст кнопки (uz)"
+
+#: apps/core/models.py:437
+msgid "tugma matni (en)"
+msgstr "текст кнопки (en)"
+
+#: apps/core/models.py:438
+msgid "tugma havolasi"
+msgstr "ссылка кнопки"
+
+#: apps/core/models.py:440
+msgid "ikkinchi tugma (ru)"
+msgstr "вторая кнопка (ru)"
+
+#: apps/core/models.py:441
+msgid "ikkinchi tugma (uz)"
+msgstr "вторая кнопка (uz)"
+
+#: apps/core/models.py:442
+msgid "ikkinchi tugma (en)"
+msgstr "вторая кнопка (en)"
+
+#: apps/core/models.py:443
+msgid "ikkinchi tugma havolasi"
+msgstr "ссылка второй кнопки"
+
+#: apps/core/models.py:446
+msgid "qo'shimcha rasm"
+msgstr "дополнительное изображение"
+
+#: apps/core/models.py:448
+msgid "saytda ko'rsatilsin"
+msgstr "показывать на сайте"
+
+#: apps/core/models.py:452
+msgid "Sahifa bo'limi"
+msgstr "Блок страницы"
+
+#: apps/core/models.py:453
+msgid "Sahifa bo'limlari"
+msgstr "Блоки страницы"
+
+#: apps/core/models.py:479
+msgid "bo'lim"
+msgstr "блок"
+
+#: apps/core/models.py:501
+msgid "natija/eslatma (ru)"
+msgstr "результат/примечание (ru)"
+
+#: apps/core/models.py:502
+msgid "natija/eslatma (uz)"
+msgstr "результат/примечание (uz)"
+
+#: apps/core/models.py:503
+msgid "natija/eslatma (en)"
+msgstr "результат/примечание (en)"
+
+#: apps/core/models.py:506
+msgid "ro'yxat (ru)"
+msgstr "список (ru)"
+
+#: apps/core/models.py:507
+msgid "ro'yxat (uz)"
+msgstr "список (uz)"
+
+#: apps/core/models.py:508
+msgid "ro'yxat (en)"
+msgstr "список (en)"
+
+#: apps/core/models.py:510
+msgid "ikonka nomi"
+msgstr "название иконки"
+
+#: apps/core/models.py:511
+msgid "ikonka rasmi"
+msgstr "изображение иконки"
+
+#: apps/core/models.py:513
+msgid "havola"
+msgstr "ссылка"
+
+#: apps/core/models.py:515
+msgid "ko'rsatilsin"
+msgstr "показывать"
+
+#: apps/core/models.py:518 apps/core/models.py:523
+#: apps/core/section_admin.py:60 apps/core/sections.py:64
+msgid "Element"
+msgstr "Элемент"
+
+#: apps/core/models.py:519 apps/core/section_admin.py:61
+msgid "Elementlar"
+msgstr "Элементы"
+
+#: apps/core/models.py:554
+msgid "Bosh sahifa bo'limlari"
+msgstr "Блоки главной страницы"
+
+#: apps/core/models.py:555
+msgid "«Biz haqimizda» bo'limlari"
+msgstr "Блоки страницы «О нас»"
+
+#: apps/core/models.py:556
+msgid "«Kurslar» sahifasi bo'limlari"
+msgstr "Блоки страницы «Курсы»"
+
+#: apps/core/models.py:557
+msgid "«IT Kids» sahifasi bo'limlari"
+msgstr "Блоки страницы «IT Kids»"
+
+#: apps/core/models.py:558
+msgid "«IT dasturlash» sahifasi bo'limlari"
+msgstr "Блоки страницы «IT Разработка»"
+
+#: apps/core/models.py:559
+msgid "«SPACE» sahifasi bo'limlari"
+msgstr "Блоки страницы «SPACE»"
+
+#: apps/core/models.py:560
+msgid "«Yangiliklar» sahifasi bo'limlari"
+msgstr "Блоки страницы «Новости»"
+
+#: apps/core/models.py:562
+msgid "«Kontaktlar» sahifasi bo'limlari"
+msgstr "Блоки страницы «Контакты»"
+
+#: apps/core/models.py:565
+msgid "«Vakansiyalar» sahifasi bo'limlari"
+msgstr "Блоки страницы «Вакансии»"
+
+#: apps/core/models.py:567
+msgid "«Test» sahifasi bo'limlari"
+msgstr "Блоки страницы «Тест»"
+
+#: apps/core/models.py:568
+msgid "Umumiy bloklar (tugma, futer)"
+msgstr "Общие блоки (кнопки, футер)"
+
+#: apps/core/section_admin.py:95
+msgid "Bo'lim"
+msgstr "Блок"
+
+#: apps/core/section_admin.py:100
+msgid "Nimani o'zgartirish mumkin"
+msgstr "Что можно изменить"
+
+#: apps/core/section_admin.py:106
+msgid "Bu blok saytda qayerda"
+msgstr "Где этот блок на сайте"
+
+#: apps/core/section_admin.py:133
+#, python-format
+msgid "Tarjima — %(lang)s"
+msgstr "Перевод — %(lang)s"
+
+#: apps/core/sections.py:27
+msgid "Kurslar (ro'yxat)"
+msgstr "Курсы (список)"
+
+#: apps/core/sections.py:32
+msgid "Kontaktlar"
+msgstr "Контакты"
+
+#: apps/core/sections.py:35
+msgid "Umumiy bloklar"
+msgstr "Общие блоки"
+
+#: apps/core/sections.py:76
+msgid "1. Hero — «Kelajakni yaratishni o'rganamiz»"
+msgstr "1. Hero — «Учимся создавать будущее»"
+
+#: apps/core/sections.py:77
+msgid ""
+"Sahifaning eng tepasidagi katta blok: sarlavha, matn, ikkita tugma va "
+"o'ngdagi astronavt rasmi."
+msgstr ""
+"Большой блок в самом верху страницы: заголовок, текст, две кнопки и "
+"изображение астронавта справа."
+
+#: apps/core/sections.py:83
+msgid "2. «Nega MARS IT School ni tanlashadi» — sarlavha"
+msgstr "2. «Почему выбирают MARS IT School» — заголовок"
+
+#: apps/core/sections.py:84
+msgid ""
+"Blok sarlavhasi va izohi. Raqamlangan kartochkalar — «Afzalliklar» bo'limida "
+"(shu sahifa menyusida)."
+msgstr ""
+"Заголовок и описание блока. Нумерованные карточки — в разделе «Преимущества» "
+"(в меню этой же страницы)."
+
+#: apps/core/sections.py:90
+msgid "3. SPACE platformasi bloki"
+msgstr "3. Блок платформы SPACE"
+
+#: apps/core/sections.py:91
+msgid "Bosh sahifadagi SPACE reklama bloki: yorliq, sarlavha va matn."
+msgstr "Рекламный блок SPACE на главной: надзаголовок, заголовок и текст."
+
+#: apps/core/sections.py:96
+msgid "4. «Maktabda nimalar bo'lyapti» — sarlavha"
+msgstr "4. «Что происходит в школе» — заголовок"
+
+#: apps/core/sections.py:97
+msgid ""
+"Yangiliklar lentasi tepasidagi matn va tugma. Yangiliklarning o'zi — "
+"«Yangiliklar» sahifasida."
+msgstr ""
+"Текст и кнопка над лентой новостей. Сами новости — на странице «Новости»."
+
+#: apps/core/sections.py:103
+msgid "5. «IT'da ishlaydigan o'qituvchilar» — sarlavha"
+msgstr "5. «Преподаватели, которые работают в IT» — заголовок"
+
+#: apps/core/sections.py:104
+msgid ""
+"O'qituvchilar karuseli tepasidagi matn. O'qituvchilar — «Biz haqimizda» "
+"sahifasida."
+msgstr ""
+"Текст над каруселью преподавателей. Сами преподаватели — на странице «О нас»."
+
+#: apps/core/sections.py:110
+msgid "6. «Ota-onalar nima deydi» — sarlavha"
+msgstr "6. «Что говорят родители» — заголовок"
+
+#: apps/core/sections.py:111
+msgid ""
+"Fikrlar karuseli tepasidagi matn. Fikrlarning o'zi — «Ota-onalar fikri» "
+"bo'limida."
+msgstr ""
+"Текст над каруселью отзывов. Сами отзывы — в разделе «Отзывы родителей»."
+
+#: apps/core/sections.py:117
+msgid "7. «Ko'p beriladigan savollar» — sarlavha"
+msgstr "7. «Частые вопросы» — заголовок"
+
+#: apps/core/sections.py:118
+msgid ""
+"Akkordeon tepasidagi matn va yonidagi rasm. Savollar — «Savol-javoblar» "
+"bo'limida."
+msgstr ""
+"Текст над аккордеоном и изображение рядом. Сами вопросы — в разделе «Вопросы-"
+"ответы»."
+
+#: apps/core/sections.py:126
+msgid "1. Hero — «O'rganamiz. Yaratamiz. Rivojlanamiz.»"
+msgstr "1. Hero — «Учимся. Создаём. Развиваемся.»"
+
+#: apps/core/sections.py:127
+msgid "Sahifa tepasidagi sarlavha va fon rasmi."
+msgstr "Заголовок вверху страницы и фоновое изображение."
+
+#: apps/core/sections.py:132
+msgid "2. «Nega bu kelajak uchun muhim»"
+msgstr "2. «Почему это важно для будущего»"
+
+#: apps/core/sections.py:133
+msgid ""
+"Yorliq, sarlavha, matn va pastdagi eslatma. Kartochkalar — «Kelajak uchun "
+"afzalliklar» bo'limida."
+msgstr ""
+"Надзаголовок, заголовок, текст и примечание внизу. Карточки — в разделе "
+"«Преимущества для будущего»."
+
+#: apps/core/sections.py:139
+msgid "3. «Bola qanday ko'nikmalarni rivojlantiradi»"
+msgstr "3. «Какие навыки развивает ребёнок»"
+
+#: apps/core/sections.py:140
+msgid "Sarlavha. Ko'nikmalar ro'yxati — «Ko'nikmalar» bo'limida."
+msgstr "Заголовок. Список навыков — в разделе «Навыки»."
+
+#: apps/core/sections.py:145
+msgid "4. Demo Day — «Bola o'z loyihasini himoya qiladigan kun»"
+msgstr "4. Demo Day — «День, когда ребёнок защищает свой проект»"
+
+#: apps/core/sections.py:146
+msgid ""
+"Yorliq, sarlavha va matn. Raqamlar — «Loyiha himoyasi bosqichlari» bo'limida."
+msgstr ""
+"Надзаголовок, заголовок и текст. Цифры — в разделе «Этапы защиты проекта»."
+
+#: apps/core/sections.py:152
+msgid "5. «MARS IT — bu oddiy kurslar emas»"
+msgstr "5. «MARS IT — это не просто курсы»"
+
+#: apps/core/sections.py:153
+msgid ""
+"Yorliq, sarlavha va video tugmasi matni. Ro'yxat bandlari — «Maktab "
+"afzalliklari» bo'limida, videoning o'zi — «Sayt sozlamalari»da."
+msgstr ""
+"Надзаголовок, заголовок и текст кнопки видео. Пункты списка — в разделе "
+"«Преимущества школы», само видео — в «Настройках сайта»."
+
+#: apps/core/sections.py:159
+msgid "6. «Maktab ortida kim turadi» — asoschilar"
+msgstr "6. «Кто стоит за школой» — основатели"
+
+#: apps/core/sections.py:160
+msgid "Yorliq va sarlavha. Asoschilar — «Asoschilar» bo'limida."
+msgstr "Надзаголовок и заголовок. Сами основатели — в разделе «Основатели»."
+
+#: apps/core/sections.py:165
+msgid "7. «IT sohasida ishlaydigan o'qituvchilar»"
+msgstr "7. «Преподаватели, которые работают в IT»"
+
+#: apps/core/sections.py:166
+msgid "Yorliq, sarlavha va matn. O'qituvchilar — «O'qituvchilar» bo'limida."
+msgstr "Метка, заголовок и текст. Преподаватели — в разделе «Преподаватели»."
+"Метка, заголовок и текст. Преподаватели — в разделе "
+"«Преподаватели».Надзаголовок, заголовок и текст. Сами преподаватели — в "
+"разделе «Преподаватели»."
+
+#: apps/core/sections.py:173
+msgid "1. Hero — «Kurslar MARS IT School»"
+msgstr "1. Hero — «Курсы MARS IT School»"
+
+#: apps/core/sections.py:174
+msgid "Sahifa tepasidagi sarlavha, tugma matni va o'ngdagi rasm."
+msgstr "Заголовок вверху страницы, текст кнопки и изображение справа."
+
+#: apps/core/sections.py:179
+msgid "2. «Yo'nalishlar» — IT Kids va IT dasturlash kartochkalari"
+msgstr "2. «Направления» — карточки IT Kids и IT Разработка"
+
+#: apps/core/sections.py:180
+msgid ""
+"Bo'lim sarlavhasi va kartochkalar. Har bir kartochkada: nomi (sarlavha), "
+"qisqa izoh (yorliq), tavsif (matn), yosh (qiymat), rasm va havola."
+msgstr ""
+"Заголовок блока и карточки. В каждой карточке: название (заголовок), краткая "
+"подпись (надзаголовок), описание (текст), возраст (значение), изображение и "
+"ссылка."
+
+#: apps/core/sections.py:184
+msgid "Yo'nalish kartochkasi"
+msgstr "Карточка направления"
+
+#: apps/core/sections.py:185
+msgid "«Texnologiyalar» — vergul bilan: html, css, js, react, python, cpp"
+msgstr "«Технологии» — через запятую: html, css, js, react, python, cpp"
+
+#: apps/core/sections.py:189
+msgid "3. «Tez orada...» banneri"
+msgstr "3. Баннер «Скоро...»"
+
+#: apps/core/sections.py:190
+msgid "Yo'nalishlar ostidagi banner."
+msgstr "Баннер под направлениями."
+
+#: apps/core/sections.py:197
+msgid "1. Hero — «IT KIDS dasturlash»"
+msgstr "1. Hero — «Программирование IT KIDS»"
+
+#: apps/core/sections.py:198
+msgid "Sarlavha, tugmalar matni va o'ngdagi rasm."
+msgstr "Заголовок, тексты кнопок и изображение справа."
+
+#: apps/core/sections.py:203
+msgid "2. Ko'rsatkichlar tasmasi (yosh, davomiylik, format, guruh)"
+msgstr "2. Лента показателей (возраст, длительность, формат, группа)"
+
+#: apps/core/sections.py:204
+msgid ""
+"Hero ostidagi to'rtta katak. Har birida: katta qiymat va uning ostidagi izoh."
+msgstr "Четыре ячейки под hero. В каждой: крупное значение и подпись под ним."
+
+#: apps/core/sections.py:207 apps/core/sections.py:253
+msgid "Ko'rsatkich"
+msgstr "Показатель"
+
+#: apps/core/sections.py:211 apps/core/sections.py:257
+msgid "3. «Kurs haqida» — mavzular karuseli"
+msgstr "3. «О курсе» — карусель тем"
+
+#: apps/core/sections.py:212
+msgid "Yorliq, sarlavha, tavsif va aylanuvchi mavzu kartochkalari."
+msgstr "Надзаголовок, заголовок, описание и вращающиеся карточки тем."
+
+#: apps/core/sections.py:215 apps/core/sections.py:261
+msgid "Mavzu kartochkasi"
+msgstr "Карточка темы"
+
+#: apps/core/sections.py:216
+msgid "Ikonka nomi: blocks, robot, wrench, chip, brain, code, rocket"
+msgstr "Название иконки: blocks, robot, wrench, chip, brain, code, rocket"
+
+#: apps/core/sections.py:220
+msgid "4. «O'qishning uch bosqichi» — akkordeon"
+msgstr "4. «Три этапа обучения» — аккордеон"
+
+#: apps/core/sections.py:221
+msgid ""
+"Sarlavha, izoh va bosqichlar. Har bir bosqichda: raqam (qiymat), nomi, "
+"davomiyligi (yorliq) va tavsifi."
+msgstr ""
+"Заголовок, описание и этапы. В каждом этапе: номер (значение), название, "
+"длительность (подпись) и описание."
+
+#: apps/core/sections.py:225 apps/core/sections.py:269
+msgid "Bosqich"
+msgstr "Этап"
+
+#: apps/core/sections.py:226 apps/core/sections.py:270
+msgid ""
+"«Ro'yxat» — mavzular, har biri alohida qatorda. «Natija» — bosqich "
+"yakunidagi ish. «Ikonka nomi» — texnologiyalar vergul bilan: html, css, js, "
+"react, python, cpp."
+msgstr ""
+"«Список» — темы, каждая с новой строки. «Результат» — работа в конце этапа. "
+"«Название иконки» — технологии через запятую: html, css, js, react, python, "
+"cpp."
+
+#: apps/core/sections.py:232 apps/core/sections.py:276
+msgid "5. «Darslar muhiti» — galereya"
+msgstr "5. «Атмосфера занятий» — галерея"
+
+#: apps/core/sections.py:233
+msgid ""
+"Sarlavha, izoh va rasmlar. Har bir rasmda tavsif (matn) — u ekranni o'qib "
+"beruvchi dasturlar uchun kerak."
+msgstr ""
+"Заголовок, описание и изображения. У каждого изображения — описание (текст): "
+"оно нужно программам чтения с экрана."
+
+#: apps/core/sections.py:237 apps/core/sections.py:280 apps/news/models.py:76
+msgid "Galereya rasmi"
+msgstr "Изображение галереи"
+
+#: apps/core/sections.py:243
+msgid "1. Hero — «IT-dasturlash»"
+msgstr "1. Hero — «IT-разработка»"
+
+#: apps/core/sections.py:244
+msgid "Sarlavha, izoh, tugmalar matni va o'ngdagi rasm."
+msgstr "Заголовок, описание, тексты кнопок и изображение справа."
+
+#: apps/core/sections.py:249
+msgid "2. Ko'rsatkichlar tasmasi"
+msgstr "2. Лента показателей"
+
+#: apps/core/sections.py:250
+msgid "Hero ostidagi kataklar: katta qiymat va izoh."
+msgstr "Ячейки под hero: крупное значение и подпись."
+
+#: apps/core/sections.py:258
+msgid "Yorliq, sarlavha, tavsif va mavzu kartochkalari."
+msgstr "Надзаголовок, заголовок, описание и карточки тем."
+
+#: apps/core/sections.py:265
+msgid "4. «O'qish bosqichlari» — akkordeon"
+msgstr "4. «Этапы обучения» — аккордеон"
+
+#: apps/core/sections.py:266
+msgid "Sarlavha, izoh va bosqichlar."
+msgstr "Заголовок, описание и этапы."
+
+#: apps/core/sections.py:277
+msgid "Sarlavha, izoh va rasmlar."
+msgstr "Заголовок, описание и изображения."
+
+#: apps/core/sections.py:286
+msgid "1. Hero — «SPACE — o'ynab o'rgan»"
+msgstr "1. Hero — «SPACE — учись играя»"
+
+#: apps/core/sections.py:287
+msgid "Sarlavha, tugma matni va o'ngdagi rasm."
+msgstr "Заголовок, текст кнопки и изображение справа."
+
+#: apps/core/sections.py:292
+msgid "2. «SPACE nimalarga qodir» — imkoniyatlar"
+msgstr "2. «Что умеет SPACE» — возможности"
+
+#: apps/core/sections.py:293
+msgid "Yorliq, sarlavha, matn va imkoniyat kartochkalari."
+msgstr "Надзаголовок, заголовок, текст и карточки возможностей."
+
+#: apps/core/sections.py:296
+msgid "Imkoniyat"
+msgstr "Возможность"
+
+#: apps/core/sections.py:297
+msgid "Ikonka nomi: notes, book, code, feed, card, coins, cup, star"
+msgstr "Название иконки: notes, book, code, feed, card, coins, cup, star"
+
+#: apps/core/sections.py:301
+msgid "3. «O'qish — bu qiziqarli» (geymifikatsiya)"
+msgstr "3. «Учиться — интересно» (геймификация)"
+
+#: apps/core/sections.py:302
+msgid "Yorliq, sarlavha, matn va kartochkalar."
+msgstr "Надзаголовок, заголовок, текст и карточки."
+
+#: apps/core/sections.py:305
+msgid "Geymifikatsiya kartochkasi"
+msgstr "Карточка геймификации"
+
+#: apps/core/sections.py:309
+msgid "4. «Space Premium»"
+msgstr "4. «Space Premium»"
+
+#: apps/core/sections.py:310
+msgid ""
+"Yorliq, sarlavha, matn, eslatma va tugma. Ro'yxat bandlari — pastdagi "
+"elementlar."
+msgstr ""
+"Надзаголовок, заголовок, текст, примечание и кнопка. Пункты списка — "
+"элементы ниже."
+
+#: apps/core/sections.py:314
+msgid "Premium imkoniyati"
+msgstr "Возможность Premium"
+
+#: apps/core/sections.py:318
+msgid "5. «MARS Shop — ballarni sovg'aga almashtir»"
+msgstr "5. «MARS Shop — обменяй баллы на подарки»"
+
+#: apps/core/sections.py:319
+msgid ""
+"Yorliq, sarlavha, matn va tugma. Sovg'alar — pastdagi elementlar: nomi, "
+"koinlar soni (qiymat) va rasmi. «Qo'shimcha sarlavha» va «eslatma» — oxirgi "
+"katakdagi chaqiruv matni."
+msgstr ""
+"Надзаголовок, заголовок, текст и кнопка. Подарки — элементы ниже: название, "
+"количество коинов (значение) и изображение. «Подзаголовок» и «примечание» — "
+"призыв в последней ячейке."
+
+#: apps/core/sections.py:324
+msgid "Sovg'a"
+msgstr "Подарок"
+
+#: apps/core/sections.py:328
+msgid "6. «Ota-onalarga — bitta ilovada to'liq nazorat»"
+msgstr "6. «Родителям — полный контроль в одном приложении»"
+
+#: apps/core/sections.py:329
+msgid "Yorliq, sarlavha, matn va slaydlar."
+msgstr "Надзаголовок, заголовок, текст и слайды."
+
+#: apps/core/sections.py:332
+msgid "Slayd"
+msgstr "Слайд"
+
+#: apps/core/sections.py:336
+msgid "7. «SPACE ko'magida o'qishni boshlang» — ariza"
+msgstr "7. «Начните учиться со SPACE» — заявка"
+
+#: apps/core/sections.py:337
+msgid "Yorliq, sarlavha va matn."
+msgstr "Надзаголовок, заголовок и текст."
+
+#: apps/core/sections.py:344
+msgid "1. Hero — «MARS IT maktabi hayoti»"
+msgstr "1. Hero — «Жизнь школы MARS IT»"
+
+#: apps/core/sections.py:345 apps/core/sections.py:386
+msgid "Sahifa tepasidagi sarlavha, izoh va rasm."
+msgstr "Заголовок вверху страницы, описание и изображение."
+
+#: apps/core/sections.py:350
+msgid "2. Yangiliklar ro'yxati — sarlavha"
+msgstr "2. Список новостей — заголовок"
+
+#: apps/core/sections.py:351
+msgid ""
+"Ro'yxat tepasidagi yorliq va sarlavha, hamda ro'yxat bo'sh bo'lgandagi matn."
+msgstr ""
+"Надзаголовок и заголовок над списком, а также текст, когда список пуст."
+
+#: apps/core/sections.py:358
+msgid "1. Hero — «Doim aloqada»"
+msgstr "1. Hero — «Всегда на связи»"
+
+#: apps/core/sections.py:359
+msgid "Sahifa tepasidagi sarlavha va rasm."
+msgstr "Заголовок вверху страницы и изображение."
+
+#: apps/core/sections.py:364
+msgid "2. Kontaktlar bloki"
+msgstr "2. Блок контактов"
+
+#: apps/core/sections.py:365
+msgid ""
+"Yorliq, sarlavha va matn. Telefon, email va ish vaqti — «Sayt "
+"sozlamalari»dan olinadi."
+msgstr ""
+"Надзаголовок, заголовок и текст. Телефон, email и часы работы берутся из "
+"«Настроек сайта»."
+
+#: apps/core/sections.py:371
+msgid "3. «Toshkentdagi maktab manzillari» — xarita va ro'yxat"
+msgstr "3. «Адреса школы в Ташкенте» — карта и список"
+
+#: apps/core/sections.py:372
+msgid "Yorliq, sarlavha va izoh. Filiallar — «Filiallar» bo'limida."
+msgstr "Метка, заголовок и примечание. Филиалы — в разделе «Филиалы»."
+"Метка, заголовок и примечание. Филиалы — в разделе «Филиалы».Надзаголовок, "
+"заголовок и описание. Сами филиалы — в разделе «Филиалы»."
+
+#: apps/core/sections.py:377
+msgid "4. «Sinov darsiga yoziling» — shu sahifadagi variant"
+msgstr "4. «Запишитесь на пробный урок» — вариант для этой страницы"
+
+#: apps/core/sections.py:378
+msgid "Kontaktlar sahifasidagi ariza blokining sarlavhasi va izohi."
+msgstr "Заголовок и описание блока заявки на странице контактов."
+
+#: apps/core/sections.py:385
+msgid "1. Hero — «MARS IT School'da ishlash»"
+msgstr "1. Hero — «Работа в MARS IT School»"
+
+#: apps/core/sections.py:391
+msgid "2. Vakansiyalar ro'yxati — sarlavha"
+msgstr "2. Список вакансий — заголовок"
+
+#: apps/core/sections.py:392
+msgid "Yorliq, sarlavha, matn va ro'yxat bo'sh bo'lgandagi yozuv."
+msgstr "Надзаголовок, заголовок, текст и надпись, когда список пуст."
+
+#: apps/core/sections.py:399
+msgid "1. Test boshlanishi — salomlashuv va izoh"
+msgstr "1. Начало теста — приветствие и описание"
+
+#: apps/core/sections.py:400
+msgid "«Salom, bo'lajak dasturchi!» sarlavhasi va uning ostidagi matn."
+msgstr "Заголовок «Привет, будущий программист!» и текст под ним."
+
+#: apps/core/sections.py:405
+msgid "2. «Deyarli tayyor!» — kontakt qadami"
+msgstr "2. «Почти готово!» — шаг с контактами"
+
+#: apps/core/sections.py:406
+msgid "Test oxiridagi kontakt so'raladigan qadam matni va tugmasi."
+msgstr "Текст и кнопка шага в конце теста, где запрашиваются контакты."
+
+#: apps/core/sections.py:411
+msgid "3. Natija sahifasi — sarlavhalar"
+msgstr "3. Страница результата — заголовки"
+
+#: apps/core/sections.py:412
+msgid "«Natijangiz tayyor!» sarlavhasi va ko'nikmalar bo'limi yorliqlari."
+msgstr "Заголовок «Ваш результат готов!» и подписи блока навыков."
+
+#: apps/core/sections.py:419
+msgid "«Bepul sinov darsi» — ariza bloki (barcha sahifalarda)"
+msgstr "«Бесплатный пробный урок» — блок заявки (на всех страницах)"
+
+#: apps/core/sections.py:420
+msgid "Yorliq, sarlavha va izoh. Kontaktlar sahifasida o'z varianti bor."
+msgstr "Метка, заголовок и примечание. На странице контактов свой вариант."
+"Метка, заголовок и примечание. На странице контактов свой "
+"вариант.Надзаголовок, заголовок и описание. На странице контактов свой "
+"вариант."
+
+#: apps/core/sections.py:425
+msgid "Takrorlanadigan tugmalar matni"
+msgstr "Тексты повторяющихся кнопок"
+
+#: apps/core/sections.py:426
+msgid ""
+"«Bepul sinov darsiga yozilish» va «Kurslarni ko'rish» tugmalari — sayt "
+"bo'ylab bir xil."
+msgstr ""
+"Кнопки «Записаться на бесплатный пробный урок» и «Смотреть курсы» — "
+"одинаковые по всему сайту."
+
+#: apps/core/sections.py:432
+msgid "Sayt podvali (futer)"
+msgstr "Подвал сайта (футер)"
+
+#: apps/core/sections.py:433
+msgid ""
+"Podvaldagi qisqa matn va mualliflik yozuvi. Telefon, ijtimoiy tarmoqlar — "
+"«Sayt sozlamalari»da."
+msgstr ""
+"Короткий текст в подвале и строка об авторских правах. Телефон и соцсети — в "
+"«Настройках сайта»."
 
 #: apps/core/translation.py:63
 msgid "Tarjimalar (uz / en)"
 msgstr "Переводы (uz / en)"
+
+#: apps/core/uploads.py:79
+#, python-format
+msgid "Fayl turi mos emas. Ruxsat etilgan: %(allowed)s."
+msgstr "Неподходящий тип файла. Разрешены: %(allowed)s."
+
+#: apps/core/uploads.py:87
+#, python-format
+msgid "Fayl hajmi %(limit)s MB dan oshmasligi kerak."
+msgstr "Размер файла не должен превышать %(limit)s МБ."
+
+#: apps/core/uploads.py:92
+msgid "Fayl bo'sh."
+msgstr "Файл пустой."
+
+#: apps/core/uploads.py:99
+msgid "Fayl mazmuni uning turiga mos kelmadi."
+msgstr "Содержимое файла не соответствует его типу."
+
+#: apps/courses/admin.py:31
+msgid "Savol-javoblar (sahifaning pastida)"
+msgstr "Вопросы-ответы (внизу страницы)"
+
+#: apps/courses/admin.py:55
+msgid "Ko'rinish"
+msgstr "Внешний вид"
+
+#: apps/courses/admin.py:57
+msgid "Shartlar"
+msgstr "Условия"
+
+#: apps/courses/admin.py:69 apps/teachers/models.py:56
+msgid "O'qituvchilar"
+msgstr "Преподаватели"
 
 #: apps/courses/models.py:25
 msgid "Yo'nalish"
@@ -1033,72 +2044,80 @@ msgstr "акцентный цвет"
 msgid "HEX формат: #E94921"
 msgstr "HEX формат: #E94921"
 
-#: apps/courses/models.py:71
+#: apps/courses/models.py:76
+msgid "Rang #RGB yoki #RRGGBB ko'rinishida bo'lishi kerak, masalan #E94921."
+msgstr "Цвет должен быть в формате #RGB или #RRGGBB, например #E94921."
+
+#: apps/courses/models.py:81
 msgid "yosh (dan)"
 msgstr "возраст (от)"
 
-#: apps/courses/models.py:72
+#: apps/courses/models.py:82
 msgid "yosh (gacha)"
 msgstr "возраст (до)"
 
-#: apps/courses/models.py:73 apps/courses/models.py:146
+#: apps/courses/models.py:83 apps/courses/models.py:156
 msgid "davomiyligi (oy)"
 msgstr "длительность (месяцев)"
 
-#: apps/courses/models.py:74
+#: apps/courses/models.py:84
 msgid "haftasiga darslar"
 msgstr "занятий в неделю"
 
-#: apps/courses/models.py:76
+#: apps/courses/models.py:86
 msgid "dars davomiyligi (daqiqa)"
 msgstr "длительность занятия (минут)"
 
-#: apps/courses/models.py:79
+#: apps/courses/models.py:89
 msgid "narx (oyiga, so'm)"
 msgstr "цена (в месяц, сум)"
 
-#: apps/courses/models.py:87 apps/news/models.py:52
+#: apps/courses/models.py:97 apps/news/models.py:52
 msgid "bosh sahifada"
 msgstr "на главной странице"
 
-#: apps/courses/models.py:90
+#: apps/courses/models.py:100
 msgid "Kurs"
 msgstr "Курс"
 
-#: apps/courses/models.py:106 apps/courses/models.py:133
-#: apps/leads/models.py:30
+#: apps/courses/models.py:101
+msgid "Kurslar"
+msgstr "Курсы"
+
+#: apps/courses/models.py:116 apps/courses/models.py:143
+#: apps/courses/models.py:177 apps/leads/models.py:30
 msgid "kurs"
 msgstr "курс"
 
-#: apps/courses/models.py:121
+#: apps/courses/models.py:131
 msgid "Kurs imkoniyati"
 msgstr "Возможность курса"
 
-#: apps/courses/models.py:122
+#: apps/courses/models.py:132
 msgid "Kurs imkoniyatlari"
 msgstr "Возможности курса"
 
-#: apps/courses/models.py:137
+#: apps/courses/models.py:147
 msgid "bosqich nomi (ru)"
 msgstr "название этапа (ru)"
 
-#: apps/courses/models.py:138
+#: apps/courses/models.py:148
 msgid "bosqich nomi (uz)"
 msgstr "название этапа (uz)"
 
-#: apps/courses/models.py:139
+#: apps/courses/models.py:149
 msgid "bosqich nomi (en)"
 msgstr "название этапа (en)"
 
-#: apps/courses/models.py:150
+#: apps/courses/models.py:160
 msgid "O'qish bosqichi"
 msgstr "Этап обучения"
 
-#: apps/courses/models.py:151
+#: apps/courses/models.py:161
 msgid "O'qish bosqichlari"
 msgstr "Этапы обучения"
 
-#: apps/leads/models.py:12 apps/vacancies/models.py:76
+#: apps/leads/models.py:12 apps/vacancies/models.py:78
 msgid "Yangi"
 msgstr "Новая"
 
@@ -1110,7 +2129,7 @@ msgstr "Связались"
 msgid "Ro'yxatdan o'tdi"
 msgstr "Записан"
 
-#: apps/leads/models.py:15 apps/vacancies/models.py:79
+#: apps/leads/models.py:15 apps/vacancies/models.py:81
 msgid "Rad etildi"
 msgstr "Отказ"
 
@@ -1126,7 +2145,7 @@ msgstr "Страница курсов"
 msgid "SPACE sahifasi"
 msgstr "Страница SPACE"
 
-#: apps/leads/models.py:22 apps/quiz/models.py:80
+#: apps/leads/models.py:22 apps/quiz/models.py:82
 msgid "Test natijasi"
 msgstr "Результат теста"
 
@@ -1150,7 +2169,7 @@ msgstr "комментарий"
 msgid "manba"
 msgstr "источник"
 
-#: apps/leads/models.py:50 apps/vacancies/models.py:95
+#: apps/leads/models.py:50 apps/vacancies/models.py:107
 msgid "holat"
 msgstr "статус"
 
@@ -1158,7 +2177,7 @@ msgstr "статус"
 msgid "admin izohi"
 msgstr "заметка администратора"
 
-#: apps/leads/models.py:55 apps/vacancies/models.py:98
+#: apps/leads/models.py:55 apps/vacancies/models.py:110
 msgid "IP manzil"
 msgstr "IP-адрес"
 
@@ -1169,6 +2188,22 @@ msgstr ""
 #: apps/leads/models.py:59
 msgid "Ariza"
 msgstr "Заявка"
+
+#: apps/leads/serializers.py:47 apps/vacancies/serializers.py:71
+msgid "Ism juda qisqa."
+msgstr "Имя слишком короткое."
+
+#: apps/leads/serializers.py:57
+msgid "Yosh 3 dan 25 gacha bo'lishi kerak."
+msgstr "Возраст должен быть от 3 до 25 лет."
+
+#: apps/leads/serializers.py:63 apps/vacancies/serializers.py:99
+msgid "So'rovni yuborib bo'lmadi."
+msgstr "Не удалось отправить запрос."
+
+#: apps/leads/views.py:32 apps/vacancies/views.py:62
+msgid "Arizangiz qabul qilindi. Tez orada bog'lanamiz."
+msgstr "Ваша заявка принята. Мы скоро свяжемся с вами."
 
 #: apps/news/models.py:17
 msgid "Yangilik turkumi"
@@ -1194,18 +2229,6 @@ msgstr "краткий текст (uz)"
 msgid "qisqa matn (en)"
 msgstr "краткий текст (en)"
 
-#: apps/news/models.py:44
-msgid "matn (ru)"
-msgstr "текст (ru)"
-
-#: apps/news/models.py:45
-msgid "matn (uz)"
-msgstr "текст (uz)"
-
-#: apps/news/models.py:46
-msgid "matn (en)"
-msgstr "текст (en)"
-
 #: apps/news/models.py:48
 msgid "muqova"
 msgstr "обложка"
@@ -1230,119 +2253,137 @@ msgstr "Новость"
 msgid "yangilik"
 msgstr "новость"
 
-#: apps/news/models.py:76
-msgid "Galereya rasmi"
-msgstr "Изображение галереи"
-
 #: apps/news/models.py:77
 msgid "Galereya rasmlari"
 msgstr "Изображения галереи"
 
-#: apps/quiz/models.py:21
+#: apps/quiz/models.py:23
 msgid "bir urinishdagi savollar soni"
 msgstr "число вопросов за попытку"
 
-#: apps/quiz/models.py:24
+#: apps/quiz/models.py:26
 msgid ""
 "Savollar bazasidan har safar shuncha savol tasodifiy tanlanadi. 0 — barcha "
 "savollar ko'rsatiladi."
-msgstr "Столько вопросов случайно выбирается из базы каждый раз. 0 — показываются все вопросы."
+msgstr ""
+"Столько вопросов случайно выбирается из базы каждый раз. 0 — показываются "
+"все вопросы."
 
-#: apps/quiz/models.py:30
+#: apps/quiz/models.py:32
 msgid "Test"
 msgstr "Тест"
 
-#: apps/quiz/models.py:31
+#: apps/quiz/models.py:33
 msgid "Testlar"
 msgstr "Тесты"
 
-#: apps/quiz/models.py:39 apps/quiz/models.py:62 apps/quiz/models.py:206
+#: apps/quiz/models.py:41 apps/quiz/models.py:64 apps/quiz/models.py:228
 msgid "test"
 msgstr "тест"
 
-#: apps/quiz/models.py:50
+#: apps/quiz/models.py:52
 msgid "Savol"
 msgstr "Вопрос"
 
-#: apps/quiz/models.py:51
+#: apps/quiz/models.py:53
 msgid "Savollar"
 msgstr "Вопросы"
 
-#: apps/quiz/models.py:65
+#: apps/quiz/models.py:67
 msgid "tavsiya qilinadigan kurslar"
 msgstr "рекомендуемые курсы"
 
-#: apps/quiz/models.py:68
+#: apps/quiz/models.py:70
 msgid "natija (ru)"
 msgstr "результат (ru)"
 
-#: apps/quiz/models.py:69
+#: apps/quiz/models.py:71
 msgid "natija (uz)"
 msgstr "результат (uz)"
 
-#: apps/quiz/models.py:70
+#: apps/quiz/models.py:72
 msgid "natija (en)"
 msgstr "результат (en)"
 
-#: apps/quiz/models.py:77
+#: apps/quiz/models.py:79
 msgid "kod"
 msgstr "код"
 
-#: apps/quiz/models.py:77
+#: apps/quiz/models.py:79
 msgid "Javoblardagi kod bilan bir xil"
 msgstr "Совпадает с кодом в ответах"
 
-#: apps/quiz/models.py:81
+#: apps/quiz/models.py:83
 msgid "Test natijalari"
 msgstr "Результаты теста"
 
-#: apps/quiz/models.py:167
+#: apps/quiz/models.py:169
 msgid "savol"
 msgstr "вопрос"
 
-#: apps/quiz/models.py:171 apps/quiz/models.py:210
+#: apps/quiz/models.py:173 apps/quiz/models.py:232
 msgid "natija"
 msgstr "результат"
 
-#: apps/quiz/models.py:183
+#: apps/quiz/models.py:185
 msgid "ko'nikma"
 msgstr "навык"
 
-#: apps/quiz/models.py:187
+#: apps/quiz/models.py:189
 msgid "Shu javob qaysi ko'nikmani ko'rsatadi (natija tahlili uchun)."
 msgstr "Какой навык показывает этот ответ (для разбора результата)."
 
-#: apps/quiz/models.py:190
+#: apps/quiz/models.py:192
 msgid "ball"
 msgstr "балл"
 
-#: apps/quiz/models.py:194
+#: apps/quiz/models.py:196
 msgid "Javob varianti"
 msgstr "Вариант ответа"
 
-#: apps/quiz/models.py:195
+#: apps/quiz/models.py:197
 msgid "Javob variantlari"
 msgstr "Варианты ответов"
 
-#: apps/quiz/models.py:222
+#: apps/quiz/models.py:244
 msgid "javoblar"
 msgstr "ответы"
 
-#: apps/quiz/models.py:223
+#: apps/quiz/models.py:245
 msgid "natija ballari"
 msgstr "баллы результата"
 
-#: apps/quiz/models.py:225
+#: apps/quiz/models.py:247
 msgid "ko'nikmalar foizi"
 msgstr "проценты навыков"
 
-#: apps/quiz/models.py:228
+#: apps/quiz/models.py:250
 msgid "Test topshirig'i"
 msgstr "Прохождение теста"
 
-#: apps/quiz/models.py:229
+#: apps/quiz/models.py:251
 msgid "Test topshiriqlari"
 msgstr "Прохождения теста"
+
+#: apps/quiz/serializers.py:103
+msgid "Javoblar soni juda ko'p."
+msgstr "Слишком много ответов."
+
+#: apps/quiz/serializers.py:107
+msgid "Javoblar yaroqsiz."
+msgstr "Ответы недействительны."
+
+#: apps/teachers/admin.py:26
+msgid "Tajriba"
+msgstr "Опыт"
+
+#: apps/teachers/admin.py:29 apps/teachers/models.py:19
+msgid "Texnologiyalar"
+msgstr "Технологии"
+
+#: apps/teachers/admin.py:30
+msgid "Havolalar"
+msgstr "Ссылки"
 
 #: apps/teachers/models.py:13
 msgid "nomi"
@@ -1351,10 +2392,6 @@ msgstr "название"
 #: apps/teachers/models.py:18
 msgid "Texnologiya"
 msgstr "Технология"
-
-#: apps/teachers/models.py:19
-msgid "Texnologiyalar"
-msgstr "Технологии"
 
 #: apps/teachers/models.py:35
 msgid "yorliq"
@@ -1396,163 +2433,175 @@ msgstr "технологии"
 msgid "LinkedIn"
 msgstr ""
 
-#: apps/teachers/models.py:56
-msgid "O'qituvchilar"
-msgstr "Преподаватели"
+#: apps/vacancies/admin.py:19
+msgid "Matn"
+msgstr "Текст"
 
-#: apps/vacancies/models.py:15
-msgid "Bitiruvchi shapkasi (o'qituvchi)"
-msgstr "Академическая шапочка (преподаватель)"
+#: apps/vacancies/admin.py:20
+msgid "Maosh"
+msgstr "Зарплата"
 
-#: apps/vacancies/models.py:16
-msgid "Nishon (administrator)"
-msgstr "Значок (администратор)"
-
-#: apps/vacancies/models.py:17
-msgid "Jamoa (kurator)"
-msgstr "Команда (куратор)"
-
-#: apps/vacancies/models.py:18
-msgid "Naushnik (kol-markaz)"
-msgstr "Наушники (колл-центр)"
-
-#: apps/vacancies/models.py:19
-msgid "Uchqun (boshqa)"
-msgstr "Искра (другое)"
-
-#: apps/vacancies/models.py:22
-msgid "To'liq stavka"
-msgstr "Полная занятость"
-
-#: apps/vacancies/models.py:23
-msgid "Yarim stavka"
-msgstr "Частичная занятость"
-
-#: apps/vacancies/models.py:24
-msgid "Loyiha asosida"
-msgstr "Проектная работа"
-
-#: apps/vacancies/models.py:43
-msgid "talablar (ru)"
-msgstr "требования (ru)"
-
-#: apps/vacancies/models.py:44
-msgid "talablar (uz)"
-msgstr "требования (uz)"
-
-#: apps/vacancies/models.py:45
-msgid "talablar (en)"
-msgstr "требования (en)"
-
-#: apps/vacancies/models.py:47
-msgid "shartlar (ru)"
-msgstr "условия (ru)"
-
-#: apps/vacancies/models.py:48
-msgid "shartlar (uz)"
-msgstr "условия (uz)"
-
-#: apps/vacancies/models.py:49
-msgid "shartlar (en)"
-msgstr "условия (en)"
-
-#: apps/vacancies/models.py:52
-msgid "bandlik turi"
-msgstr "тип занятости"
-
-#: apps/vacancies/models.py:60
-msgid "maosh (dan)"
-msgstr "зарплата (от)"
-
-#: apps/vacancies/models.py:61
-msgid "maosh (gacha)"
-msgstr "зарплата (до)"
-
-#: apps/vacancies/models.py:62
-msgid "ochiq"
-msgstr "открыта"
-
-#: apps/vacancies/models.py:65
-msgid "Vakansiya"
-msgstr "Вакансия"
-
-#: apps/vacancies/models.py:77
-msgid "Ko'rib chiqildi"
-msgstr "Рассмотрен"
-
-#: apps/vacancies/models.py:78
-msgid "Suhbatga taklif qilindi"
-msgstr "Приглашён на собеседование"
-
-#: apps/vacancies/models.py:83
-msgid "vakansiya"
-msgstr "вакансия"
-
-#: apps/vacancies/models.py:91
-msgid "xat"
-msgstr "сопроводительное письмо"
-
-#: apps/vacancies/models.py:92
+#: apps/vacancies/admin.py:49 apps/vacancies/models.py:100
 msgid "rezyume"
 msgstr "резюме"
 
+#: apps/vacancies/models.py:17
+msgid "Bitiruvchi shapkasi (o'qituvchi)"
+msgstr "Академическая шапочка (преподаватель)"
+
+#: apps/vacancies/models.py:18
+msgid "Nishon (administrator)"
+msgstr "Значок (администратор)"
+
+#: apps/vacancies/models.py:19
+msgid "Jamoa (kurator)"
+msgstr "Команда (куратор)"
+
+#: apps/vacancies/models.py:20
+msgid "Naushnik (kol-markaz)"
+msgstr "Наушники (колл-центр)"
+
+#: apps/vacancies/models.py:21
+msgid "Uchqun (boshqa)"
+msgstr "Искра (другое)"
+
+#: apps/vacancies/models.py:24
+msgid "To'liq stavka"
+msgstr "Полная занятость"
+
+#: apps/vacancies/models.py:25
+msgid "Yarim stavka"
+msgstr "Частичная занятость"
+
+#: apps/vacancies/models.py:26
+msgid "Loyiha asosida"
+msgstr "Проектная работа"
+
+#: apps/vacancies/models.py:45
+msgid "talablar (ru)"
+msgstr "требования (ru)"
+
+#: apps/vacancies/models.py:46
+msgid "talablar (uz)"
+msgstr "требования (uz)"
+
+#: apps/vacancies/models.py:47
+msgid "talablar (en)"
+msgstr "требования (en)"
+
+#: apps/vacancies/models.py:49
+msgid "shartlar (ru)"
+msgstr "условия (ru)"
+
+#: apps/vacancies/models.py:50
+msgid "shartlar (uz)"
+msgstr "условия (uz)"
+
+#: apps/vacancies/models.py:51
+msgid "shartlar (en)"
+msgstr "условия (en)"
+
+#: apps/vacancies/models.py:54
+msgid "bandlik turi"
+msgstr "тип занятости"
+
+#: apps/vacancies/models.py:62
+msgid "maosh (dan)"
+msgstr "зарплата (от)"
+
+#: apps/vacancies/models.py:63
+msgid "maosh (gacha)"
+msgstr "зарплата (до)"
+
+#: apps/vacancies/models.py:64
+msgid "ochiq"
+msgstr "открыта"
+
+#: apps/vacancies/models.py:67
+msgid "Vakansiya"
+msgstr "Вакансия"
+
+#: apps/vacancies/models.py:79
+msgid "Ko'rib chiqildi"
+msgstr "Рассмотрен"
+
+#: apps/vacancies/models.py:80
+msgid "Suhbatga taklif qilindi"
+msgstr "Приглашён на собеседование"
+
+#: apps/vacancies/models.py:85
+msgid "vakansiya"
+msgstr "вакансия"
+
 #: apps/vacancies/models.py:93
+msgid "xat"
+msgstr "сопроводительное письмо"
+
+#: apps/vacancies/models.py:105
 msgid "rezyume havolasi"
 msgstr "ссылка на резюме"
 
-#: apps/vacancies/models.py:101
+#: apps/vacancies/models.py:113
 msgid "Vakansiya arizasi"
 msgstr "Отклик на вакансию"
 
-#: apps/vacancies/models.py:102
+#: apps/vacancies/models.py:114
 msgid "Vakansiya arizalari"
 msgstr "Отклики на вакансии"
 
+#: apps/vacancies/views.py:82
+msgid "Rezyume yuklanmagan."
+msgstr "Резюме не загружено."
+
+#: apps/vacancies/views.py:87
+msgid "Fayl topilmadi."
+msgstr "Файл не найден."
+
 #: templates/admin/app_list.html:26
 msgid "Model name"
-msgstr ""
+msgstr "Название модели"
 
 #: templates/admin/app_list.html:27
 msgid "Add link"
-msgstr ""
+msgstr "Ссылка добавления"
 
 #: templates/admin/app_list.html:28
 msgid "Change or view list link"
-msgstr ""
+msgstr "Ссылка изменения или просмотра списка"
 
-#: templates/admin/app_list.html:53 templates/admin/mars_section_help.html:15
+#: templates/admin/app_list.html:60 templates/admin/mars_section_help.html:15
 msgid "O‘zgartirish mumkin:"
 msgstr "Можно изменить:"
 
-#: templates/admin/app_list.html:59
-msgid "Add"
-msgstr ""
-
 #: templates/admin/app_list.html:66
+msgid "Add"
+msgstr "Добавить"
+
+#: templates/admin/app_list.html:73
 msgid "View"
-msgstr ""
+msgstr "Просмотреть"
 
-#: templates/admin/app_list.html:68
+#: templates/admin/app_list.html:75
 msgid "Change"
-msgstr ""
+msgstr "Изменить"
 
-#: templates/admin/app_list.html:80
+#: templates/admin/app_list.html:88
 msgid "You don’t have permission to view or edit anything."
-msgstr ""
+msgstr "У вас нет прав для просмотра или изменения чего-либо."
 
 #: templates/admin/base_site.html:4
 msgid "Django site admin"
-msgstr ""
+msgstr "Административный сайт Django"
 
 #: templates/admin/base_site.html:7
 msgid "Django administration"
-msgstr ""
+msgstr "Администрирование Django"
 
 #: templates/admin/change_form.html:11 templates/admin/change_list.html:11
 msgid "Home"
-msgstr ""
+msgstr "Главная"
 
 #: templates/admin/change_form.html:14
 #, python-format
 msgid "Add %(name)s"
-msgstr ""
+msgstr "%(name)s добавить"

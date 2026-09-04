@@ -6,9 +6,18 @@
  * (to'ldirilgan qismi foizga teng, markazida ko'nikma ikonkasi).
  */
 import { computed } from 'vue'
+import { useSection } from '@/composables/useSection'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+
+// Natija sahifasi sarlavhalari admin paneldan («Test» sahifasi bo'limlari → «Natija»).
+const result = useSection('quiz.result', {
+  title: 'quiz.resultTitle',
+  eyebrow: 'quiz.skillsEyebrow',
+  subtitle: 'quiz.skillsSubtitle',
+  text: 'quiz.topSkillsTitle',
+})
 
 const props = defineProps({
   /** `[{ code, title, percent }]` — foiz bo'yicha kamayish tartibida. */
@@ -68,7 +77,7 @@ const cards = computed(() =>
           </span>
 
           <div>
-            <h2 class="text-brand font-wide text-[1.05rem] font-bold">{{ t('quiz.topSkillsTitle') }}</h2>
+            <h2 class="text-brand font-wide text-[1.05rem] font-bold">{{ result.text }}</h2>
             <p class="font-wide mt-1.5 text-[1.05rem] leading-snug font-bold text-white">
               {{ t('quiz.topSkillsSubtitle') }}
             </p>

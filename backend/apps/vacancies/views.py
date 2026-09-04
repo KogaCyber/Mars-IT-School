@@ -3,6 +3,7 @@ from pathlib import Path
 
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_safe
 from rest_framework import status
@@ -58,7 +59,7 @@ class VacancyApplicationCreateView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(ip_address=client_ip(request))
         return Response(
-            {"detail": "Arizangiz qabul qilindi. Tez orada bog'lanamiz."},
+            {"detail": _("Arizangiz qabul qilindi. Tez orada bog'lanamiz.")},
             status=status.HTTP_201_CREATED,
         )
 
@@ -78,12 +79,12 @@ def resume_download_view(request, pk: str):
     """
     application = get_object_or_404(VacancyApplication, pk=pk)
     if not application.resume:
-        raise Http404("Rezyume yuklanmagan.")
+        raise Http404(_("Rezyume yuklanmagan."))
 
     try:
         handle = application.resume.open("rb")
     except FileNotFoundError as exc:  # fayl volume'dan yo'qolgan bo'lishi mumkin
-        raise Http404("Fayl topilmadi.") from exc
+        raise Http404(_("Fayl topilmadi.")) from exc
 
     # Shaxsiy ma'lumotga har bir murojaat qayd etiladi. Bu ma'lumotlar
     # sizib chiqqan taqdirda «kim ko'rgan» degan savolga javob beradigan

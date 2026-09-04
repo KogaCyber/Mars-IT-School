@@ -2,9 +2,9 @@
 /**
  * «Курсы / IT Kids» sahifasi.
  *
- * Kontent maketda qat'iy belgilangan (rasm ham loyiha ichida), shuning uchun
- * FAQ blokidan tashqari admin paneldan emas, `data/itKids.js` dan olinadi — `directions.js` bilan
- * bir xil yondashuv.
+ * Sahifaning barcha matni va rasmlari admin paneldan boshqariladi
+ * («Kurs — IT Kids» bo'limlari). Admin panelda biror blok to'ldirilmagan
+ * bo'lsa, maketdagi ma'lumot (`data/itKids.js`) ko'rsatiladi.
  */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -20,6 +20,7 @@ import CourseStagesSection from '@/components/courses/CourseStagesSection.vue'
 import TrialLessonSection from '@/components/courses/TrialLessonSection.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useCoursePage } from '@/composables/useCoursePage'
 import { useSeo } from '@/composables/useSeo'
 import { absoluteUrl, courseSchema, faqSchema } from '@/utils/schema'
 import {
@@ -36,12 +37,18 @@ import { useLocalized } from '@/i18n/localize'
 
 const { t } = useI18n()
 
-// Maketdagi kontent uch tilda yozilgan — joriy tilga ko'ra tanlanadi.
-const facts = useLocalized(IT_KIDS_FACTS)
-const topics = useLocalized(IT_KIDS_TOPICS)
-const stages = useLocalized(IT_KIDS_STAGES)
-const stagesSummary = useLocalized(IT_KIDS_STAGES_SUMMARY)
-const gallery = useLocalized(IT_KIDS_GALLERY)
+// Sahifa bloklari admin paneldan; maketdagi ma'lumot — zaxira.
+const page = useCoursePage('itkids', {
+  facts: IT_KIDS_FACTS,
+  topics: IT_KIDS_TOPICS,
+  stages: IT_KIDS_STAGES,
+  gallery: IT_KIDS_GALLERY,
+  summary: IT_KIDS_STAGES_SUMMARY,
+  heroTitleKey: 'courses.itKidsHeroTitle',
+  aboutTitleKey: 'courses.itKidsAboutTitle',
+  aboutTextKey: 'courses.itKidsAboutDescription',
+})
+const { facts, topics, stageList: stages, galleryImages: gallery, stagesSummary } = page
 // FAQ bloki admin paneldan boshqariladi: Kurslar → shu kurs → sahifa
 // pastidagi «Savol-javoblar». Yozuv qo'shilmagan bo'lsa, maketdagi
 // standart ro'yxat ko'rinadi — blok hech qachon bo'sh qolmaydi.
@@ -76,13 +83,13 @@ useSeo(() => ({
 
 <template>
   <CourseHero
-    :title="t('courses.itKidsHeroTitle').split('\n')"
+    :title="page.hero.value.titleLines"
     :breadcrumbs="[
       { label: t('courses.breadcrumbHome'), to: { name: 'home' } },
       { label: t('courses.breadcrumbCourses'), to: { name: 'courses' } },
       { label: 'IT Kids' },
     ]"
-    :image="itKidsHero"
+    :image="page.hero.value.image || itKidsHero"
   >
     <template #actions>
       <BaseButton
@@ -90,7 +97,7 @@ useSeo(() => ({
         class="font-wide h-[3.5rem] min-w-[15rem] font-bold lg:h-[4.17vw] lg:min-w-[17.7vw]"
         :to="{ name: 'application', query: { source: 'course', kurs: 'it-kids' } }"
       >
-        {{ t('common.trialLesson') }}
+        {{ page.hero.value.buttonLabel }}
       </BaseButton>
 
       <BaseButton
@@ -99,7 +106,7 @@ useSeo(() => ({
         href="#programma"
         class="bg-surface hover:bg-surface-2 h-[3.5rem] lg:h-[4.17vw]"
       >
-        {{ t('courses.programButton') }}
+        {{ page.hero.value.button2Label }}
       </BaseButton>
     </template>
   </CourseHero>
@@ -107,23 +114,26 @@ useSeo(() => ({
   <CourseFactsStrip :facts="facts" />
 
   <CourseAboutSection
-    :title="t('courses.itKidsAboutTitle')"
-    :description="t('courses.itKidsAboutDescription')"
+    :eyebrow="page.about.value.eyebrow"
+    :title="page.about.value.title"
+    :description="page.about.value.text"
     :tools="IT_KIDS_TOOLS"
     :topics="topics"
   />
 
   <CourseStagesSection
     id="programma"
-    :title="t('courses.stagesTitle')"
-    :description="t('courses.stagesDescription')"
+    :eyebrow="page.stages.value.eyebrow"
+    :title="page.stages.value.title"
+    :description="page.stages.value.text"
     :summary="stagesSummary"
     :stages="stages"
   />
 
   <CourseGallerySection
-    :title="t('courses.galleryTitle').split('\n')"
-    :description="t('courses.galleryDescription')"
+    :eyebrow="page.gallery.value.eyebrow"
+    :title="page.gallery.value.titleLines"
+    :description="page.gallery.value.text"
     :images="gallery"
   />
 

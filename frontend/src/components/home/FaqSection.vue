@@ -3,13 +3,18 @@
  * «Частые вопросы» — Figma: chapda astronavt va savol belgisi, o'ngda akkordeon.
  * Javob balandlik bo'yicha silliq ochiladi/yopiladi.
  */
-import { ref, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { computed, ref, watch } from 'vue'
 
 import faqAstronaut from '@/assets/images/faq-astronaut.webp'
 import faqQuestion from '@/assets/images/faq-question.webp'
+import { useSection } from '@/composables/useSection'
 
-const { t } = useI18n()
+// Sarlavha va yonidagi rasm admin paneldan (Bosh sahifa → «Ko'p beriladigan savollar»).
+const section = useSection('home.faq', {
+  eyebrow: 'home.faqEyebrow',
+  title: 'home.faqTitle',
+})
+const astronaut = computed(() => section.value.image || faqAstronaut)
 
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -68,7 +73,7 @@ function onLeave(el) {
         <img
           loading="lazy"
           decoding="async"
-          :src="faqAstronaut"
+          :src="astronaut"
           alt=""
           aria-hidden="true"
           class="animate-float relative w-[70%]"
@@ -76,8 +81,8 @@ function onLeave(el) {
       </div>
 
       <div class="order-1 lg:order-2">
-        <p class="eyebrow">{{ t('home.faqEyebrow') }}</p>
-        <h2 class="section-title mt-[4%] text-white">{{ t('home.faqTitle') }}</h2>
+        <p class="eyebrow">{{ section.eyebrow }}</p>
+        <h2 class="section-title mt-[4%] text-white">{{ section.title }}</h2>
 
         <ul class="border-line mt-[8%] flex flex-col border-t">
           <li v-for="item in props.items" :key="item.id" class="border-line border-b">

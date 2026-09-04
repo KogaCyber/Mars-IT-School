@@ -11,8 +11,15 @@ import newsAstronaut from '@/assets/images/news-astronaut.webp'
 import PageHero from '@/components/layout/PageHero.vue'
 import NewsListSection from '@/components/news/NewsListSection.vue'
 import { useSeo } from '@/composables/useSeo'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Sahifa tepasidagi matn admin paneldan («Yangiliklar» sahifasi bo'limlari → «Hero»).
+const hero = useSection('news.hero', {
+  title: 'pages.newsHeroTitle',
+  text: 'pages.newsHeroDescription',
+})
 
 // Sarlavha va tavsif `data/seoConfig.js` dan joriy tilda olinadi.
 useSeo(() => ({
@@ -25,13 +32,13 @@ useSeo(() => ({
 
 <template>
   <PageHero
-    :title="t('pages.newsHeroTitle').split('\n')"
+    :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },
       { label: t('nav.news') },
     ]"
-    :image="newsAstronaut"
-    :description="t('pages.newsHeroDescription')"
+    :image="hero.image || newsAstronaut"
+    :description="hero.text"
   />
 
   <NewsListSection />

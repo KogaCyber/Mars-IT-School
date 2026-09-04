@@ -68,3 +68,12 @@ def translation_fieldset(*bases: str, label=_("Tarjimalar (uz / en)")) -> tuple:
         if lang != DEFAULT_LANGUAGE
     )
     return (label, {"fields": fields, "classes": ("collapse",)})
+
+
+def translated_fields(*bases: str) -> tuple:
+    """Inline'lar uchun: har bir asosning uchala tildagi maydoni ketma-ket.
+
+    Inline qatorlarida yig'ma blok bo'lmaydi, shuning uchun tarjimalar
+    asosiy maydon yonida turadi: `text_ru`, `text_uz`, `text_en`.
+    """
+    return tuple(f"{base}_{lang}" for base in bases for lang in CONTENT_LANGUAGES)

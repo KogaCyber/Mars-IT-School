@@ -5,9 +5,15 @@
  * Tuzilishi yuqoridan pastga aniq ketma-ketlikda: yorliq → sarlavha va izoh →
  * kartochkalar → yakuniy jumla. Elementlar bir-birining ustiga chiqmaydi.
  */
-import { useI18n } from 'vue-i18n'
+import { useSection } from '@/composables/useSection'
 
-const { t } = useI18n()
+// Blok matni admin paneldan («Biz haqimizda» → «Nega bu kelajak uchun muhim»).
+const section = useSection('about.future', {
+  eyebrow: 'about.futureEyebrow',
+  title: 'about.futureTitle',
+  text: 'about.futureText',
+  note: 'about.futureNote',
+})
 
 defineProps({
   items: { type: Array, default: () => [] },
@@ -20,12 +26,12 @@ defineProps({
       <!-- Sarlavha bloki -->
       <header class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-16">
         <div>
-          <p class="eyebrow">{{ t('about.futureEyebrow') }}</p>
-          <h2 class="section-title text-ink mt-5 max-w-[16ch]">{{ t('about.futureTitle') }}</h2>
+          <p class="eyebrow">{{ section.eyebrow }}</p>
+          <h2 class="section-title text-ink mt-5 max-w-[16ch]">{{ section.title }}</h2>
         </div>
 
         <p class="max-w-[42ch] leading-relaxed text-neutral-500 lg:pb-2">
-          {{ t('about.futureText') }}
+          {{ section.text }}
         </p>
       </header>
 
@@ -86,7 +92,7 @@ defineProps({
       <p
         class="text-ink mx-auto mt-12 max-w-[52ch] text-center font-wide text-[1.15rem] leading-snug font-bold lg:mt-16 lg:text-[1.5rem]"
       >
-        {{ t('about.futureNote') }}
+        {{ section.note }}
       </p>
     </div>
   </section>

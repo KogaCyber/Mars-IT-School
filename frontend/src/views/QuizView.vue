@@ -7,7 +7,7 @@
  * o'ngda progress chizig'i, savol, javob variantlari, «Назад» tugmasi va
  * «1/20» hisoblagichi. Kontakt bosqichi ham shu kartochka ichida ochiladi.
  */
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 
@@ -19,6 +19,7 @@ import BaseEmptyState from '@/components/base/BaseEmptyState.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseSpinner from '@/components/base/BaseSpinner.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 import { useSeo } from '@/composables/useSeo'
 import { useUiStore } from '@/stores/ui'
 import { formatPhone, isValidPhone, toPhonePayload } from '@/utils/format'
@@ -26,8 +27,20 @@ import { formatPhone, isValidPhone, toPhonePayload } from '@/utils/format'
 /** Testning slug'i — admin panelda shu nom bilan yaratiladi. */
 const QUIZ_SLUG = 'proforientatsiya'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const router = useRouter()
+
+// Test sahifasidagi matnlar admin paneldan («Test» sahifasi bo'limlari).
+const intro = useSection('quiz.intro', {
+  title: 'quiz.greetingFallback',
+  subtitle: 'quiz.greeting',
+  text: 'quiz.intro',
+})
+const contactStep = useSection('quiz.contact', {
+  title: 'quiz.almostDone',
+  text: 'quiz.contactText',
+  buttonLabel: 'quiz.showResult',
+})
 const ui = useUiStore()
 
 useSeo(() => ({
@@ -53,6 +66,7 @@ const {
   data: quiz,
   isLoading,
   error,
+  execute,
 } = useAsyncData(() => fetchQuiz(QUIZ_SLUG), null, {
   reloadOnContentChange: false,
   reloadOnLanguageChange: false,
@@ -63,6 +77,14 @@ const step = ref(0)
 const contact = reactive({ full_name: '', phone: '+998 ' })
 const contactError = ref('')
 const isSubmitting = ref(false)
+
+// Til almashganda savollar ham yangi tilda kelishi kerak. Lekin test
+// BOSHLANGAN bo'lsa qayta yuklamaymiz: yuqoridagi sababga ko'ra savollar
+// to'plami almashib, berilgan javoblar yo'qolib ketardi. Amalda til odatda
+// birinchi savoldan oldin tanlanadi — o'sha holat ishlaydi.
+watch(locale, () => {
+  if (step.value === 0 && Object.keys(answers).length === 0) execute()
+})
 
 const questions = computed(() => quiz.value?.questions || [])
 const currentQuestion = computed(() => questions.value[step.value] || null)
@@ -144,15 +166,15 @@ async function submit() {
         <!-- Chap ustun -->
         <div>
           <p class="font-wide text-[1.35rem] leading-tight font-bold">
-            <span class="text-brand">{{ t('quiz.greeting') }}</span
+            <span class="text-brand">{{ intro.subtitle }}</span
             ><span class="text-white/40">,</span>
             <span class="mt-1 block text-white/40">
-              {{ greetingName || t('quiz.greetingFallback') }}
+              {{ greetingName || intro.title }}
             </span>
           </p>
 
           <p class="mt-6 max-w-[34ch] leading-relaxed text-white/55">
-            {{ t('quiz.intro') }}
+            {{ intro.text }}
           </p>
         </div>
 
@@ -241,10 +263,10 @@ async function submit() {
           <!-- Kontakt bosqichi -->
           <template v-else-if="isContactStep">
             <h2 class="font-wide mt-8 text-[1.15rem] leading-snug font-bold text-white">
-              {{ t('quiz.almostDone') }}
+              {{ contactStep.title }}
             </h2>
             <p class="mt-3 leading-relaxed text-white/55">
-              {{ t('quiz.contactText') }}
+              {{ contactStep.text }}
             </p>
 
             <div class="mt-7 flex flex-col gap-4">
@@ -278,7 +300,7 @@ async function submit() {
                 :loading="isSubmitting"
                 @click="submit"
               >
-                {{ t('quiz.showResult') }}
+                {{ contactStep.buttonLabel }}
               </BaseButton>
             </div>
           </template>

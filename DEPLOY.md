@@ -133,6 +133,22 @@ yozmang. Vercel dashboard'ida xuddi shu nomlar qo'yilsa, ular fayldan ustun tura
 > canonical va hreflang havolalari aynan shu manzildan yasaladi. `localhost`
 > qolib ketsa qidiruv tizimlari noto'g'ri manzilni indekslaydi.
 
+**Vercel dashboard'ida qo'shimcha bitta o'zgaruvchi qo'ying:**
+
+```
+SEO_STRICT=1
+```
+
+`sitemap.xml` dagi kurs, yangilik, filial va vakansiya sahifalari build vaqtida
+backend'dan olinadi. Backend javob bermasa, sitemap FAQAT statik sahifalardan
+iborat bo'lib qoladi va butun katalog Google uchun ko'rinmay ketadi — build esa
+muvaffaqiyatli tugagani uchun buni hech kim sezmaydi.
+
+`SEO_STRICT=1` shu holatda build'ni to'xtatadi: Vercel eski, to'liq versiyani
+saytda qoldiradi va deploy qizil bo'lib ko'rinadi. Lokalda va CI'da backend
+bo'lmasligi normal, shuning uchun u yerda bu o'zgaruvchi qo'yilmaydi — faqat
+ogohlantirish chiqadi.
+
 ### 3.3 Backend domenini CSP ga qo'shing
 
 `frontend/vercel.json` → `Content-Security-Policy` → `connect-src`.

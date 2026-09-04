@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.core.translation import translation_fieldset
+from apps.core.translation import translated_fields, translation_fieldset
 
 from .models import Option, Outcome, Question, Quiz, Submission
 
@@ -8,7 +8,7 @@ from .models import Option, Outcome, Question, Quiz, Submission
 class OptionInline(admin.TabularInline):
     model = Option
     extra = 2
-    fields = ("order", "text_ru", "outcome", "skill", "weight")
+    fields = ("order", *translated_fields("text"), "outcome", "skill", "weight")
 
 
 @admin.register(Quiz)

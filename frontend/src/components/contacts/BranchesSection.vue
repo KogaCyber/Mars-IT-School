@@ -18,8 +18,17 @@ import BranchDrawer from '@/components/contacts/BranchDrawer.vue'
 import BranchesMap from '@/components/contacts/BranchesMap.vue'
 import BranchMapLinks from '@/components/contacts/BranchMapLinks.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Blok matni admin paneldan («Kontaktlar» sahifasi bo'limlari → «Filiallar»).
+const section = useSection('contacts.branches', {
+  eyebrow: 'contacts.branchesEyebrow',
+  title: 'contacts.branchesTitle',
+  text: 'contacts.branchesHint',
+  note: 'contacts.branchesEmpty',
+})
 
 const { data: branches, isLoading } = useAsyncData(fetchBranches, [])
 
@@ -43,7 +52,7 @@ function openBranch(branch) {
       <div class="grid gap-[var(--spacing-block)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">
         <div v-reveal class="order-2 lg:order-1 lg:pt-[12%]">
           <p class="text-lead max-w-[26ch] leading-relaxed text-white/70">
-            {{ t('contacts.branchesHint') }}
+            {{ section.text }}
           </p>
 
           <!-- Karta / Список almashtirgichi -->
@@ -75,9 +84,9 @@ function openBranch(branch) {
         </div>
 
         <div v-reveal class="order-1 lg:order-2 lg:text-right">
-          <p class="eyebrow font-bold">{{ t('contacts.branchesEyebrow') }}</p>
+          <p class="eyebrow font-bold">{{ section.eyebrow }}</p>
           <h2 class="title-hero mt-[4%] text-white">
-            <span v-for="line in t('contacts.branchesTitle').split('\n')" :key="line" class="block">
+            <span v-for="line in section.titleLines" :key="line" class="block">
               {{ line }}
             </span>
           </h2>
@@ -85,7 +94,7 @@ function openBranch(branch) {
       </div>
 
       <BaseSpinner v-if="isLoading" />
-      <BaseEmptyState v-else-if="!branches.length" :title="t('contacts.branchesEmpty')" />
+      <BaseEmptyState v-else-if="!branches.length" :title="section.note" />
 
       <template v-else>
         <!-- Xarita -->

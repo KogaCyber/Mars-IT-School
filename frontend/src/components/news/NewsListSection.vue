@@ -14,8 +14,18 @@ import BaseEmptyState from '@/components/base/BaseEmptyState.vue'
 import BaseSpinner from '@/components/base/BaseSpinner.vue'
 import NewsCard from '@/components/cards/NewsCard.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Ro'yxat sarlavhasi va bo'sh holat matni admin paneldan
+// («Yangiliklar» sahifasi bo'limlari → «Ro'yxat»).
+const section = useSection('news.list', {
+  eyebrow: 'news.eyebrow',
+  title: 'news.title',
+  subtitle: 'news.emptyTitle',
+  note: 'news.emptyDescription',
+})
 
 /** Ikki ustunga tekis yotishi uchun juft son. */
 const PAGE_SIZE = 8
@@ -72,9 +82,9 @@ function goToPage(value) {
     <div class="container-page">
       <div v-reveal class="flex flex-wrap items-end justify-between gap-x-10 gap-y-8">
         <div>
-          <p class="eyebrow">{{ t('news.eyebrow') }}</p>
+          <p class="eyebrow">{{ section.eyebrow }}</p>
           <h2 class="section-title mt-5 text-white">
-            <span v-for="line in t('news.title').split('\n')" :key="line" class="block">
+            <span v-for="line in section.titleLines" :key="line" class="block">
               {{ line }}
             </span>
           </h2>
@@ -109,8 +119,8 @@ function goToPage(value) {
         <BaseEmptyState
           v-else-if="!news.results.length"
           class="mt-[var(--spacing-block)]"
-          :title="t('news.emptyTitle')"
-          :description="t('news.emptyDescription')"
+          :title="section.subtitle"
+          :description="section.note"
         />
 
         <div

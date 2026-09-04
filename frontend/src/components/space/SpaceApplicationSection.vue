@@ -8,9 +8,17 @@
 import { useI18n } from 'vue-i18n'
 
 import glow from '@/assets/images/about-glow.webp'
+import { useSection } from '@/composables/useSection'
 import LeadForm from '@/components/forms/LeadForm.vue'
 
 const { t } = useI18n()
+
+// Blok matni admin paneldan («SPACE» bo'limlari → «Ariza»).
+const section = useSection('space.application', {
+  eyebrow: 'space.applicationEyebrow',
+  title: 'space.applicationTitle',
+  text: 'space.applicationText',
+})
 </script>
 
 <template>
@@ -29,21 +37,20 @@ const { t } = useI18n()
       class="container-page relative grid items-center gap-[8%] lg:grid-cols-[1.15fr_1fr] lg:gap-[6%]"
     >
       <div>
-        <p v-reveal class="eyebrow">{{ t('space.applicationEyebrow') }}</p>
+        <p v-reveal class="eyebrow">{{ section.eyebrow }}</p>
 
         <h2 v-reveal class="title-hero font-wide mt-[5%] font-bold text-white">
           <span
-            v-for="line in t('space.applicationTitle').split('\n')"
+            v-for="line in section.titleLines"
             :key="line"
             class="block"
           >
             {{ line }}
           </span>
-          <span class="block">SPACE</span>
         </h2>
 
         <p v-reveal="{ delay: 120 }" class="mt-[7%] max-w-[46ch] leading-relaxed text-white/70">
-          {{ t('space.applicationText') }}
+          {{ section.text }}
         </p>
       </div>
 

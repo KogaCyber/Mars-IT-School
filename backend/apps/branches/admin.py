@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from django.utils.translation import gettext_lazy as _
 
 from apps.core.translation import translation_fieldset
 
@@ -20,12 +21,12 @@ class BranchAdmin(admin.ModelAdmin):
     inlines = [BranchImageInline]
     fieldsets = (
         (None, {"fields": ("name_ru", "slug", "address_ru", "landmark_ru", "cover")}),
-        ("Aloqa", {"fields": ("phone", "working_hours_ru")}),
+        (_("Aloqa"), {"fields": ("phone", "working_hours_ru")}),
         (
-            "Xarita",
+            _("Xarita"),
             {
                 "fields": ("map_url_yandex", "map_url_google", "latitude", "longitude"),
-                "description": (
+                "description": _(
                     "Xaritadagi nishon <b>kenglik/uzunlik</b> bo'yicha chiziladi. "
                     "Manzilni o'zgartirsangiz, koordinata avtomatik yangilanadi: "
                     "avval xarita havolasidan olinadi, bo'lmasa manzil bo'yicha qidiriladi. "
@@ -33,14 +34,14 @@ class BranchAdmin(admin.ModelAdmin):
                 ),
             },
         ),
-        ("Chop etish", {"fields": ("order", "is_main", "is_published")}),
+        (_("Chop etish"), {"fields": ("order", "is_main", "is_published")}),
         translation_fieldset("name", "address", "landmark", "working_hours"),
     )
 
-    @admin.display(description="Koordinata")
+    @admin.display(description=_("Koordinata"))
     def coordinates(self, obj: Branch) -> str:
         if obj.latitude is None or obj.longitude is None:
-            return "— (xaritada ko'rinmaydi)"
+            return str(_("— (xaritada ko'rinmaydi)"))
         return f"{obj.latitude}, {obj.longitude}"
 
     def save_model(self, request, obj, form, change):

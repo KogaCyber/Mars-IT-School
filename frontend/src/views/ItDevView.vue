@@ -2,9 +2,9 @@
 /**
  * «Курсы / IT-разработка» sahifasi.
  *
- * Kontent maketda qat'iy belgilangan (rasm ham loyiha ichida), shuning uchun
- * FAQ blokidan tashqari admin paneldan emas, `data/itDev.js` dan olinadi — `ItKidsView.vue` bilan
- * bir xil yondashuv.
+ * Sahifaning barcha matni va rasmlari admin paneldan boshqariladi
+ * («Kurs — IT dasturlash» bo'limlari). Admin panelda biror blok
+ * to'ldirilmagan bo'lsa, maketdagi ma'lumot (`data/itDev.js`) ko'rsatiladi.
  */
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -20,6 +20,7 @@ import CourseStagesSection from '@/components/courses/CourseStagesSection.vue'
 import TrialLessonSection from '@/components/courses/TrialLessonSection.vue'
 import FaqSection from '@/components/home/FaqSection.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useCoursePage } from '@/composables/useCoursePage'
 import { useSeo } from '@/composables/useSeo'
 import { absoluteUrl, courseSchema, faqSchema } from '@/utils/schema'
 import {
@@ -36,12 +37,19 @@ import { useLocalized } from '@/i18n/localize'
 
 const { t } = useI18n()
 
-// Maketdagi kontent uch tilda yozilgan — joriy tilga ko'ra tanlanadi.
-const facts = useLocalized(IT_DEV_FACTS)
-const topics = useLocalized(IT_DEV_TOPICS)
-const stages = useLocalized(IT_DEV_STAGES)
-const stagesSummary = useLocalized(IT_DEV_STAGES_SUMMARY)
-const gallery = useLocalized(IT_DEV_GALLERY)
+// Sahifa bloklari admin paneldan; maketdagi ma'lumot — zaxira.
+const page = useCoursePage('itdev', {
+  facts: IT_DEV_FACTS,
+  topics: IT_DEV_TOPICS,
+  stages: IT_DEV_STAGES,
+  gallery: IT_DEV_GALLERY,
+  summary: IT_DEV_STAGES_SUMMARY,
+  heroTitleKey: 'courses.itDevHeroTitle',
+  heroTextKey: 'courses.itDevHeroDescription',
+  aboutTitleKey: 'courses.itDevAboutTitle',
+  aboutTextKey: 'courses.itDevAboutDescription',
+})
+const { facts, topics, stageList: stages, galleryImages: gallery, stagesSummary } = page
 // FAQ bloki admin paneldan boshqariladi: Kurslar → shu kurs → sahifa
 // pastidagi «Savol-javoblar». Yozuv qo'shilmagan bo'lsa, maketdagi
 // standart ro'yxat ko'rinadi — blok hech qachon bo'sh qolmaydi.
@@ -75,14 +83,14 @@ useSeo(() => ({
 
 <template>
   <CourseHero
-    :title="t('courses.itDevHeroTitle')"
-    :description="t('courses.itDevHeroDescription')"
+    :title="page.hero.value.titleLines"
+    :description="page.hero.value.text"
     :breadcrumbs="[
       { label: t('courses.breadcrumbHome'), to: { name: 'home' } },
       { label: t('courses.breadcrumbCourses'), to: { name: 'courses' } },
       { label: t('courses.itDevHeroTitle') },
     ]"
-    :image="itDevHero"
+    :image="page.hero.value.image || itDevHero"
   >
     <template #actions>
       <BaseButton
@@ -90,7 +98,7 @@ useSeo(() => ({
         class="font-wide h-[3.5rem] min-w-[15rem] font-bold lg:h-[4.17vw] lg:min-w-[17.7vw]"
         :to="{ name: 'application', query: { source: 'course', kurs: 'it-razrabotka' } }"
       >
-        {{ t('common.trialLesson') }}
+        {{ page.hero.value.buttonLabel }}
       </BaseButton>
 
       <BaseButton
@@ -99,7 +107,7 @@ useSeo(() => ({
         href="#programma"
         class="bg-surface hover:bg-surface-2 h-[3.5rem] lg:h-[4.17vw]"
       >
-        {{ t('courses.programButton') }}
+        {{ page.hero.value.button2Label }}
       </BaseButton>
     </template>
   </CourseHero>
@@ -107,23 +115,26 @@ useSeo(() => ({
   <CourseFactsStrip :facts="facts" />
 
   <CourseAboutSection
-    :title="t('courses.itDevAboutTitle')"
-    :description="t('courses.itDevAboutDescription')"
+    :eyebrow="page.about.value.eyebrow"
+    :title="page.about.value.title"
+    :description="page.about.value.text"
     :tools="IT_DEV_TOOLS"
     :topics="topics"
   />
 
   <CourseStagesSection
     id="programma"
-    :title="t('courses.stagesTitle')"
-    :description="t('courses.stagesDescription')"
+    :eyebrow="page.stages.value.eyebrow"
+    :title="page.stages.value.title"
+    :description="page.stages.value.text"
     :summary="stagesSummary"
     :stages="stages"
   />
 
   <CourseGallerySection
-    :title="t('courses.galleryTitle').split('\n')"
-    :description="t('courses.galleryDescription')"
+    :eyebrow="page.gallery.value.eyebrow"
+    :title="page.gallery.value.titleLines"
+    :description="page.gallery.value.text"
     :images="gallery"
   />
 

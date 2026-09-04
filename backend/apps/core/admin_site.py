@@ -27,12 +27,17 @@ PAGES = [
         "slug": "home",
         "name": _("Bosh sahifa"),
         "url": "/",
-        "hint": _("Saytning bosh sahifasida ko‘rinadigan bloklar."),
+        "hint": _("Saytning bosh sahifasi — bloklar saytdagi tartibda."),
         "sections": [
             (
+                "core.homesection",
+                _("Sahifa bo‘limlari: hero, sarlavhalar, matnlar va rasmlar"),
+                _("Hero (sarlavha, matn, tugmalar, astronavt rasmi), SPACE bloki, "
+                  "yangiliklar va o‘qituvchilar sarlavhalari, fikrlar va F.A.Q."),
+            ),
+            (
                 "core.advantage",
-                _("«Nega aynan MARS IT School» — raqamlangan kartochkalar "
-                  "(«Biz haqimizda» sahifasida ham ko‘rinadi)"),
+                _("«Nega aynan MARS IT School» — raqamlangan kartochkalar"),
                 _("Raqam (01…06), sarlavha, tavsif, rasm, tartib, chop etish"),
             ),
             (
@@ -61,21 +66,27 @@ PAGES = [
         "slug": "about",
         "name": _("Biz haqimizda"),
         "url": "/o-nas",
-        "hint": _("«O нас» sahifasidagi bloklar."),
+        "hint": _("«O нас» sahifasi — bloklar saytdagi tartibda."),
         "sections": [
             (
+                "core.aboutsection",
+                _("Sahifa bo‘limlari: sarlavhalar, matnlar va rasmlar"),
+                _("Hero, «Nega bu muhim», ko‘nikmalar, Demo Day, «Oddiy kurslar emas», "
+                  "asoschilar va o‘qituvchilar bloklarining matni"),
+            ),
+            (
                 "core.futurebenefit",
-                _("«Nima uchun bu kelajak uchun muhim» bo‘limi"),
+                _("«Nima uchun bu kelajak uchun muhim» — kartochkalar"),
                 _("Sarlavha, tavsif, ikonka, tartib"),
             ),
             (
                 "core.childskill",
-                _("«Bola qanday ko‘nikmalarni egallaydi» bo‘limi"),
+                _("«Bola qanday ko‘nikmalarni egallaydi» — kartochkalar"),
                 _("Sarlavha, tavsif, ikonka, tartib"),
             ),
             (
                 "core.projectdefencestep",
-                _("«Demo Day — bola loyihasini himoya qiladi» raqamlari"),
+                _("«Demo Day» raqamlari"),
                 _("Raqam/yorliq, izoh, ikonka, tartib"),
             ),
             (
@@ -107,23 +118,59 @@ PAGES = [
     },
     {
         "slug": "courses",
-        "name": _("Kurslar"),
+        "name": _("Kurslar (ro‘yxat sahifasi)"),
         "url": "/kursy",
-        "hint": _("Kurslar sahifasi va har bir kursning ichki sahifasi."),
+        "hint": _("«Kurslar» sahifasi: hero, yo‘nalish kartochkalari va banner."),
         "sections": [
             (
+                "core.coursessection",
+                _("Sahifa bo‘limlari: hero, «Yo‘nalishlar» kartochkalari, «Tez orada»"),
+                _("Sarlavhalar, matnlar, kartochka rasmlari, yosh, texnologiyalar va havolalar"),
+            ),
+            (
                 "courses.direction",
-                _("«Yo‘nalishlar» — IT Kids va IT Dasturlash kartochkalari"),
+                _("Yo‘nalish yozuvlari (kurs sahifalari uchun ma’lumotnoma)"),
                 _("Nom, tavsif, rasm, tartib, chop etish"),
             ),
             (
                 "courses.course",
-                _("Kurs sahifasi (hero, narx, davomiylik, galereya, bosqichlar, savol-javoblar)"),
-                _(
-                    "Nom, yo‘nalish, yosh, narx, davomiylik, tavsif, rasm, galereya; "
-                    "ichida — imkoniyatlar, o‘qish bosqichlari va sahifa pastidagi "
-                    "savol-javoblar"
-                ),
+                _("Kurs yozuvi: narx, davomiylik va sahifa pastidagi savol-javoblar"),
+                _("Nom, yo‘nalish, yosh, narx, davomiylik, tavsif, rasm; "
+                  "ichida — imkoniyatlar, bosqichlar va savol-javoblar"),
+            ),
+        ],
+    },
+    {
+        "slug": "itkids",
+        "name": _("Kurs — IT Kids"),
+        "url": "/kursy/it-kids",
+        "hint": _("«IT Kids» sahifasi: hero, ko‘rsatkichlar, mavzular, bosqichlar, galereya."),
+        "sections": [
+            (
+                "core.itkidssection",
+                _("Sahifa bo‘limlari — barcha matn va rasmlar"),
+                _("Hero (sarlavha, rasm, tugmalar), ko‘rsatkichlar tasmasi, «Kurs haqida» "
+                  "mavzulari, o‘qish bosqichlari va galereya"),
+            ),
+            (
+                "courses.course",
+                _("Sahifa pastidagi savol-javoblar — «IT Kids» kursi yozuvida"),
+                _("Kursni oching va «Savol-javoblar» blokini to‘ldiring"),
+            ),
+        ],
+    },
+    {
+        "slug": "itdev",
+        "name": _("Kurs — IT dasturlash"),
+        "url": "/kursy/it-razrabotka",
+        "hint": _("«IT-dasturlash» sahifasi: hero, ko‘rsatkichlar, mavzular, "
+                  "bosqichlar, galereya."),
+        "sections": [
+            (
+                "core.itdevsection",
+                _("Sahifa bo‘limlari — barcha matn va rasmlar"),
+                _("Hero, ko‘rsatkichlar tasmasi, «Kurs haqida» mavzulari, "
+                  "o‘qish bosqichlari va galereya"),
             ),
         ],
     },
@@ -134,9 +181,10 @@ PAGES = [
         "hint": _("SPACE ilovasi haqidagi sahifa."),
         "sections": [
             (
-                "core.spacefeature",
-                _("«SPACE imkoniyatlari» — kartochkalar lentasi"),
-                _("Sarlavha, tavsif, ikonka, tartib. Ilova havolalari — «Sayt sozlamalari»da"),
+                "core.spacepagesection",
+                _("Sahifa bo‘limlari — barcha matn, kartochka va rasmlar"),
+                _("Hero, imkoniyatlar, geymifikatsiya, Premium, MARS Shop sovg‘alari, "
+                  "ota-onalar bloki va ariza bloki"),
             ),
         ],
     },
@@ -147,6 +195,11 @@ PAGES = [
         "hint": _("Yangiliklar ro‘yxati va har bir yangilikning ichki sahifasi."),
         "sections": [
             (
+                "core.newspagesection",
+                _("Sahifa bo‘limlari: hero va ro‘yxat sarlavhasi"),
+                _("Sarlavha, izoh, rasm va ro‘yxat bo‘sh bo‘lgandagi matn"),
+            ),
+            (
                 "news.newscategory",
                 _("Ro‘yxat tepasidagi filtr tugmalari (Yangiliklar / Tadbirlar)"),
                 _("Turkum nomi, tartib"),
@@ -154,10 +207,8 @@ PAGES = [
             (
                 "news.news",
                 _("Yangilik: sarlavha, muqova, matn va fotoreportaj"),
-                _(
-                    "Sarlavha, turkum, qisqa matn, to‘liq matn, muqova, "
-                    "chop etilgan sana; ichida — galereya rasmlari"
-                ),
+                _("Sarlavha, turkum, qisqa matn, to‘liq matn, muqova, "
+                  "chop etilgan sana; ichida — galereya rasmlari"),
             ),
         ],
     },
@@ -168,12 +219,15 @@ PAGES = [
         "hint": _("Kontaktlar sahifasi, xarita va filial kartochkalari."),
         "sections": [
             (
+                "core.contactssection",
+                _("Sahifa bo‘limlari: hero, kontaktlar bloki, filiallar sarlavhasi, ariza"),
+                _("Sarlavhalar, matnlar va rasmlar"),
+            ),
+            (
                 "branches.branch",
                 _("Xaritadagi nishon va filial kartochkasi"),
-                _(
-                    "Nom, manzil, mo‘ljal, telefon, ish vaqti, koordinatalar, "
-                    "muqova; ichida — filial galereyasi"
-                ),
+                _("Nom, manzil, mo‘ljal, telefon, ish vaqti, koordinatalar, "
+                  "muqova; ichida — filial galereyasi"),
             ),
         ],
     },
@@ -183,6 +237,11 @@ PAGES = [
         "url": "/vakansii",
         "hint": _("Vakansiyalar sahifasi va undan kelgan arizalar."),
         "sections": [
+            (
+                "core.vacanciessection",
+                _("Sahifa bo‘limlari: hero va ro‘yxat sarlavhasi"),
+                _("Sarlavha, izoh, rasm va ro‘yxat bo‘sh bo‘lgandagi matn"),
+            ),
             (
                 "vacancies.vacancy",
                 _("Vakansiya kartochkasi va uning ichki sahifasi"),
@@ -201,6 +260,11 @@ PAGES = [
         "url": "/test",
         "hint": _("«Kim bo‘lish kerak» testi: savollar, javoblar va natijalar."),
         "sections": [
+            (
+                "core.quizpagesection",
+                _("Sahifa bo‘limlari: salomlashuv, kontakt qadami, natija sarlavhalari"),
+                _("Test sahifasidagi matnlar"),
+            ),
             (
                 "quiz.quiz",
                 _("Test: nomi va tavsifi"),
@@ -245,10 +309,13 @@ PAGES = [
             (
                 "core.sitesettings",
                 _("Sarlavha, futer va «Biz haqimizda» sahifasidagi video"),
-                _(
-                    "Telefonlar, email, ish vaqti, ijtimoiy tarmoqlar, SPACE ilova "
-                    "havolalari, tanishtiruv videosi (havola yoki fayl) va uning muqovasi"
-                ),
+                _("Telefonlar, email, ish vaqti, ijtimoiy tarmoqlar, SPACE ilova "
+                  "havolalari, tanishtiruv videosi (havola yoki fayl) va uning muqovasi"),
+            ),
+            (
+                "core.commonsection",
+                _("Umumiy bloklar: «Bepul sinov darsi» ariza bloki, tugmalar, futer matni"),
+                _("Barcha sahifalarda takrorlanadigan sarlavha va tugma matnlari"),
             ),
         ],
     },
@@ -263,7 +330,6 @@ PAGES = [
                 _("Admin panel foydalanuvchilari"),
                 _("Email, ism, huquqlar, parol"),
             ),
-            ("auth.group", _("Huquqlar guruhlari"), _("Guruh nomi va ruxsatlar")),
         ],
     },
 ]
@@ -274,6 +340,7 @@ PAGES = [
 _REFERENCES = {
     ("home", "news.news"),
     ("home", "teachers.teacher"),
+    ("itkids", "courses.course"),
 }
 
 
@@ -339,6 +406,11 @@ class MarsAdminSite(AdminSite):
                 entry = dict(model)
                 entry["section_where"] = where
                 entry["section_what"] = what
+                # Havola-bo'lim: model boshqa sahifada boshqariladi. Bosh
+                # sahifada izohi bilan turadi, chap menyuda esa izohlar
+                # yashiriladi — u yerda bu shunchaki takror nom bo'lib
+                # ko'rinardi, shuning uchun menyuda ko'rsatilmaydi.
+                entry["is_reference"] = (page["slug"], key) in _REFERENCES
                 models.append(entry)
                 used.add(key)
 

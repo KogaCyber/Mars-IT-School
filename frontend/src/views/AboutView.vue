@@ -29,6 +29,7 @@ import TeachersSection from '@/components/about/TeachersSection.vue'
 import AdvantagesSection from '@/components/home/AdvantagesSection.vue'
 import PageHero from '@/components/layout/PageHero.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 import { useSeo } from '@/composables/useSeo'
 
 const { t } = useI18n()
@@ -49,16 +50,28 @@ const { data: statistics } = useAsyncData(fetchStatistics, [])
 const { data: schoolFeatures } = useAsyncData(fetchSchoolFeatures, [])
 const { data: settings } = useAsyncData(fetchSiteSettings, {})
 const { data: founders } = useAsyncData(fetchFounders, [])
-const { data: teachers } = useAsyncData(async () => (await fetchTeachers()).results, [])
+// `/teachers/` sahifalashsiz ishlaydi (backend: `pagination_class = None`) —
+// ya'ni javob oddiy massiv. Ilgari bu yerda `.results` o'qilardi va natija
+// `undefined` bo'lib, «Преподаватели» bo'limi sahifada UMUMAN ko'rinmasdi.
+// Ikkala shakl ham qabul qilinadi: sahifalash qaytsa ham bo'lim ishlayveradi.
+const { data: teachers } = useAsyncData(async () => {
+  const response = await fetchTeachers()
+  return Array.isArray(response) ? response : (response?.results ?? [])
+}, [])
+
+// Sahifa tepasidagi sarlavha va rasm — admin paneldan
+// («Biz haqimizda» bo'limlari → «Hero»).
+const hero = useSection('about.hero', { title: 'about.heroTitle' })
 </script>
 
 <template>
   <PageHero
-    :title="t('about.heroTitle').split('\n')"
+    :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },
       { label: t('nav.about') },
     ]"
+    :image="hero.image || undefined"
   />
 
   <FutureSection :items="futureBenefits" />

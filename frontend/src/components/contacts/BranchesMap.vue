@@ -74,13 +74,18 @@ onMounted(() => {
     zoom: 11,
     zoomControl: false,
     scrollWheelZoom: false,
-    attributionControl: false,
+    // Atributsiya ko'rsatiladi, lekin kichik va past kontrastda —
+    // Esri plitkalaridan foydalanish shartlari uni talab qiladi.
+    attributionControl: true,
   })
+  map.attributionControl.setPrefix(false)
 
   // Esri «Dark Gray Canvas» — kalitsiz ishlaydigan to'q xarita: asos + yozuvlar
   const ESRI = 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas'
+  const ESRI_ATTRIBUTION = '© Esri, HERE, Garmin, © OpenStreetMap contributors'
   L.tileLayer(`${ESRI}/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, {
     maxZoom: 16,
+    attribution: ESRI_ATTRIBUTION,
   }).addTo(map)
   L.tileLayer(`${ESRI}/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, {
     maxZoom: 16,
@@ -126,6 +131,17 @@ watch(
 }
 
 /* Esri plitkalari maketdagidek qoraytiriladi (yozuvlar alohida qatlamda — ular yorqin qoladi) */
+.branches-map .leaflet-control-attribution {
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+.branches-map .leaflet-control-attribution a {
+  color: rgba(255, 255, 255, 0.6);
+}
+
 .branches-map .leaflet-tile-pane {
   filter: brightness(0.45) saturate(0.85) contrast(1.05);
 }

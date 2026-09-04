@@ -5,6 +5,7 @@ import logging
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.serializers import (
@@ -79,7 +80,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate_email(self, value: str) -> str:
         value = value.strip().lower()
         if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("Bu email allaqachon ro'yxatdan o'tgan.")
+            raise serializers.ValidationError(_("Bu email allaqachon ro'yxatdan o'tgan."))
         return value
 
     def validate_phone(self, value: str) -> str:
@@ -88,7 +89,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         phone = normalize_phone(value)
         validate_uz_phone(phone)
         if User.objects.filter(phone=phone).exists():
-            raise serializers.ValidationError("Bu telefon raqam allaqachon band.")
+            raise serializers.ValidationError(_("Bu telefon raqam allaqachon band."))
         return phone
 
     def validate(self, attrs: dict) -> dict:
@@ -128,7 +129,7 @@ class PasswordChangeSerializer(serializers.Serializer):
 
     def validate_old_password(self, value: str) -> str:
         if not self.context["request"].user.check_password(value):
-            raise serializers.ValidationError("Joriy parol noto'g'ri.")
+            raise serializers.ValidationError(_("Joriy parol noto'g'ri."))
         return value
 
     def validate_new_password(self, value: str) -> str:

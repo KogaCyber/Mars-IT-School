@@ -6,13 +6,14 @@
  * ism, telefon, rezyume havolasi va fayl (PDF/DOC/DOCX/RTF, 5 MB gacha).
  * Ariza yuborilgach, o'sha kartochka «Заявка принята» holatiga o'tadi.
  */
-import { onKeyStroke, useScrollLock } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 import { nextTick, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { normalizeError } from '@/api/client'
 import { submitVacancyApplication } from '@/api/vacancies'
 import BaseFloatingInput from '@/components/base/BaseFloatingInput.vue'
+import { useScrollLock } from '@/composables/useScrollLock'
 import { useUiStore } from '@/stores/ui'
 import { formatPhone, isValidPhone, toPhonePayload } from '@/utils/format'
 
@@ -37,8 +38,8 @@ const panel = ref(null)
 const isSubmitting = ref(false)
 const isSent = ref(false)
 
-// Sahifaning scroll konteyneri — `html`, shuning uchun qulf ham unga qo'yiladi.
-const isLocked = useScrollLock(document.documentElement)
+// Panel ochiq bo'lganda orqa fon skroll qilinmaydi.
+const isLocked = useScrollLock()
 
 function reset() {
   Object.assign(form, { full_name: '', phone: '', resume_url: '', website: '' })
@@ -147,9 +148,9 @@ async function onSubmit() {
           ref="panel"
           role="dialog"
           aria-modal="true"
-          :aria-label="`Откликнуться на вакансию: ${vacancy.title}`"
+          :aria-label="`${t('vacancies.apply')}: ${vacancy.title}`"
           tabindex="-1"
-          class="drawer-panel bg-ink relative flex max-h-[92dvh] w-full flex-col justify-center overflow-hidden rounded-t-[2rem] sm:justify-start px-6 py-7 outline-none sm:h-full sm:max-h-none sm:max-w-[38rem] sm:rounded-none sm:px-10 sm:py-10"
+          class="drawer-panel bg-ink relative flex max-h-[92dvh] w-full flex-col overflow-y-auto rounded-t-[2rem] px-6 py-7 outline-none sm:h-full sm:max-h-none sm:max-w-[38rem] sm:rounded-none sm:px-10 sm:py-10"
         >
           <!-- Telefon versiyada pastdan chiqadigan panel uchun "tutqich" -->
           <span

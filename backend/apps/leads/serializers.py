@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 from apps.accounts.validators import normalize_phone, validate_uz_phone
@@ -43,7 +44,7 @@ class LeadCreateSerializer(serializers.ModelSerializer):
     def validate_full_name(self, value: str) -> str:
         value = " ".join(value.split())
         if len(value) < 2:
-            raise serializers.ValidationError("Ism juda qisqa.")
+            raise serializers.ValidationError(_("Ism juda qisqa."))
         return value
 
     def validate_phone(self, value: str) -> str:
@@ -53,11 +54,11 @@ class LeadCreateSerializer(serializers.ModelSerializer):
 
     def validate_child_age(self, value):
         if value is not None and not 3 <= value <= 25:
-            raise serializers.ValidationError("Yosh 3 dan 25 gacha bo'lishi kerak.")
+            raise serializers.ValidationError(_("Yosh 3 dan 25 gacha bo'lishi kerak."))
         return value
 
     def validate(self, attrs: dict) -> dict:
         if attrs.pop("website", ""):
             # Honeypot to'ldirilgan — spam. Foydalanuvchiga sababini aytmaymiz.
-            raise serializers.ValidationError("So'rovni yuborib bo'lmadi.")
+            raise serializers.ValidationError(_("So'rovni yuborib bo'lmadi."))
         return attrs

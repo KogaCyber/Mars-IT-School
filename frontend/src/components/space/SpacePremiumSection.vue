@@ -9,15 +9,24 @@
  *   3) pastda kenglik bo'ylab cho'zilgan gradientli CTA paneli.
  * Shu tartibda o'qish yo'nalishi tabiiy va bo'sh joy qolmaydi.
  */
-import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 import rocket from '@/assets/images/rocket-3d.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
+import { toCards, useSection } from '@/composables/useSection'
 import { SPACE_PREMIUM } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 
-const { t } = useI18n()
-const premium = useLocalized(SPACE_PREMIUM)
+// Blok matni va imkoniyatlari admin paneldan («SPACE» bo'limlari → «Premium»).
+const section = useSection('space.premium', {
+  eyebrow: 'space.premiumEyebrow',
+  title: 'space.premiumTitle',
+  text: 'space.premiumText',
+  note: 'space.premiumNote',
+  buttonLabel: 'space.premiumButton',
+})
+const fallback = useLocalized(SPACE_PREMIUM)
+const premium = computed(() => toCards(section.value.items, fallback.value))
 
 /** Kartochka ikonkalari — chiziqli, maketdagi uslubda. */
 const ICONS = {
@@ -46,16 +55,16 @@ const ICONS = {
       <!-- 1. Sarlavha bloki -->
       <header class="grid items-center gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
         <div>
-          <p class="eyebrow">{{ t('space.premiumEyebrow') }}</p>
+          <p class="eyebrow">{{ section.eyebrow }}</p>
 
           <h2 class="title-premium font-wide mt-6 font-bold text-white">
-            <span v-for="line in t('space.premiumTitle').split('\n')" :key="line" class="block">
+            <span v-for="line in section.titleLines" :key="line" class="block">
               {{ line }}
             </span>
           </h2>
 
           <p class="text-brand text-lead font-wide mt-7 max-w-[40ch] leading-relaxed font-bold">
-            {{ t('space.premiumText') }}
+            {{ section.text }}
           </p>
         </div>
 
@@ -64,7 +73,7 @@ const ICONS = {
           <img
             loading="lazy"
             decoding="async"
-            :src="rocket"
+            :src="section.image || rocket"
             alt=""
             class="animate-float mx-auto w-[68%] max-w-80 object-contain"
           />
@@ -120,7 +129,7 @@ const ICONS = {
           </span>
 
           <p class="mt-5 max-w-[52ch] leading-relaxed text-white/80">
-            {{ t('space.premiumNote') }}
+            {{ section.note }}
           </p>
         </div>
 
@@ -129,7 +138,7 @@ const ICONS = {
           class="font-wide h-[3.5rem] shrink-0 bg-ink font-bold hover:bg-ink/85 md:min-w-[15rem]"
           :to="{ name: 'application', query: { source: 'space-premium' } }"
         >
-          {{ t('space.premiumButton') }}
+          {{ section.buttonLabel }}
         </BaseButton>
       </div>
     </div>

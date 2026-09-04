@@ -12,8 +12,16 @@ import { useI18n } from 'vue-i18n'
 import { fetchSiteSettings } from '@/api/site'
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 
 const { t } = useI18n()
+
+// Blok matni admin paneldan («Kontaktlar» sahifasi bo'limlari → «Kontaktlar bloki»).
+const section = useSection('contacts.info', {
+  eyebrow: 'contacts.infoEyebrow',
+  title: 'contacts.infoTitle',
+  text: 'contacts.infoText',
+})
 
 const { data: settings } = useAsyncData(fetchSiteSettings, {})
 
@@ -64,16 +72,16 @@ const items = computed(() => {
       class="container-page relative grid items-center gap-[var(--spacing-block)] lg:grid-cols-[1fr_1.05fr] lg:gap-[6%]"
     >
       <div v-reveal>
-        <p class="eyebrow font-bold">{{ t('contacts.infoEyebrow') }}</p>
+        <p class="eyebrow font-bold">{{ section.eyebrow }}</p>
 
         <h2 class="title-hero mt-[6%] text-white">
-          <span v-for="line in t('contacts.infoTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
 
         <p class="text-lead mt-[8%] max-w-[42ch] leading-relaxed text-white/70">
-          {{ t('contacts.infoText') }}
+          {{ section.text }}
         </p>
       </div>
 

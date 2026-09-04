@@ -9,9 +9,16 @@
  * Maket: chapda ko'nikma nomi, o'ngda foiz kapsulasi, ostida chiziq. Ikki
  * ustunli to'r — sakkizta qator ekranga bir ko'rinishda sig'adi.
  */
-import { useI18n } from 'vue-i18n'
+import { useSection } from '@/composables/useSection'
 
-const { t } = useI18n()
+
+// Natija sahifasi sarlavhalari admin paneldan («Test» sahifasi bo'limlari → «Natija»).
+const result = useSection('quiz.result', {
+  title: 'quiz.resultTitle',
+  eyebrow: 'quiz.skillsEyebrow',
+  subtitle: 'quiz.skillsSubtitle',
+  text: 'quiz.topSkillsTitle',
+})
 
 defineProps({
   /** `[{ code, title, percent }]` — foiz bo'yicha kamayish tartibida. */
@@ -47,9 +54,9 @@ defineProps({
           </span>
 
           <div>
-            <h2 class="text-brand font-wide text-[1.05rem] font-bold">{{ t('quiz.skillsEyebrow') }}</h2>
+            <h2 class="text-brand font-wide text-[1.05rem] font-bold">{{ result.eyebrow }}</h2>
             <p class="font-wide mt-1.5 text-[1.05rem] leading-snug font-bold text-white">
-              {{ t('quiz.skillsSubtitle') }}
+              {{ result.subtitle }}
             </p>
           </div>
         </header>

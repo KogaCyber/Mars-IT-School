@@ -4,11 +4,21 @@
  * gradient, chapda yirik sarlavha, o'rtada matn, o'ngda qo'l silkiyotgan
  * astronavt (blok chekkasidan biroz chiqib turadi).
  */
+import { computed } from 'vue'
+
 import astronaut from '@/assets/images/skoro.webp'
+import { useSection } from '@/composables/useSection'
 import { COMING_SOON } from '@/data/directions'
 import { useLocalized } from '@/i18n/localize'
 
-const comingSoon = useLocalized(COMING_SOON)
+// Banner matni admin paneldan («Kurslar» sahifasi bo'limlari → «Tez orada»).
+const section = useSection('courses.coming_soon')
+const fallback = useLocalized(COMING_SOON)
+
+const comingSoon = computed(() => ({
+  title: section.value.title || fallback.value.title,
+  description: section.value.text || fallback.value.description,
+}))
 </script>
 
 <template>

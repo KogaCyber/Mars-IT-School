@@ -12,10 +12,17 @@ import { useI18n } from 'vue-i18n'
 import codeBackdrop from '@/assets/images/about-code.webp'
 import glow from '@/assets/images/about-glow.webp'
 import spaceHero from '@/assets/images/space-hero.webp'
+import { useSection } from '@/composables/useSection'
 import BaseBreadcrumbs from '@/components/base/BaseBreadcrumbs.vue'
 import BaseButton from '@/components/base/BaseButton.vue'
 
 const { t } = useI18n()
+
+// Sarlavha, tugma va rasm admin paneldan («SPACE» bo'limlari → «Hero»).
+const section = useSection('space.hero', {
+  title: 'space.heroTitle',
+  buttonLabel: 'space.heroButton',
+})
 </script>
 
 <template>
@@ -42,7 +49,7 @@ const { t } = useI18n()
         />
 
         <h1 v-reveal class="hero-title font-wide mt-[6%] font-bold text-white">
-          <span v-for="line in t('space.heroTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h1>
@@ -53,7 +60,7 @@ const { t } = useI18n()
             :to="{ name: 'application' }"
             class="font-wide h-[3.5rem] min-w-[15rem] font-bold lg:h-[4.17vw] lg:min-w-[17.7vw]"
           >
-            {{ t('space.heroButton') }}
+            {{ section.buttonLabel }}
           </BaseButton>
         </div>
       </div>
@@ -70,7 +77,7 @@ const { t } = useI18n()
 
         <img
           decoding="async"
-          :src="spaceHero"
+          :src="section.image || spaceHero"
           alt=""
           fetchpriority="high"
           class="animate-float relative mx-auto w-[82%] max-w-125 object-contain sm:w-[66%] lg:w-110 lg:max-w-none"

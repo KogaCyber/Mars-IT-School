@@ -392,3 +392,192 @@ class SiteRevision(models.Model):
 
     def __str__(self) -> str:
         return str(self.value)
+
+
+class PageSection(TranslatedModel):
+    """Sayt sahifasidagi bitta bo'lim: sarlavhalar, matnlar, tugmalar va rasmlar.
+
+    Bo'limlar ro'yxati `sections.py` reestrida belgilangan — bu yerda faqat
+    ularning kontenti saqlanadi. Har bir bo'lim admin panelda o'z sahifasining
+    ichida, saytdagi tartibda ko'rinadi.
+
+    Bo'sh qoldirilgan maydon — «maketdagi standart matn qolsin» degani: sayt
+    bo'sh qiymatni o'z tarjimasi bilan almashtiradi, shuning uchun bo'lim
+    hech qachon bo'sh ko'rinmaydi.
+    """
+
+    key = models.CharField(_("bo'lim kaliti"), max_length=64, unique=True, editable=False)
+    page = models.CharField(_("sahifa"), max_length=32, db_index=True, editable=False)
+    order = models.PositiveIntegerField(_("tartib"), default=0, db_index=True, editable=False)
+
+    eyebrow_ru = models.CharField(_("yorliq (ru)"), max_length=200, blank=True)
+    eyebrow_uz = models.CharField(_("yorliq (uz)"), max_length=200, blank=True)
+    eyebrow_en = models.CharField(_("yorliq (en)"), max_length=200, blank=True)
+
+    # Sarlavhalar maketda bir necha qatorga bo'linadi, shuning uchun TextField:
+    # qator uzilishi (Enter) saqlanadi va saytda shu joyda ko'chadi.
+    title_ru = models.TextField(_("sarlavha (ru)"), blank=True)
+    title_uz = models.TextField(_("sarlavha (uz)"), blank=True)
+    title_en = models.TextField(_("sarlavha (en)"), blank=True)
+
+    subtitle_ru = models.TextField(_("qo'shimcha sarlavha (ru)"), blank=True)
+    subtitle_uz = models.TextField(_("qo'shimcha sarlavha (uz)"), blank=True)
+    subtitle_en = models.TextField(_("qo'shimcha sarlavha (en)"), blank=True)
+
+    text_ru = models.TextField(_("matn (ru)"), blank=True)
+    text_uz = models.TextField(_("matn (uz)"), blank=True)
+    text_en = models.TextField(_("matn (en)"), blank=True)
+
+    note_ru = models.TextField(_("eslatma (ru)"), blank=True)
+    note_uz = models.TextField(_("eslatma (uz)"), blank=True)
+    note_en = models.TextField(_("eslatma (en)"), blank=True)
+
+    button_label_ru = models.CharField(_("tugma matni (ru)"), max_length=120, blank=True)
+    button_label_uz = models.CharField(_("tugma matni (uz)"), max_length=120, blank=True)
+    button_label_en = models.CharField(_("tugma matni (en)"), max_length=120, blank=True)
+    button_url = models.CharField(_("tugma havolasi"), max_length=300, blank=True)
+
+    button2_label_ru = models.CharField(_("ikkinchi tugma (ru)"), max_length=120, blank=True)
+    button2_label_uz = models.CharField(_("ikkinchi tugma (uz)"), max_length=120, blank=True)
+    button2_label_en = models.CharField(_("ikkinchi tugma (en)"), max_length=120, blank=True)
+    button2_url = models.CharField(_("ikkinchi tugma havolasi"), max_length=300, blank=True)
+
+    image = models.ImageField(_("rasm"), upload_to="sections/", blank=True)
+    image2 = models.ImageField(_("qo'shimcha rasm"), upload_to="sections/", blank=True)
+
+    is_published = models.BooleanField(_("saytda ko'rsatilsin"), default=True)
+    updated_at = models.DateTimeField(_("yangilangan vaqt"), auto_now=True)
+
+    class Meta:
+        verbose_name = _("Sahifa bo'limi")
+        verbose_name_plural = _("Sahifa bo'limlari")
+        ordering = ["order", "key"]
+
+    def __str__(self) -> str:
+        from .sections import SECTION_INDEX
+
+        section = SECTION_INDEX.get(self.key)
+        return str(section["name"]) if section else self.key
+
+    @property
+    def spec(self) -> dict:
+        """Reestrdagi tavsif (nomi, izohi, maydonlari)."""
+        from .sections import SECTION_INDEX
+
+        return SECTION_INDEX.get(self.key, {})
+
+
+class SectionItem(TranslatedModel):
+    """Bo'lim ichidagi takrorlanuvchi element: kartochka, bosqich, rasm, sovg'a.
+
+    Qaysi maydonlar ko'rinishi bo'limning reestrdagi tavsifiga bog'liq —
+    masalan galereyada faqat rasm va uning tavsifi so'raladi.
+    """
+
+    section = models.ForeignKey(
+        PageSection,
+        verbose_name=_("bo'lim"),
+        on_delete=models.CASCADE,
+        related_name="items",
+    )
+    order = models.PositiveIntegerField(_("tartib"), default=0)
+
+    value_ru = models.CharField(_("qiymat (ru)"), max_length=120, blank=True)
+    value_uz = models.CharField(_("qiymat (uz)"), max_length=120, blank=True)
+    value_en = models.CharField(_("qiymat (en)"), max_length=120, blank=True)
+
+    label_ru = models.CharField(_("izoh (ru)"), max_length=200, blank=True)
+    label_uz = models.CharField(_("izoh (uz)"), max_length=200, blank=True)
+    label_en = models.CharField(_("izoh (en)"), max_length=200, blank=True)
+
+    title_ru = models.TextField(_("sarlavha (ru)"), blank=True)
+    title_uz = models.TextField(_("sarlavha (uz)"), blank=True)
+    title_en = models.TextField(_("sarlavha (en)"), blank=True)
+
+    text_ru = models.TextField(_("matn (ru)"), blank=True)
+    text_uz = models.TextField(_("matn (uz)"), blank=True)
+    text_en = models.TextField(_("matn (en)"), blank=True)
+
+    note_ru = models.TextField(_("natija/eslatma (ru)"), blank=True)
+    note_uz = models.TextField(_("natija/eslatma (uz)"), blank=True)
+    note_en = models.TextField(_("natija/eslatma (en)"), blank=True)
+
+    # Ro'yxat: har bir band alohida qatorda (Enter bilan ajratiladi).
+    list_ru = models.TextField(_("ro'yxat (ru)"), blank=True)
+    list_uz = models.TextField(_("ro'yxat (uz)"), blank=True)
+    list_en = models.TextField(_("ro'yxat (en)"), blank=True)
+
+    icon_name = models.CharField(_("ikonka nomi"), max_length=60, blank=True)
+    icon = models.ImageField(_("ikonka rasmi"), upload_to="sections/icons/", blank=True)
+    image = models.ImageField(_("rasm"), upload_to="sections/", blank=True)
+    url = models.CharField(_("havola"), max_length=300, blank=True)
+
+    is_published = models.BooleanField(_("ko'rsatilsin"), default=True)
+
+    class Meta:
+        verbose_name = _("Element")
+        verbose_name_plural = _("Elementlar")
+        ordering = ["order", "id"]
+
+    def __str__(self) -> str:
+        return self.title_ru or self.value_ru or self.label_ru or str(_("Element"))
+
+
+# ---------------------------------------------------------------------------
+# Sahifa bo'yicha proksi-modellar.
+#
+# Django admin chap menyuda modellarni ko'rsatadi. Barcha bo'limlar bitta
+# `PageSection` jadvalida yotadi, lekin kontent kirituvchi odam uchun ular
+# sahifalarga bo'lingan bo'lishi kerak: «Bosh sahifa bo'limlari», «Kurs —
+# IT Kids bo'limlari» va h.k. Proksi-model aynan shuni beradi: yangi jadval
+# yaratilmaydi, faqat menyudagi alohida yozuv va o'z ro'yxati.
+# ---------------------------------------------------------------------------
+def _section_proxy(page_slug: str, class_name: str, menu_name):
+    meta = type(
+        "Meta",
+        (),
+        {
+            "proxy": True,
+            "app_label": "core",
+            "verbose_name": menu_name,
+            "verbose_name_plural": menu_name,
+            "ordering": ["order", "key"],
+        },
+    )
+    return type(
+        class_name,
+        (PageSection,),
+        {"Meta": meta, "__module__": __name__, "page_slug": page_slug},
+    )
+
+
+HomeSection = _section_proxy("home", "HomeSection", _("Bosh sahifa bo'limlari"))
+AboutSection = _section_proxy("about", "AboutSection", _("«Biz haqimizda» bo'limlari"))
+CoursesSection = _section_proxy("courses", "CoursesSection", _("«Kurslar» sahifasi bo'limlari"))
+ItKidsSection = _section_proxy("itkids", "ItKidsSection", _("«IT Kids» sahifasi bo'limlari"))
+ItDevSection = _section_proxy("itdev", "ItDevSection", _("«IT dasturlash» sahifasi bo'limlari"))
+SpacePageSection = _section_proxy("space", "SpacePageSection", _("«SPACE» sahifasi bo'limlari"))
+NewsPageSection = _section_proxy("news", "NewsPageSection", _("«Yangiliklar» sahifasi bo'limlari"))
+ContactsSection = _section_proxy(
+    "contacts", "ContactsSection", _("«Kontaktlar» sahifasi bo'limlari")
+)
+VacanciesSection = _section_proxy(
+    "vacancies", "VacanciesSection", _("«Vakansiyalar» sahifasi bo'limlari")
+)
+QuizPageSection = _section_proxy("quiz", "QuizPageSection", _("«Test» sahifasi bo'limlari"))
+CommonSection = _section_proxy("common", "CommonSection", _("Umumiy bloklar (tugma, futer)"))
+
+#: Sahifa kaliti → proksi-model (admin menyusini yig'ishda ishlatiladi).
+SECTION_PROXIES = {
+    "home": HomeSection,
+    "about": AboutSection,
+    "courses": CoursesSection,
+    "itkids": ItKidsSection,
+    "itdev": ItDevSection,
+    "space": SpacePageSection,
+    "news": NewsPageSection,
+    "contacts": ContactsSection,
+    "vacancies": VacanciesSection,
+    "quiz": QuizPageSection,
+    "common": CommonSection,
+}

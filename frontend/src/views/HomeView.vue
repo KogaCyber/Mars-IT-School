@@ -1,6 +1,6 @@
 <script setup>
 /** Bosh sahifa — Figma: «Главная». */
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { fetchHome } from '@/api/site'
@@ -14,7 +14,9 @@ import HeroSection from '@/components/home/HeroSection.vue'
 import ReviewsSection from '@/components/home/ReviewsSection.vue'
 import SpaceSection from '@/components/home/SpaceSection.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
+import { useSection } from '@/composables/useSection'
 import { useSeo } from '@/composables/useSeo'
+import { useContentStore } from '@/stores/content'
 import { absoluteUrl, faqSchema, itemListSchema } from '@/utils/schema'
 
 const { t } = useI18n()
@@ -23,6 +25,22 @@ const { t } = useI18n()
 // ilgari bu 5 ta alohida so'rov edi va har biri backend javobini kutardi.
 const EMPTY_HOME = { advantages: [], reviews: [], faqs: [], teachers: [], news: [] }
 const { data: home } = useAsyncData(fetchHome, EMPTY_HOME)
+
+// Bosh sahifa bloklarining matni shu javobda ham keladi — bo'limlar
+// do'koniga qo'shamiz, shunda kontent alohida so'rovni kutmasdan chiqadi.
+const content = useContentStore()
+watch(home, (value) => content.merge(value?.sections), { immediate: true })
+
+// Yangiliklar va o'qituvchilar lentalari tepasidagi matn (admin paneldan).
+const newsSection = useSection('home.news', {
+  eyebrow: 'home.newsEyebrow',
+  title: 'home.newsTitle',
+  buttonLabel: 'home.newsAll',
+})
+const teamSection = useSection('home.team', {
+  eyebrow: 'home.teamEyebrow',
+  title: 'home.teamTitle',
+})
 
 const advantages = computed(() => home.value.advantages ?? [])
 const reviews = computed(() => home.value.reviews ?? [])
@@ -64,16 +82,16 @@ useSeo(() => ({
   <!-- «Что происходит в школе» — yangiliklar -->
   <section v-if="news.length" v-reveal class="section bg-ink">
     <div class="container-page">
-      <p class="eyebrow">{{ t('home.newsEyebrow') }}</p>
+      <p class="eyebrow">{{ newsSection.eyebrow }}</p>
 
       <div class="mt-5 flex flex-wrap items-end justify-between gap-6">
         <h2 class="section-title text-white">
-          <span v-for="line in t('home.newsTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in newsSection.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
         <BaseButton :to="{ name: 'news' }" size="lg" class="font-wide font-bold">
-          {{ t('home.newsAll') }}
+          {{ newsSection.buttonLabel }}
         </BaseButton>
       </div>
     </div>
@@ -90,11 +108,11 @@ useSeo(() => ({
   <!-- «Преподаватели, которые работают в IT» -->
   <section v-if="teachers.length" v-reveal class="section bg-ink">
     <div class="container-page">
-      <p class="eyebrow">{{ t('home.teamEyebrow') }}</p>
+      <p class="eyebrow">{{ teamSection.eyebrow }}</p>
 
       <div class="mt-5 flex flex-wrap items-end justify-between gap-6">
         <h2 class="section-title text-white">
-          <span v-for="line in t('home.teamTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in teamSection.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>

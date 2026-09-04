@@ -25,7 +25,7 @@ const props = defineProps({
   slug: { type: String, required: true },
 })
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const ui = useUiStore()
 
 const slug = computed(() => props.slug)
@@ -133,7 +133,7 @@ async function share() {
           <p
             class="bg-surface rounded-pill text-small flex min-w-0 items-center justify-between gap-2 px-[1.2em] py-[0.9em] font-medium text-white sm:gap-3 sm:px-[1.4em] sm:py-[0.95em]"
           >
-            <span class="truncate">{{ formatDate(news.published_at) }}</span>
+            <span class="truncate">{{ formatDate(news.published_at, locale) }}</span>
             <svg
               class="text-brand size-[1.15em] shrink-0"
               viewBox="0 0 20 20"

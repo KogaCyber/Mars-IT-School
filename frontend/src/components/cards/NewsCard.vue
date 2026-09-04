@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import BaseButton from '@/components/base/BaseButton.vue'
 import { formatDate } from '@/utils/format'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 defineProps({
   item: { type: Object, required: true },
@@ -35,7 +35,7 @@ defineProps({
         <div class="mt-[8%] flex items-center justify-between gap-4">
           <!-- Sana yorlig'i -->
           <span class="bg-ink text-small rounded-pill px-[1.2em] py-[0.7em] text-white">
-            {{ formatDate(item.published_at) }}
+            {{ formatDate(item.published_at, locale) }}
           </span>
 
           <BaseButton size="sm" class="pointer-events-none">{{ t('common.more') }}</BaseButton>

@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 import VacancyApplyDrawer from '@/components/vacancies/VacancyApplyDrawer.vue'
+import { useSection } from '@/composables/useSection'
 
 const props = defineProps({
   /** Backenddan kelgan vakansiyalar. */
@@ -18,6 +19,13 @@ const props = defineProps({
 })
 
 const { t } = useI18n()
+
+// Ro'yxat sarlavhasi admin paneldan («Vakansiyalar» sahifasi bo'limlari → «Ro'yxat»).
+const section = useSection('vacancies.list', {
+  eyebrow: 'vacancies.eyebrow',
+  title: 'vacancies.title',
+  text: 'vacancies.lead',
+})
 
 const selected = ref(null)
 const isDrawerOpen = ref(false)
@@ -49,12 +57,12 @@ function apply(vacancy) {
       <!-- Sarlavha bloki: chapda izoh, o'ngda yorliq va sarlavha -->
       <div class="block lg:flex justify-between items-center">
         <div class="flex flex-col lg:block items-center justify-center lg:w-100">
-          <p v-reveal class="eyebrow">{{ t('vacancies.eyebrow') }}</p>
+          <p v-reveal class="eyebrow">{{ section.eyebrow }}</p>
           <h2
             v-reveal
             class="title-hero text-center lg:text-start mb-10 font-wide mt-5 font-bold text-neutral-900"
           >
-            <span v-for="line in t('vacancies.title').split('\n')" :key="line" class="block">
+            <span v-for="line in section.titleLines" :key="line" class="block">
               {{ line }}
             </span>
           </h2>
@@ -65,7 +73,7 @@ function apply(vacancy) {
             v-reveal
             class="text-neutral-500 lg:w-100 text-center lg:text-start max-w-[42ch] leading-relaxed"
           >
-            {{ t('vacancies.lead') }}
+            {{ section.text }}
           </p>
         </div>
       </div>

@@ -7,6 +7,8 @@
  * beshta haqiqiy sovg'a + oxirida «koin yig'ish» chaqiruvi — qator to'liq
  * yopiladi va bo'sh katak qolmaydi.
  */
+import { computed } from 'vue'
+
 import { useI18n } from 'vue-i18n'
 
 import aksessuar from '@/assets/images/aksessuar.webp'
@@ -16,13 +18,40 @@ import quloqchin from '@/assets/images/quloqchin.webp'
 import smartfon from '@/assets/images/smartfon.webp'
 import soat from '@/assets/images/soat.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
+import { useSection } from '@/composables/useSection'
 import { SPACE_SHOP } from '@/data/spacePlatform'
 import { useLocalized } from '@/i18n/localize'
 
 const { t, locale } = useI18n()
-const shop = useLocalized(SPACE_SHOP)
+
+// Blok matni va sovg'alar admin paneldan («SPACE» bo'limlari → «MARS Shop»).
+const section = useSection('space.shop', {
+  eyebrow: 'space.shopEyebrow',
+  title: 'space.shopTitle',
+  text: 'space.shopText',
+  note: 'space.shopCollectText',
+  buttonLabel: 'space.shopButton',
+})
+const fallback = useLocalized(SPACE_SHOP)
 
 const IMAGES = { alisa, soat, quloqchin, smartfon, aksessuar }
+
+const shop = computed(() => {
+  const items = section.value.items
+  if (!items.length) return fallback.value
+
+  return items.map((item, index) => {
+    const preset = fallback.value[index] ?? {}
+    return {
+      id: item.id ?? index,
+      title: item.title || preset.title || '',
+      // Narx matn sifatida saqlanadi — bo'sh yoki noto'g'ri bo'lsa 0 bo'ladi.
+      price: Number(String(item.value || preset.price || 0).replace(/\s/g, '')) || 0,
+      // Rasm: admin panelga yuklangani, bo'lmasa maketdagisi.
+      image: item.image || IMAGES[item.icon_name] || IMAGES[preset.image] || '',
+    }
+  })
+})
 
 /** Narxni «2 490» ko'rinishida chiqaradi — ajratgich sayt tiliga mos keladi. */
 const formatPrice = (value) => value.toLocaleString(locale.value === 'en' ? 'en-US' : 'ru-RU')
@@ -34,16 +63,16 @@ const formatPrice = (value) => value.toLocaleString(locale.value === 'en' ? 'en-
       <!-- Sarlavha bloki -->
       <header class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-16">
         <div>
-          <p class="eyebrow">{{ t('space.shopEyebrow') }}</p>
+          <p class="eyebrow">{{ section.eyebrow }}</p>
           <h2 class="title-shop text-ink font-wide mt-5 font-bold">
-            <span v-for="line in t('space.shopTitle').split('\n')" :key="line" class="block">
+            <span v-for="line in section.titleLines" :key="line" class="block">
               {{ line }}
             </span>
           </h2>
         </div>
 
         <p class="max-w-[42ch] leading-relaxed text-neutral-500 lg:pb-2">
-          {{ t('space.shopText') }}
+          {{ section.text }}
         </p>
       </header>
 
@@ -65,7 +94,7 @@ const formatPrice = (value) => value.toLocaleString(locale.value === 'en' ? 'en-
           <!-- Mahsulot rasmi -->
           <div class="mt-6 grid h-44 place-items-center rounded-[1.25rem] bg-white/70 p-4">
             <img
-              :src="IMAGES[item.image]"
+              :src="item.image"
               :alt="item.title"
               loading="lazy"
               class="max-h-36 w-auto object-contain transition duration-300 group-hover:scale-105"
@@ -93,8 +122,8 @@ const formatPrice = (value) => value.toLocaleString(locale.value === 'en' ? 'en-
           style="background: linear-gradient(150deg, #e2451f 0%, #a63a5a 55%, #3b2f7a 100%)"
         >
           <div>
-            <h3 class="font-wide text-[1.0625rem] leading-snug font-bold">{{ t('space.shopCollectTitle') }}</h3>
-            <p class="mt-3 leading-relaxed text-white/80">{{ t('space.shopCollectText') }}</p>
+            <h3 class="font-wide text-[1.0625rem] leading-snug font-bold">{{ section.subtitle }}</h3>
+            <p class="mt-3 leading-relaxed text-white/80">{{ section.note }}</p>
           </div>
 
           <BaseButton
@@ -103,7 +132,7 @@ const formatPrice = (value) => value.toLocaleString(locale.value === 'en' ? 'en-
             class="font-wide mt-8 w-fit font-bold"
             :to="{ name: 'application', query: { source: 'space-shop' } }"
           >
-            {{ t('space.shopButton') }}
+            {{ section.buttonLabel }}
           </BaseButton>
         </li>
       </ul>

@@ -16,7 +16,7 @@ const props = defineProps({
 })
 
 /** Noma'lum kalitlar tushib qolsin — maket buzilmaydi. */
-const badges = computed(() => props.direction.tech.map((key) => TECH[key]).filter(Boolean))
+const badges = computed(() => (props.direction.tech ?? []).map((key) => TECH[key]).filter(Boolean))
 </script>
 
 <template>

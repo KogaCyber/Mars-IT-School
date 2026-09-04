@@ -9,6 +9,7 @@ import youtubeIcon from '@/assets/icons/social-youtube.svg'
 import logoMars from '@/assets/icons/logo-mars.svg'
 import rocketIcon from '@/assets/icons/rocket.svg'
 import helperRobot from '@/assets/images/helper-robot.webp'
+import { useSection } from '@/composables/useSection'
 import { useSiteStore } from '@/stores/site'
 
 // Menyu yozuvlari tarjimadan olinadi — `nav.*` kalitlari bo'yicha.
@@ -23,6 +24,13 @@ const NAV_LINKS = [
 ]
 
 const { t } = useI18n()
+
+// Podvaldagi qisqa matn va mualliflik yozuvi — admin paneldan
+// («Sayt sozlamalari» → «Umumiy bloklar» → «Sayt podvali»).
+const section = useSection('common.footer', {
+  text: 'footer.tagline',
+  note: 'footer.rights',
+})
 const site = useSiteStore()
 const year = new Date().getFullYear()
 
@@ -55,7 +63,7 @@ const socials = computed(() =>
             class="h-[2rem] w-auto lg:h-[2.45vw]"
           />
           <p class="mt-6 max-w-xs text-base leading-relaxed text-white">
-            {{ t('footer.tagline') }}
+            {{ section.text }}
           </p>
         </div>
 
@@ -130,7 +138,7 @@ const socials = computed(() =>
       <div
         class="container-page flex flex-col gap-3 py-5 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
       >
-        <p>{{ t('footer.rights', { year }) }}</p>
+        <p>{{ section.note.replace('{year}', String(year)) }}</p>
         <div class="flex gap-6">
           <a href="#" class="transition hover:text-white">{{ t('footer.offer') }}</a>
           <a :href="site.settings.privacy_policy_url || '#'" class="transition hover:text-white">

@@ -14,9 +14,20 @@ import BranchesSection from '@/components/contacts/BranchesSection.vue'
 import ContactsInfoSection from '@/components/contacts/ContactsInfoSection.vue'
 import TrialLessonSection from '@/components/courses/TrialLessonSection.vue'
 import PageHero from '@/components/layout/PageHero.vue'
+import { useSection } from '@/composables/useSection'
 import { useSeo } from '@/composables/useSeo'
 
 const { t } = useI18n()
+
+// Sahifa bloklari matni admin paneldan («Kontaktlar» sahifasi bo'limlari).
+const hero = useSection('contacts.hero', {
+  title: 'contacts.heroTitle',
+  buttonLabel: 'common.trialLesson',
+})
+const trial = useSection('contacts.trial', {
+  title: 'contacts.trialTitle',
+  text: 'contacts.trialDescription',
+})
 
 // Sarlavha va tavsif `data/seoConfig.js` dan joriy tilda olinadi.
 useSeo(() => ({
@@ -29,12 +40,12 @@ useSeo(() => ({
 
 <template>
   <PageHero
-    :title="t('contacts.heroTitle').split('\n')"
+    :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },
       { label: t('nav.contacts') },
     ]"
-    :image="contactsAstronaut"
+    :image="hero.image || contactsAstronaut"
   >
     <template #actions>
       <BaseButton
@@ -42,7 +53,7 @@ useSeo(() => ({
         class="font-wide h-[3.5rem] min-w-[15rem] font-bold lg:h-[4.17vw] lg:min-w-[17.7vw]"
         :to="{ name: 'application', query: { source: 'contacts' } }"
       >
-        {{ t('common.trialLesson') }}
+        {{ hero.buttonLabel }}
       </BaseButton>
     </template>
   </PageHero>
@@ -53,7 +64,7 @@ useSeo(() => ({
 
   <TrialLessonSection
     source="contacts"
-    :title="t('contacts.trialTitle').split('\n')"
-    :description="t('contacts.trialDescription')"
+    :title="trial.titleLines"
+    :description="trial.text"
   />
 </template>

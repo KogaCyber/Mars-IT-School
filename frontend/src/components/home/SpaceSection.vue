@@ -12,9 +12,18 @@ import { useI18n } from 'vue-i18n'
 import rocket3d from '@/assets/images/rocket-3d.webp'
 import BaseButton from '@/components/base/BaseButton.vue'
 import SpacePlatform from '@/components/home/SpacePlatform.vue'
+import { useSection } from '@/composables/useSection'
 import { SPACE_MENU } from '@/data/spacePlatform'
 
 const { t } = useI18n()
+
+// Blok matni admin paneldan (Bosh sahifa → «SPACE platformasi bloki»).
+const section = useSection('home.space', {
+  eyebrow: 'home.spaceEyebrow',
+  title: 'home.spaceTitle',
+  text: 'home.spaceText',
+  buttonLabel: 'common.more',
+})
 
 const activeId = ref(SPACE_MENU[0].id)
 
@@ -32,7 +41,7 @@ const ICONS = {
 <template>
   <section v-reveal class="section bg-ink">
     <div class="container-page">
-      <p class="eyebrow">{{ t('home.spaceEyebrow') }}</p>
+      <p class="eyebrow">{{ section.eyebrow }}</p>
 
       <div class="mt-[3%] grid gap-[4%] lg:grid-cols-[1fr_22rem] lg:items-start">
         <h2 class="section-title relative text-white">
@@ -40,19 +49,19 @@ const ICONS = {
           <img
             loading="lazy"
             decoding="async"
-            :src="rocket3d"
+            :src="section.image || rocket3d"
             alt=""
             aria-hidden="true"
             class="animate-float absolute top-[-25%] right-0 w-[32%] max-w-[11rem] lg:top-[-30%] lg:right-auto lg:left-[42%] lg:w-[34%]"
           />
-          <span v-for="line in t('home.spaceTitle').split('\n')" :key="line" class="block">
+          <span v-for="line in section.titleLines" :key="line" class="block">
             {{ line }}
           </span>
         </h2>
 
         <div>
           <p class="mt-[4%] leading-relaxed text-white/70 lg:mt-0">
-            {{ t('home.spaceText') }}
+            {{ section.text }}
           </p>
 
           <!-- Keng ekranda tugma shu yerda turadi -->

@@ -6,17 +6,18 @@
  * hammasi shu sahifaning o'zida, modal oyna ichida o'ynaydi.
  * Boshqaruv: Esc — yopish, fonni bosish — yopish.
  */
-import { onKeyStroke, useScrollLock } from '@vueuse/core'
+import { onKeyStroke } from '@vueuse/core'
 import { nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+import { useScrollLock } from '@/composables/useScrollLock'
 import { useVideoModal } from '@/composables/useVideoModal'
 
 const { t } = useI18n()
 const { isOpen, title, video, close } = useVideoModal()
 
 const panel = ref(null)
-const isLocked = useScrollLock(document.body)
+const isLocked = useScrollLock()
 
 watch(isOpen, async (value) => {
   isLocked.value = value

@@ -28,7 +28,8 @@ export function languageFromUrl() {
   }
 }
 
-export function getLanguage() {
+/** Boshlang'ich tilni manzil va saqlangan tanlovdan aniqlaydi (bir marta). */
+function resolveInitialLanguage() {
   // Manzildagi til saqlangan tanlovdan ustun — havola aynan shu tilni va'da qilgan.
   const fromUrl = languageFromUrl()
   if (fromUrl) return fromUrl
@@ -42,8 +43,26 @@ export function getLanguage() {
   return DEFAULT_LANGUAGE
 }
 
+/**
+ * Joriy til — xotirada saqlanadi.
+ *
+ * Nega faqat `localStorage`/URL dan o'qib qo'ya olmaymiz: manzildagi `?lang=`
+ * saqlangan tanlovdan ustun turadi, ya'ni `?lang=ru` bilan kelgan odam tilni
+ * o'zbekchaga o'zgartirsa ham HTTP klient har bir so'rovda yana `ru` ni
+ * yuborib turardi — interfeys tarjima bo'lardi-yu, backend kontenti ruscha
+ * qolardi. Endi `?lang=` faqat BOSHLANG'ICH qiymatni beradi, keyingi tanlov
+ * esa shu yerda yashaydi.
+ */
+let currentLanguage = null
+
+export function getLanguage() {
+  if (currentLanguage === null) currentLanguage = resolveInitialLanguage()
+  return currentLanguage
+}
+
 export function setLanguage(language) {
   if (!SUPPORTED_LANGUAGES.includes(language)) return
+  currentLanguage = language
   try {
     localStorage.setItem(LANGUAGE_STORAGE_KEY, language)
   } catch {

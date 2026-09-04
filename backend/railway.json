@@ -5,7 +5,7 @@
     "buildCommand": "pip install -r requirements.txt && DJANGO_SETTINGS_MODULE=config.settings.production python manage.py collectstatic --noinput"
   },
   "deploy": {
-    "startCommand": "DJANGO_SETTINGS_MODULE=config.settings.production python manage.py migrate --noinput && DJANGO_SETTINGS_MODULE=config.settings.production gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --worker-class gthread --workers 2 --threads 8 --preload --timeout 60 --keep-alive 15 --access-logfile - --error-logfile -",
+    "startCommand": "DJANGO_SETTINGS_MODULE=config.settings.production python manage.py migrate --noinput && DJANGO_SETTINGS_MODULE=config.settings.production python manage.py sync_sections && DJANGO_SETTINGS_MODULE=config.settings.production gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --worker-class gthread --workers 2 --threads 8 --preload --timeout 60 --keep-alive 15 --access-logfile - --error-logfile -",
     "healthcheckPath": "/health/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",

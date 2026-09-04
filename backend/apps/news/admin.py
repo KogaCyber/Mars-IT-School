@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.core.translation import translation_fieldset
+from apps.core.translation import translated_fields, translation_fieldset
 
 from .models import News, NewsCategory, NewsImage
 
@@ -8,7 +8,7 @@ from .models import News, NewsCategory, NewsImage
 class NewsImageInline(admin.TabularInline):
     model = NewsImage
     extra = 1
-    fields = ("order", "image", "caption_ru", "caption_uz", "caption_en")
+    fields = ("order", "image", *translated_fields("caption"))
 
 
 @admin.register(NewsCategory)
