@@ -18,6 +18,7 @@ const EMPTY_SETTINGS = {
   space_app_ios_url: '',
   space_app_android_url: '',
   privacy_policy_url: '',
+  offer_url: '',
   promo_video_url: '',
   promo_video: '',
   promo_cover: '',

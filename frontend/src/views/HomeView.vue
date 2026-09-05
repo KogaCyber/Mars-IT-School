@@ -80,7 +80,7 @@ useSeo(() => ({
   <SpaceSection />
 
   <!-- «Что происходит в школе» — yangiliklar -->
-  <section v-if="news.length" v-reveal class="section bg-ink">
+  <section v-if="newsSection.visible && news.length" v-reveal class="section bg-ink">
     <div class="container-page">
       <p class="eyebrow">{{ newsSection.eyebrow }}</p>
 
@@ -106,7 +106,7 @@ useSeo(() => ({
   </section>
 
   <!-- «Преподаватели, которые работают в IT» -->
-  <section v-if="teachers.length" v-reveal class="section bg-ink">
+  <section v-if="teamSection.visible && teachers.length" v-reveal class="section bg-ink">
     <div class="container-page">
       <p class="eyebrow">{{ teamSection.eyebrow }}</p>
 

@@ -15,6 +15,22 @@ const props = defineProps({
 
 const tag = computed(() => (props.to ? 'RouterLink' : props.href ? 'a' : 'button'))
 
+/**
+ * Tegga xos atributlar.
+ *
+ * `RouterLink` `href` ni manzildan o'zi hisoblaydi. Agar bu yerdan `href`
+ * (hatto `null`/`undefined` bo'lsa ham) uzatilsa, u fallthrough atribut
+ * sifatida RouterLink hisoblaganini BEKOR QILADI va `<a>` manzilsiz qoladi:
+ * bunday havola tab tartibiga tushmaydi (klaviatura bilan birorta tugmaga
+ * yetib bo'lmaydi), «yangi oynada ochish» ishlamaydi va qidiruv robotlari
+ * ichki havolalarni ko'rmaydi. Shu sababli atribut qo'shilmaydi — o'chirilmaydi.
+ */
+const attrs = computed(() => {
+  if (tag.value === 'RouterLink') return { to: props.to }
+  if (tag.value === 'a') return { href: props.href, rel: 'noopener noreferrer' }
+  return { type: props.type, disabled: props.disabled || props.loading }
+})
+
 const VARIANTS = {
   primary: 'bg-brand text-white hover:bg-brand-hover',
   outline: 'border border-white/25 text-white hover:border-white hover:bg-white/5',
@@ -39,16 +55,7 @@ const classes = computed(() => [
 </script>
 
 <template>
-  <component
-    :is="tag"
-    :to="to"
-    :href="href"
-    :type="tag === 'button' ? type : undefined"
-    :disabled="tag === 'button' ? disabled || loading : undefined"
-    :aria-busy="loading || undefined"
-    :rel="href ? 'noopener noreferrer' : undefined"
-    :class="classes"
-  >
+  <component :is="tag" v-bind="attrs" :aria-busy="loading || undefined" :class="classes">
     <span
       v-if="loading"
       class="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"

@@ -22,7 +22,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-reveal class="section bg-ink relative overflow-hidden">
+  <section v-if="section.visible" v-reveal class="section bg-ink relative overflow-hidden">
     <img
       loading="lazy"
       decoding="async"

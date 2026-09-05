@@ -7,7 +7,7 @@
  * shuning uchun build skriptida ham ishlaydi.
  */
 // Nisbiy yo'l (`@/` emas) — bu faylni build skripti Node'da to'g'ridan-to'g'ri import qiladi.
-import { SITE, pick } from '../data/seoConfig.js'
+import { SITE, localePath, pick } from '../data/seoConfig.js'
 
 /**
  * Sxemalarda shahar/mamlakat nomi va matnlar sayt tiliga bog'liq.
@@ -49,19 +49,28 @@ const loc = (value) => pick(value, schemaLocale)
 /** Sxemalarda ishlatiladigan qisqa matnlar. */
 const SCHEMA_TEXT = {
   uz: {
+    // Tavsifda «IT o'quv markazi» ATAYLAB bor: odamlar maktabni qidiruvda
+    // aynan shunday nomlaydi, javob beruvchi tizimlar esa tashkilotni shu
+    // tavsif bo'yicha so'rovga moslashtiradi.
     orgDescription:
-      'Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun dasturlash maktabi: veb-dasturlash, Python, o‘yin yaratish va robototexnika.',
+      'MARS IT School — Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun IT o‘quv markazi va dasturlash maktabi: veb-dasturlash, Python, o‘yin yaratish va robototexnika.',
     audience: 'Bolalar va o‘smirlar',
+    slogan: 'Bolalarni kelajak kasblariga tayyorlaymiz',
+    catalog: 'MARS IT School o‘quv yo‘nalishlari',
   },
   ru: {
     orgDescription:
-      'Школа программирования для детей и подростков 7–17 лет в Ташкенте: веб-разработка, Python, создание игр и робототехника.',
+      'MARS IT School — IT учебный центр и школа программирования для детей и подростков 7–17 лет в Ташкенте: веб-разработка, Python, создание игр и робототехника.',
     audience: 'Дети и подростки',
+    slogan: 'Готовим детей к профессиям будущего',
+    catalog: 'Направления обучения MARS IT School',
   },
   en: {
     orgDescription:
-      'A programming school for children and teenagers aged 7–17 in Tashkent: web development, Python, game creation and robotics.',
+      'MARS IT School is an IT training center and programming school for children and teenagers aged 7–17 in Tashkent: web development, Python, game creation and robotics.',
     audience: 'Children and teenagers',
+    slogan: 'Preparing children for the professions of the future',
+    catalog: 'MARS IT School learning tracks',
   },
 }
 
@@ -84,6 +93,15 @@ export function organizationSchema(overrides = {}) {
     '@id': ORG_ID(),
     name: SITE.name,
     legalName: SITE.legalName,
+    /**
+     * Maktabni qidiruvda «MARS IT School» deb yozadiganlar oz — ko'pchilik
+     * «IT o'quv markazi», «IT kurslar», «учебный центр» deb qidiradi.
+     * `alternateName` aynan shu nomlarni tashkilot tuguniga bog'laydi:
+     * qidiruv tizimi ham, javob beruvchi tizim ham bir xil maktab haqida
+     * gap ketayotganini tushunadi.
+     */
+    alternateName: SITE.alternateNames,
+    slogan: text('slogan'),
     url: schemaOrigin,
     logo: { '@type': 'ImageObject', url: absoluteUrl(SITE.logo), width: 500, height: 500 },
     image: absoluteUrl(SITE.ogImage),
@@ -92,7 +110,20 @@ export function organizationSchema(overrides = {}) {
     email: SITE.contacts.email,
     telephone: SITE.contacts.phone,
     priceRange: '$$',
-    areaServed: { '@type': 'City', name: loc(SITE.geo.city) },
+    /**
+     * Xizmat hududi — shahar VA tumanlar. «Chilonzorda IT kurslari» kabi
+     * lokal so'rovlar aynan shu ro'yxat orqali mos keladi.
+     */
+    areaServed: [
+      { '@type': 'City', name: loc(SITE.geo.city) },
+      ...loc(SITE.districts).map((name) => ({ '@type': 'AdministrativeArea', name })),
+    ],
+    openingHoursSpecification: SITE.openingHours.map((item) => ({
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: item.days,
+      opens: item.opens,
+      closes: item.closes,
+    })),
     address: {
       '@type': 'PostalAddress',
       addressCountry: SITE.geo.country,
@@ -141,6 +172,7 @@ export function webPageSchema({ url, title, description, image, locale, datePubl
     inLanguage: locale || schemaLocale,
     isPartOf: { '@id': SITE_ID() },
     about: { '@id': ORG_ID() },
+    speakable: SPEAKABLE,
     ...(image ? { primaryImageOfPage: { '@type': 'ImageObject', url: image } } : {}),
     ...(datePublished ? { datePublished } : {}),
   }
@@ -157,7 +189,10 @@ export function breadcrumbSchema(items, origin = schemaOrigin) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: absoluteUrl(item.path, origin),
+      // Zanjirdagi havolalar ham JORIY tilda bo'lishi shart: ruscha sahifada
+      // o'zbekcha manzillarga ishora qilingan zanjir Google uchun boshqa
+      // til klasteriga sakrash — belgilar e'tiborsiz qoladi.
+      item: absoluteUrl(localePath(item.path, schemaLocale), origin),
     })),
   }
 }
@@ -321,6 +356,68 @@ export function itemListSchema(items, { url, name }) {
       name: item.name,
     })),
   }
+}
+
+/**
+ * Kurslar katalogi — `OfferCatalog`.
+ *
+ * Nega kerak: «bu maktabda qanday kurslar bor?» degan savolga javob beruvchi
+ * tizimlar aynan shu tugundan aniq ro'yxat oladi. FAQ'siz, matnni qayta
+ * o'qimasdan — nom, yosh va manzil bitta strukturada.
+ */
+export function offerCatalogSchema(courses, origin = schemaOrigin, locale = schemaLocale) {
+  const list = (courses || []).filter((course) => course && course.slug && course.title)
+  if (!list.length) return null
+  return {
+    '@type': 'OfferCatalog',
+    '@id': `${origin}/#courses`,
+    name: text('catalog'),
+    inLanguage: locale,
+    provider: { '@id': ORG_ID() },
+    itemListElement: list.map((course, index) => ({
+      '@type': 'Offer',
+      position: index + 1,
+      itemOffered: {
+        '@type': 'Course',
+        name: course.title,
+        description: course.subtitle || '',
+        url: absoluteUrl(localePath(`/kursy/${course.slug}`, locale), origin),
+        provider: { '@id': ORG_ID() },
+      },
+    })),
+  }
+}
+
+/**
+ * O'qituvchi — `Person`.
+ *
+ * «Kim dars beradi?» javob beruvchi tizimlarda eng ko'p beriladigan
+ * savollardan biri; jonli odamlar ro'yxati maktabga ishonchni (E-E-A-T)
+ * ko'taradi.
+ */
+export function personSchema(teacher) {
+  const name = teacher?.full_name || teacher?.name
+  if (!name) return null
+  const links = [teacher.telegram_url, teacher.linkedin_url, teacher.instagram_url].filter(Boolean)
+  return {
+    '@type': 'Person',
+    name,
+    ...(teacher.position ? { jobTitle: teacher.position } : {}),
+    ...(teacher.photo ? { image: teacher.photo } : {}),
+    ...(teacher.bio ? { description: teacher.bio } : {}),
+    ...(teacher.company ? { affiliation: { '@type': 'Organization', name: teacher.company } } : {}),
+    ...(links.length ? { sameAs: links } : {}),
+    worksFor: { '@id': ORG_ID() },
+  }
+}
+
+/**
+ * Ovozli yordamchilar (Google Assistant, Siri) uchun sahifaning eng muhim
+ * bo'lagi. AEO'da bu «qisqa javob» sifatida o'qiladigan qism.
+ */
+export const SPEAKABLE = {
+  '@type': 'SpeakableSpecification',
+  cssSelector: ['h1', '[data-speakable]'],
 }
 
 /**

@@ -252,4 +252,8 @@ class Submission(TimeStampedModel):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"{self.full_name or 'Anonim'} — {self.outcome_id}"
+        # Sarlavhada natijaning NOMI turadi. Ilgari bu yerda `outcome_id`,
+        # ya'ni xom ObjectId chiqardi va admin sahifasining sarlavhasi
+        # «Ismoil Toxirov — 6a9469d3598072182be504d4» ko'rinishida edi.
+        outcome = self.outcome.tr("title") if self.outcome_id and self.outcome else "—"
+        return f"{self.full_name or 'Anonim'} — {outcome}"

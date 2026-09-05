@@ -500,7 +500,7 @@ class Command(BaseCommand):
 
     def _site_settings(self) -> None:
         settings_obj = SiteSettings.load()
-        settings_obj.phone = "+78 777 77 57"
+        settings_obj.phone = "+998 78 777 77 57"
         settings_obj.email = "info@marsit.uz"
         settings_obj.telegram_url = "https://t.me/marsitschool"
         settings_obj.instagram_url = "https://instagram.com/marsitschool"
@@ -1098,7 +1098,7 @@ class Command(BaseCommand):
                     "Toshkent, Amir Temur ko‘chasi, 1",
                     "Tashkent, Amir Temur street, 1",
                 ),
-                "phone": "+78 777 77 57",
+                "phone": "+998 78 777 77 57",
                 "latitude": 41.311081,
                 "longitude": 69.240562,
                 "is_main": True,
@@ -1110,7 +1110,7 @@ class Command(BaseCommand):
                     "Toshkent, Shayxontohur tumani, Tinchlik ko‘chasi, 12",
                     "Tashkent, Shaykhantakhur district, Tinchlik street, 12",
                 ),
-                "phone": "+78 777 77 58",
+                "phone": "+998 78 777 77 58",
                 "latitude": 41.325600,
                 "longitude": 69.203100,
                 "is_main": False,
@@ -1122,7 +1122,7 @@ class Command(BaseCommand):
                     "Toshkent, Yunusobod tumani, Amir Temur ko‘chasi, 108",
                     "Tashkent, Yunusabad district, Amir Temur street, 108",
                 ),
-                "phone": "+78 777 77 59",
+                "phone": "+998 78 777 77 59",
                 "latitude": 41.347900,
                 "longitude": 69.288900,
                 "is_main": False,
@@ -1134,7 +1134,7 @@ class Command(BaseCommand):
                     "Toshkent, Chilonzor tumani, Bunyodkor ko‘chasi, 23",
                     "Tashkent, Chilanzar district, Bunyodkor street, 23",
                 ),
-                "phone": "+78 777 77 60",
+                "phone": "+998 78 777 77 60",
                 "latitude": 41.275300,
                 "longitude": 69.204100,
                 "is_main": False,
@@ -1150,7 +1150,7 @@ class Command(BaseCommand):
                     "Toshkent, Mirobod tumani, Maxtumquli ko‘chasi, 5",
                     "Tashkent, Mirabad district, Makhtumkuli street, 5",
                 ),
-                "phone": "+78 777 77 61",
+                "phone": "+998 78 777 77 61",
                 "latitude": 41.299600,
                 "longitude": 69.294800,
                 "is_main": False,
@@ -1166,7 +1166,7 @@ class Command(BaseCommand):
                     "Toshkent, Yashnobod tumani, Tashkent City Mall savdo markazi",
                     "Tashkent, Yashnabad district, Tashkent City Mall",
                 ),
-                "phone": "+78 777 77 62",
+                "phone": "+998 78 777 77 62",
                 "latitude": 41.308700,
                 "longitude": 69.271500,
                 "is_main": False,

@@ -47,7 +47,7 @@ const ICONS = {
 </script>
 
 <template>
-  <section v-reveal class="section bg-ink relative overflow-hidden">
+  <section v-if="section.visible" v-reveal class="section bg-ink relative overflow-hidden">
     <!-- Fon: markazdan taralayotgan issiq nur -->
     <div class="premium-glow pointer-events-none absolute inset-0" aria-hidden="true" />
 

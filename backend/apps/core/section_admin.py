@@ -68,7 +68,7 @@ class PageSectionAdmin(admin.ModelAdmin):
     #: Proksi-model qaysi sahifani ko'rsatishi (`models.py` da belgilanadi).
     page_slug = ""
 
-    list_display = ("section_name", "section_hint", "is_published")
+    list_display = ("section_name", "section_hint", "visible")
     list_display_links = ("section_name",)
     readonly_fields = ("section_help",)
     inlines = [SectionItemInline]
@@ -102,6 +102,12 @@ class PageSectionAdmin(admin.ModelAdmin):
         spec = SECTION_INDEX.get(obj.key)
         return str(spec["hint"]) if spec else ""
 
+    @admin.display(description=_("saytda ko'rsatilsin"), boolean=True)
+    def visible(self, obj) -> bool:
+        # Yashirib bo'lmaydigan bo'lim ro'yxatda ham doim «ko'rinadi».
+        spec = SECTION_INDEX.get(obj.key, {})
+        return obj.is_published if spec.get("hideable", True) else True
+
     # ------------------------------ shakl ----------------------------------
     @admin.display(description=_("Bu blok saytda qayerda"))
     def section_help(self, obj) -> str:
@@ -119,8 +125,11 @@ class PageSectionAdmin(admin.ModelAdmin):
         fields = spec.get("fields", ())
 
         main = _expand(fields, TRANSLATED_BASES, DEFAULT_LANGUAGE)
+        # Yashirib bo'lmaydigan bo'limda («Umumiy tugmalar», test qadamlari,
+        # podval) belgi ko'rsatilmaydi — u alohida blok emas, sayt matni.
+        toggle = ("is_published",) if spec.get("hideable", True) else ()
         fieldsets = [
-            (None, {"fields": ("section_help", *main, "is_published")}),
+            (None, {"fields": ("section_help", *main, *toggle)}),
         ]
 
         for language in CONTENT_LANGUAGES:

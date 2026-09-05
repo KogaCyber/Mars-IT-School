@@ -5,7 +5,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import { COURSE_ALIASES, COURSE_ROUTES } from '@/data/courseAliases'
+import { SITE, splitLocalePath } from '@/data/seoConfig'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+
+/**
+ * Marshrutlar uchun asos yo'li — til prefiksini hisobga oladi.
+ *
+ * Ruscha va inglizcha sahifalar `/ru/...` va `/en/...` manzillarida yotadi
+ * (`seoConfig.js:localeUrl`), chunki statik hostingda faqat shunday qilib
+ * har bir tilga O'Z HTML fayli berish mumkin — JavaScript ishlatmaydigan
+ * robotlar (GPTBot, ClaudeBot, PerplexityBot) uchun bu yagona yo'l.
+ *
+ * Prefiksni marshrut jadvaliga qo'shish o'rniga uni `history` asosiga
+ * beramiz: router faqat toza yo'llarni ko'radi (`/kursy`), marshrut nomlari
+ * va barcha `router-link`lar o'zgarishsiz qoladi, lekin manzil satrida
+ * prefiks saqlanadi va ichki havolalar ham avtomatik prefiksli bo'ladi.
+ */
+function historyBase() {
+  const raw = import.meta.env.BASE_URL || '/'
+  if (typeof window === 'undefined') return raw
+  const { locale } = splitLocalePath(window.location.pathname)
+  if (locale === SITE.defaultLocale) return raw
+  return `${raw.replace(/\/$/, '')}/${locale}/`
+}
 
 /**
  * Takrorlanuvchi kurs sahifalari: admin paneldagi slug alohida sahifaga
@@ -83,7 +105,7 @@ const routes = [
 ]
 
 export const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(historyBase()),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition

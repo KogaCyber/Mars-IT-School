@@ -27,24 +27,32 @@ def test_register_creates_student_and_returns_tokens(api):
     assert response.status_code == 201
     assert response.data["user"]["email"] == "new@example.com"
     assert response.data["user"]["phone"] == "+998901234567"
-    assert response.data["user"]["role"] == "student"
     assert "access" in response.data and "refresh" in response.data
 
 
-def test_register_ignores_role_from_request(api):
+def test_register_cannot_grant_admin_access(api):
+    """Ro'yxatdan o'tgan odam o'ziga admin panel huquqini bera olmaydi.
+
+    Ilgari bu yerda `role` maydoni tekshirilardi. Rol olib tashlangach,
+    kirish huquqini yagona `is_staff` hal qiladi — hujum ham, himoya ham
+    endi aynan shu maydonga qaratilgan.
+    """
     api.post(
         reverse("v1:accounts:register"),
         {
             "email": "hacker@example.com",
             "first_name": "H",
-            "role": "admin",
+            "is_staff": True,
+            "is_superuser": True,
             "password": "StrongPassw0rd!",
             "password_confirm": "StrongPassw0rd!",
         },
         format="json",
     )
 
-    assert User.objects.get(email="hacker@example.com").role == "student"
+    hacker = User.objects.get(email="hacker@example.com")
+    assert not hacker.is_staff
+    assert not hacker.is_superuser
 
 
 def test_login_with_email_and_phone(api, user):

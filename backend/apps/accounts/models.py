@@ -13,10 +13,18 @@ from .validators import validate_uz_phone
 
 
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
-    class Role(models.TextChoices):
-        STUDENT = "student", _("O'quvchi")
-        TEACHER = "teacher", _("O'qituvchi")
-        ADMIN = "admin", _("Administrator")
+    """Admin panelga kira oladigan xodim.
+
+    Saytda o'quvchi yoki o'qituvchi kabineti yo'q — o'qituvchilar alohida
+    model (`apps.teachers`) sifatida saqlanadi va tizimga kirmaydi.
+
+    Ilgari bu yerda `role` maydoni bor edi (o'quvchi / o'qituvchi /
+    administrator), lekin hech qanday mantiq unga tayanmasdi: panelga
+    kirishni Django'ning `is_staff` bayrog'i hal qilardi. Natijada ikkita
+    bir-biriga zid haqiqat paydo bo'lgandi — bazadagi bir foydalanuvchi
+    «administrator» deb turib, panelga kira olmasdi. Endi yagona mezon —
+    `is_staff`.
+    """
 
     email = models.EmailField(_("email"), unique=True, db_index=True)
     phone = models.CharField(
@@ -28,10 +36,6 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     first_name = models.CharField(_("ism"), max_length=60)
     last_name = models.CharField(_("familiya"), max_length=60, blank=True)
     avatar = models.ImageField(_("avatar"), upload_to=avatar_upload_to, blank=True)
-    role = models.CharField(
-        _("rol"), max_length=16, choices=Role.choices, default=Role.STUDENT, db_index=True
-    )
-
     # Chiqarilgan barcha tokenlarni bir zarbada bekor qilish uchun hisoblagich.
     # Har bir JWT ichida shu qiymat `epoch` da'vosi sifatida yuriydi. Parol
     # o'zgarganda (yoki hisob bloklanganda) raqam oshadi va eski tokenlarning

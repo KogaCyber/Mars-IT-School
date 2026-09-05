@@ -6,9 +6,25 @@
   "installCommand": "npm ci",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/kursy/programmirovanie",
+      "destination": "/kursy/it-razrabotka",
+      "permanent": true
+    },
+    {
+      "source": "/:locale(ru|en)/kursy/programmirovanie",
+      "destination": "/:locale/kursy/it-razrabotka",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
-      "source": "/((?!assets|fonts).*)",
+      "source": "/:locale(ru|en)/:section(kursy|novosti|kontakty|test)/:rest*",
+      "destination": "/:locale/index.html"
+    },
+    {
+      "source": "/:section(kursy|novosti|kontakty|test)/:rest*",
       "destination": "/index.html"
     }
   ],
@@ -95,7 +111,7 @@
       ]
     },
     {
-      "source": "/llms.txt",
+      "source": "/(ru/|en/)?llms.txt",
       "headers": [
         {
           "key": "Content-Type",

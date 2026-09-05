@@ -43,7 +43,7 @@ function go(step) {
 </script>
 
 <template>
-  <section v-reveal class="section bg-ink relative overflow-hidden">
+  <section v-if="section.visible" v-reveal class="section bg-ink relative overflow-hidden">
     <!-- Fon nuri: telefon ortidan taraladi -->
     <img
       loading="lazy"

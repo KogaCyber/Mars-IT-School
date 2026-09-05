@@ -5,7 +5,9 @@ import logging
 
 from django.core.exceptions import PermissionDenied
 from django.db import connections
+from django.http import HttpResponse
 from django.utils import timezone
+from django.views.decorators.http import require_GET
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
@@ -254,19 +256,60 @@ def health_view(request):
     )
 
 
+@require_GET
+def robots_view(request):
+    """API domeni (`api.marsitschool.uz`) uchun robots.txt — hammasi yopiq.
+
+    Nega kerak: backend saytnikidan boshqa domenda turadi, lekin u ham ochiq
+    HTTP xizmat. Robots.txt bo'lmasa qidiruv tizimlari JSON javoblarni va
+    `/media/` dagi rasmlarni alohida sahifa sifatida indekslay boshlaydi —
+    natijada bitta kurs matni ikkita domenda (sayt va API) paydo bo'ladi.
+    Bu dublikat kontent va reyting saytdan API domeniga oqib ketishi demak.
+
+    Sayt domenidagi robots.txt bunga ta'sir qilmaydi: robots.txt HAR BIR
+    domen uchun alohida o'qiladi.
+
+    DRF `Response` emas, oddiy `HttpResponse`: robots.txt sof matn bo'lishi
+    shart, DRF renderer'i esa uni JSON qatorga o'rab qo'yardi.
+    """
+    response = HttpResponse(
+        "User-agent: *\nDisallow: /\n",
+        content_type="text/plain; charset=utf-8",
+    )
+    response["X-Robots-Tag"] = "noindex, nofollow"
+    return response
+
+
 def _sections_payload(request, pages=None) -> dict:
     """Sahifa bo'limlarini `{"home.hero": {...}}` ko'rinishida qaytaradi.
 
     Sayt bo'limni kaliti bo'yicha oladi. Bo'sh maydon javobda ham bo'sh qoladi —
     frontend bunday joyda maketdagi standart matnni ko'rsatadi, ya'ni admin
     panelda hech narsa yozilmagan bo'lim ham to'g'ri ko'rinadi.
+
+    Admin panelda «saytda ko'rsatilsin» belgisi olib tashlangan bo'lim javobdan
+    butunlay tushib qolmaydi: u `is_published: false` bilan qaytadi, shunda sayt
+    blokni maketdagi standart matn bilan ko'rsatib qo'ymay, umuman chizmaydi.
+    Yashirilgan bo'limning matni va rasmlari esa javobga qo'shilmaydi.
     """
-    queryset = PageSection.objects.filter(is_published=True).prefetch_related("items")
+    queryset = PageSection.objects.all().prefetch_related("items")
     if pages:
         queryset = queryset.filter(page__in=pages)
 
     serializer = PageSectionSerializer(queryset, many=True, context={"request": request})
-    return {item["key"]: item for item in serializer.data}
+    payload = {}
+    for item in serializer.data:
+        if item.get("is_published"):
+            payload[item["key"]] = item
+        else:
+            payload[item["key"]] = {
+                "key": item["key"],
+                "page": item["page"],
+                "order": item["order"],
+                "is_published": False,
+                "items": [],
+            }
+    return payload
 
 
 @extend_schema(responses=OpenApiTypes.OBJECT)

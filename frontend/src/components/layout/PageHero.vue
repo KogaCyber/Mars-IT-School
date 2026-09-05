@@ -30,6 +30,15 @@ const props = defineProps({
 
 /** Sarlavha qatorlari (Figma'da har bir so'z alohida qatorda turadi). */
 const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [props.title]))
+
+/**
+ * Rasm matni — sarlavhadan quriladi.
+ *
+ * Bo'sh `alt` rasmni «bezak» deb e'lon qiladi: skrinrider uni o'qimaydi,
+ * Google Rasmlar esa umuman indekslamaydi. Sahifa qahramoni bezak emas —
+ * u sahifaning asosiy tasviri, shuning uchun nomi bo'lishi kerak.
+ */
+const imageAlt = computed(() => `MARS IT School — ${titleLines.value.join(' ')}`)
 </script>
 
 <template>
@@ -76,6 +85,7 @@ const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [p
           decoding="async"
           :src="glow"
           alt=""
+          aria-hidden="true"
           class="pointer-events-none absolute top-1/2 left-1/2 w-[135%] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
         />
 
@@ -83,7 +93,7 @@ const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [p
           decoding="async"
           fetchpriority="high"
           :src="image"
-          alt=""
+          :alt="imageAlt"
           class="animate-float relative mx-auto w-[74%] max-w-120 object-contain sm:w-[60%] lg:w-110 lg:max-w-none"
         />
       </div>

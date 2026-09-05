@@ -46,7 +46,7 @@ function openBranch(branch) {
 </script>
 
 <template>
-  <section class="section bg-ink">
+  <section v-if="section.visible" class="section bg-ink">
     <div class="container-page">
       <!-- Sarlavha bloki: chapda izoh va almashtirgich, o'ngda sarlavha -->
       <div class="grid gap-[var(--spacing-block)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)]">

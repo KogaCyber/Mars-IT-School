@@ -11,11 +11,13 @@ import { computed } from 'vue'
 
 import ComingSoonBanner from '@/components/courses/ComingSoonBanner.vue'
 import DirectionCard from '@/components/courses/DirectionCard.vue'
-import { useSection } from '@/composables/useSection'
+import { useSection, useSectionVisible } from '@/composables/useSection'
 import { DIRECTIONS } from '@/data/directions'
 import { useLocalized } from '@/i18n/localize'
 
 const section = useSection('courses.directions', { title: 'courses.directionsTitle' })
+// «Скоро...» banneri alohida bo'lim — admin panelda o'chirilsa ko'rinmaydi.
+const comingSoonVisible = useSectionVisible('courses.coming_soon')
 const fallback = useLocalized(DIRECTIONS)
 
 /** `/kursy/it-kids` → `it-kids` */
@@ -46,7 +48,7 @@ const directions = computed(() => {
 </script>
 
 <template>
-  <section class="section bg-ink">
+  <section v-if="section.visible" class="section bg-ink">
     <div class="container-page">
       <h2 v-reveal class="title-hero font-wide font-bold text-white">
         {{ section.title }}
@@ -63,7 +65,7 @@ const directions = computed(() => {
         />
       </div>
 
-      <ComingSoonBanner v-reveal class="mt-[var(--spacing-gutter)]" />
+      <ComingSoonBanner v-if="comingSoonVisible" v-reveal class="mt-[var(--spacing-gutter)]" />
     </div>
   </section>
 </template>

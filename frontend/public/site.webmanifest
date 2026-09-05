@@ -1,15 +1,20 @@
 {
-  "name": "MARS IT School — школа программирования для детей",
+  "name": "MARS IT School — bolalar uchun IT o‘quv markazi",
   "short_name": "MARS IT School",
-  "description": "Школа программирования для детей и подростков 7–17 лет в Ташкенте.",
-  "lang": "ru",
+  "description": "Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun IT o‘quv markazi va dasturlash maktabi.",
+  "lang": "uz",
+  "dir": "ltr",
   "start_url": "/",
   "scope": "/",
+  "id": "/",
   "display": "standalone",
+  "orientation": "portrait",
+  "categories": ["education", "kids"],
   "background_color": "#0B0B0F",
   "theme_color": "#0B0B0F",
   "icons": [
     { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "/apple-touch-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/apple-touch-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/apple-touch-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

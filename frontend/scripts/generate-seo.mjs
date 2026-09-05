@@ -17,10 +17,12 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { COURSE_ALIASES } from '../src/data/courseAliases.js'
 import {
   SITE,
   STATIC_PAGES,
   localeAlternates,
+  localePath,
   localeUrl,
   pick,
   resolvePage,
@@ -35,7 +37,9 @@ import {
   faqSchema,
   jobPostingSchema,
   jsonLdScriptContent,
+  offerCatalogSchema,
   organizationSchema,
+  setSchemaLocale,
   setSchemaOrigin,
   webPageSchema,
   websiteSchema,
@@ -77,18 +81,29 @@ const TODAY = new Date().toISOString().slice(0, 10)
 // Sxemalardagi absolyut manzillar ham shu domendan qurilsin (schema.js).
 setSchemaOrigin(ORIGIN)
 
-/** Prerender qilinadigan HTML sayt asosiy tilida (o'zbekcha) yoziladi. */
-const LOCALE = SITE.defaultLocale
+/**
+ * Prerender qilinadigan tillar.
+ *
+ * Ilgari faqat asosiy til (uz) yasalardi va `hreflang` ruscha hamda inglizcha
+ * manzillarni e'lon qilsa-da, o'sha manzillar AYNAN O'SHA o'zbekcha HTML'ni
+ * qaytarardi. Javob beruvchi tizimlarning aksariyati (GPTBot, ClaudeBot,
+ * PerplexityBot, CCBot) JavaScript ishlatmaydi — ular uchun saytning ruscha
+ * versiyasi umuman mavjud emas edi. Toshkent uchun bu eng katta yo'qotish:
+ * qidiruvlarning katta qismi ruscha.
+ */
+const LOCALES = SITE.locales
 
-/** Statik HTML ichidagi matnlar — sayt asosiy tilida. */
-const TEXT = {
+/** Statik HTML ichidagi matnlar — har bir til uchun alohida. */
+const TEXTS = {
   uz: {
     intro:
-      'Toshkentdagi (O‘zbekiston) 7–17 yoshli bolalar va o‘smirlar uchun dasturlash maktabi. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar oflayn, 12 tagacha o‘quvchili guruhlarda, birinchi sinov darsi bepul.',
+      'MARS IT School — Toshkentdagi (O‘zbekiston) 7–17 yoshli bolalar va o‘smirlar uchun IT o‘quv markazi va dasturlash maktabi. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar oflayn, 12 tagacha o‘quvchili guruhlarda, birinchi sinov darsi bepul.',
     short: 'Qisqacha',
     name: 'Nomi',
+    alsoKnownAs: 'Yana shunday nomlanadi',
     site: 'Sayt',
     city: 'Shahar',
+    districts: 'Tumanlar',
     founded: 'Tashkil etilgan yil',
     phone: 'Telefon',
     email: 'Email',
@@ -116,49 +131,195 @@ const TEXT = {
     perWeekLabel: 'Haftasiga darslar',
     addressLabel: 'Manzil',
     tel: 'tel.',
-    branchTitle: '{name} — Toshkentdagi filial',
-    branchDescription: '{name}: {address}. MARS IT School — bolalar uchun dasturlash maktabi.',
+    branchTitle: '{name} — Toshkentdagi IT o‘quv markazi filiali',
+    branchDescription:
+      '{name}: {address}. MARS IT School — bolalar uchun IT o‘quv markazi va dasturlash maktabi.',
     branchSummary: 'MARS IT School maktabining {name} filiali. Manzil: {address}.',
-    branchKeywords: ['Toshkent IT maktabi', 'yaqin atrofdagi dasturlash kurslari'],
+    branchKeywords: [
+      'Toshkent IT maktabi',
+      'yaqin atrofdagi IT o‘quv markazi',
+      'yaqin atrofdagi dasturlash kurslari',
+    ],
     courseDescription: '{title} — MARS IT School kursi.',
     courseSummary: '{title} — Toshkentdagi MARS IT School kursi.',
-    courseKeywords: ['bolalar uchun dasturlash kurslari', 'MARS IT School'],
+    courseKeywords: ['bolalar uchun dasturlash kurslari', 'IT kurslar Toshkent', 'MARS IT School'],
     newsKeywords: ['MARS IT School', 'IT maktab yangiliklari'],
     navCourses: 'Kurslar',
     navContacts: 'Kontaktlar',
     navApply: 'Sinov darsiga yozilish',
   },
-}[SITE.defaultLocale]
+  ru: {
+    intro:
+      'MARS IT School — IT учебный центр и школа программирования для детей и подростков 7–17 лет в Ташкенте (Узбекистан). Направления: IT Kids (9–11 лет) и IT-разработка (12–17 лет). Занятия офлайн, в группах до 12 учеников, первое пробное занятие бесплатное.',
+    short: 'Кратко',
+    name: 'Название',
+    alsoKnownAs: 'Также известен как',
+    site: 'Сайт',
+    city: 'Город',
+    districts: 'Районы',
+    founded: 'Год основания',
+    phone: 'Телефон',
+    email: 'Email',
+    languages: 'Языки сайта',
+    languagesValue: 'узбекский, русский, английский',
+    age: 'Возраст учеников',
+    ageValue: '7–17 лет',
+    format: 'Формат',
+    formatValue: 'Офлайн-занятия в филиалах Ташкента, группы до 12 учеников',
+    trial: 'Пробное занятие',
+    trialValue: 'бесплатно, запись',
+    pages: 'Страницы',
+    courses: 'Курсы',
+    branches: 'Филиалы',
+    news: 'Новости',
+    faq: 'Частые вопросы',
+    vacancies: 'Вакансии',
+    terms: 'Условия использования',
+    termsText:
+      'Содержимое сайта можно цитировать в ответах при указании ссылки на источник.',
+    ageOf: 'лет',
+    monthsShort: 'мес.',
+    perWeek: 'занятия в неделю',
+    ageLabel: 'Возраст',
+    durationLabel: 'Длительность',
+    perWeekLabel: 'Занятий в неделю',
+    addressLabel: 'Адрес',
+    tel: 'тел.',
+    branchTitle: '{name} — филиал IT учебного центра в Ташкенте',
+    branchDescription:
+      '{name}: {address}. MARS IT School — IT учебный центр и школа программирования для детей.',
+    branchSummary: 'Филиал {name} школы MARS IT School. Адрес: {address}.',
+    branchKeywords: [
+      'IT школа Ташкент',
+      'IT учебный центр рядом со мной',
+      'курсы программирования рядом',
+    ],
+    courseDescription: '{title} — курс MARS IT School.',
+    courseSummary: '{title} — курс MARS IT School в Ташкенте.',
+    courseKeywords: ['курсы программирования для детей', 'IT курсы Ташкент', 'MARS IT School'],
+    newsKeywords: ['MARS IT School', 'новости IT школы'],
+    navCourses: 'Курсы',
+    navContacts: 'Контакты',
+    navApply: 'Записаться на пробное занятие',
+  },
+  en: {
+    intro:
+      'MARS IT School is an IT training center and programming school for children and teenagers aged 7–17 in Tashkent, Uzbekistan. Tracks: IT Kids (ages 9–11) and IT Development (ages 12–17). Classes are offline, in groups of up to 12 students, and the first trial lesson is free.',
+    short: 'At a glance',
+    name: 'Name',
+    alsoKnownAs: 'Also known as',
+    site: 'Website',
+    city: 'City',
+    districts: 'Districts',
+    founded: 'Founded',
+    phone: 'Phone',
+    email: 'Email',
+    languages: 'Site languages',
+    languagesValue: 'Uzbek, Russian, English',
+    age: 'Student age',
+    ageValue: '7–17 years',
+    format: 'Format',
+    formatValue: 'On-site classes in Tashkent branches, groups of up to 12 students',
+    trial: 'Trial lesson',
+    trialValue: 'free, book at',
+    pages: 'Pages',
+    courses: 'Courses',
+    branches: 'Branches',
+    news: 'News',
+    faq: 'Frequently asked questions',
+    vacancies: 'Careers',
+    terms: 'Usage terms',
+    termsText: 'Site content may be quoted in answers with a link to the source.',
+    ageOf: 'years',
+    monthsShort: 'months',
+    perWeek: 'lessons per week',
+    ageLabel: 'Age',
+    durationLabel: 'Duration',
+    perWeekLabel: 'Lessons per week',
+    addressLabel: 'Address',
+    tel: 'tel.',
+    branchTitle: '{name} — an IT training center branch in Tashkent',
+    branchDescription:
+      '{name}: {address}. MARS IT School is an IT training center and programming school for children.',
+    branchSummary: 'The {name} branch of MARS IT School. Address: {address}.',
+    branchKeywords: ['IT school Tashkent', 'IT training center near me', 'coding courses near me'],
+    courseDescription: '{title} — a MARS IT School course.',
+    courseSummary: '{title} — a MARS IT School course in Tashkent.',
+    courseKeywords: ['coding courses for kids', 'IT courses Tashkent', 'MARS IT School'],
+    newsKeywords: ['MARS IT School', 'IT school news'],
+    navCourses: 'Courses',
+    navContacts: 'Contacts',
+    navApply: 'Book a trial lesson',
+  },
+}
+
+/**
+ * Vercel topa olmagan manzil uchun sahifa (`dist/404.html`).
+ *
+ * `vercel.json` dagi rewrite'lar faqat MA'LUM bo'limlarga (`/kursy/...`,
+ * `/novosti/...`, `/kontakty/...`, `/test/...`) taalluqli. Qolgan har qanday
+ * manzil shu faylga tushadi va Vercel uni HTTP 404 bilan beradi.
+ *
+ * Nega muhim: ilgari rewrite HAMMA narsani `index.html` ga yuborardi, ya'ni
+ * mavjud bo'lmagan istalgan manzil 200 bilan bosh sahifaning HTML'ini
+ * qaytarardi («soft 404»). Qidiruv tizimi uchun bu — cheksiz sondagi
+ * dublikat sahifa, ular indeksga tushib, byudjetni yeb qo'yardi.
+ */
+const NOT_FOUND_TEXT = {
+  uz: {
+    title: 'Sahifa topilmadi',
+    description: 'Bunday sahifa yo‘q. Bosh sahifaga qayting yoki kurslar katalogini ko‘ring.',
+  },
+  ru: {
+    title: 'Страница не найдена',
+    description: 'Такой страницы нет. Вернитесь на главную или посмотрите каталог курсов.',
+  },
+  en: {
+    title: 'Page not found',
+    description: 'This page does not exist. Return to the home page or browse the course catalogue.',
+  },
+}
+
+/** Kurs slug'lari: alohida sahifasi bor variantga yo'naltiriladiganlari. */
+const ALIAS_SLUGS = new Set(Object.keys(COURSE_ALIASES))
 
 const log = (message) => console.log(`[seo] ${message}`)
+
 
 // --- Backend'dan ma'lumot -------------------------------------------------
 
 /** Backend yo'q yoki sekin bo'lsa `null` qaytaradi — build davom etadi. */
-async function fetchList(path) {
+async function fetchList(path, locale) {
   if (!API) return null
   const url = `${API}/api/v1/${path}`
   try {
     const response = await fetch(url, {
-      headers: { 'Accept-Language': LOCALE },
+      headers: { 'Accept-Language': locale },
       signal: AbortSignal.timeout(15000),
     })
     if (!response.ok) throw new Error(`HTTP ${response.status}`)
     const data = await response.json()
     return Array.isArray(data) ? data : data.results || []
   } catch (error) {
-    log(`⚠ ${path} olinmadi (${error.message}) — bu bo'lim sitemap'ga qo'shilmaydi`)
+    log(`⚠ ${path} [${locale}] olinmadi (${error.message}) — bu bo'lim sitemap'ga qo'shilmaydi`)
     return null
   }
 }
 
-async function collectDynamic() {
+/**
+ * Bitta til uchun backend kontenti.
+ *
+ * Har bir til alohida so'raladi: kurs nomlari, yangilik sarlavhalari va FAQ
+ * javoblari tarjima qilingan. Ilgari faqat asosiy til olinardi va ruscha
+ * sahifalar ham o'zbekcha matn bilan yasalardi.
+ */
+async function collectDynamic(locale) {
   const [courses, news, branches, vacancies, faqs] = await Promise.all([
-    fetchList('courses/?page_size=200'),
-    fetchList('news/?page_size=500'),
-    fetchList('branches/?page_size=100'),
-    fetchList('vacancies/?page_size=100'),
-    fetchList('faqs/?page_size=100'),
+    fetchList('courses/?page_size=200', locale),
+    fetchList('news/?page_size=500', locale),
+    fetchList('branches/?page_size=100', locale),
+    fetchList('vacancies/?page_size=100', locale),
+    fetchList('faqs/?page_size=100', locale),
   ])
 
   // Backend javob bermagan bo'limlar alohida sanaladi: ular sitemap'ga
@@ -176,7 +337,13 @@ async function collectDynamic() {
     .map(([name]) => name)
 
   return {
-    courses: courses || [],
+    // Alohida sahifasi bor kursning admin paneldagi dublikat slug'i
+    // (`programmirovanie` → `it-razrabotka`) hamma joydan chiqarib
+    // tashlanadi: sitemap'dan ham, prerender'dan ham, llms.txt'dan ham.
+    // Aks holda bitta kurs ikkita manzilda, ikkita canonical bilan
+    // indekslanardi — qidiruv tizimi uchun bu dublikat kontent va
+    // reyting ikkiga bo'linardi.
+    courses: (courses || []).filter((course) => !ALIAS_SLUGS.has(course.slug)),
     news: news || [],
     branches: branches || [],
     vacancies: vacancies || [],
@@ -193,29 +360,35 @@ const escapeXml = (value) =>
     (char) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[char],
   )
 
-function sitemapEntry({ path, lastmod, changefreq, priority, image }) {
-  const loc = `${ORIGIN}${path}`
-  return [
-    '  <url>',
-    `    <loc>${escapeXml(loc)}</loc>`,
-    `    <lastmod>${lastmod || TODAY}</lastmod>`,
-    `    <changefreq>${changefreq || 'monthly'}</changefreq>`,
-    `    <priority>${(priority ?? 0.5).toFixed(1)}</priority>`,
-    // Har bir tilning O'Z manzili (`?lang=`). Uchalasi bir xil URL bo'lsa
-    // hreflang qoidasi buziladi va Google belgini e'tiborsiz qoldiradi.
-    ...localeAlternates(ORIGIN, path).map(
-      ({ hreflang, href }) =>
-        `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeXml(href)}"/>`,
-    ),
-    ...(image
-      ? [
-          '    <image:image>',
-          `      <image:loc>${escapeXml(image)}</image:loc>`,
-          '    </image:image>',
-        ]
-      : []),
-    '  </url>',
-  ].join('\n')
+/**
+ * Bitta yo'l — uchta yozuv (har bir til uchun). Har bir yozuv ichida barcha
+ * tillarning `hreflang` havolalari takrorlanadi: qoida bo'yicha til
+ * variantlari bir-biriga O'ZARO ishora qilishi shart, aks holda Google
+ * belgilarni butunlay e'tiborsiz qoldiradi.
+ */
+function sitemapEntries({ path, lastmod, changefreq, priority, image }) {
+  const alternates = localeAlternates(ORIGIN, path)
+  return LOCALES.map((locale) =>
+    [
+      '  <url>',
+      `    <loc>${escapeXml(localeUrl(ORIGIN, path, locale))}</loc>`,
+      `    <lastmod>${lastmod || TODAY}</lastmod>`,
+      `    <changefreq>${changefreq || 'monthly'}</changefreq>`,
+      `    <priority>${(priority ?? 0.5).toFixed(1)}</priority>`,
+      ...alternates.map(
+        ({ hreflang, href }) =>
+          `    <xhtml:link rel="alternate" hreflang="${hreflang}" href="${escapeXml(href)}"/>`,
+      ),
+      ...(image
+        ? [
+            '    <image:image>',
+            `      <image:loc>${escapeXml(image)}</image:loc>`,
+            '    </image:image>',
+          ]
+        : []),
+      '  </url>',
+    ].join('\n'),
+  ).join('\n')
 }
 
 function buildSitemap(dynamic) {
@@ -245,7 +418,7 @@ function buildSitemap(dynamic) {
     ...dynamic.branches.map((branch) => ({
       path: `/kontakty/${branch.slug}`,
       changefreq: 'monthly',
-      priority: 0.6,
+      priority: 0.7,
     })),
   ]
 
@@ -254,7 +427,7 @@ function buildSitemap(dynamic) {
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
     '        xmlns:xhtml="http://www.w3.org/1999/xhtml"',
     '        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
-    ...entries.map(sitemapEntry),
+    ...entries.map(sitemapEntries),
     '</urlset>',
     '',
   ].join('\n')
@@ -266,8 +439,14 @@ function buildSitemap(dynamic) {
  * llms.txt — LLM'lar uchun saytning qisqa xaritasi: kim, nima taklif qiladi,
  * qaysi sahifada nima bor. Faktlar qisqa gaplarda beriladi, chunki javob
  * beruvchi tizimlar aynan shunday bo'laklarni iqtibos qiladi.
+ *
+ * Har bir til uchun alohida yasaladi: `/llms.txt` (uz), `/ru/llms.txt`,
+ * `/en/llms.txt`.
  */
-function buildLlmsTxt(dynamic) {
+function buildLlmsTxt(dynamic, locale) {
+  const TEXT = TEXTS[locale]
+  const url = (path) => localeUrl(ORIGIN, path, locale)
+
   const lines = [
     `# ${SITE.name}`,
     '',
@@ -276,21 +455,23 @@ function buildLlmsTxt(dynamic) {
     `## ${TEXT.short}`,
     '',
     `- ${TEXT.name}: ${SITE.name}`,
-    `- ${TEXT.site}: ${ORIGIN}`,
-    `- ${TEXT.city}: ${pick(SITE.geo.city, LOCALE)}, ${pick(SITE.geo.countryName, LOCALE)}`,
+    `- ${TEXT.alsoKnownAs}: ${SITE.alternateNames.join(', ')}`,
+    `- ${TEXT.site}: ${url('/')}`,
+    `- ${TEXT.city}: ${pick(SITE.geo.city, locale)}, ${pick(SITE.geo.countryName, locale)}`,
+    `- ${TEXT.districts}: ${pick(SITE.districts, locale).join(', ')}`,
     `- ${TEXT.founded}: ${SITE.founded}`,
     `- ${TEXT.phone}: ${SITE.contacts.phone}`,
     `- ${TEXT.email}: ${SITE.contacts.email}`,
     `- ${TEXT.languages}: ${TEXT.languagesValue}`,
     `- ${TEXT.age}: ${TEXT.ageValue}`,
     `- ${TEXT.format}: ${TEXT.formatValue}`,
-    `- ${TEXT.trial}: ${TEXT.trialValue} ${ORIGIN}/zayavka`,
+    `- ${TEXT.trial}: ${TEXT.trialValue} ${url('/zayavka')}`,
     '',
     `## ${TEXT.pages}`,
     '',
     ...STATIC_PAGES.map((page) => {
-      const localized = resolvePage(page, LOCALE)
-      return `- [${localized.heading}](${ORIGIN}${page.path}): ${localized.summary}`
+      const localized = resolvePage(page, locale)
+      return `- [${localized.heading}](${url(page.path)}): ${localized.summary}`
     }),
     '',
   ]
@@ -299,16 +480,14 @@ function buildLlmsTxt(dynamic) {
     lines.push(`## ${TEXT.courses}`, '')
     dynamic.courses.forEach((course) => {
       const facts = [
-        course.age_range
-          ? `${TEXT.ageLabel.toLowerCase()} ${course.age_range} ${TEXT.ageOf}`
-          : null,
+        course.age_range ? `${TEXT.ageLabel.toLowerCase()} ${course.age_range}` : null,
         course.duration_months ? `${course.duration_months} ${TEXT.monthsShort}` : null,
         course.lessons_per_week ? `${course.lessons_per_week} ${TEXT.perWeek}` : null,
       ]
         .filter(Boolean)
         .join(', ')
       lines.push(
-        `- [${course.title}](${ORIGIN}/kursy/${course.slug}): ${course.subtitle || ''}${facts ? ` (${facts})` : ''}`,
+        `- [${course.title}](${url(`/kursy/${course.slug}`)}): ${course.subtitle || ''}${facts ? ` (${facts})` : ''}`,
       )
     })
     lines.push('')
@@ -318,8 +497,16 @@ function buildLlmsTxt(dynamic) {
     lines.push(`## ${TEXT.branches}`, '')
     dynamic.branches.forEach((branch) => {
       lines.push(
-        `- [${branch.name}](${ORIGIN}/kontakty/${branch.slug}): ${branch.address || ''}${branch.phone ? `, ${TEXT.tel} ${branch.phone}` : ''}`,
+        `- [${branch.name}](${url(`/kontakty/${branch.slug}`)}): ${branch.address || ''}${branch.phone ? `, ${TEXT.tel} ${branch.phone}` : ''}`,
       )
+    })
+    lines.push('')
+  }
+
+  if (dynamic.vacancies.length) {
+    lines.push(`## ${TEXT.vacancies}`, '')
+    dynamic.vacancies.forEach((vacancy) => {
+      lines.push(`- ${vacancy.title}: ${url('/vakansii')}`)
     })
     lines.push('')
   }
@@ -327,7 +514,7 @@ function buildLlmsTxt(dynamic) {
   if (dynamic.news.length) {
     lines.push(`## ${TEXT.news}`, '')
     dynamic.news.slice(0, 30).forEach((item) => {
-      lines.push(`- [${item.title}](${ORIGIN}/novosti/${item.slug}): ${item.excerpt || ''}`)
+      lines.push(`- [${item.title}](${url(`/novosti/${item.slug}`)}): ${item.excerpt || ''}`)
     })
     lines.push('')
   }
@@ -354,28 +541,53 @@ const escapeHtml = (value) =>
   )
 
 /**
+ * Meta-tavsifni 160 belgigacha qisqartiradi.
+ *
+ * `useSeo.js` da AYNAN shu qoida bor, lekin prerender uni qo'llamasdi:
+ * natijada bitta sahifaning statik HTML'idagi tavsif (165 belgi) ilova
+ * yuklangach almashadigan tavsifdan farq qilardi. Qidiruv roboti birinchisini,
+ * brauzer ikkinchisini ko'rardi.
+ */
+function trimDescription(text, limit = 160) {
+  const value = String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (value.length <= limit) return value
+  return `${value.slice(0, limit - 1).replace(/[\s,.;:\u2014-]+$/, '')}\u2026`
+}
+
+/**
  * Yasalgan `index.html` shablonidagi meta-teglarni sahifaga mos qiymatlarga
  * almashtiradi. Faqat `<head>` va `<noscript>` o'zgaradi — ilova o'zi
  * o'zgarishsiz qoladi, shuning uchun brauzerdagi xatti-harakat bir xil.
  */
-function renderPage(template, page) {
-  const url = localeUrl(ORIGIN, page.path, LOCALE)
+function renderPage(template, page, locale) {
+  const TEXT = TEXTS[locale]
+  const url = localeUrl(ORIGIN, page.path, locale)
   const image = absoluteUrl(page.image || SITE.ogImage, ORIGIN)
   const title = `${page.title} — ${SITE.name}`
+  const description = trimDescription(page.description)
+
+  // Sxemalar ham shu tilda quriladi (shahar nomi, tavsiflar, `inLanguage`).
+  setSchemaLocale(locale)
 
   const graph = buildGraph([
     organizationSchema(),
     websiteSchema(),
-    webPageSchema({ url, title, description: page.description, image, locale: LOCALE }),
+    webPageSchema({ url, title, description, image, locale }),
     page.breadcrumbs ? breadcrumbSchema(page.breadcrumbs, ORIGIN) : null,
     ...(page.schema || []),
   ])
 
+  const nav = (path, label) => `<a href="${escapeHtml(localePath(path, locale))}">${escapeHtml(label)}</a>`
+
   const replacements = [
+    // `<html lang>` — ilova yuklanmasdan turib ham to'g'ri til ko'rsatilsin.
+    [/<html lang="[a-z-]+"/, `<html lang="${locale}"`],
     [/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>`],
     [
       /<meta\s+name="description"[\s\S]*?\/>/,
-      `<meta name="description" content="${escapeHtml(page.description)}" />`,
+      `<meta name="description" content="${escapeHtml(description)}" />`,
     ],
     [
       /<meta\s+name="keywords"[\s\S]*?\/>/,
@@ -400,16 +612,41 @@ function renderPage(template, page) {
     ],
     [
       /<meta\s+property="og:description"[\s\S]*?\/>/,
-      `<meta property="og:description" content="${escapeHtml(page.description)}" />`,
+      `<meta property="og:description" content="${escapeHtml(description)}" />`,
     ],
     [/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${escapeHtml(url)}" />`],
     [
       /<meta property="og:image" content="[^"]*" \/>/,
       `<meta property="og:image" content="${escapeHtml(image)}" />`,
     ],
+    // O'lchamlar shablonda 1200×630 deb qotirilgan — bu FAQAT standart
+    // `og-image.png` uchun to'g'ri. Kurs yoki yangilik sahifasida rasm admin
+    // paneldan keladi va o'lchami boshqacha bo'ladi; yolg'on o'lcham bilan
+    // Telegram va Facebook oldindan ko'rishni noto'g'ri kesardi. Rasm
+    // standartdan farq qilsa — o'lchamlarni umuman e'lon qilmaymiz.
+    [
+      /\s*<meta property="og:image:width"[^>]*>\s*<meta property="og:image:height"[^>]*>/,
+      image === absoluteUrl(SITE.ogImage, ORIGIN)
+        ? '\n    <meta property="og:image:width" content="1200" />\n    <meta property="og:image:height" content="630" />'
+        : '',
+    ],
     [
       /<meta property="og:image:alt"[^>]*>/,
       `<meta property="og:image:alt" content="${escapeHtml(page.title)}" />`,
+    ],
+    [
+      /<meta property="og:locale" content="[^"]*" \/>/,
+      `<meta property="og:locale" content="${SITE.ogLocales[locale]}" />`,
+    ],
+    // `og:locale:alternate` shablonda QATTIQ yozilgan (ru_RU, en_US) va ilgari
+    // almashtirilmasdan qolardi: ruscha sahifada asosiy til ham, muqobil til
+    // ham `ru_RU` bo'lib, o'zbekcha versiya umuman e'lon qilinmasdi. Endi
+    // ro'yxat joriy tilni CHIQARIB TASHLAB qayta quriladi.
+    [
+      /<meta property="og:locale:alternate" content="[^"]*" \/>\s*<meta property="og:locale:alternate" content="[^"]*" \/>/,
+      LOCALES.filter((code) => code !== locale)
+        .map((code) => `<meta property="og:locale:alternate" content="${SITE.ogLocales[code]}" />`)
+        .join('\n    '),
     ],
     [
       /<meta name="twitter:title"[\s\S]*?\/>/,
@@ -417,7 +654,7 @@ function renderPage(template, page) {
     ],
     [
       /<meta\s+name="twitter:description"[\s\S]*?\/>/,
-      `<meta name="twitter:description" content="${escapeHtml(page.description)}" />`,
+      `<meta name="twitter:description" content="${escapeHtml(description)}" />`,
     ],
     [
       /<meta name="twitter:image"[^>]*>/,
@@ -441,7 +678,7 @@ function renderPage(template, page) {
       [
         '<noscript>',
         `      <h1>${escapeHtml(page.heading || page.title)}</h1>`,
-        `      <p>${escapeHtml(page.summary || page.description)}</p>`,
+        `      <p>${escapeHtml(page.summary || description)}</p>`,
         ...(page.facts?.length
           ? [
               '      <ul>',
@@ -449,10 +686,8 @@ function renderPage(template, page) {
               '      </ul>',
             ]
           : []),
-        `      <p><a href="/kursy">${escapeHtml(TEXT.navCourses)}</a> · ` +
-          `<a href="/kontakty">${escapeHtml(TEXT.navContacts)}</a> · ` +
-          `<a href="/zayavka">${escapeHtml(TEXT.navApply)}</a></p>`,
-        `      <p>${escapeHtml(TEXT.phone)}: ${escapeHtml(SITE.contacts.phone)}</p>`,
+        `      <p>${nav('/kursy', TEXT.navCourses)} · ${nav('/kontakty', TEXT.navContacts)} · ${nav('/zayavka', TEXT.navApply)}</p>`,
+        `      <p>${escapeHtml(TEXT.phone)}: <a href="tel:${escapeHtml(SITE.contacts.phone.replace(/[^+\d]/g, ''))}">${escapeHtml(SITE.contacts.phone)}</a></p>`,
         '    </noscript>',
       ].join('\n'),
     ],
@@ -465,8 +700,13 @@ function renderPage(template, page) {
 }
 
 /** Prerender qilinadigan sahifalar ro'yxati (statik + backend'dan kelganlari). */
-function collectPages(dynamic) {
-  const crumbHome = { name: resolvePage(STATIC_PAGES[0], LOCALE).heading, path: '/' }
+function collectPages(dynamic, locale) {
+  // Sxemalar shu yerda quriladi, ya'ni til `renderPage` dan OLDIN
+  // o'rnatilishi shart — aks holda ruscha sahifadagi `Course` va `Branch`
+  // tugunlarida shahar nomi va tavsiflar o'zbekcha qolib ketardi.
+  setSchemaLocale(locale)
+  const TEXT = TEXTS[locale]
+  const crumbHome = { name: resolvePage(STATIC_PAGES[0], locale).heading, path: '/' }
 
   /** `/kursy/it-kids` uchun zanjir: Bosh sahifa → Kurslar → IT Kids. */
   const staticCrumbs = (page) => {
@@ -475,7 +715,7 @@ function collectPages(dynamic) {
     const parent = parentPath
       ? resolvePage(
           STATIC_PAGES.find((item) => item.path === parentPath),
-          LOCALE,
+          locale,
         )
       : null
     return [
@@ -489,14 +729,18 @@ function collectPages(dynamic) {
   // crawler'lar (jumladan javob beruvchi tizimlarning bir qismi) uni ko'rmaydi.
   // Shuning uchun statik HTML'ga ham yoziladi.
   const extraSchema = {
-    '/': [faqSchema(dynamic.faqs)],
+    '/': [faqSchema(dynamic.faqs), offerCatalogSchema(dynamic.courses, ORIGIN, locale)],
+    '/kursy': [offerCatalogSchema(dynamic.courses, ORIGIN, locale)],
+    '/kontakty': dynamic.branches.map((branch) =>
+      branchSchema(branch, localeUrl(ORIGIN, `/kontakty/${branch.slug}`, locale)),
+    ),
     '/vakansii': dynamic.vacancies.map((vacancy) =>
-      jobPostingSchema(vacancy, `${ORIGIN}/vakansii`),
+      jobPostingSchema(vacancy, localeUrl(ORIGIN, '/vakansii', locale)),
     ),
   }
 
   const pages = STATIC_PAGES.map((page) => {
-    const localized = resolvePage(page, LOCALE)
+    const localized = resolvePage(page, locale)
     return {
       ...localized,
       breadcrumbs: staticCrumbs(localized),
@@ -516,7 +760,7 @@ function collectPages(dynamic) {
       keywords: [course.title, ...TEXT.courseKeywords],
       image: course.card_image ? absoluteUrl(course.card_image, ORIGIN) : undefined,
       facts: [
-        course.age_range ? `${TEXT.ageLabel}: ${course.age_range} ${TEXT.ageOf}` : null,
+        course.age_range ? `${TEXT.ageLabel}: ${course.age_range}` : null,
         course.duration_months
           ? `${TEXT.durationLabel}: ${course.duration_months} ${TEXT.monthsShort}`
           : null,
@@ -527,7 +771,7 @@ function collectPages(dynamic) {
         { name: TEXT.courses, path: '/kursy' },
         { name: course.title, path },
       ],
-      schema: [courseSchema(course, `${ORIGIN}${path}`)],
+      schema: [courseSchema(course, localeUrl(ORIGIN, path, locale))],
     })
   })
 
@@ -543,7 +787,7 @@ function collectPages(dynamic) {
       keywords: TEXT.newsKeywords,
       image: item.cover ? absoluteUrl(item.cover, ORIGIN) : undefined,
       breadcrumbs: [crumbHome, { name: TEXT.news, path: '/novosti' }, { name: item.title, path }],
-      schema: [articleSchema(item, `${ORIGIN}${path}`)],
+      schema: [articleSchema(item, localeUrl(ORIGIN, path, locale))],
     })
   })
 
@@ -555,10 +799,10 @@ function collectPages(dynamic) {
       heading: `${SITE.name} — ${branch.name}`,
       description: TEXT.branchDescription
         .replace('{name}', branch.name)
-        .replace('{address}', branch.address || pick(SITE.geo.city, LOCALE)),
+        .replace('{address}', branch.address || pick(SITE.geo.city, locale)),
       summary: TEXT.branchSummary
         .replace('{name}', branch.name)
-        .replace('{address}', branch.address || pick(SITE.geo.city, LOCALE)),
+        .replace('{address}', branch.address || pick(SITE.geo.city, locale)),
       keywords: [branch.name, ...TEXT.branchKeywords],
       facts: [
         branch.address ? `${TEXT.addressLabel}: ${branch.address}` : null,
@@ -569,7 +813,7 @@ function collectPages(dynamic) {
         { name: TEXT.navContacts, path: '/kontakty' },
         { name: branch.name, path },
       ],
-      schema: [branchSchema(branch, `${ORIGIN}${path}`)],
+      schema: [branchSchema(branch, localeUrl(ORIGIN, path, locale))],
     })
   })
 
@@ -605,43 +849,84 @@ async function buildRobots() {
 
 // --- Ishga tushirish ------------------------------------------------------
 
+/** Faylni yo'l bo'yicha yozadi (kerakli papkalarni yaratib). */
+async function writePage(pathname, html) {
+  const target = pathname === '/' ? DIST : join(DIST, pathname)
+  await mkdir(target, { recursive: true })
+  await writeFile(join(target, 'index.html'), html, 'utf8')
+}
+
 async function main() {
   const template = await readFile(join(DIST, 'index.html'), 'utf8')
-  const dynamic = await collectDynamic()
 
-  await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(dynamic), 'utf8')
-  await writeFile(join(DIST, 'llms.txt'), buildLlmsTxt(dynamic), 'utf8')
+  // Har bir til uchun backend kontenti alohida olinadi.
+  const byLocale = Object.fromEntries(
+    await Promise.all(LOCALES.map(async (locale) => [locale, await collectDynamic(locale)])),
+  )
+  const base = byLocale[SITE.defaultLocale]
+
+  // Sitemap bitta: slug'lar tillarda bir xil, manzillar esa har bir til uchun
+  // alohida yozuv sifatida chiqadi.
+  await writeFile(join(DIST, 'sitemap.xml'), buildSitemap(base), 'utf8')
   await buildRobots()
 
-  const pages = collectPages(dynamic)
-  for (const page of pages) {
-    const html = renderPage(template, page)
-    if (page.path === '/') {
-      await writeFile(join(DIST, 'index.html'), html, 'utf8')
-      continue
+  let total = 0
+  for (const locale of LOCALES) {
+    const dynamic = byLocale[locale]
+    const prefix = localePath('/', locale)
+    const localeDir = prefix === '/' ? DIST : join(DIST, prefix.slice(1))
+    await mkdir(localeDir, { recursive: true })
+
+    await writeFile(join(localeDir, 'llms.txt'), buildLlmsTxt(dynamic, locale), 'utf8')
+
+    for (const page of collectPages(dynamic, locale)) {
+      await writePage(localePath(page.path, locale), renderPage(template, page, locale))
+      total += 1
     }
-    const dir = join(DIST, page.path)
-    await mkdir(dir, { recursive: true })
-    await writeFile(join(dir, 'index.html'), html, 'utf8')
   }
 
-  log(`sitemap.xml, llms.txt va ${pages.length} ta statik sahifa yaratildi (${ORIGIN})`)
+  // Topilmagan manzil uchun sahifa. Faqat asosiy tilda: Vercel `404.html` ni
+  // butun sayt bo'ylab bitta fayldan beradi, til esa ilova yuklangach
+  // manzildagi prefiksga qarab o'zi to'g'rilanadi (`i18n/language.js`).
+  const notFound = NOT_FOUND_TEXT[SITE.defaultLocale]
+  const notFoundHtml = renderPage(
+    template,
+    {
+      path: '/404',
+      noindex: true,
+      title: notFound.title,
+      heading: notFound.title,
+      description: notFound.description,
+      summary: notFound.description,
+      keywords: [],
+    },
+    SITE.defaultLocale,
+  )
+    // `canonical` va `hreflang` olib tashlanadi: ular MAVJUD manzilni
+    // ko'rsatishi shart, `/404` esa hech qachon mavjud emas. Sahifa
+    // baribir `noindex`, lekin yolg'on belgilarni qoldirishning ma'nosi yo'q.
+    .replace(/\s*<link rel="canonical"[^>]*>/, '')
+    .replace(/\s*<link rel="alternate" hreflang="[a-z-]+"[^>]*>/g, '')
+  await writeFile(join(DIST, '404.html'), notFoundHtml, 'utf8')
 
-  if (!dynamic.failed.length) return
+  log(`sitemap.xml, llms.txt (${LOCALES.length} til) va ${total} ta statik sahifa yaratildi (${ORIGIN})`)
+
+  const failed = base.failed
+  if (!failed.length) return
 
   // API manzili berilgan, lekin backend javob bermadi — bu deploy'dagi
   // haqiqiy nosozlik, "shunchaki lokal muhit" emas.
-  const list = dynamic.failed.join(', ')
+  const list = failed.join(', ')
   const message =
     `Backend javob bermadi (${list}) — sitemap.xml faqat statik sahifalardan iborat. ` +
-    'Kurs, yangilik va filial sahifalari qidiruv tizimlariga ko\u2018rinmaydi.'
+    'Kurs, yangilik va filial sahifalari qidiruv tizimlariga ko‘rinmaydi.'
 
   if (SEO_STRICT) {
     console.error(`[seo] XATOLIK: ${message}`)
     process.exit(1)
   }
 
-  console.warn(`\n[seo] \u26a0\ufe0f  DIQQAT: ${message}\n`)
+  console.warn(`\n[seo] ⚠️  DIQQAT: ${message}\n`)
 }
 
 main().catch((error) => {

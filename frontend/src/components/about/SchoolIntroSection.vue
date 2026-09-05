@@ -41,7 +41,7 @@ const canPlay = computed(() => isPlayable(props.videoUrl))
 </script>
 
 <template>
-  <section v-reveal class="section bg-ink">
+  <section v-if="section.visible" v-reveal class="section bg-ink">
     <div class="container-page grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
       <div>
         <p class="eyebrow">{{ section.eyebrow }}</p>

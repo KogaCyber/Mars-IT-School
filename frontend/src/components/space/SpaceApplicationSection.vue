@@ -22,7 +22,7 @@ const section = useSection('space.application', {
 </script>
 
 <template>
-  <section class="section bg-ink relative overflow-hidden">
+  <section v-if="section.visible" class="section bg-ink relative overflow-hidden">
     <!-- Fon nuri: kartochka ortidan chapga qarab so'nadi -->
     <img
       loading="lazy"

@@ -37,7 +37,7 @@ const ICONS = {
 </script>
 
 <template>
-  <section v-reveal class="section bg-white">
+  <section v-if="section.visible" v-reveal class="section bg-white">
     <div class="container-page">
       <!-- Sarlavha bloki: chapda izoh, markazda yorliq va sarlavha -->
       <header>

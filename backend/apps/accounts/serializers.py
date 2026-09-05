@@ -44,10 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "full_name",
             "avatar",
-            "role",
             "date_joined",
         )
-        read_only_fields = ("id", "email", "role", "date_joined")
+        read_only_fields = ("id", "email", "date_joined")
 
     def validate_avatar(self, file):
         """Avatar — haqiqiy rasm bo'lishi va 2 MB dan oshmasligi kerak.
@@ -100,8 +99,10 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict) -> User:
         password = validated_data.pop("password")
-        # Rolni tashqaridan berib bo'lmaydi — har doim o'quvchi.
-        validated_data["role"] = User.Role.STUDENT
+        # `Meta.fields` da `is_staff`/`is_superuser` yo'q, ya'ni ularni
+        # so'rov orqali berib bo'lmaydi. `create_user()` esa ikkalasini ham
+        # `False` qilib qo'yadi — ro'yxatdan o'tgan odam admin panelga
+        # kira olmaydi.
         return User.objects.create_user(password=password, **validated_data)
 
 
@@ -111,7 +112,6 @@ class TokenObtainSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token["role"] = user.role
         # Parol o'zgarganda barcha eski tokenlarni bekor qilish uchun
         # (apps/accounts/authentication.py).
         token[EPOCH_CLAIM] = user.session_epoch

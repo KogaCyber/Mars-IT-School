@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from 'vitest'
 
-import { SITE, localeAlternates, localeUrl } from '@/data/seoConfig'
+import { SITE, localeAlternates, localePath, localeUrl, splitLocalePath } from '@/data/seoConfig'
 
 const ORIGIN = 'https://marsitschool.uz'
 
@@ -16,14 +16,47 @@ describe('localeUrl', () => {
     expect(localeUrl(ORIGIN, '/o-nas', SITE.defaultLocale)).toBe(`${ORIGIN}/o-nas`)
   })
 
-  it('boshqa tillarga `?lang=` qo\'shadi', () => {
-    expect(localeUrl(ORIGIN, '/o-nas', 'ru')).toBe(`${ORIGIN}/o-nas?lang=ru`)
-    expect(localeUrl(ORIGIN, '/o-nas', 'en')).toBe(`${ORIGIN}/o-nas?lang=en`)
+  it("boshqa tillar YO'L PREFIKSI bilan beriladi", () => {
+    // So'rov parametri emas, aynan prefiks: statik hostingda faqat shunday
+    // qilib har bir tilga o'z HTML fayli beriladi (JS ishlatmaydigan
+    // robotlar uchun bu yagona yo'l).
+    expect(localeUrl(ORIGIN, '/o-nas', 'ru')).toBe(`${ORIGIN}/ru/o-nas`)
+    expect(localeUrl(ORIGIN, '/o-nas', 'en')).toBe(`${ORIGIN}/en/o-nas`)
   })
 
-  it('bosh sahifada ham to\'g\'ri ishlaydi', () => {
+  it("bosh sahifada ham to'g'ri ishlaydi", () => {
     expect(localeUrl(ORIGIN, '/', SITE.defaultLocale)).toBe(`${ORIGIN}/`)
-    expect(localeUrl(ORIGIN, '/', 'ru')).toBe(`${ORIGIN}/?lang=ru`)
+    expect(localeUrl(ORIGIN, '/', 'ru')).toBe(`${ORIGIN}/ru`)
+  })
+
+  it('noma\'lum til asosiy tilga tushadi', () => {
+    expect(localeUrl(ORIGIN, '/kursy', 'de')).toBe(`${ORIGIN}/kursy`)
+  })
+})
+
+describe('splitLocalePath', () => {
+  it('prefiksni ajratadi', () => {
+    expect(splitLocalePath('/ru/kursy')).toEqual({ locale: 'ru', path: '/kursy' })
+    expect(splitLocalePath('/en')).toEqual({ locale: 'en', path: '/' })
+  })
+
+  it('prefikssiz manzil asosiy tilda qoladi', () => {
+    expect(splitLocalePath('/kursy')).toEqual({ locale: SITE.defaultLocale, path: '/kursy' })
+  })
+
+  it("til kodiga o'xshash slug'ni prefiks deb o'ylamaydi", () => {
+    // `/uz` asosiy til — prefiks emas; boshqa ikki harfli bo'lak ham emas.
+    expect(splitLocalePath('/kursy/it-kids')).toEqual({
+      locale: SITE.defaultLocale,
+      path: '/kursy/it-kids',
+    })
+  })
+
+  it('localePath bilan teskari amal bajariladi', () => {
+    for (const locale of SITE.locales) {
+      const full = localePath('/kontakty', locale)
+      expect(splitLocalePath(full)).toEqual({ locale, path: '/kontakty' })
+    }
   })
 })
 

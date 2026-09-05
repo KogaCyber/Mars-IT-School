@@ -35,7 +35,7 @@ function displayNumber(item, index) {
 </script>
 
 <template>
-  <section v-if="props.items.length" v-reveal class="section bg-ink">
+  <section v-if="section.visible && props.items.length" v-reveal class="section bg-ink">
     <div class="container-page">
       <p class="eyebrow">{{ section.eyebrow }}</p>
 

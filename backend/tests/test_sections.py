@@ -58,6 +58,11 @@ def test_content_endpoint_splits_item_list_into_lines(api):
 
 
 def test_unpublished_section_is_hidden(api):
+    """Yashirilgan bo'lim `is_published: false` bilan, matnsiz qaytadi.
+
+    Javobdan butunlay olib tashlansa, sayt uni «admin panelda hech narsa
+    yozilmagan» deb hisoblab, maketdagi standart matn bilan ko'rsatib qo'yardi.
+    """
     sync_sections()
     section = PageSection.objects.get(key="home.faq")
     section.is_published = False
@@ -65,8 +70,21 @@ def test_unpublished_section_is_hidden(api):
 
     response = api.get(reverse("v1:content"))
 
-    assert "home.faq" not in response.data
-    assert "home.hero" in response.data
+    assert response.data["home.faq"]["is_published"] is False
+    assert "title" not in response.data["home.faq"]
+    assert response.data["home.hero"]["is_published"] is True
+
+
+def test_section_that_cannot_be_hidden_stays_published(api):
+    """Yashirib bo'lmaydigan bo'lim (podval) belgisi o'chirilsa ham ko'rinadi."""
+    sync_sections()
+    section = PageSection.objects.get(key="common.footer")
+    section.is_published = False
+    section.save()
+
+    response = api.get(reverse("v1:content"))
+
+    assert response.data["common.footer"]["is_published"] is True
 
 
 def test_unpublished_item_is_hidden(api):

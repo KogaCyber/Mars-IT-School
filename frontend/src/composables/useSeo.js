@@ -73,6 +73,27 @@ function upsertLink(rel, href, extra = {}) {
   tag.setAttribute('href', href)
 }
 
+/**
+ * Bir xil nomdagi bir nechta meta-teg (`og:locale:alternate`) — ro'yxatni
+ * to'liq qayta yozadi. `upsertMeta` bunga yaramaydi: u faqat BIRINCHISINI
+ * topib yangilaydi, qolganlari shablondan qolib ketardi.
+ */
+function replaceMetaList(property, values) {
+  const head = document.head
+  head.querySelectorAll(`meta[property="${property}"]`).forEach((tag) => tag.remove())
+  values.forEach((value) => {
+    const tag = document.createElement('meta')
+    tag.setAttribute('property', property)
+    tag.setAttribute('content', value)
+    head.appendChild(tag)
+  })
+}
+
+/** Sahifaga tegishli bo'lmagan meta-tegni olib tashlaydi. */
+function removeMeta(attr, key) {
+  document.head.querySelector(`meta[${attr}="${key}"]`)?.remove()
+}
+
 function writeJsonLd(graph) {
   const existing = document.getElementById(JSONLD_ID)
   if (!graph) {
@@ -149,11 +170,15 @@ export function useSeo(source) {
 
     upsertMeta('name', 'description', description)
     if (keywords?.length) upsertMeta('name', 'keywords', keywords.join(', '))
+    else removeMeta('name', 'keywords')
     upsertMeta(
       'name',
       'robots',
+      // `follow` — sahifa indeksga tushmaydi, lekin undagi ichki havolalar
+      // baribir kuzatiladi. `generate-seo.mjs` ham aynan shu qiymatni yozadi;
+      // ilgari ikkalasi farq qilardi (`nofollow` va `follow`).
       noindex
-        ? 'noindex, nofollow'
+        ? 'noindex, follow'
         : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
     )
 
@@ -170,14 +195,37 @@ export function useSeo(source) {
     upsertMeta('property', 'og:description', description)
     upsertMeta('property', 'og:url', url)
     upsertMeta('property', 'og:image', image)
+    // Shablondagi 1200×630 faqat standart `og-image.png` ga tegishli. Kurs yoki
+    // yangilik rasmida o'lcham boshqacha — yolg'on qiymat qolsa Telegram va
+    // Facebook oldindan ko'rishni noto'g'ri kesadi.
+    if (image === absoluteUrl(SITE.ogImage, origin)) {
+      upsertMeta('property', 'og:image:width', '1200')
+      upsertMeta('property', 'og:image:height', '630')
+    } else {
+      removeMeta('property', 'og:image:width')
+      removeMeta('property', 'og:image:height')
+    }
     upsertMeta('property', 'og:image:alt', title || SITE.name)
     upsertMeta(
       'property',
       'og:locale',
       SITE.ogLocales[locale] || SITE.ogLocales[SITE.defaultLocale],
     )
+    // Muqobil tillar — joriy tildan TASHQARI qolganlari. Shablonda ular
+    // qattiq yozilgan (`ru_RU`, `en_US`), ya'ni ruscha sahifada asosiy til ham,
+    // muqobil til ham `ru_RU` bo'lib qolardi.
+    replaceMetaList(
+      'og:locale:alternate',
+      SITE.locales.filter((code) => code !== locale).map((code) => SITE.ogLocales[code]),
+    )
+
+    // Yangilikdan boshqa sahifaga o'tilganda maqola sanalari qolib ketmasin:
+    // `<head>` SPA'da bir marta yasaladi va tozalanmasa oldingi sahifaning
+    // sanasi yangi sahifada ham turaverardi.
     if (meta.publishedAt) upsertMeta('property', 'article:published_time', meta.publishedAt)
+    else removeMeta('property', 'article:published_time')
     if (meta.modifiedAt) upsertMeta('property', 'article:modified_time', meta.modifiedAt)
+    else removeMeta('property', 'article:modified_time')
 
     // --- Twitter / X ---
     upsertMeta('name', 'twitter:card', 'summary_large_image')

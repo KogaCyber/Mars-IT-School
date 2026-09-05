@@ -52,8 +52,16 @@ ITEM_TEXT_FIELDS = ("value", "label", "title", "text", "note", "list")
 ITEM_PLAIN_FIELDS = ("icon_name", "icon", "image", "url")
 
 
-def _s(key, page, name, hint, fields, *, items=None, item_name=None, item_hint=""):
-    """Bitta bo'lim tavsifi."""
+def _s(
+    key, page, name, hint, fields, *, items=None, item_name=None, item_hint="", hideable=True
+):
+    """Bitta bo'lim tavsifi.
+
+    `hideable=False` — bo'limni saytdan butunlay yashirib bo'lmaydi: u alohida
+    blok emas, balki sayt ishlashi uchun zarur matn (test qadamlari, umumiy
+    tugmalar matni, podval). Bunday bo'limda admin panelda «saytda
+    ko'rsatilsin» belgisi ko'rsatilmaydi.
+    """
     return {
         "key": key,
         "page": page,
@@ -63,6 +71,7 @@ def _s(key, page, name, hint, fields, *, items=None, item_name=None, item_hint="
         "items": tuple(items) if items else (),
         "item_name": item_name or _("Element"),
         "item_hint": item_hint,
+        "hideable": hideable,
     }
 
 
@@ -399,18 +408,21 @@ SECTIONS: list[dict] = [
         _("1. Test boshlanishi — salomlashuv va izoh"),
         _("«Salom, bo'lajak dasturchi!» sarlavhasi va uning ostidagi matn."),
         ("title", "subtitle", "text"),
+        hideable=False,
     ),
     _s(
         "quiz.contact", "quiz",
         _("2. «Deyarli tayyor!» — kontakt qadami"),
         _("Test oxiridagi kontakt so'raladigan qadam matni va tugmasi."),
         ("title", "text", "button_label"),
+        hideable=False,
     ),
     _s(
         "quiz.result", "quiz",
         _("3. Natija sahifasi — sarlavhalar"),
         _("«Natijangiz tayyor!» sarlavhasi va ko'nikmalar bo'limi yorliqlari."),
         ("title", "eyebrow", "subtitle", "text"),
+        hideable=False,
     ),
 
     # ------------------------------- Umumiy ------------------------------
@@ -419,6 +431,7 @@ SECTIONS: list[dict] = [
         _("«Bepul sinov darsi» — ariza bloki (barcha sahifalarda)"),
         _("Yorliq, sarlavha va izoh. Kontaktlar sahifasida o'z varianti bor."),
         ("eyebrow", "title", "text"),
+        hideable=False,
     ),
     _s(
         "common.buttons", "common",
@@ -426,6 +439,7 @@ SECTIONS: list[dict] = [
         _("«Bepul sinov darsiga yozilish» va «Kurslarni ko'rish» tugmalari — "
           "sayt bo'ylab bir xil."),
         ("button_label", "button2_label"),
+        hideable=False,
     ),
     _s(
         "common.footer", "common",
@@ -433,6 +447,7 @@ SECTIONS: list[dict] = [
         _("Podvaldagi qisqa matn va mualliflik yozuvi. Telefon, ijtimoiy tarmoqlar — "
           "«Sayt sozlamalari»da."),
         ("text", "note"),
+        hideable=False,
     ),
 ]
 

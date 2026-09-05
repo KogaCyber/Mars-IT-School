@@ -115,4 +115,6 @@ class VacancyApplication(TimeStampedModel):
         ordering = ["-created_at"]
 
     def __str__(self) -> str:
-        return f"{self.full_name} — {self.vacancy_id}"
+        # Vakansiyaning NOMI — xom ObjectId emas (admin sarlavhasi uchun).
+        vacancy = self.vacancy.tr("title") if self.vacancy_id and self.vacancy else "—"
+        return f"{self.full_name} — {vacancy}"

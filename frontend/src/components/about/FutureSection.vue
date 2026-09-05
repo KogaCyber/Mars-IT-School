@@ -21,7 +21,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="items.length" v-reveal class="section bg-white">
+  <section v-if="section.visible && items.length" v-reveal class="section bg-white">
     <div class="container-page">
       <!-- Sarlavha bloki -->
       <header class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-16">

@@ -109,7 +109,7 @@ watch(
 
 <template>
   <section
-    v-if="items.length"
+    v-if="section.visible && items.length"
     v-reveal
     class="section bg-ink relative overflow-hidden"
     @mouseenter="pause"

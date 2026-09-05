@@ -23,6 +23,9 @@ const props = defineProps({
 })
 
 const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [props.title]))
+
+/** Kurs rasmining matni — kurs nomidan (Google Rasmlar uchun ham manba). */
+const imageAlt = computed(() => `${titleLines.value.join(' ')} — MARS IT School`)
 </script>
 
 <template>
@@ -71,6 +74,7 @@ const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [p
           decoding="async"
           :src="glow"
           alt=""
+          aria-hidden="true"
           class="pointer-events-none absolute top-1/2 left-1/2 w-[135%] max-w-none -translate-x-1/2 -translate-y-1/2 select-none"
         />
 
@@ -78,7 +82,7 @@ const titleLines = computed(() => (Array.isArray(props.title) ? props.title : [p
           decoding="async"
           fetchpriority="high"
           :src="image"
-          alt=""
+          :alt="imageAlt"
           class="animate-float relative mx-auto w-[78%] max-w-125 object-contain sm:w-[62%] lg:w-110 lg:max-w-none"
         />
       </div>

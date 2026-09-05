@@ -1,95 +1,65 @@
 # MARS IT School — https://marsitschool.uz
 # Sayt to'liq ochiq: qidiruv tizimlari ham, javob beruvchi (AI) tizimlar ham
 # kontentni indekslashi va iqtibos keltirishi mumkin.
+#
+# DIQQAT — robot FAQAT bitta guruhga bo'ysunadi: o'z nomi yozilgan guruh
+# bo'lsa, `User-agent: *` ni umuman o'qimaydi. Shuning uchun cheklovlar
+# (shaxsiy test natijalari va dublikat yaratuvchi UTM manzillari) HAR BIR
+# guruhda takrorlanadi — aks holda aynan nomlangan robotlar uchun ular
+# ishlamay qolardi.
 
 User-agent: *
 Allow: /
-
-# Test natijasi — har bir foydalanuvchi uchun shaxsiy, indeksga kerak emas
 Disallow: /test/rezultat/
-
-# Texnik parametrlar dublikat sahifa yaratmasin
 Disallow: /*?*utm_
 Disallow: /*?*fbclid=
 Disallow: /*?*gclid=
 
 # --- Qidiruv robotlari ---
 User-agent: Googlebot
-Allow: /
-Disallow: /test/rezultat/
-
 User-agent: Googlebot-Image
-Allow: /
-
 User-agent: Bingbot
-Allow: /
-Disallow: /test/rezultat/
-
 User-agent: YandexBot
+User-agent: Applebot
 Allow: /
 Disallow: /test/rezultat/
+Disallow: /*?*utm_
+Disallow: /*?*fbclid=
+Disallow: /*?*gclid=
 
 # --- Javob beruvchi va LLM tizimlari (AEO / GEO / LLMO) ---
 # Ularga ruxsat berilgani sayt ChatGPT, Claude, Perplexity, Gemini va
 # AI Overviews javoblarida manba sifatida ko'rinishi uchun kerak.
 User-agent: GPTBot
-Allow: /
-
 User-agent: OAI-SearchBot
-Allow: /
-
 User-agent: ChatGPT-User
-Allow: /
-
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: Claude-User
-Allow: /
-
 User-agent: Claude-SearchBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: PerplexityBot
-Allow: /
-
 User-agent: Perplexity-User
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
-
-User-agent: Applebot
-Allow: /
-
 User-agent: Applebot-Extended
-Allow: /
-
 User-agent: Bingbot-Extended
-Allow: /
-
 User-agent: meta-externalagent
-Allow: /
-
 User-agent: CCBot
-Allow: /
-
 User-agent: Amazonbot
-Allow: /
-
 User-agent: cohere-ai
-Allow: /
-
 User-agent: YouBot
-Allow: /
-
 User-agent: DuckAssistBot
-Allow: /
-
 User-agent: MistralAI-User
+User-agent: Bytespider
+User-agent: PetalBot
+User-agent: Timpibot
+User-agent: Diffbot
+User-agent: omgili
+User-agent: Firecrawl
 Allow: /
+Disallow: /test/rezultat/
+Disallow: /*?*utm_
+Disallow: /*?*fbclid=
+Disallow: /*?*gclid=
 
+# Sayt xaritasi — uchala tilning manzillari bitta faylda, `hreflang` bilan.
 Sitemap: https://marsitschool.uz/sitemap.xml

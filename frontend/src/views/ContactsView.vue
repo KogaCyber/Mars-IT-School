@@ -40,6 +40,7 @@ useSeo(() => ({
 
 <template>
   <PageHero
+    v-if="hero.visible"
     :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },
@@ -63,6 +64,7 @@ useSeo(() => ({
   <BranchesSection />
 
   <TrialLessonSection
+    v-if="trial.visible"
     source="contacts"
     :title="trial.titleLines"
     :description="trial.text"

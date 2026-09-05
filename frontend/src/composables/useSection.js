@@ -6,6 +6,7 @@
  *     text: 'home.heroText',
  *   })
  *
+ *   hero.visible      // blok saytda ko'rinadimi (admin paneldagi belgi)
  *   hero.title        // matn
  *   hero.titleLines   // qatorlarga bo'lingan sarlavha (maketda ko'p qatorli)
  *   hero.image        // admin panelda yuklangan rasm yoki null
@@ -53,6 +54,9 @@ export function useSection(key, fallbacks = {}) {
     }
 
     const section = {
+      // Admin panelda «saytda ko'rsatilsin» olib tashlangan bo'lsa — blok
+      // umuman chizilmaydi (komponentda `v-if="section.visible"`).
+      visible: data.is_published !== false,
       items: data.items ?? [],
       image: data.image || null,
       image2: data.image2 || null,
@@ -67,6 +71,20 @@ export function useSection(key, fallbacks = {}) {
 
     return section
   })
+}
+
+/**
+ * Bo'lim saytda ko'rinadimi — blokni ota-komponentdan yashirish uchun.
+ *
+ * Odatda blok o'z ichida `v-if="section.visible"` bilan yashiriladi. Bu yordamchi
+ * esa blok boshqa komponent ichida direktiva bilan chaqirilganda kerak bo'ladi
+ * (`v-reveal` ildiz elementni talab qiladi).
+ *
+ * @param {string} key bo'lim kaliti
+ */
+export function useSectionVisible(key) {
+  const store = useContentStore()
+  return computed(() => store.get(key).is_published !== false)
 }
 
 /**

@@ -22,7 +22,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="items.length" v-reveal class="section bg-ink">
+  <section v-if="section.visible && items.length" v-reveal class="section bg-ink">
     <div class="container-page">
       <header class="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end lg:gap-16">
         <div>

@@ -39,7 +39,7 @@ const ICONS = {
 </script>
 
 <template>
-  <section v-reveal class="section bg-ink">
+  <section v-if="section.visible" v-reveal class="section bg-ink">
     <div class="container-page">
       <p class="eyebrow">{{ section.eyebrow }}</p>
 

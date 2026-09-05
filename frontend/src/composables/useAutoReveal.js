@@ -119,8 +119,14 @@ export function useAutoReveal(rootSelector = '#main') {
         if (touched.size >= MAX_ELEMENTS) return
         if (touched.has(el)) return
         if (el.closest(SKIP)) return
-        // Qo'lda `v-reveal` yozilgan elementlar o'z sozlamalari bilan ishlaydi.
-        if (el.classList.contains('reveal')) {
+        // Qo'lda `v-reveal` yozilgan elementlar o'z direktivasi bilan ishlaydi
+        // (unda o'z kuzatuvchisi va zaxira taymeri bor) — ularga tegilmaydi.
+        if (el._reveal) {
+          touched.add(el)
+          return
+        }
+        // Allaqachon ochilgan element qayta yashirilmaydi.
+        if (el.classList.contains('is-revealed')) {
           touched.add(el)
           return
         }
@@ -131,6 +137,10 @@ export function useAutoReveal(rootSelector = '#main') {
           return
         }
         if (state === 'never') {
+          // Ekrandan yuqorida qolgan element kuzatilmaydi. Agar unda oldingi
+          // skanerdan `reveal` sinfi qolgan bo'lsa, uni shu yerda ochib
+          // qo'yamiz — aks holda u butunlay ko'rinmas bo'lib qolardi.
+          if (el.classList.contains('reveal')) reveal(el)
           touched.add(el)
           return
         }

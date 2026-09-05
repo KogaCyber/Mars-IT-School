@@ -19,6 +19,7 @@
  * @property {string} space_app_ios_url
  * @property {string} space_app_android_url
  * @property {string} privacy_policy_url
+ * @property {string} offer_url
  *
  * @typedef {Object} Course
  * @property {string} id

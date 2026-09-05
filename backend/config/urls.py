@@ -10,7 +10,7 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
-from apps.core.views import health_view, staff_required
+from apps.core.views import health_view, robots_view, staff_required
 from apps.vacancies.views import resume_download_view
 
 # Admin panel sarlavhalari va sahifalar bo'yicha guruhlash —
@@ -29,7 +29,11 @@ api_v1 = [
 ]
 
 # /health/ ikkala rolda ham ochiq — Railway healthcheck har bir xizmatga tegadi.
-urlpatterns = [path("health/", health_view, name="health")]
+# /robots.txt — API domenini qidiruv indeksidan chiqarib turadi (robots_view).
+urlpatterns = [
+    path("health/", health_view, name="health"),
+    path("robots.txt", robots_view, name="robots"),
+]
 
 if settings.SERVICE_HAS_ADMIN:
     urlpatterns += [

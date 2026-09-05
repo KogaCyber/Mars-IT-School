@@ -21,7 +21,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="items.length" v-reveal class="section bg-ink relative overflow-hidden">
+  <section v-if="section.visible && items.length" v-reveal class="section bg-ink relative overflow-hidden">
     <!-- Fon nuri -->
     <img
       loading="lazy"

@@ -136,6 +136,58 @@
     color: var(--body-quiet-color);
   }
 
+  /* Faqat o'qish uchun jadvallar: test javoblari, ballar, ko'nikmalar.
+     Xom JSON o'rniga — odam o'qiy oladigan jadval. */
+  .mars-answers {
+    width: 100%;
+    max-width: 60rem;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+
+  .mars-answers th,
+  .mars-answers td {
+    padding: 0.35rem 0.7rem 0.35rem 0;
+    border-bottom: 1px solid var(--hairline-color);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .mars-answers th {
+    color: var(--body-quiet-color);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .mars-answers tr:last-child td {
+    border-bottom: 0;
+  }
+
+  /* Ko'nikmalar diagrammasi — foizni raqamsiz ham ko'rish uchun.
+     Fon chizig'i 100% ni bildiradi, ranglisi — natijani. */
+  .mars-answers .mars-bar-cell {
+    width: 100%;
+    min-width: 12rem;
+    padding-right: 0.9rem;
+  }
+
+  .mars-answers .mars-bar-track {
+    display: block;
+    width: 100%;
+    max-width: 22rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    background: var(--hairline-color);
+  }
+
+  .mars-answers .mars-bar {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--primary);
+  }
+
   /* Chap menyuda izohlar chiqmaydi — u yerda faqat nomlar qoladi */
   #nav-sidebar .mars-section-where,
   #nav-sidebar .mars-section-what,

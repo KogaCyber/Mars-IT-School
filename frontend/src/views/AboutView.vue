@@ -31,16 +31,9 @@ import PageHero from '@/components/layout/PageHero.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
 import { useSection } from '@/composables/useSection'
 import { useSeo } from '@/composables/useSeo'
+import { personSchema } from '@/utils/schema'
 
 const { t } = useI18n()
-
-// Sarlavha va tavsif `data/seoConfig.js` dan joriy tilda olinadi.
-useSeo(() => ({
-  breadcrumbs: [
-    { name: t('pages.breadcrumbHome'), path: '/' },
-    { name: t('nav.about'), path: '/o-nas' },
-  ],
-}))
 
 const { data: advantages } = useAsyncData(fetchAdvantages, [])
 const { data: futureBenefits } = useAsyncData(fetchFutureBenefits, [])
@@ -59,6 +52,23 @@ const { data: teachers } = useAsyncData(async () => {
   return Array.isArray(response) ? response : (response?.results ?? [])
 }, [])
 
+// Sarlavha va tavsif `data/seoConfig.js` dan joriy tilda olinadi.
+useSeo(() => ({
+  breadcrumbs: [
+    { name: t('pages.breadcrumbHome'), path: '/' },
+    { name: t('nav.about'), path: '/o-nas' },
+  ],
+  /**
+   * O'qituvchilar — `Person` tugunlari.
+   *
+   * «Kim dars beradi?» javob beruvchi tizimlarga eng ko'p beriladigan
+   * savollardan biri, va jonli mutaxassislar ro'yxati maktabga bo'lgan
+   * ishonch signalini (E-E-A-T) ko'taradi. Ilgari bu ma'lumot faqat
+   * rasmlar va matn ichida edi — mashina uchun o'qilmasdi.
+   */
+  schema: (teachers.value || []).map(personSchema).filter(Boolean),
+}))
+
 // Sahifa tepasidagi sarlavha va rasm — admin paneldan
 // («Biz haqimizda» bo'limlari → «Hero»).
 const hero = useSection('about.hero', { title: 'about.heroTitle' })
@@ -66,6 +76,7 @@ const hero = useSection('about.hero', { title: 'about.heroTitle' })
 
 <template>
   <PageHero
+    v-if="hero.visible"
     :title="hero.titleLines"
     :breadcrumbs="[
       { label: t('pages.breadcrumbHome'), to: { name: 'home' } },

@@ -12,7 +12,12 @@
     </p>
     {% if mars_section_what %}
       <p class="mars-help-what">
-        {% translate 'O‘zgartirish mumkin:' %} {{ mars_section_what }}
+        {% if mars_section_readonly %}
+          {% translate 'Bu yerda ko‘rinadi:' %}
+        {% else %}
+          {% translate 'O‘zgartirish mumkin:' %}
+        {% endif %}
+        {{ mars_section_what }}
       </p>
     {% endif %}
   </div>

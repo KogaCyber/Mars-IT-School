@@ -78,7 +78,7 @@ function goToPage(value) {
 </script>
 
 <template>
-  <section class="section bg-ink">
+  <section v-if="section.visible" class="section bg-ink">
     <div class="container-page">
       <div v-reveal class="flex flex-wrap items-end justify-between gap-x-10 gap-y-8">
         <div>

@@ -36,6 +36,7 @@ class SiteSettingsSerializer(TranslatedSerializerMixin, serializers.ModelSeriali
             "space_app_ios_url",
             "space_app_android_url",
             "privacy_policy_url",
+            "offer_url",
             "promo_video_url",
             "promo_video",
             "promo_cover",
@@ -153,10 +154,33 @@ class PageSectionSerializer(TranslatedSerializerMixin, serializers.ModelSerializ
         "button2_label",
     )
     items = serializers.SerializerMethodField()
+    is_published = serializers.SerializerMethodField()
 
     class Meta:
         model = PageSection
-        fields = ("key", "page", "order", "button_url", "button2_url", "image", "image2", "items")
+        fields = (
+            "key",
+            "page",
+            "order",
+            "is_published",
+            "button_url",
+            "button2_url",
+            "image",
+            "image2",
+            "items",
+        )
+
+    def get_is_published(self, obj) -> bool:
+        """Blok saytda ko'rinadimi.
+
+        Yashirib bo'lmaydigan bo'lim (test qadamlari, umumiy tugmalar, podval)
+        har doim ko'rinadi — u alohida blok emas, sayt ishlashi uchun kerak
+        bo'lgan matn.
+        """
+        from .sections import SECTION_INDEX
+
+        spec = SECTION_INDEX.get(obj.key, {})
+        return bool(obj.is_published) if spec.get("hideable", True) else True
 
     def get_items(self, obj) -> list:
         items = [item for item in obj.items.all() if item.is_published]

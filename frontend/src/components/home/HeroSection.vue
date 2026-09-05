@@ -31,7 +31,7 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
 </script>
 
 <template>
-  <section class="bg-ink overflow-hidden">
+  <section v-if="hero.visible" class="bg-ink overflow-hidden">
     <div
       class="container-page grid items-center gap-[6%] pt-[8%] pb-[var(--spacing-section)] lg:min-h-[34rem] lg:grid-cols-[1.05fr_1fr] lg:gap-[4%] lg:pt-[4%]"
     >
@@ -68,12 +68,19 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
         </div>
       </div>
 
-      <!-- Rasm: mobil ekranda matndan keyin keladi -->
-      <div class="relative order-2 mt-[8%] lg:mt-0" aria-hidden="true">
+      <!--
+        Rasm: mobil ekranda matndan keyin keladi.
+
+        Ilgari butun blok `aria-hidden` edi va astronavtning `alt`i bo'sh
+        edi — ya'ni saytning ASOSIY tasviri skrinrider uchun ham, Google
+        Rasmlar uchun ham mavjud emas edi. Endi astronavtning o'z matni bor,
+        orbitalar esa aniq bezak deb belgilangan.
+      -->
+      <div class="relative order-2 mt-[8%] lg:mt-0">
         <img
           decoding="async"
           :src="heroImage"
-          alt=""
+          :alt="t('seo.heroImageAlt')"
           fetchpriority="high"
           class="animate-float mx-auto w-[78%] max-w-[32rem] object-contain sm:w-[62%] lg:w-full lg:max-w-none"
         />
@@ -83,6 +90,7 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
           decoding="async"
           :src="orbit1"
           alt=""
+          aria-hidden="true"
           class="animate-glow absolute top-[47%] left-[18%] hidden w-[58%] xl:block"
         />
         <img
@@ -90,6 +98,7 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
           decoding="async"
           :src="orbit2"
           alt=""
+          aria-hidden="true"
           class="animate-glow absolute top-[48%] left-0 hidden w-[58%] xl:block"
         />
       </div>

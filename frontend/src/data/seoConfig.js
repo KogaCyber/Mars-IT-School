@@ -19,18 +19,44 @@ const L = (uz, ru, en) => ({ uz, ru, en })
 /**
  * Sahifaning MA'LUM BIR TILDAGI manzili.
  *
- * Nega kerak: ilgari `hreflang="uz"`, `hreflang="ru"` va `hreflang="en"`
- * uchalasi BIR XIL manzilga ishora qilardi. Bu hreflang qoidasini buzadi —
- * har bir til alohida URL'da bo'lishi shart, aks holda Google belgini
- * butunlay e'tiborsiz qoldiradi va saytdan faqat bitta til indekslanadi.
+ * Nega yo'l prefiksi (`/ru/kursy`), `?lang=ru` emas:
  *
- * Til foydalanuvchi tomonida almashadi, shuning uchun eng kam qarshilikli
- * to'g'ri yechim — `?lang=` parametri. Asosiy til (uz) parametrsiz qoladi,
- * shunda mavjud havolalar va ulashilgan manzillar o'zgarmaydi.
+ *  1. Statik hostingda (Vercel) so'rov parametri BOSHQA fayl bera olmaydi —
+ *     `?lang=ru` bilan kelgan robotga ham o'zbekcha HTML ketardi. Ya'ni
+ *     hreflang uchta manzilni e'lon qilardi-yu, uchalasi ham bir xil tildagi
+ *     sahifani qaytarardi.
+ *  2. Javob beruvchi tizimlarning aksariyati (GPTBot, ClaudeBot,
+ *     PerplexityBot, CCBot) JavaScript'ni UMUMAN ishlatmaydi. Ular uchun
+ *     saytning ruscha va inglizcha versiyasi mavjud emas edi — bu Toshkent
+ *     uchun eng katta yo'qotish, chunki qidiruvlarning katta qismi ruscha.
+ *
+ * Yo'l prefiksi bilan har bir til o'z faylida (`dist/ru/kursy/index.html`)
+ * yotadi va JS'siz ham to'liq o'qiladi. Asosiy til (uz) prefikssiz qoladi,
+ * shuning uchun mavjud havolalar o'zgarmaydi.
  */
 export function localeUrl(origin, path, locale) {
-  const base = `${origin}${path === '/' ? '/' : path.replace(/\/$/, '')}`
-  return locale === SITE.defaultLocale ? base : `${base}?lang=${locale}`
+  return `${origin}${localePath(path, locale)}`
+}
+
+/** Sahifaning ma'lum bir tildagi YO'LI (domensiz). */
+export function localePath(path, locale) {
+  const clean = path === '/' ? '/' : `/${String(path).replace(/^\/+|\/+$/g, '')}`
+  if (locale === SITE.defaultLocale || !SITE.locales.includes(locale)) return clean
+  return clean === '/' ? `/${locale}` : `/${locale}${clean}`
+}
+
+/**
+ * Manzildan til prefiksini ajratadi.
+ * @returns {{locale: string, path: string}}
+ */
+export function splitLocalePath(pathname) {
+  const match = /^\/([a-z]{2})(\/|$)/.exec(String(pathname || '/'))
+  const code = match?.[1]
+  if (code && code !== SITE.defaultLocale && SITE.locales.includes(code)) {
+    const rest = String(pathname).slice(code.length + 1) || '/'
+    return { locale: code, path: rest.startsWith('/') ? rest : `/${rest}` }
+  }
+  return { locale: SITE.defaultLocale, path: String(pathname || '/') }
 }
 
 /** Sahifaning barcha til variantlari — `hreflang` va sitemap uchun. */
@@ -68,6 +94,39 @@ export const SITE = {
     phone: '+998 78 777 77 57',
     email: 'info@marsitschool.uz',
   },
+  /**
+   * Odamlar maktabni qanday nomlaydi.
+   *
+   * Qidiruvda «MARS IT School» deb yozadiganlar oz. Ko'pchilik «IT o'quv
+   * markazi», «IT kurslar», «kompyuter kurslari», «учебный центр» deb
+   * qidiradi. Bu nomlar `Organization.alternateName`ga, llms.txt'ga va
+   * sahifa kalit so'zlariga tushadi — shunda maktab aynan shu so'rovlar
+   * bo'yicha ham topiladi.
+   */
+  alternateNames: [
+    'MARS IT',
+    'Mars IT School Tashkent',
+    'MARS IT o‘quv markazi',
+    'MARS IT kurslari',
+    'МАРС АЙТИ',
+    'MARS IT учебный центр',
+    'MARS IT школа программирования',
+  ],
+  /**
+   * Toshkentning maktab xizmat ko'rsatadigan tumanlari — lokal qidiruv (GEO)
+   * uchun. «Chilonzorda IT kurslari» kabi so'rovlar aynan shu ro'yxat orqali
+   * mos keladi.
+   */
+  districts: L(
+    ['Yunusobod', 'Chilonzor', 'Mirobod', 'Shayxontohur', 'Yashnobod', 'Sergeli', 'Mirzo Ulug‘bek'],
+    ['Юнусабадский', 'Чиланзарский', 'Мирабадский', 'Шайхантахурский', 'Яшнабадский', 'Сергелийский', 'Мирзо-Улугбекский'],
+    ['Yunusabad', 'Chilanzar', 'Mirabad', 'Shaykhantakhur', 'Yashnabad', 'Sergeli', 'Mirzo Ulugbek'],
+  ),
+  /** Qabul va darslar vaqti — LocalBusiness sxemasi va lokal qidiruv uchun. */
+  openingHours: [
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '20:00' },
+    { days: ['Saturday'], opens: '09:00', closes: '18:00' },
+  ],
   social: [
     'https://t.me/marsitschool',
     'https://www.instagram.com/marsitschool',
@@ -100,10 +159,13 @@ export const STATIC_PAGES = [
   {
     path: '/',
     name: 'home',
+    // Sarlavha qidiruv natijasida kesilmasligi uchun qisqa: brend nomi
+    // (`— MARS IT School`) `useSeo` da qo'shiladi, ya'ni bu yerdagi matn
+    // ~45 belgidan oshmasligi kerak.
     title: L(
-      'Toshkentda bolalar uchun dasturlash maktabi',
-      'Школа программирования для детей в Ташкенте',
-      'Programming school for kids in Tashkent',
+      'Bolalar uchun IT o‘quv markazi Toshkentda',
+      'IT учебный центр для детей в Ташкенте',
+      'IT training center for kids in Tashkent',
     ),
     heading: L(
       'MARS IT School — bolalar va o‘smirlar uchun dasturlash maktabi',
@@ -111,36 +173,70 @@ export const STATIC_PAGES = [
       'MARS IT School — a programming school for kids and teens',
     ),
     description: L(
-      'MARS IT School — Toshkentdagi 7–17 yoshli bolalar uchun dasturlash maktabi: saytlar, o‘yinlar, ilovalar va robototexnika. Kichik guruhlar, birinchi darsdan amaliyot, bepul sinov darsi.',
-      'MARS IT School — школа программирования для детей 7–17 лет в Ташкенте: сайты, игры, приложения и робототехника. Малые группы, практика с первого занятия, бесплатный пробный урок.',
-      'MARS IT School is a programming school for children aged 7–17 in Tashkent: websites, games, apps and robotics. Small groups, hands-on from day one, free trial lesson.',
+      'Toshkentdagi 7–17 yoshli bolalar uchun IT o‘quv markazi va dasturlash maktabi: saytlar, o‘yinlar, robototexnika. Kichik guruhlar, bepul sinov darsi.',
+      'IT учебный центр и школа программирования для детей 7–17 лет в Ташкенте: сайты, игры, робототехника. Малые группы, бесплатный пробный урок.',
+      'An IT training center and programming school for kids aged 7–17 in Tashkent: websites, games, robotics. Small groups, free trial lesson.',
     ),
     summary: L(
-      'MARS IT School — Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun dasturlash maktablari tarmog‘i. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar 12 tagacha o‘quvchidan iborat kichik guruhlarda, haftasiga 2 marta, dastur davomiyligi 24 oygacha. Birinchi sinov darsi bepul.',
-      'MARS IT School — сеть школ программирования для детей и подростков 7–17 лет в Ташкенте. Направления: IT Kids (9–11 лет) и IT-разработка (12–17 лет). Обучение проходит в малых группах до 12 учеников, занятия 2 раза в неделю, длительность программ до 24 месяцев. Первое пробное занятие бесплатное.',
-      'MARS IT School is a network of programming schools for children and teenagers aged 7–17 in Tashkent. Tracks: IT Kids (ages 9–11) and IT Development (ages 12–17). Classes run in small groups of up to 12 students, twice a week, with programs lasting up to 24 months. The first trial lesson is free.',
+      'MARS IT School — Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun IT o‘quv markazlari (dasturlash maktablari) tarmog‘i. Yo‘nalishlar: IT Kids (9–11 yosh) va IT-dasturlash (12–17 yosh). Darslar 12 tagacha o‘quvchidan iborat kichik guruhlarda, haftasiga 2 marta, dastur davomiyligi 24 oygacha. Birinchi sinov darsi bepul.',
+      'MARS IT School — сеть IT учебных центров (школ программирования) для детей и подростков 7–17 лет в Ташкенте. Направления: IT Kids (9–11 лет) и IT-разработка (12–17 лет). Обучение проходит в малых группах до 12 учеников, занятия 2 раза в неделю, длительность программ до 24 месяцев. Первое пробное занятие бесплатное.',
+      'MARS IT School is a network of IT training centers (programming schools) for children and teenagers aged 7–17 in Tashkent. Tracks: IT Kids (ages 9–11) and IT Development (ages 12–17). Classes run in small groups of up to 12 students, twice a week, with programs lasting up to 24 months. The first trial lesson is free.',
     ),
     keywords: L(
       [
+        // Brend
+        'MARS IT School',
+        'MARS IT o‘quv markazi',
+        // Eng ko'p qidiriladigan umumiy so'rovlar — odam «dasturlash maktabi»
+        // emas, ko'pincha «IT o'quv markaz» deb yozadi.
+        'IT o‘quv markazi',
+        'IT o‘quv markazi Toshkent',
+        'o‘quv markaz Toshkent',
+        'IT kurslar',
+        'IT kurslari Toshkent',
+        'kompyuter kurslari Toshkent',
+        'bolalar uchun IT kurslari',
+        // Yo'nalish bo'yicha
         'bolalar uchun dasturlash maktabi',
         'Toshkentda dasturlash kurslari',
         'bolalar uchun IT maktab',
         'o‘smirlar uchun dasturlash',
         'Toshkentda bolalar uchun robototexnika',
+        'bolalar uchun dasturlash to‘garagi',
+        'yaqin atrofdagi IT kurslar',
       ],
       [
+        'MARS IT School',
+        'MARS IT учебный центр',
+        'учебный центр',
+        'IT учебный центр Ташкент',
+        'учебный центр Ташкент',
+        'IT курсы',
+        'IT курсы Ташкент',
+        'компьютерные курсы Ташкент',
+        'IT курсы для детей',
         'школа программирования для детей',
         'курсы программирования Ташкент',
         'IT школа для детей',
         'программирование для подростков',
         'робототехника для детей Ташкент',
+        'кружок программирования для детей',
+        'IT курсы рядом со мной',
       ],
       [
+        'MARS IT School',
+        'IT training center',
+        'IT training center Tashkent',
+        'IT courses Tashkent',
+        'computer courses Tashkent',
+        'IT courses for kids',
         'programming school for kids',
         'coding courses Tashkent',
         'IT school for children',
         'programming for teenagers',
         'robotics for kids Tashkent',
+        'coding club for children',
+        'IT courses near me',
       ],
     ),
     priority: 1.0,
@@ -156,9 +252,9 @@ export const STATIC_PAGES = [
       'About MARS IT School',
     ),
     description: L(
-      'MARS IT School — Toshkentdagi bolalar va o‘smirlar uchun zamonaviy dasturlash maktabi: amaliyotchi o‘qituvchilar, mualliflik metodikasi va Demo Day’da loyihalar himoyasi.',
+      'Toshkentdagi bolalar uchun IT o‘quv markazi: amaliyotchi o‘qituvchilar, mualliflik metodikasi va Demo Day’da loyihalar himoyasi.',
       'MARS IT School — современная школа программирования для детей и подростков в Ташкенте: преподаватели-практики, авторская методика и защита проектов на Demo Day.',
-      'MARS IT School is a modern programming school for children and teens in Tashkent: working IT professionals as teachers, an in-house methodology and project defence at Demo Day.',
+      'An IT training center for kids in Tashkent: working IT professionals as teachers, an in-house methodology and project defence at Demo Day.',
     ),
     summary: L(
       'MARS IT School 2019-yilda tashkil etilgan. O‘qituvchilar — amaliyotdagi IT mutaxassislari. Har bir modul o‘quvchining shaxsiy loyihasi bilan, kurs esa Demo Day’dagi ochiq himoya bilan yakunlanadi.',
@@ -183,8 +279,8 @@ export const STATIC_PAGES = [
     ),
     heading: L('MARS IT School kurslari', 'Курсы MARS IT School', 'MARS IT School courses'),
     description: L(
-      '7–17 yoshli bolalar va o‘smirlar uchun dasturlash va raqamli texnologiyalar kurslari: veb-dasturlash, Python, o‘yinlar, robototexnika va dizayn. Yoshga mos yo‘nalish tanlab beramiz.',
-      'Курсы программирования и цифровых технологий для детей и подростков 7–17 лет: веб-разработка, Python, игры, робототехника и дизайн. Подберём направление по возрасту.',
+      '7–17 yoshli bolalar uchun IT kurslar: veb-dasturlash, Python, o‘yinlar, robototexnika va dizayn. Yoshga mos yo‘nalishni tanlab beramiz.',
+      'Курсы программирования для детей и подростков 7–17 лет: веб-разработка, Python, игры, робототехника и дизайн. Подберём направление по возрасту.',
       'Programming and digital technology courses for children and teens aged 7–17: web development, Python, games, robotics and design. We help pick a track by age.',
     ),
     summary: L(
@@ -195,21 +291,33 @@ export const STATIC_PAGES = [
     keywords: L(
       [
         'bolalar uchun dasturlash kurslari',
+        'IT kurslar Toshkent',
+        'IT o‘quv markazi kurslari',
+        'kompyuter kurslari bolalar uchun',
         'o‘smirlar uchun Python kurslari',
         'bolalar uchun veb-dasturlash',
         'Toshkentda robototexnika kurslari',
+        'grafik dizayn kurslari bolalar uchun',
       ],
       [
         'курсы программирования для детей',
+        'IT курсы Ташкент',
+        'курсы в IT учебном центре',
+        'компьютерные курсы для детей',
         'курсы Python для подростков',
         'веб-разработка для детей',
         'курсы робототехники Ташкент',
+        'курсы дизайна для детей',
       ],
       [
         'coding courses for kids',
+        'IT courses Tashkent',
+        'IT training center courses',
+        'computer courses for children',
         'Python courses for teens',
         'web development for children',
         'robotics courses Tashkent',
+        'design courses for kids',
       ],
     ),
     priority: 0.9,
@@ -409,9 +517,32 @@ export const STATIC_PAGES = [
       'MARS IT School operates several branches across Tashkent — in the Yunusabad, Chilanzar, Mirabad, Shaykhantakhur and Yashnabad districts. The page lists addresses, phone numbers and a map.',
     ),
     keywords: L(
-      ['MARS IT School kontaktlari', 'Toshkent IT maktabi manzili', 'dasturlash maktabi filiallari'],
-      ['MARS IT School контакты', 'IT школа Ташкент адрес', 'филиалы школы программирования'],
-      ['MARS IT School contacts', 'IT school Tashkent address', 'programming school branches'],
+      [
+        'MARS IT School kontaktlari',
+        'Toshkent IT maktabi manzili',
+        'dasturlash maktabi filiallari',
+        'yaqin atrofdagi IT o‘quv markazi',
+        'Yunusobodda IT kurslar',
+        'Chilonzorda IT kurslar',
+        'Toshkentda IT o‘quv markazi manzili',
+      ],
+      [
+        'MARS IT School контакты',
+        'IT школа Ташкент адрес',
+        'филиалы школы программирования',
+        'IT учебный центр рядом со мной',
+        'IT курсы Юнусабад',
+        'IT курсы Чиланзар',
+        'адрес IT учебного центра Ташкент',
+      ],
+      [
+        'MARS IT School contacts',
+        'IT school Tashkent address',
+        'programming school branches',
+        'IT training center near me',
+        'IT courses Yunusabad',
+        'IT courses Chilanzar',
+      ],
     ),
     priority: 0.8,
     changefreq: 'monthly',

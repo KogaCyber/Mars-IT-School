@@ -26,7 +26,7 @@ const section = useSection('space.hero', {
 </script>
 
 <template>
-  <section class="bg-ink relative overflow-hidden">
+  <section v-if="section.visible" class="bg-ink relative overflow-hidden">
     <!-- Kod matni: o'ng yarmni qoplaydi, faqat bezak -->
     <img
       loading="lazy"

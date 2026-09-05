@@ -67,7 +67,7 @@ const items = computed(() => {
 </script>
 
 <template>
-  <section class="bg-ink section relative overflow-hidden">
+  <section v-if="section.visible" class="bg-ink section relative overflow-hidden">
     <div
       class="container-page relative grid items-center gap-[var(--spacing-block)] lg:grid-cols-[1fr_1.05fr] lg:gap-[6%]"
     >

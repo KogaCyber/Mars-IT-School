@@ -23,7 +23,7 @@ vi.mock('vue-i18n', async () => {
   return { ...actual, useI18n: () => i18n.global }
 })
 
-const { toCards, useSection } = await import('@/composables/useSection')
+const { toCards, useSection, useSectionVisible } = await import('@/composables/useSection')
 const { useContentStore } = await import('@/stores/content')
 
 describe('useSection', () => {
@@ -54,6 +54,24 @@ describe('useSection', () => {
     expect(section.value.title).toBe('Учимся создавать будущее')
     expect(section.value.items).toEqual([])
     expect(section.value.image).toBeNull()
+  })
+
+  it("admin panelda o'chirilgan bo'lim ko'rinmaydi", () => {
+    useContentStore().merge({ 'home.hero': { is_published: false, items: [] } })
+
+    const section = useSection('home.hero', { title: 'home.heroTitle' })
+
+    expect(section.value.visible).toBe(false)
+    expect(useSectionVisible('home.hero').value).toBe(false)
+  })
+
+  it("yoqilgan (yoki hali yuklanmagan) bo'lim ko'rinadi", () => {
+    useContentStore().merge({ 'home.hero': { is_published: true, items: [] } })
+
+    expect(useSection('home.hero').value.visible).toBe(true)
+    expect(useSectionVisible('home.hero').value).toBe(true)
+    // Yuklanmagan bo'lim — maketdagi ko'rinish saqlanadi.
+    expect(useSectionVisible('home.faq').value).toBe(true)
   })
 
   it("sarlavhani qatorlarga ajratadi (maketda ko'p qatorli)", () => {

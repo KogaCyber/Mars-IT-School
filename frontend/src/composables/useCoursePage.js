@@ -9,6 +9,7 @@
  *
  *   const page = useCoursePage('itkids', { facts: IT_KIDS_FACTS, ... })
  *   page.facts.value    // [{ value, label }]
+ *   page.hero.value.visible  // blok admin panelda yoqilganmi
  *   page.stages.value   // [{ number, title, duration, description, topics, tools, result }]
  */
 import { computed } from 'vue'
@@ -105,6 +106,8 @@ export function useCoursePage(page, fallback) {
 
   return {
     hero: heroSection,
+    // Faktlar chizig'ining o'zi — «saytda ko'rsatilsin» belgisi uchun kerak.
+    factsBlock: factsSection,
     about: aboutSection,
     stages: stagesSection,
     gallery: gallerySection,

@@ -58,7 +58,7 @@ function onLeave(el) {
 </script>
 
 <template>
-  <section v-if="props.items.length" v-reveal class="section bg-ink overflow-hidden">
+  <section v-if="section.visible && props.items.length" v-reveal class="section bg-ink overflow-hidden">
     <div class="container-page grid gap-[4%] lg:grid-cols-2 lg:items-start">
       <!-- Bezak: astronavt va savol belgisi -->
       <div class="relative order-2 hidden lg:order-1 lg:block">

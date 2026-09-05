@@ -83,6 +83,7 @@ useSeo(() => ({
 
 <template>
   <CourseHero
+    v-if="page.hero.value.visible"
     :title="page.hero.value.titleLines"
     :breadcrumbs="[
       { label: t('courses.breadcrumbHome'), to: { name: 'home' } },
@@ -111,9 +112,10 @@ useSeo(() => ({
     </template>
   </CourseHero>
 
-  <CourseFactsStrip :facts="facts" />
+  <CourseFactsStrip v-if="page.factsBlock.value.visible" :facts="facts" />
 
   <CourseAboutSection
+    v-if="page.about.value.visible"
     :eyebrow="page.about.value.eyebrow"
     :title="page.about.value.title"
     :description="page.about.value.text"
@@ -122,6 +124,7 @@ useSeo(() => ({
   />
 
   <CourseStagesSection
+    v-if="page.stages.value.visible"
     id="programma"
     :eyebrow="page.stages.value.eyebrow"
     :title="page.stages.value.title"
@@ -131,6 +134,7 @@ useSeo(() => ({
   />
 
   <CourseGallerySection
+    v-if="page.gallery.value.visible"
     :eyebrow="page.gallery.value.eyebrow"
     :title="page.gallery.value.titleLines"
     :description="page.gallery.value.text"

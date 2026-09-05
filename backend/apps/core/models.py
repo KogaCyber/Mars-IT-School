@@ -84,6 +84,7 @@ class SiteSettings(TranslatedModel):
     space_app_ios_url = models.URLField(_("SPACE — App Store"), blank=True)
     space_app_android_url = models.URLField(_("SPACE — Google Play"), blank=True)
     privacy_policy_url = models.URLField(_("Maxfiylik siyosati"), blank=True)
+    offer_url = models.URLField(_("Ommaviy oferta"), blank=True)
 
     promo_video_url = models.URLField(
         _("tanishtiruv videosi — havola"),

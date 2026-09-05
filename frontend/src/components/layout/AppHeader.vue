@@ -39,7 +39,7 @@ const { y } = useWindowScroll()
 const isScrollLocked = useScrollLock()
 
 const isScrolled = computed(() => y.value > 20)
-const phone = computed(() => site.settings.phone || '+78 777 77 57')
+const phone = computed(() => site.settings.phone || '+998 78 777 77 57')
 const phoneHref = computed(() => `tel:${phone.value.replace(/[^\d+]/g, '')}`)
 
 /** Telefon raqamning birinchi bo'lagi to'q sariq rangda ko'rsatiladi. */

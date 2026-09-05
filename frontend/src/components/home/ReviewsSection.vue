@@ -27,7 +27,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="items.length" v-reveal class="section bg-ink overflow-hidden">
+  <section v-if="section.visible && items.length" v-reveal class="section bg-ink overflow-hidden">
     <div class="container-page">
       <div class="grid items-center gap-[4%] lg:grid-cols-[1fr_auto_1.1fr]">
         <p class="max-w-sm leading-relaxed text-white/60">

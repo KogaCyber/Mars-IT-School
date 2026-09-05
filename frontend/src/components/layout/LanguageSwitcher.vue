@@ -9,10 +9,11 @@
 import { onClickOutside, onKeyStroke, useMediaQuery } from '@vueuse/core'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import { useScrollLock } from '@/composables/useScrollLock'
-import { DEFAULT_LANGUAGE } from '@/i18n/language'
+import { localePath } from '@/data/seoConfig'
+import { setLanguage } from '@/i18n/language'
 import { useSiteStore } from '@/stores/site'
 
 // Tillar ro'yxati o'z nomida yoziladi — bu tarjima qilinmaydi.
@@ -25,7 +26,6 @@ const LANGUAGES = [
 const { t } = useI18n()
 const site = useSiteStore()
 const route = useRoute()
-const router = useRouter()
 const isOpen = ref(false)
 const root = ref(null)
 
@@ -54,31 +54,28 @@ watch([isOpen, isDesktop], ([open, desktop]) => {
   isScrollLocked.value = open && !desktop
 })
 
-async function choose(code) {
+function choose(code) {
   isOpen.value = false
-  await site.changeLanguage(code)
-  syncUrlLanguage(code)
+  if (code === site.language) return
+
+  // Til almashuvi — manzil almashuvi.
+  //
+  // Har bir tilning O'Z yo'li bor (`/kursy`, `/ru/kursy`, `/en/kursy`) va
+  // aynan o'sha yo'lda o'sha tildagi prerender qilingan HTML yotadi. Router
+  // asosi (`historyBase`) sahifa yuklanganda bir marta aniqlanadi, shuning
+  // uchun prefiksni SPA ichida almashtirib bo'lmaydi — to'liq o'tish
+  // qilamiz. Bu bir sahifa yuklanishiga arziydi: ulashilgan havola,
+  // canonical va ekrandagi til endi doim bir xil bo'ladi.
+  setLanguage(code)
+
+  // Eski `?lang=` shakli manzilda qolib ketmasin — til endi yo'lda turadi.
+  const params = new URLSearchParams(window.location.search)
+  params.delete('lang')
+  const search = params.toString()
+  const target = `${localePath(route.path, code)}${search ? `?${search}` : ''}${route.hash || ''}`
+  window.location.assign(target)
 }
 
-/**
- * Manzildagi `?lang=` tanlangan tilga ergashadi.
- *
- * Saytda har bir tilning o'z manzili bor (`seoConfig.js:localeUrl`,
- * `hreflang`): asosiy til — parametrsiz, qolganlari `?lang=` bilan. Manzil
- * yangilanmasa `?lang=ru` bilan ochilgan sahifada til inglizchaga
- * o'zgartirilsa ham havola ruscha bo'lib qolardi — ulashilgan havola
- * ekrandagidan boshqa tilni ochardi.
- */
-function syncUrlLanguage(code) {
-  const current = route.query.lang
-  const next = code === DEFAULT_LANGUAGE ? undefined : code
-  if (current === next) return
-
-  const query = { ...route.query }
-  if (next) query.lang = next
-  else delete query.lang
-  router.replace({ path: route.path, query, hash: route.hash })
-}
 </script>
 
 <template>

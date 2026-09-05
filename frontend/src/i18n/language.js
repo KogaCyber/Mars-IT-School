@@ -21,6 +21,14 @@ export const DEFAULT_LANGUAGE = 'uz'
 export function languageFromUrl() {
   if (typeof window === 'undefined') return null
   try {
+    // 1. Yo'l prefiksi — asosiy shakl (`/ru/kursy`). Aynan shu manzilda
+    //    ruscha prerender qilingan HTML yotadi, shuning uchun u ustun turadi.
+    const match = /^\/([a-z]{2})(\/|$)/.exec(window.location.pathname)
+    if (match && SUPPORTED_LANGUAGES.includes(match[1])) return match[1]
+
+    // 2. `?lang=` — eski shakl. Ilgari ulashilgan va indekslangan havolalar
+    //    ishlashda davom etsin (Vercel ularni prefiksga yo'naltiradi, lekin
+    //    yo'naltirish yetib bormagan holatda ham til to'g'ri aniqlanadi).
     const value = new URLSearchParams(window.location.search).get('lang')
     return SUPPORTED_LANGUAGES.includes(value) ? value : null
   } catch {

@@ -34,12 +34,22 @@ const section = useSection('common.footer', {
 const site = useSiteStore()
 const year = new Date().getFullYear()
 
-const phone = computed(() => site.settings.phone || '+78 777 77 57')
+const phone = computed(() => site.settings.phone || '+998 78 777 77 57')
 const phoneHref = computed(() => `tel:${phone.value.replace(/[^\d+]/g, '')}`)
 const phoneParts = computed(() => {
   const [first, ...rest] = phone.value.trim().split(' ')
   return { first, rest: rest.join(' ') }
 })
+
+// Huquqiy hujjatlar admin paneldan («Sayt sozlamalari») keladi. Havola
+// kiritilmagan bo'lsa qator umuman chizilmaydi — ilgari bu yerda `href="#"`
+// turardi va foydalanuvchi bosganda sahifa boshiga otilib ketardi.
+const legalLinks = computed(() =>
+  [
+    { label: t('footer.offer'), url: site.settings.offer_url },
+    { label: t('footer.privacy'), url: site.settings.privacy_policy_url },
+  ].filter((link) => Boolean(link.url)),
+)
 
 const socials = computed(() =>
   [
@@ -139,10 +149,16 @@ const socials = computed(() =>
         class="container-page flex flex-col gap-3 py-5 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
       >
         <p>{{ section.note.replace('{year}', String(year)) }}</p>
-        <div class="flex gap-6">
-          <a href="#" class="transition hover:text-white">{{ t('footer.offer') }}</a>
-          <a :href="site.settings.privacy_policy_url || '#'" class="transition hover:text-white">
-            {{ t('footer.privacy') }}
+        <div v-if="legalLinks.length" class="flex gap-6">
+          <a
+            v-for="link in legalLinks"
+            :key="link.label"
+            :href="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition hover:text-white"
+          >
+            {{ link.label }}
           </a>
         </div>
       </div>

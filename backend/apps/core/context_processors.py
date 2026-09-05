@@ -1,6 +1,8 @@
 """Admin panel shablonlari uchun qo'shimcha kontekst."""
 
+from django.apps import apps
 from django.conf import settings
+from django.contrib import admin
 from django.utils.translation import get_language
 
 from .admin_site import SECTION_INDEX
@@ -64,6 +66,22 @@ def admin_section_help(request):
     return {
         "mars_section_where": section["where"],
         "mars_section_what": section["what"],
+        # Faqat o'qish uchun bo'limlarda eslatma «O'zgartirish mumkin» deyishi
+        # xodimni chalg'itardi: sahifada saqlash tugmasi ham yo'q edi.
+        "mars_section_readonly": _is_readonly(request, app_label, model_name),
         "mars_page_name": section["page_name"],
         "mars_page_url": section["page_url"],
     }
+
+
+def _is_readonly(request, app_label: str, model_name: str) -> bool:
+    """Bo'lim tahrirlanadimi — ro'yxatdan o'tgan `ModelAdmin` huquqi bo'yicha."""
+    try:
+        model = apps.get_model(app_label, model_name)
+    except LookupError:
+        return False
+
+    model_admin = admin.site._registry.get(model)
+    if model_admin is None:
+        return False
+    return not model_admin.has_change_permission(request)
