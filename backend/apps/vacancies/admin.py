@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
@@ -17,7 +19,7 @@ class VacancyAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("title_ru", "slug", "branch", "employment_type", "icon_name")}),
         (_("Matn"), {"fields": ("description_ru", "requirements_ru", "conditions_ru")}),
-        (_("Maosh"), {"fields": ("salary_from", "salary_to")}),
+        (_("Maosh"), {"fields": (("salary_from", "salary_to"), "salary_currency")}),
         (_("Chop etish"), {"fields": ("order", "is_open", "is_published")}),
         translation_fieldset("title", "description", "requirements", "conditions"),
     )
@@ -48,14 +50,32 @@ class VacancyApplicationAdmin(admin.ModelAdmin):
 
     @admin.display(description=_("rezyume"))
     def resume_link(self, obj):
-        """Rezyumeni yuklab olish havolasi.
+        """Rezyumeni ko'rish havolasi.
 
         Fayl `PRIVATE_MEDIA_ROOT` ichida — uning ommaviy manzili YO'Q va
-        `obj.resume.url` ataylab xatolik beradi. Yuklab olish faqat xodim
-        huquqini tekshiradigan `resume-download` view orqali.
+        `obj.resume.url` ataylab xatolik beradi. Faylga yagona yo'l — xodim
+        huquqini tekshiradigan `resume-download` view.
+
+        PDF yangi oynada ochiladi: uni ko'rish uchun kompyuterga yuklab olish
+        shart emas. Yonidagi kichik havola esa kerak bo'lsa faylni yuklab
+        oladi (doc/docx/rtf uchun brauzer baribir shuni qiladi).
         """
         if not obj.resume:
             return "—"
+
         url = reverse("resume-download", args=[obj.pk])
-        name = obj.resume.name.rsplit("/", 1)[-1]
-        return format_html('<a href="{}" download>{}</a>', url, name)
+        suffix = Path(obj.resume.name).suffix.lower()
+
+        # doc/docx/rtf ni brauzer ocholmaydi — ular uchun bitta havola yetarli.
+        if suffix != ".pdf":
+            return format_html('<a href="{}">{}</a>', url, _("Yuklab olish"))
+
+        return format_html(
+            '<a href="{}" target="_blank" rel="noopener noreferrer">{}</a>'
+            '<span style="color:#999"> · </span>'
+            '<a href="{}?download=1" style="color:#999">{}</a>',
+            url,
+            _("Ochish (yangi oynada)"),
+            url,
+            _("yuklab olish"),
+        )

@@ -20,6 +20,12 @@ class Vacancy(TranslatedModel, SluggedModel, PublishableModel):
         HEADSET = "headset", _("Naushnik (kol-markaz)")
         SPARK = "spark", _("Uchqun (boshqa)")
 
+    class Currency(models.TextChoices):
+        """Maosh qaysi valyutada ko'rsatiladi (saytda ham shunday chiqadi)."""
+
+        UZS = "UZS", _("So'm (UZS)")
+        USD = "USD", _("Dollar ($)")
+
     class Employment(models.TextChoices):
         FULL_TIME = "full_time", _("To'liq stavka")
         PART_TIME = "part_time", _("Yarim stavka")
@@ -61,6 +67,12 @@ class Vacancy(TranslatedModel, SluggedModel, PublishableModel):
     )
     salary_from = models.PositiveIntegerField(_("maosh (dan)"), null=True, blank=True)
     salary_to = models.PositiveIntegerField(_("maosh (gacha)"), null=True, blank=True)
+    salary_currency = models.CharField(
+        _("maosh valyutasi"),
+        max_length=3,
+        choices=Currency.choices,
+        default=Currency.UZS,
+    )
     is_open = models.BooleanField(_("ochiq"), default=True, db_index=True)
 
     class Meta(PublishableModel.Meta):

@@ -19,6 +19,14 @@ const comingSoon = computed(() => ({
   title: section.value.title || fallback.value.title,
   description: section.value.text || fallback.value.description,
 }))
+
+/**
+ * Astronavt rasmi admin paneldan almashtiriladi. Yuklangan rasm istalgan
+ * nisbatda bo'lishi mumkin, banner balandligi esa o'zgarmasligi kerak —
+ * shuning uchun rasm nisbati qat'iy uyaga to'ldirib joylanadi. Maketdagi
+ * astronavt shaffof fonli, u butunligicha ko'rsatiladi.
+ */
+const isUploaded = computed(() => Boolean(section.value.image))
 </script>
 
 <template>
@@ -30,13 +38,18 @@ const comingSoon = computed(() => ({
         {{ comingSoon.description }}
       </p>
 
-      <img
-        :src="astronaut"
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        class="animate-float mx-auto w-[45%] max-w-[15rem] object-contain md:mx-0 md:-my-[12%] md:w-[16vw] md:max-w-[19rem]"
-      />
+      <div
+        class="animate-float mx-auto aspect-[361/331] w-[45%] max-w-[15rem] md:mx-0 md:-my-[12%] md:w-[16vw] md:max-w-[19rem]"
+      >
+        <img
+          :src="section.image || astronaut"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          class="h-full w-full"
+          :class="isUploaded ? 'rounded-card object-cover' : 'object-contain'"
+        />
+      </div>
     </div>
   </div>
 </template>

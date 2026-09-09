@@ -44,6 +44,46 @@
       "text_en": "SPACE brings everything related to learning into one place and makes communication between the school, students and parents as convenient as possible."
     }
   },
+  "home.platform": {
+    "items": [
+      {
+        "title_ru": "Домашние задания",
+        "title_uz": "Uy vazifalari",
+        "title_en": "Homework",
+        "icon_name": "book"
+      },
+      {
+        "title_ru": "Записи занятий",
+        "title_uz": "Dars yozuvlari",
+        "title_en": "Lesson recordings",
+        "icon_name": "play"
+      },
+      {
+        "title_ru": "Успеваемость",
+        "title_uz": "O‘zlashtirish",
+        "title_en": "Progress",
+        "icon_name": "star"
+      },
+      {
+        "title_ru": "Баллы и награды",
+        "title_uz": "Ballar va mukofotlar",
+        "title_en": "Points and rewards",
+        "icon_name": "trophy"
+      },
+      {
+        "title_ru": "Общение",
+        "title_uz": "Muloqot",
+        "title_en": "Chat",
+        "icon_name": "chat"
+      },
+      {
+        "title_ru": "MARS Shop",
+        "title_uz": "MARS Shop",
+        "title_en": "MARS Shop",
+        "icon_name": "bag"
+      }
+    ]
+  },
   "home.news": {
     "fields": {
       "eyebrow_ru": "Новости и мероприятия",

@@ -97,7 +97,8 @@ def test_resume_download_requires_staff(client, application):
     assert client.get(url).status_code == 403
 
 
-def test_staff_can_download_resume(client, application):
+def test_staff_can_view_pdf_resume_in_browser(client, application):
+    """PDF brauzerda ochiladi — xodim uni yuklab olishi shart emas."""
     staff = User.objects.create_user(
         email="staff@example.com", password="StrongPassw0rd!", first_name="Admin", is_staff=True
     )
@@ -105,8 +106,49 @@ def test_staff_can_download_resume(client, application):
 
     response = client.get(reverse("resume-download", args=[application.pk]))
     assert response.status_code == 200
-    assert response["Content-Disposition"].startswith("attachment")
+    assert response["Content-Disposition"].startswith("inline")
+    assert response["Content-Type"] == "application/pdf"
+    assert response["X-Content-Type-Options"] == "nosniff"
     assert b"maxfiy" in b"".join(response.streaming_content)
+
+
+def test_staff_can_still_download_resume(client, application):
+    """`?download=1` — faylni ataylab yuklab olish."""
+    staff = User.objects.create_user(
+        email="staff-force@example.com",
+        password="StrongPassw0rd!",
+        first_name="Admin",
+        is_staff=True,
+    )
+    client.force_login(staff)
+
+    response = client.get(reverse("resume-download", args=[application.pk]), {"download": "1"})
+    assert response.status_code == 200
+    assert response["Content-Disposition"].startswith("attachment")
+    assert response["Content-Type"] == "application/octet-stream"
+
+
+def test_non_pdf_resume_is_never_opened_in_browser(client, db):
+    """doc/docx/rtf — faqat yuklab olish (admin domenida ochilib ketmasin)."""
+    from django.core.files.uploadedfile import SimpleUploadedFile
+
+    vacancy = Vacancy.objects.create(title_ru="Куратор", description_ru="Описание")
+    item = VacancyApplication.objects.create(
+        vacancy=vacancy, full_name="Али Валиев", phone="+998901234567"
+    )
+    item.resume.save("cv.rtf", SimpleUploadedFile("cv.rtf", b"{\\rtf1 maxfiy"), save=True)
+
+    staff = User.objects.create_user(
+        email="staff-rtf@example.com",
+        password="StrongPassw0rd!",
+        first_name="Admin",
+        is_staff=True,
+    )
+    client.force_login(staff)
+
+    response = client.get(reverse("resume-download", args=[item.pk]))
+    assert response["Content-Disposition"].startswith("attachment")
+    assert response["Content-Type"] == "application/octet-stream"
 
 
 # ---------------------------------------------------------------------------

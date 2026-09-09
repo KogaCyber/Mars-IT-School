@@ -12,6 +12,7 @@ import { useI18n } from 'vue-i18n'
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 import VacancyApplyDrawer from '@/components/vacancies/VacancyApplyDrawer.vue'
 import { useSection } from '@/composables/useSection'
+import { formatPrice } from '@/utils/format'
 
 const props = defineProps({
   /** Backenddan kelgan vakansiyalar. */
@@ -31,6 +32,48 @@ const selected = ref(null)
 const isDrawerOpen = ref(false)
 
 /**
+ * Admin paneldagi «Talablar» / «Shartlar» ko'p qatorli matn: har bir qator —
+ * alohida band. Boshidagi «-», «•», «1.» belgilarini olib tashlaymiz, chunki
+ * ro'yxat belgisini kartochkaning o'zi chizadi.
+ */
+function toLines(value) {
+  return String(value || '')
+    .split('\n')
+    .map((line) => line.replace(/^\s*(?:[-–—•*]|\d+[.)])\s*/, '').trim())
+    .filter(Boolean)
+}
+
+/**
+ * Maosh: «dan», «gacha» yoki oraliq — bittasi to'ldirilgan bo'lsa ham ko'rinadi.
+ *
+ * Valyuta admin paneldan tanlanadi: `USD` bo'lsa raqam oldida `$`, `UZS` bo'lsa
+ * raqamdan keyin sayt tilidagi so'm/сум/UZS yozuvi turadi.
+ */
+function money(amount, isUsd) {
+  return isUsd ? `$${formatPrice(amount)}` : `${formatPrice(amount)} ${t('pages.courseCurrency')}`
+}
+
+function toSalary(item) {
+  const from = Number(item.salary_from) || 0
+  const to = Number(item.salary_to) || 0
+  const isUsd = item.salary_currency === 'USD'
+
+  if (from && to && from !== to) {
+    // So'mda valyuta bir marta oxirida, dollarda esa har ikki raqam oldida.
+    return isUsd
+      ? `${money(from, true)} – ${money(to, true)}`
+      : `${formatPrice(from)} – ${money(to, false)}`
+  }
+  if (from) {
+    return from === to
+      ? money(from, isUsd)
+      : t('vacancies.salaryFrom', { value: money(from, isUsd) })
+  }
+  if (to) return t('vacancies.salaryTo', { value: money(to, isUsd) })
+  return ''
+}
+
+/**
  * Kartochka matni: birinchi qator — qalin kirish, qolgani — tavsif.
  * (Backendda tavsif oddiy matn, birinchi qatori vakansiyaning mohiyati.)
  */
@@ -41,7 +84,14 @@ const cards = computed(() =>
       .map((line) => line.trim())
       .filter(Boolean)
 
-    return { ...item, lead, text: rest.join(' ') }
+    return {
+      ...item,
+      lead,
+      text: rest.join(' '),
+      salary: toSalary(item),
+      requirements: toLines(item.requirements),
+      conditions: toLines(item.conditions),
+    }
   }),
 )
 
@@ -93,17 +143,77 @@ function apply(vacancy) {
             {{ vacancy.title }}
           </h3>
 
-          <p
-            v-if="vacancy.branch_name"
-            class="rounded-pill text-small mt-[5%] self-start bg-neutral-900 px-[1.35em] py-[0.7em] text-white"
+          <!-- Filial va maosh — bir qatorda, kartochkaning o'z uslubida -->
+          <div
+            v-if="vacancy.branch_name || vacancy.salary"
+            class="mt-[5%] flex flex-wrap items-center gap-2"
           >
-            {{ t('vacancies.branch') }} · {{ vacancy.branch_name }}
-          </p>
+            <p
+              v-if="vacancy.branch_name"
+              class="rounded-pill text-small bg-neutral-900 px-[1.35em] py-[0.7em] text-white"
+            >
+              {{ t('vacancies.branch') }} · {{ vacancy.branch_name }}
+            </p>
+
+            <p
+              v-if="vacancy.salary"
+              class="rounded-pill text-small bg-brand/12 text-brand px-[1.35em] py-[0.7em] font-bold"
+            >
+              {{ vacancy.salary }}
+            </p>
+          </div>
 
           <p v-if="vacancy.lead" class="mt-[6%] font-bold text-neutral-900">{{ vacancy.lead }}</p>
           <p v-if="vacancy.text" class="mt-2 leading-relaxed text-neutral-600">
             {{ vacancy.text }}
           </p>
+
+          <!-- Admin paneldagi «Talablar» -->
+          <template v-if="vacancy.requirements.length">
+            <p class="text-small mt-[6%] font-bold text-neutral-900">
+              {{ t('vacancies.requirements') }}
+            </p>
+            <ul class="mt-2 flex flex-col gap-2" role="list">
+              <li
+                v-for="(line, i) in vacancy.requirements"
+                :key="`r-${i}`"
+                class="flex gap-2.5 leading-relaxed text-neutral-600"
+              >
+                <span class="bg-brand mt-2.5 size-1.5 shrink-0 rounded-full" aria-hidden="true" />
+                <span>{{ line }}</span>
+              </li>
+            </ul>
+          </template>
+
+          <!-- Admin paneldagi «Shartlar» -->
+          <template v-if="vacancy.conditions.length">
+            <p class="text-small mt-[6%] font-bold text-neutral-900">
+              {{ t('vacancies.conditions') }}
+            </p>
+            <ul class="mt-2 flex flex-col gap-2" role="list">
+              <li
+                v-for="(line, i) in vacancy.conditions"
+                :key="`c-${i}`"
+                class="flex gap-2.5 leading-relaxed text-neutral-600"
+              >
+                <svg
+                  class="text-brand mt-1 size-4 shrink-0"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="m5 10.4 3.4 3.3L15.5 6.7"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>{{ line }}</span>
+              </li>
+            </ul>
+          </template>
 
           <!-- Tugma va ikonka har doim kartochka pastida turadi -->
           <div class="mt-auto flex items-end justify-between gap-6 pt-[10%]">

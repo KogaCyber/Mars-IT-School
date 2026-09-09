@@ -13,10 +13,15 @@ export default {
     // Ro'yxat
     eyebrow: 'Vakansiyalar',
     title: 'Jamoada o‘z o‘rningizni\ntoping',
-    lead:
-      'Bolalarga texnologiyalar dunyosini ochishga va kelajakni yaratishga yordam beradigan jamoaning bir qismiga aylaning.',
+    lead: 'Bolalarga texnologiyalar dunyosini ochishga va kelajakni yaratishga yordam beradigan jamoaning bir qismiga aylaning.',
     branch: 'Filial',
     apply: 'Ariza topshirish',
+
+    // Kartochkadagi maosh va admin paneldagi «Talablar» / «Shartlar»
+    salaryFrom: '{value} dan',
+    salaryTo: '{value} gacha',
+    requirements: 'Talablar',
+    conditions: 'Biz taklif qilamiz',
 
     // Ariza paneli
     drawerTitleAccent: 'Vakansiyaga',
@@ -47,10 +52,14 @@ export default {
 
     eyebrow: 'Вакансии',
     title: 'Найдите своё место\nв команде',
-    lead:
-      'Станьте частью команды, которая помогает детям открывать мир технологий и создавать будущее.',
+    lead: 'Станьте частью команды, которая помогает детям открывать мир технологий и создавать будущее.',
     branch: 'Филиал',
     apply: 'Подать заявку',
+
+    salaryFrom: 'от {value}',
+    salaryTo: 'до {value}',
+    requirements: 'Требования',
+    conditions: 'Мы предлагаем',
 
     drawerTitleAccent: 'Откликнуться',
     drawerTitle: 'на вакансию',
@@ -80,10 +89,14 @@ export default {
 
     eyebrow: 'Careers',
     title: 'Find your place\non the team',
-    lead:
-      'Become part of a team that helps children discover the world of technology and build the future.',
+    lead: 'Become part of a team that helps children discover the world of technology and build the future.',
     branch: 'Branch',
     apply: 'Apply',
+
+    salaryFrom: 'from {value}',
+    salaryTo: 'up to {value}',
+    requirements: 'Requirements',
+    conditions: 'What we offer',
 
     drawerTitleAccent: 'Apply for',
     drawerTitle: 'this role',

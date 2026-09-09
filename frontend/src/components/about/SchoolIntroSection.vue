@@ -12,13 +12,9 @@ import { useSection } from '@/composables/useSection'
 import { isPlayable, openVideo } from '@/composables/useVideoModal'
 
 
-// «Kurslarni ko'rish» tugmasi matni — «Sayt sozlamalari» → «Umumiy bloklar».
-const buttons = useSection('common.buttons', {
-  buttonLabel: 'common.trialLesson',
-  button2Label: 'common.viewCourses',
-})
-
 // Blok matni admin paneldan («Biz haqimizda» → «Oddiy kurslar emas»).
+// `buttonLabel` — pastdagi tugma yozuvi; u ham video oynasining sarlavhasi
+// bo'lib xizmat qiladi (tugma kurslar sahifasiga olib boradi).
 const section = useSection('about.school', {
   eyebrow: 'about.schoolEyebrow',
   title: 'about.schoolTitle',
@@ -72,7 +68,7 @@ const canPlay = computed(() => isPlayable(props.videoUrl))
         </ul>
 
         <BaseButton :to="{ name: 'courses' }" size="lg" class="mt-10 font-wide font-bold">
-          {{ buttons.button2Label }}
+          {{ section.buttonLabel }}
         </BaseButton>
       </div>
 

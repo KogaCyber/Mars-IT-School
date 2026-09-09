@@ -8,6 +8,9 @@
  *
  * Slayd almashganda telefon yo'nalish bo'yicha siljib chiqadi va yangisi
  * qarama-qarshi tomondan kirib keladi (o'ng o'q → chapga chiqadi, o'ngdan keladi).
+ *
+ * Telefon rasmi har bir slaydda o'zgarishi mumkin: admin panelda slaydga rasm
+ * yuklansa — o'shanisi, bo'lmasa blokning umumiy rasmi, u ham bo'lmasa maketdagi.
  */
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -33,6 +36,18 @@ const index = ref(0)
 /** Oxirgi harakat yo'nalishi — animatsiya qaysi tomonga ketishini belgilaydi. */
 const direction = ref('next')
 const active = computed(() => parents.value[index.value])
+
+/** Slayd rasmi: slaydniki → blokning umumiy rasmi → maketdagi telefon. */
+const slideImage = computed(() => active.value?.image || section.value.image || phone)
+
+/**
+ * Admin paneldan yuklangan rasm istalgan nisbatda bo'lishi mumkin (tik, yotiq,
+ * kvadrat). Uya o'lchami esa barcha slaydlarda bir xil turishi kerak — aks holda
+ * slayd almashganda blok balandligi sakraydi. Shuning uchun yuklangan rasm uyaga
+ * to'ldirib qirqiladi (`object-cover`), maketdagi telefon esa butunligicha
+ * ko'rsatiladi (`object-contain`) — u shaffof fon bilan chizilgan.
+ */
+const isUploaded = computed(() => Boolean(active.value?.image || section.value.image))
 
 /** Slaydlar aylanma: oxiridan keyin yana birinchisiga qaytadi. */
 function go(step) {
@@ -74,19 +89,26 @@ function go(step) {
 
       <!-- O'ng ustun: telefon maketi va slayd kartochkasi -->
       <div class="relative mt-[8%] lg:mt-0">
-        <!-- Telefon rasmi: slayd almashganda siljib almashinadi -->
+        <!-- Telefon rasmi: slayd almashganda siljib almashinadi.
+             Tashqi qavat — siljish chegarasi (chetdan chiqqani kesiladi). -->
         <div class="relative overflow-hidden">
-          <Transition :name="`phone-${direction}`">
-            <div :key="active.id" class="mx-auto w-[58%] sm:w-[42%] lg:w-[58%]">
+          <!-- Rasm uyasi: nisbati qat'iy, shuning uchun qaysi rasm qo'yilishidan
+               qat'i nazar barcha slaydlar bir xil o'lchamda ko'rinadi. -->
+          <div
+            class="animate-float relative mx-auto aspect-[332/550] w-[58%] max-w-66 sm:w-[42%] lg:w-[58%] lg:max-w-none"
+          >
+            <Transition :name="`phone-${direction}`">
               <img
-                :src="section.image || phone"
+                :key="active.id"
+                :src="slideImage"
                 alt=""
                 aria-hidden="true"
                 loading="lazy"
-                class="animate-float w-full max-w-66 object-contain select-none lg:max-w-none"
+                class="absolute inset-0 h-full w-full select-none"
+                :class="isUploaded ? 'rounded-block object-cover' : 'object-contain'"
               />
-            </div>
-          </Transition>
+            </Transition>
+          </div>
         </div>
 
         <!-- Slayd kartochkasi: telefonning pastki qismini qoplaydi -->
@@ -146,13 +168,9 @@ function go(step) {
 </template>
 
 <style scoped>
-/* Telefon almashinuvi: eski va yangi rasm bir vaqtda siljiydi, shuning uchun
-   chiqib ketayotgani oqimdan olinadi — blok balandligi sakramaydi. */
-.phone-next-leave-active,
-.phone-prev-leave-active {
-  position: absolute;
-  inset: 0;
-}
+/* Eski va yangi rasm ikkalasi ham uyaga nisbatan `absolute inset-0` — ya'ni
+   bir vaqtda, bir xil o'lchamda siljiydi. Uya balandligi esa `aspect-ratio`
+   bilan belgilangan, shuning uchun blok hech qachon sakramaydi. */
 
 /* Chiqib ketish va kirib kelish bir xil egri chiziqda */
 .phone-next-enter-active,

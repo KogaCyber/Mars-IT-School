@@ -14,8 +14,9 @@ MAX_RESUME_SIZE = 5 * 1024 * 1024
 
 
 class VacancyListSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
-    # Ro'yxatdagi kartochkada qisqa tavsif ham ko'rsatiladi.
-    translated_fields = ("title", "description")
+    # Kartochkada tavsifdan tashqari «Talablar» va «Shartlar» ham ko'rsatiladi —
+    # admin paneldagi shu maydonlar aks etishi uchun ular ro'yxatga ham kiradi.
+    translated_fields = ("title", "description", "requirements", "conditions")
     branch_name = serializers.SerializerMethodField()
 
     class Meta:
@@ -26,6 +27,7 @@ class VacancyListSerializer(TranslatedSerializerMixin, serializers.ModelSerializ
             "employment_type",
             "salary_from",
             "salary_to",
+            "salary_currency",
             "is_open",
             "branch_name",
             "icon_name",

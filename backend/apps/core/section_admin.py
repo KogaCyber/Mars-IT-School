@@ -113,11 +113,17 @@ class PageSectionAdmin(admin.ModelAdmin):
     def section_help(self, obj) -> str:
         spec = SECTION_INDEX.get(getattr(obj, "key", ""), {})
         url = PAGE_URLS.get(getattr(obj, "page", ""), "")
+        # Elementlar bo'yicha izoh («ikonka nomi: …») shu yerda ko'rsatiladi —
+        # inline sarlavhasi ostida joy yo'q.
+        item_hint = spec.get("item_hint", "")
         return format_html(
-            "<div style='line-height:1.6'><b>{}</b><br>{}{}</div>",
+            "<div style='line-height:1.6'><b>{}</b><br>{}{}{}</div>",
             spec.get("name", ""),
             spec.get("hint", ""),
             format_html("<br>Sahifa: <code>{}</code>", url) if url else "",
+            format_html("<br>{}: {}", spec.get("item_name", _("Elementlar")), item_hint)
+            if item_hint
+            else "",
         )
 
     def get_fieldsets(self, request, obj=None):

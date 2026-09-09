@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 21:54+0500\n"
+"POT-Creation-Date: 2026-09-09 17:19+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,12 +39,12 @@ msgid "Sanalar"
 msgstr "Sanalar"
 
 #: apps/accounts/models.py:29 apps/core/models.py:71
-#: apps/vacancies/models.py:92
+#: apps/vacancies/models.py:104
 msgid "email"
 msgstr "email"
 
 #: apps/accounts/models.py:31 apps/branches/models.py:27 apps/core/models.py:69
-#: apps/leads/models.py:27 apps/quiz/models.py:240 apps/vacancies/models.py:91
+#: apps/leads/models.py:27 apps/quiz/models.py:240 apps/vacancies/models.py:103
 msgid "telefon"
 msgstr "telefon"
 
@@ -145,7 +145,7 @@ msgstr ""
 "kiritsangiz — avtomatik qidiruv o'chadi."
 
 #: apps/branches/admin.py:37 apps/courses/admin.py:70 apps/teachers/admin.py:31
-#: apps/vacancies/admin.py:21
+#: apps/vacancies/admin.py:23
 msgid "Chop etish"
 msgstr "Chop etish"
 
@@ -257,7 +257,7 @@ msgid "Filiallar"
 msgstr "Filiallar"
 
 #: apps/branches/models.py:78 apps/leads/models.py:38
-#: apps/vacancies/models.py:30
+#: apps/vacancies/models.py:36
 msgid "filial"
 msgstr "filial"
 
@@ -632,7 +632,7 @@ msgstr ""
 "filial galereyasi"
 
 #: apps/core/admin_site.py:236 apps/core/sections.py:33
-#: apps/vacancies/models.py:68
+#: apps/vacancies/models.py:80
 msgid "Vakansiyalar"
 msgstr "Vakansiyalar"
 
@@ -855,7 +855,7 @@ msgstr "Maxfiylik siyosati"
 
 #: apps/core/models.py:87
 msgid "Ommaviy oferta"
-msgstr ""
+msgstr "Ommaviy oferta"
 
 #: apps/core/models.py:90
 msgid "tanishtiruv videosi — havola"
@@ -907,7 +907,7 @@ msgstr "sarlavha (en)"
 #: apps/core/models.py:292 apps/core/models.py:348 apps/courses/models.py:18
 #: apps/courses/models.py:58 apps/courses/models.py:123
 #: apps/courses/models.py:151 apps/quiz/models.py:18 apps/quiz/models.py:74
-#: apps/vacancies/models.py:41
+#: apps/vacancies/models.py:47
 msgid "tavsif (ru)"
 msgstr "tavsif (ru)"
 
@@ -915,7 +915,7 @@ msgstr "tavsif (ru)"
 #: apps/core/models.py:293 apps/core/models.py:349 apps/courses/models.py:19
 #: apps/courses/models.py:59 apps/courses/models.py:124
 #: apps/courses/models.py:152 apps/quiz/models.py:19 apps/quiz/models.py:75
-#: apps/vacancies/models.py:42
+#: apps/vacancies/models.py:48
 msgid "tavsif (uz)"
 msgstr "tavsif (uz)"
 
@@ -923,7 +923,7 @@ msgstr "tavsif (uz)"
 #: apps/core/models.py:294 apps/core/models.py:350 apps/courses/models.py:20
 #: apps/courses/models.py:60 apps/courses/models.py:125
 #: apps/courses/models.py:153 apps/quiz/models.py:20 apps/quiz/models.py:76
-#: apps/vacancies/models.py:43
+#: apps/vacancies/models.py:49
 msgid "tavsif (en)"
 msgstr "tavsif (en)"
 
@@ -937,7 +937,7 @@ msgstr "Afzalliklar"
 
 #: apps/core/models.py:159 apps/core/models.py:241 apps/leads/models.py:26
 #: apps/quiz/models.py:238 apps/teachers/models.py:27
-#: apps/vacancies/models.py:90
+#: apps/vacancies/models.py:102
 msgid "ism familiya"
 msgstr "ism familiya"
 
@@ -1015,7 +1015,7 @@ msgstr "Savol-javoblar"
 
 #: apps/core/models.py:210 apps/core/models.py:271 apps/core/models.py:305
 #: apps/core/models.py:341 apps/courses/models.py:22 apps/courses/models.py:127
-#: apps/teachers/models.py:14 apps/vacancies/models.py:60
+#: apps/teachers/models.py:14 apps/vacancies/models.py:66
 msgid "ikonka"
 msgstr "ikonka"
 
@@ -1055,17 +1055,17 @@ msgid "Statistika"
 msgstr "Statistika"
 
 #: apps/core/models.py:244 apps/teachers/models.py:30
-#: apps/vacancies/models.py:37
+#: apps/vacancies/models.py:43
 msgid "lavozim (ru)"
 msgstr "lavozim (ru)"
 
 #: apps/core/models.py:245 apps/teachers/models.py:31
-#: apps/vacancies/models.py:38
+#: apps/vacancies/models.py:44
 msgid "lavozim (uz)"
 msgstr "lavozim (uz)"
 
 #: apps/core/models.py:246 apps/teachers/models.py:32
-#: apps/vacancies/models.py:39
+#: apps/vacancies/models.py:45
 msgid "lavozim (en)"
 msgstr "lavozim (en)"
 
@@ -1309,7 +1309,7 @@ msgstr "ikkinchi tugma havolasi"
 msgid "qo'shimcha rasm"
 msgstr "qo'shimcha rasm"
 
-#: apps/core/models.py:449
+#: apps/core/models.py:449 apps/core/section_admin.py:105
 msgid "saytda ko'rsatilsin"
 msgstr "saytda ko'rsatilsin"
 
@@ -1366,11 +1366,12 @@ msgid "ko'rsatilsin"
 msgstr "ko'rsatilsin"
 
 #: apps/core/models.py:519 apps/core/models.py:524
-#: apps/core/section_admin.py:60 apps/core/sections.py:64
+#: apps/core/section_admin.py:60 apps/core/sections.py:72
 msgid "Element"
 msgstr "Element"
 
 #: apps/core/models.py:520 apps/core/section_admin.py:61
+#: apps/core/section_admin.py:124
 msgid "Elementlar"
 msgstr "Elementlar"
 
@@ -1426,11 +1427,11 @@ msgstr "Bo'lim"
 msgid "Nimani o'zgartirish mumkin"
 msgstr "Nimani o'zgartirish mumkin"
 
-#: apps/core/section_admin.py:106
+#: apps/core/section_admin.py:112
 msgid "Bu blok saytda qayerda"
 msgstr "Bu blok saytda qayerda"
 
-#: apps/core/section_admin.py:133
+#: apps/core/section_admin.py:148
 #, python-format
 msgid "Tarjima — %(lang)s"
 msgstr "Tarjima — %(lang)s"
@@ -1447,11 +1448,11 @@ msgstr "Kontaktlar"
 msgid "Umumiy bloklar"
 msgstr "Umumiy bloklar"
 
-#: apps/core/sections.py:76
+#: apps/core/sections.py:85
 msgid "1. Hero — «Kelajakni yaratishni o'rganamiz»"
 msgstr "1. Hero — «Kelajakni yaratishni o'rganamiz»"
 
-#: apps/core/sections.py:77
+#: apps/core/sections.py:86
 msgid ""
 "Sahifaning eng tepasidagi katta blok: sarlavha, matn, ikkita tugma va "
 "o'ngdagi astronavt rasmi."
@@ -1459,11 +1460,11 @@ msgstr ""
 "Sahifaning eng tepasidagi katta blok: sarlavha, matn, ikkita tugma va "
 "o'ngdagi astronavt rasmi."
 
-#: apps/core/sections.py:83
+#: apps/core/sections.py:92
 msgid "2. «Nega MARS IT School ni tanlashadi» — sarlavha"
 msgstr "2. «Nega MARS IT School ni tanlashadi» — sarlavha"
 
-#: apps/core/sections.py:84
+#: apps/core/sections.py:93
 msgid ""
 "Blok sarlavhasi va izohi. Raqamlangan kartochkalar — «Afzalliklar» bo'limida "
 "(shu sahifa menyusida)."
@@ -1471,19 +1472,49 @@ msgstr ""
 "Blok sarlavhasi va izohi. Raqamlangan kartochkalar — «Afzalliklar» bo'limida "
 "(shu sahifa menyusida)."
 
-#: apps/core/sections.py:90
+#: apps/core/sections.py:99
 msgid "3. SPACE platformasi bloki"
 msgstr "3. SPACE platformasi bloki"
 
-#: apps/core/sections.py:91
+#: apps/core/sections.py:100
 msgid "Bosh sahifadagi SPACE reklama bloki: yorliq, sarlavha va matn."
 msgstr "Bosh sahifadagi SPACE reklama bloki: yorliq, sarlavha va matn."
 
-#: apps/core/sections.py:96
+#: apps/core/sections.py:105
+msgid "3.1. SPACE maketi — chap menyu va ekran rasmlari"
+msgstr "3.1. SPACE maketi — chap menyu va ekran rasmlari"
+
+#: apps/core/sections.py:106
+msgid ""
+"SPACE blokidagi platforma maketi. Har bir element — chapdagi bitta tugma: "
+"nomi, ikonkasi va tugma bosilganda o'ngda ko'rinadigan ekran rasmi. Tugmalar "
+"sonini xohlagancha o'zgartirish mumkin."
+msgstr ""
+"SPACE blokidagi platforma maketi. Har bir element — chapdagi bitta tugma: "
+"nomi, ikonkasi va tugma bosilganda o'ngda ko'rinadigan ekran rasmi. Tugmalar "
+"sonini xohlagancha o'zgartirish mumkin."
+
+#: apps/core/sections.py:111
+msgid "Menyu tugmasi"
+msgstr "Menyu tugmasi"
+
+#: apps/core/sections.py:113
+msgid ""
+"«Sarlavha» — tugma matni. «Rasm» — shu tugma bosilganda o'ngda "
+"ko'rsatiladigan ekran rasmi (bo'sh qoldirilsa, tayyor jonli maket "
+"chiziladi). «Ikonka nomi» — book, play, star, trophy, chat, bag; o'z "
+"ikonkangizni «ikonka rasmi»ga yuklashingiz ham mumkin."
+msgstr ""
+"«Sarlavha» — tugma matni. «Rasm» — shu tugma bosilganda o'ngda "
+"ko'rsatiladigan ekran rasmi (bo'sh qoldirilsa, tayyor jonli maket "
+"chiziladi). «Ikonka nomi» — book, play, star, trophy, chat, bag; o'z "
+"ikonkangizni «ikonka rasmi»ga yuklashingiz ham mumkin."
+
+#: apps/core/sections.py:121
 msgid "4. «Maktabda nimalar bo'lyapti» — sarlavha"
 msgstr "4. «Maktabda nimalar bo'lyapti» — sarlavha"
 
-#: apps/core/sections.py:97
+#: apps/core/sections.py:122
 msgid ""
 "Yangiliklar lentasi tepasidagi matn va tugma. Yangiliklarning o'zi — "
 "«Yangiliklar» sahifasida."
@@ -1491,11 +1522,11 @@ msgstr ""
 "Yangiliklar lentasi tepasidagi matn va tugma. Yangiliklarning o'zi — "
 "«Yangiliklar» sahifasida."
 
-#: apps/core/sections.py:103
+#: apps/core/sections.py:128
 msgid "5. «IT'da ishlaydigan o'qituvchilar» — sarlavha"
 msgstr "5. «IT'da ishlaydigan o'qituvchilar» — sarlavha"
 
-#: apps/core/sections.py:104
+#: apps/core/sections.py:129
 msgid ""
 "O'qituvchilar karuseli tepasidagi matn. O'qituvchilar — «Biz haqimizda» "
 "sahifasida."
@@ -1503,11 +1534,11 @@ msgstr ""
 "O'qituvchilar karuseli tepasidagi matn. O'qituvchilar — «Biz haqimizda» "
 "sahifasida."
 
-#: apps/core/sections.py:110
+#: apps/core/sections.py:135
 msgid "6. «Ota-onalar nima deydi» — sarlavha"
 msgstr "6. «Ota-onalar nima deydi» — sarlavha"
 
-#: apps/core/sections.py:111
+#: apps/core/sections.py:136
 msgid ""
 "Fikrlar karuseli tepasidagi matn. Fikrlarning o'zi — «Ota-onalar fikri» "
 "bo'limida."
@@ -1515,11 +1546,11 @@ msgstr ""
 "Fikrlar karuseli tepasidagi matn. Fikrlarning o'zi — «Ota-onalar fikri» "
 "bo'limida."
 
-#: apps/core/sections.py:117
+#: apps/core/sections.py:142
 msgid "7. «Ko'p beriladigan savollar» — sarlavha"
 msgstr "7. «Ko'p beriladigan savollar» — sarlavha"
 
-#: apps/core/sections.py:118
+#: apps/core/sections.py:143
 msgid ""
 "Akkordeon tepasidagi matn va yonidagi rasm. Savollar — «Savol-javoblar» "
 "bo'limida."
@@ -1527,19 +1558,19 @@ msgstr ""
 "Akkordeon tepasidagi matn va yonidagi rasm. Savollar — «Savol-javoblar» "
 "bo'limida."
 
-#: apps/core/sections.py:126
+#: apps/core/sections.py:151
 msgid "1. Hero — «O'rganamiz. Yaratamiz. Rivojlanamiz.»"
 msgstr "1. Hero — «O'rganamiz. Yaratamiz. Rivojlanamiz.»"
 
-#: apps/core/sections.py:127
+#: apps/core/sections.py:152
 msgid "Sahifa tepasidagi sarlavha va fon rasmi."
 msgstr "Sahifa tepasidagi sarlavha va fon rasmi."
 
-#: apps/core/sections.py:132
+#: apps/core/sections.py:157
 msgid "2. «Nega bu kelajak uchun muhim»"
 msgstr "2. «Nega bu kelajak uchun muhim»"
 
-#: apps/core/sections.py:133
+#: apps/core/sections.py:158
 msgid ""
 "Yorliq, sarlavha, matn va pastdagi eslatma. Kartochkalar — «Kelajak uchun "
 "afzalliklar» bo'limida."
@@ -1547,29 +1578,29 @@ msgstr ""
 "Yorliq, sarlavha, matn va pastdagi eslatma. Kartochkalar — «Kelajak uchun "
 "afzalliklar» bo'limida."
 
-#: apps/core/sections.py:139
+#: apps/core/sections.py:164
 msgid "3. «Bola qanday ko'nikmalarni rivojlantiradi»"
 msgstr "3. «Bola qanday ko'nikmalarni rivojlantiradi»"
 
-#: apps/core/sections.py:140
+#: apps/core/sections.py:165
 msgid "Sarlavha. Ko'nikmalar ro'yxati — «Ko'nikmalar» bo'limida."
 msgstr "Sarlavha. Ko'nikmalar ro'yxati — «Ko'nikmalar» bo'limida."
 
-#: apps/core/sections.py:145
+#: apps/core/sections.py:170
 msgid "4. Demo Day — «Bola o'z loyihasini himoya qiladigan kun»"
 msgstr "4. Demo Day — «Bola o'z loyihasini himoya qiladigan kun»"
 
-#: apps/core/sections.py:146
+#: apps/core/sections.py:171
 msgid ""
 "Yorliq, sarlavha va matn. Raqamlar — «Loyiha himoyasi bosqichlari» bo'limida."
 msgstr ""
 "Yorliq, sarlavha va matn. Raqamlar — «Loyiha himoyasi bosqichlari» bo'limida."
 
-#: apps/core/sections.py:152
+#: apps/core/sections.py:177
 msgid "5. «MARS IT — bu oddiy kurslar emas»"
 msgstr "5. «MARS IT — bu oddiy kurslar emas»"
 
-#: apps/core/sections.py:153
+#: apps/core/sections.py:178
 msgid ""
 "Yorliq, sarlavha va video tugmasi matni. Ro'yxat bandlari — «Maktab "
 "afzalliklari» bo'limida, videoning o'zi — «Sayt sozlamalari»da."
@@ -1577,35 +1608,35 @@ msgstr ""
 "Yorliq, sarlavha va video tugmasi matni. Ro'yxat bandlari — «Maktab "
 "afzalliklari» bo'limida, videoning o'zi — «Sayt sozlamalari»da."
 
-#: apps/core/sections.py:159
+#: apps/core/sections.py:184
 msgid "6. «Maktab ortida kim turadi» — asoschilar"
 msgstr "6. «Maktab ortida kim turadi» — asoschilar"
 
-#: apps/core/sections.py:160
+#: apps/core/sections.py:185
 msgid "Yorliq va sarlavha. Asoschilar — «Asoschilar» bo'limida."
 msgstr "Yorliq va sarlavha. Asoschilar — «Asoschilar» bo'limida."
 
-#: apps/core/sections.py:165
+#: apps/core/sections.py:190
 msgid "7. «IT sohasida ishlaydigan o'qituvchilar»"
 msgstr "7. «IT sohasida ishlaydigan o'qituvchilar»"
 
-#: apps/core/sections.py:166
+#: apps/core/sections.py:191
 msgid "Yorliq, sarlavha va matn. O'qituvchilar — «O'qituvchilar» bo'limida."
 msgstr "Yorliq, sarlavha va matn. O'qituvchilar — «O'qituvchilar» bo'limida."
 
-#: apps/core/sections.py:173
+#: apps/core/sections.py:198
 msgid "1. Hero — «Kurslar MARS IT School»"
 msgstr "1. Hero — «Kurslar MARS IT School»"
 
-#: apps/core/sections.py:174
+#: apps/core/sections.py:199
 msgid "Sahifa tepasidagi sarlavha, tugma matni va o'ngdagi rasm."
 msgstr "Sahifa tepasidagi sarlavha, tugma matni va o'ngdagi rasm."
 
-#: apps/core/sections.py:179
+#: apps/core/sections.py:204
 msgid "2. «Yo'nalishlar» — IT Kids va IT dasturlash kartochkalari"
 msgstr "2. «Yo'nalishlar» — IT Kids va IT dasturlash kartochkalari"
 
-#: apps/core/sections.py:180
+#: apps/core/sections.py:205
 msgid ""
 "Bo'lim sarlavhasi va kartochkalar. Har bir kartochkada: nomi (sarlavha), "
 "qisqa izoh (yorliq), tavsif (matn), yosh (qiymat), rasm va havola."
@@ -1613,65 +1644,69 @@ msgstr ""
 "Bo'lim sarlavhasi va kartochkalar. Har bir kartochkada: nomi (sarlavha), "
 "qisqa izoh (yorliq), tavsif (matn), yosh (qiymat), rasm va havola."
 
-#: apps/core/sections.py:184
+#: apps/core/sections.py:209
 msgid "Yo'nalish kartochkasi"
 msgstr "Yo'nalish kartochkasi"
 
-#: apps/core/sections.py:185
+#: apps/core/sections.py:210
 msgid "«Texnologiyalar» — vergul bilan: html, css, js, react, python, cpp"
 msgstr "«Texnologiyalar» — vergul bilan: html, css, js, react, python, cpp"
 
-#: apps/core/sections.py:189
+#: apps/core/sections.py:214
 msgid "3. «Tez orada...» banneri"
 msgstr "3. «Tez orada...» banneri"
 
-#: apps/core/sections.py:190
-msgid "Yo'nalishlar ostidagi banner."
-msgstr "Yo'nalishlar ostidagi banner."
+#: apps/core/sections.py:215
+msgid ""
+"Yo'nalishlar ostidagi banner: sarlavha, matn va o'ngdagi astronavt rasmi. "
+"Rasm bo'sh qoldirilsa — maketdagi astronavt ishlatiladi."
+msgstr ""
+"Yo'nalishlar ostidagi banner: sarlavha, matn va o'ngdagi astronavt rasmi. "
+"Rasm bo'sh qoldirilsa — maketdagi astronavt ishlatiladi."
 
-#: apps/core/sections.py:197
+#: apps/core/sections.py:223
 msgid "1. Hero — «IT KIDS dasturlash»"
 msgstr "1. Hero — «IT KIDS dasturlash»"
 
-#: apps/core/sections.py:198
+#: apps/core/sections.py:224
 msgid "Sarlavha, tugmalar matni va o'ngdagi rasm."
 msgstr "Sarlavha, tugmalar matni va o'ngdagi rasm."
 
-#: apps/core/sections.py:203
+#: apps/core/sections.py:229
 msgid "2. Ko'rsatkichlar tasmasi (yosh, davomiylik, format, guruh)"
 msgstr "2. Ko'rsatkichlar tasmasi (yosh, davomiylik, format, guruh)"
 
-#: apps/core/sections.py:204
+#: apps/core/sections.py:230
 msgid ""
 "Hero ostidagi to'rtta katak. Har birida: katta qiymat va uning ostidagi izoh."
 msgstr ""
 "Hero ostidagi to'rtta katak. Har birida: katta qiymat va uning ostidagi izoh."
 
-#: apps/core/sections.py:207 apps/core/sections.py:253
+#: apps/core/sections.py:233 apps/core/sections.py:279
 msgid "Ko'rsatkich"
 msgstr "Ko'rsatkich"
 
-#: apps/core/sections.py:211 apps/core/sections.py:257
+#: apps/core/sections.py:237 apps/core/sections.py:283
 msgid "3. «Kurs haqida» — mavzular karuseli"
 msgstr "3. «Kurs haqida» — mavzular karuseli"
 
-#: apps/core/sections.py:212
+#: apps/core/sections.py:238
 msgid "Yorliq, sarlavha, tavsif va aylanuvchi mavzu kartochkalari."
 msgstr "Yorliq, sarlavha, tavsif va aylanuvchi mavzu kartochkalari."
 
-#: apps/core/sections.py:215 apps/core/sections.py:261
+#: apps/core/sections.py:241 apps/core/sections.py:287
 msgid "Mavzu kartochkasi"
 msgstr "Mavzu kartochkasi"
 
-#: apps/core/sections.py:216
+#: apps/core/sections.py:242
 msgid "Ikonka nomi: blocks, robot, wrench, chip, brain, code, rocket"
 msgstr "Ikonka nomi: blocks, robot, wrench, chip, brain, code, rocket"
 
-#: apps/core/sections.py:220
+#: apps/core/sections.py:246
 msgid "4. «O'qishning uch bosqichi» — akkordeon"
 msgstr "4. «O'qishning uch bosqichi» — akkordeon"
 
-#: apps/core/sections.py:221
+#: apps/core/sections.py:247
 msgid ""
 "Sarlavha, izoh va bosqichlar. Har bir bosqichda: raqam (qiymat), nomi, "
 "davomiyligi (yorliq) va tavsifi."
@@ -1679,11 +1714,11 @@ msgstr ""
 "Sarlavha, izoh va bosqichlar. Har bir bosqichda: raqam (qiymat), nomi, "
 "davomiyligi (yorliq) va tavsifi."
 
-#: apps/core/sections.py:225 apps/core/sections.py:269
+#: apps/core/sections.py:251 apps/core/sections.py:295
 msgid "Bosqich"
 msgstr "Bosqich"
 
-#: apps/core/sections.py:226 apps/core/sections.py:270
+#: apps/core/sections.py:252 apps/core/sections.py:296
 msgid ""
 "«Ro'yxat» — mavzular, har biri alohida qatorda. «Natija» — bosqich "
 "yakunidagi ish. «Ikonka nomi» — texnologiyalar vergul bilan: html, css, js, "
@@ -1693,11 +1728,11 @@ msgstr ""
 "yakunidagi ish. «Ikonka nomi» — texnologiyalar vergul bilan: html, css, js, "
 "react, python, cpp."
 
-#: apps/core/sections.py:232 apps/core/sections.py:276
+#: apps/core/sections.py:258 apps/core/sections.py:302
 msgid "5. «Darslar muhiti» — galereya"
 msgstr "5. «Darslar muhiti» — galereya"
 
-#: apps/core/sections.py:233
+#: apps/core/sections.py:259
 msgid ""
 "Sarlavha, izoh va rasmlar. Har bir rasmda tavsif (matn) — u ekranni o'qib "
 "beruvchi dasturlar uchun kerak."
@@ -1705,83 +1740,83 @@ msgstr ""
 "Sarlavha, izoh va rasmlar. Har bir rasmda tavsif (matn) — u ekranni o'qib "
 "beruvchi dasturlar uchun kerak."
 
-#: apps/core/sections.py:237 apps/core/sections.py:280 apps/news/models.py:76
+#: apps/core/sections.py:263 apps/core/sections.py:306 apps/news/models.py:76
 msgid "Galereya rasmi"
 msgstr "Galereya rasmi"
 
-#: apps/core/sections.py:243
+#: apps/core/sections.py:269
 msgid "1. Hero — «IT-dasturlash»"
 msgstr "1. Hero — «IT-dasturlash»"
 
-#: apps/core/sections.py:244
+#: apps/core/sections.py:270
 msgid "Sarlavha, izoh, tugmalar matni va o'ngdagi rasm."
 msgstr "Sarlavha, izoh, tugmalar matni va o'ngdagi rasm."
 
-#: apps/core/sections.py:249
+#: apps/core/sections.py:275
 msgid "2. Ko'rsatkichlar tasmasi"
 msgstr "2. Ko'rsatkichlar tasmasi"
 
-#: apps/core/sections.py:250
+#: apps/core/sections.py:276
 msgid "Hero ostidagi kataklar: katta qiymat va izoh."
 msgstr "Hero ostidagi kataklar: katta qiymat va izoh."
 
-#: apps/core/sections.py:258
+#: apps/core/sections.py:284
 msgid "Yorliq, sarlavha, tavsif va mavzu kartochkalari."
 msgstr "Yorliq, sarlavha, tavsif va mavzu kartochkalari."
 
-#: apps/core/sections.py:265
+#: apps/core/sections.py:291
 msgid "4. «O'qish bosqichlari» — akkordeon"
 msgstr "4. «O'qish bosqichlari» — akkordeon"
 
-#: apps/core/sections.py:266
+#: apps/core/sections.py:292
 msgid "Sarlavha, izoh va bosqichlar."
 msgstr "Sarlavha, izoh va bosqichlar."
 
-#: apps/core/sections.py:277
+#: apps/core/sections.py:303
 msgid "Sarlavha, izoh va rasmlar."
 msgstr "Sarlavha, izoh va rasmlar."
 
-#: apps/core/sections.py:286
+#: apps/core/sections.py:312
 msgid "1. Hero — «SPACE — o'ynab o'rgan»"
 msgstr "1. Hero — «SPACE — o'ynab o'rgan»"
 
-#: apps/core/sections.py:287
+#: apps/core/sections.py:313
 msgid "Sarlavha, tugma matni va o'ngdagi rasm."
 msgstr "Sarlavha, tugma matni va o'ngdagi rasm."
 
-#: apps/core/sections.py:292
+#: apps/core/sections.py:318
 msgid "2. «SPACE nimalarga qodir» — imkoniyatlar"
 msgstr "2. «SPACE nimalarga qodir» — imkoniyatlar"
 
-#: apps/core/sections.py:293
+#: apps/core/sections.py:319
 msgid "Yorliq, sarlavha, matn va imkoniyat kartochkalari."
 msgstr "Yorliq, sarlavha, matn va imkoniyat kartochkalari."
 
-#: apps/core/sections.py:296
+#: apps/core/sections.py:322
 msgid "Imkoniyat"
 msgstr "Imkoniyat"
 
-#: apps/core/sections.py:297
+#: apps/core/sections.py:323
 msgid "Ikonka nomi: notes, book, code, feed, card, coins, cup, star"
 msgstr "Ikonka nomi: notes, book, code, feed, card, coins, cup, star"
 
-#: apps/core/sections.py:301
+#: apps/core/sections.py:327
 msgid "3. «O'qish — bu qiziqarli» (geymifikatsiya)"
 msgstr "3. «O'qish — bu qiziqarli» (geymifikatsiya)"
 
-#: apps/core/sections.py:302
+#: apps/core/sections.py:328
 msgid "Yorliq, sarlavha, matn va kartochkalar."
 msgstr "Yorliq, sarlavha, matn va kartochkalar."
 
-#: apps/core/sections.py:305
+#: apps/core/sections.py:331
 msgid "Geymifikatsiya kartochkasi"
 msgstr "Geymifikatsiya kartochkasi"
 
-#: apps/core/sections.py:309
+#: apps/core/sections.py:335
 msgid "4. «Space Premium»"
 msgstr "4. «Space Premium»"
 
-#: apps/core/sections.py:310
+#: apps/core/sections.py:336
 msgid ""
 "Yorliq, sarlavha, matn, eslatma va tugma. Ro'yxat bandlari — pastdagi "
 "elementlar."
@@ -1789,15 +1824,15 @@ msgstr ""
 "Yorliq, sarlavha, matn, eslatma va tugma. Ro'yxat bandlari — pastdagi "
 "elementlar."
 
-#: apps/core/sections.py:314
+#: apps/core/sections.py:340
 msgid "Premium imkoniyati"
 msgstr "Premium imkoniyati"
 
-#: apps/core/sections.py:318
+#: apps/core/sections.py:344
 msgid "5. «MARS Shop — ballarni sovg'aga almashtir»"
 msgstr "5. «MARS Shop — ballarni sovg'aga almashtir»"
 
-#: apps/core/sections.py:319
+#: apps/core/sections.py:345
 msgid ""
 "Yorliq, sarlavha, matn va tugma. Sovg'alar — pastdagi elementlar: nomi, "
 "koinlar soni (qiymat) va rasmi. «Qo'shimcha sarlavha» va «eslatma» — oxirgi "
@@ -1807,61 +1842,73 @@ msgstr ""
 "koinlar soni (qiymat) va rasmi. «Qo'shimcha sarlavha» va «eslatma» — oxirgi "
 "katakdagi chaqiruv matni."
 
-#: apps/core/sections.py:324
+#: apps/core/sections.py:350
 msgid "Sovg'a"
 msgstr "Sovg'a"
 
-#: apps/core/sections.py:328
+#: apps/core/sections.py:354
 msgid "6. «Ota-onalarga — bitta ilovada to'liq nazorat»"
 msgstr "6. «Ota-onalarga — bitta ilovada to'liq nazorat»"
 
-#: apps/core/sections.py:329
-msgid "Yorliq, sarlavha, matn va slaydlar."
-msgstr "Yorliq, sarlavha, matn va slaydlar."
+#: apps/core/sections.py:355
+msgid ""
+"Yorliq, sarlavha, matn va slaydlar. «Rasm» — barcha slaydlar uchun umumiy "
+"telefon rasmi; slaydning o'z rasmi yuklansa, u ustun turadi."
+msgstr ""
+"Yorliq, sarlavha, matn va slaydlar. «Rasm» — barcha slaydlar uchun umumiy "
+"telefon rasmi; slaydning o'z rasmi yuklansa, u ustun turadi."
 
-#: apps/core/sections.py:332
+#: apps/core/sections.py:359
 msgid "Slayd"
 msgstr "Slayd"
 
-#: apps/core/sections.py:336
+#: apps/core/sections.py:360
+msgid ""
+"«Rasm» — shu slayd uchun telefon rasmi. Bo'sh qoldirilsa, blokning umumiy "
+"rasmi ishlatiladi."
+msgstr ""
+"«Rasm» — shu slayd uchun telefon rasmi. Bo'sh qoldirilsa, blokning umumiy "
+"rasmi ishlatiladi."
+
+#: apps/core/sections.py:365
 msgid "7. «SPACE ko'magida o'qishni boshlang» — ariza"
 msgstr "7. «SPACE ko'magida o'qishni boshlang» — ariza"
 
-#: apps/core/sections.py:337
+#: apps/core/sections.py:366
 msgid "Yorliq, sarlavha va matn."
 msgstr "Yorliq, sarlavha va matn."
 
-#: apps/core/sections.py:344
+#: apps/core/sections.py:373
 msgid "1. Hero — «MARS IT maktabi hayoti»"
 msgstr "1. Hero — «MARS IT maktabi hayoti»"
 
-#: apps/core/sections.py:345 apps/core/sections.py:386
+#: apps/core/sections.py:374 apps/core/sections.py:415
 msgid "Sahifa tepasidagi sarlavha, izoh va rasm."
 msgstr "Sahifa tepasidagi sarlavha, izoh va rasm."
 
-#: apps/core/sections.py:350
+#: apps/core/sections.py:379
 msgid "2. Yangiliklar ro'yxati — sarlavha"
 msgstr "2. Yangiliklar ro'yxati — sarlavha"
 
-#: apps/core/sections.py:351
+#: apps/core/sections.py:380
 msgid ""
 "Ro'yxat tepasidagi yorliq va sarlavha, hamda ro'yxat bo'sh bo'lgandagi matn."
 msgstr ""
 "Ro'yxat tepasidagi yorliq va sarlavha, hamda ro'yxat bo'sh bo'lgandagi matn."
 
-#: apps/core/sections.py:358
+#: apps/core/sections.py:387
 msgid "1. Hero — «Doim aloqada»"
 msgstr "1. Hero — «Doim aloqada»"
 
-#: apps/core/sections.py:359
+#: apps/core/sections.py:388
 msgid "Sahifa tepasidagi sarlavha va rasm."
 msgstr "Sahifa tepasidagi sarlavha va rasm."
 
-#: apps/core/sections.py:364
+#: apps/core/sections.py:393
 msgid "2. Kontaktlar bloki"
 msgstr "2. Kontaktlar bloki"
 
-#: apps/core/sections.py:365
+#: apps/core/sections.py:394
 msgid ""
 "Yorliq, sarlavha va matn. Telefon, email va ish vaqti — «Sayt "
 "sozlamalari»dan olinadi."
@@ -1869,71 +1916,71 @@ msgstr ""
 "Yorliq, sarlavha va matn. Telefon, email va ish vaqti — «Sayt "
 "sozlamalari»dan olinadi."
 
-#: apps/core/sections.py:371
+#: apps/core/sections.py:400
 msgid "3. «Toshkentdagi maktab manzillari» — xarita va ro'yxat"
 msgstr "3. «Toshkentdagi maktab manzillari» — xarita va ro'yxat"
 
-#: apps/core/sections.py:372
+#: apps/core/sections.py:401
 msgid "Yorliq, sarlavha va izoh. Filiallar — «Filiallar» bo'limida."
 msgstr "Yorliq, sarlavha va izoh. Filiallar — «Filiallar» bo'limida."
 
-#: apps/core/sections.py:377
+#: apps/core/sections.py:406
 msgid "4. «Sinov darsiga yoziling» — shu sahifadagi variant"
 msgstr "4. «Sinov darsiga yoziling» — shu sahifadagi variant"
 
-#: apps/core/sections.py:378
+#: apps/core/sections.py:407
 msgid "Kontaktlar sahifasidagi ariza blokining sarlavhasi va izohi."
 msgstr "Kontaktlar sahifasidagi ariza blokining sarlavhasi va izohi."
 
-#: apps/core/sections.py:385
+#: apps/core/sections.py:414
 msgid "1. Hero — «MARS IT School'da ishlash»"
 msgstr "1. Hero — «MARS IT School'da ishlash»"
 
-#: apps/core/sections.py:391
+#: apps/core/sections.py:420
 msgid "2. Vakansiyalar ro'yxati — sarlavha"
 msgstr "2. Vakansiyalar ro'yxati — sarlavha"
 
-#: apps/core/sections.py:392
+#: apps/core/sections.py:421
 msgid "Yorliq, sarlavha, matn va ro'yxat bo'sh bo'lgandagi yozuv."
 msgstr "Yorliq, sarlavha, matn va ro'yxat bo'sh bo'lgandagi yozuv."
 
-#: apps/core/sections.py:399
+#: apps/core/sections.py:428
 msgid "1. Test boshlanishi — salomlashuv va izoh"
 msgstr "1. Test boshlanishi — salomlashuv va izoh"
 
-#: apps/core/sections.py:400
+#: apps/core/sections.py:429
 msgid "«Salom, bo'lajak dasturchi!» sarlavhasi va uning ostidagi matn."
 msgstr "«Salom, bo'lajak dasturchi!» sarlavhasi va uning ostidagi matn."
 
-#: apps/core/sections.py:405
+#: apps/core/sections.py:435
 msgid "2. «Deyarli tayyor!» — kontakt qadami"
 msgstr "2. «Deyarli tayyor!» — kontakt qadami"
 
-#: apps/core/sections.py:406
+#: apps/core/sections.py:436
 msgid "Test oxiridagi kontakt so'raladigan qadam matni va tugmasi."
 msgstr "Test oxiridagi kontakt so'raladigan qadam matni va tugmasi."
 
-#: apps/core/sections.py:411
+#: apps/core/sections.py:442
 msgid "3. Natija sahifasi — sarlavhalar"
 msgstr "3. Natija sahifasi — sarlavhalar"
 
-#: apps/core/sections.py:412
+#: apps/core/sections.py:443
 msgid "«Natijangiz tayyor!» sarlavhasi va ko'nikmalar bo'limi yorliqlari."
 msgstr "«Natijangiz tayyor!» sarlavhasi va ko'nikmalar bo'limi yorliqlari."
 
-#: apps/core/sections.py:419
+#: apps/core/sections.py:451
 msgid "«Bepul sinov darsi» — ariza bloki (barcha sahifalarda)"
 msgstr "«Bepul sinov darsi» — ariza bloki (barcha sahifalarda)"
 
-#: apps/core/sections.py:420
+#: apps/core/sections.py:452
 msgid "Yorliq, sarlavha va izoh. Kontaktlar sahifasida o'z varianti bor."
 msgstr "Yorliq, sarlavha va izoh. Kontaktlar sahifasida o'z varianti bor."
 
-#: apps/core/sections.py:425
+#: apps/core/sections.py:458
 msgid "Takrorlanadigan tugmalar matni"
 msgstr "Takrorlanadigan tugmalar matni"
 
-#: apps/core/sections.py:426
+#: apps/core/sections.py:459
 msgid ""
 "«Bepul sinov darsiga yozilish» va «Kurslarni ko'rish» tugmalari — sayt "
 "bo'ylab bir xil."
@@ -1941,11 +1988,11 @@ msgstr ""
 "«Bepul sinov darsiga yozilish» va «Kurslarni ko'rish» tugmalari — sayt "
 "bo'ylab bir xil."
 
-#: apps/core/sections.py:432
+#: apps/core/sections.py:466
 msgid "Sayt podvali (futer)"
 msgstr "Sayt podvali (futer)"
 
-#: apps/core/sections.py:433
+#: apps/core/sections.py:467
 msgid ""
 "Podvaldagi qisqa matn va mualliflik yozuvi. Telefon, ijtimoiy tarmoqlar — "
 "«Sayt sozlamalari»da."
@@ -2108,7 +2155,7 @@ msgstr "O'qish bosqichi"
 msgid "O'qish bosqichlari"
 msgstr "O'qish bosqichlari"
 
-#: apps/leads/models.py:12 apps/vacancies/models.py:78
+#: apps/leads/models.py:12 apps/vacancies/models.py:90
 msgid "Yangi"
 msgstr "Yangi"
 
@@ -2120,7 +2167,7 @@ msgstr "Bog'lanildi"
 msgid "Ro'yxatdan o'tdi"
 msgstr "Ro'yxatdan o'tdi"
 
-#: apps/leads/models.py:15 apps/vacancies/models.py:81
+#: apps/leads/models.py:15 apps/vacancies/models.py:93
 msgid "Rad etildi"
 msgstr "Rad etildi"
 
@@ -2160,7 +2207,7 @@ msgstr "izoh"
 msgid "manba"
 msgstr "manba"
 
-#: apps/leads/models.py:50 apps/vacancies/models.py:107
+#: apps/leads/models.py:50 apps/vacancies/models.py:119
 msgid "holat"
 msgstr "holat"
 
@@ -2168,7 +2215,7 @@ msgstr "holat"
 msgid "admin izohi"
 msgstr "admin izohi"
 
-#: apps/leads/models.py:55 apps/vacancies/models.py:110
+#: apps/leads/models.py:55 apps/vacancies/models.py:122
 msgid "IP manzil"
 msgstr "IP manzil"
 
@@ -2180,7 +2227,7 @@ msgstr "User-Agent"
 msgid "Ariza"
 msgstr "Ariza"
 
-#: apps/leads/serializers.py:47 apps/vacancies/serializers.py:71
+#: apps/leads/serializers.py:47 apps/vacancies/serializers.py:73
 msgid "Ism juda qisqa."
 msgstr "Ism juda qisqa."
 
@@ -2188,11 +2235,11 @@ msgstr "Ism juda qisqa."
 msgid "Yosh 3 dan 25 gacha bo'lishi kerak."
 msgstr "Yosh 3 dan 25 gacha bo'lishi kerak."
 
-#: apps/leads/serializers.py:63 apps/vacancies/serializers.py:99
+#: apps/leads/serializers.py:63 apps/vacancies/serializers.py:101
 msgid "So'rovni yuborib bo'lmadi."
 msgstr "So'rovni yuborib bo'lmadi."
 
-#: apps/leads/views.py:32 apps/vacancies/views.py:62
+#: apps/leads/views.py:32 apps/vacancies/views.py:63
 msgid "Arizangiz qabul qilindi. Tez orada bog'lanamiz."
 msgstr "Arizangiz qabul qilindi. Tez orada bog'lanamiz."
 
@@ -2288,15 +2335,15 @@ msgstr "Natijalar bo‘yicha ballar"
 msgid "natija o‘chirilgan"
 msgstr "natija o‘chirilgan"
 
-#: apps/quiz/admin.py:182
+#: apps/quiz/admin.py:180
 msgid "Natija"
 msgstr "Natija"
 
-#: apps/quiz/admin.py:183
+#: apps/quiz/admin.py:181
 msgid "Ball"
 msgstr "Ball"
 
-#: apps/quiz/admin.py:187
+#: apps/quiz/admin.py:185
 msgid "Ko‘nikmalar"
 msgstr "Ko‘nikmalar"
 
@@ -2476,17 +2523,29 @@ msgstr "LinkedIn"
 msgid "O'qituvchi"
 msgstr "O'qituvchi"
 
-#: apps/vacancies/admin.py:19
+#: apps/vacancies/admin.py:21
 msgid "Matn"
 msgstr "Matn"
 
-#: apps/vacancies/admin.py:20
+#: apps/vacancies/admin.py:22
 msgid "Maosh"
 msgstr "Maosh"
 
-#: apps/vacancies/admin.py:49 apps/vacancies/models.py:100
+#: apps/vacancies/admin.py:51 apps/vacancies/models.py:112
 msgid "rezyume"
 msgstr "rezyume"
+
+#: apps/vacancies/admin.py:71
+msgid "Yuklab olish"
+msgstr "Yuklab olish"
+
+#: apps/vacancies/admin.py:78
+msgid "Ochish (yangi oynada)"
+msgstr "Ochish (yangi oynada)"
+
+#: apps/vacancies/admin.py:80
+msgid "yuklab olish"
+msgstr "yuklab olish"
 
 #: apps/vacancies/models.py:17
 msgid "Bitiruvchi shapkasi (o'qituvchi)"
@@ -2508,95 +2567,107 @@ msgstr "Naushnik (kol-markaz)"
 msgid "Uchqun (boshqa)"
 msgstr "Uchqun (boshqa)"
 
-#: apps/vacancies/models.py:24
+#: apps/vacancies/models.py:26
+msgid "So'm (UZS)"
+msgstr "So'm (UZS)"
+
+#: apps/vacancies/models.py:27
+msgid "Dollar ($)"
+msgstr "Dollar ($)"
+
+#: apps/vacancies/models.py:30
 msgid "To'liq stavka"
 msgstr "To'liq stavka"
 
-#: apps/vacancies/models.py:25
+#: apps/vacancies/models.py:31
 msgid "Yarim stavka"
 msgstr "Yarim stavka"
 
-#: apps/vacancies/models.py:26
+#: apps/vacancies/models.py:32
 msgid "Loyiha asosida"
 msgstr "Loyiha asosida"
 
-#: apps/vacancies/models.py:45
+#: apps/vacancies/models.py:51
 msgid "talablar (ru)"
 msgstr "talablar (ru)"
 
-#: apps/vacancies/models.py:46
+#: apps/vacancies/models.py:52
 msgid "talablar (uz)"
 msgstr "talablar (uz)"
 
-#: apps/vacancies/models.py:47
+#: apps/vacancies/models.py:53
 msgid "talablar (en)"
 msgstr "talablar (en)"
 
-#: apps/vacancies/models.py:49
+#: apps/vacancies/models.py:55
 msgid "shartlar (ru)"
 msgstr "shartlar (ru)"
 
-#: apps/vacancies/models.py:50
+#: apps/vacancies/models.py:56
 msgid "shartlar (uz)"
 msgstr "shartlar (uz)"
 
-#: apps/vacancies/models.py:51
+#: apps/vacancies/models.py:57
 msgid "shartlar (en)"
 msgstr "shartlar (en)"
 
-#: apps/vacancies/models.py:54
+#: apps/vacancies/models.py:60
 msgid "bandlik turi"
 msgstr "bandlik turi"
 
-#: apps/vacancies/models.py:62
+#: apps/vacancies/models.py:68
 msgid "maosh (dan)"
 msgstr "maosh (dan)"
 
-#: apps/vacancies/models.py:63
+#: apps/vacancies/models.py:69
 msgid "maosh (gacha)"
 msgstr "maosh (gacha)"
 
-#: apps/vacancies/models.py:64
+#: apps/vacancies/models.py:71
+msgid "maosh valyutasi"
+msgstr "maosh valyutasi"
+
+#: apps/vacancies/models.py:76
 msgid "ochiq"
 msgstr "ochiq"
 
-#: apps/vacancies/models.py:67
+#: apps/vacancies/models.py:79
 msgid "Vakansiya"
 msgstr "Vakansiya"
 
-#: apps/vacancies/models.py:79
+#: apps/vacancies/models.py:91
 msgid "Ko'rib chiqildi"
 msgstr "Ko'rib chiqildi"
 
-#: apps/vacancies/models.py:80
+#: apps/vacancies/models.py:92
 msgid "Suhbatga taklif qilindi"
 msgstr "Suhbatga taklif qilindi"
 
-#: apps/vacancies/models.py:85
+#: apps/vacancies/models.py:97
 msgid "vakansiya"
 msgstr "vakansiya"
 
-#: apps/vacancies/models.py:93
+#: apps/vacancies/models.py:105
 msgid "xat"
 msgstr "xat"
 
-#: apps/vacancies/models.py:105
+#: apps/vacancies/models.py:117
 msgid "rezyume havolasi"
 msgstr "rezyume havolasi"
 
-#: apps/vacancies/models.py:113
+#: apps/vacancies/models.py:125
 msgid "Vakansiya arizasi"
 msgstr "Vakansiya arizasi"
 
-#: apps/vacancies/models.py:114
+#: apps/vacancies/models.py:126
 msgid "Vakansiya arizalari"
 msgstr "Vakansiya arizalari"
 
-#: apps/vacancies/views.py:82
+#: apps/vacancies/views.py:102
 msgid "Rezyume yuklanmagan."
 msgstr "Rezyume yuklanmagan."
 
-#: apps/vacancies/views.py:87
+#: apps/vacancies/views.py:107
 msgid "Fayl topilmadi."
 msgstr "Fayl topilmadi."
 

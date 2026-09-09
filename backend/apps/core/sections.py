@@ -101,6 +101,22 @@ SECTIONS: list[dict] = [
         ("eyebrow", "title", "text", "button_label", "image"),
     ),
     _s(
+        "home.platform", "home",
+        _("3.1. SPACE maketi — chap menyu va ekran rasmlari"),
+        _("SPACE blokidagi platforma maketi. Har bir element — chapdagi bitta "
+          "tugma: nomi, ikonkasi va tugma bosilganda o'ngda ko'rinadigan ekran "
+          "rasmi. Tugmalar sonini xohlagancha o'zgartirish mumkin."),
+        (),
+        items=("title", "icon_name", "icon", "image"),
+        item_name=_("Menyu tugmasi"),
+        item_hint=_(
+            "«Sarlavha» — tugma matni. «Rasm» — shu tugma bosilganda o'ngda "
+            "ko'rsatiladigan ekran rasmi (bo'sh qoldirilsa, tayyor jonli maket "
+            "chiziladi). «Ikonka nomi» — book, play, star, trophy, chat, bag; "
+            "o'z ikonkangizni «ikonka rasmi»ga yuklashingiz ham mumkin."
+        ),
+    ),
+    _s(
         "home.news", "home",
         _("4. «Maktabda nimalar bo'lyapti» — sarlavha"),
         _("Yangiliklar lentasi tepasidagi matn va tugma. Yangiliklarning o'zi — "
@@ -134,7 +150,7 @@ SECTIONS: list[dict] = [
         "about.hero", "about",
         _("1. Hero — «O'rganamiz. Yaratamiz. Rivojlanamiz.»"),
         _("Sahifa tepasidagi sarlavha va fon rasmi."),
-        ("title", "text", "image"),
+        ("title", "image"),
     ),
     _s(
         "about.future", "about",
@@ -161,7 +177,7 @@ SECTIONS: list[dict] = [
         _("5. «MARS IT — bu oddiy kurslar emas»"),
         _("Yorliq, sarlavha va video tugmasi matni. Ro'yxat bandlari — «Maktab "
           "afzalliklari» bo'limida, videoning o'zi — «Sayt sozlamalari»da."),
-        ("eyebrow", "title", "text", "button_label"),
+        ("eyebrow", "title", "button_label"),
     ),
     _s(
         "about.founders", "about",
@@ -196,8 +212,9 @@ SECTIONS: list[dict] = [
     _s(
         "courses.coming_soon", "courses",
         _("3. «Tez orada...» banneri"),
-        _("Yo'nalishlar ostidagi banner."),
-        ("title", "text"),
+        _("Yo'nalishlar ostidagi banner: sarlavha, matn va o'ngdagi astronavt "
+          "rasmi. Rasm bo'sh qoldirilsa — maketdagi astronavt ishlatiladi."),
+        ("title", "text", "image"),
     ),
 
     # ----------------------------- IT Kids -------------------------------
@@ -205,7 +222,7 @@ SECTIONS: list[dict] = [
         "itkids.hero", "itkids",
         _("1. Hero — «IT KIDS dasturlash»"),
         _("Sarlavha, tugmalar matni va o'ngdagi rasm."),
-        ("title", "text", "button_label", "button2_label", "image"),
+        ("title", "button_label", "button2_label", "image"),
     ),
     _s(
         "itkids.facts", "itkids",
@@ -301,7 +318,7 @@ SECTIONS: list[dict] = [
         _("2. «SPACE nimalarga qodir» — imkoniyatlar"),
         _("Yorliq, sarlavha, matn va imkoniyat kartochkalari."),
         ("eyebrow", "title", "text"),
-        items=("title", "text", "icon_name", "icon"),
+        items=("title", "text", "icon_name"),
         item_name=_("Imkoniyat"),
         item_hint=_("Ikonka nomi: notes, book, code, feed, card, coins, cup, star"),
     ),
@@ -310,7 +327,7 @@ SECTIONS: list[dict] = [
         _("3. «O'qish — bu qiziqarli» (geymifikatsiya)"),
         _("Yorliq, sarlavha, matn va kartochkalar."),
         ("eyebrow", "title", "text"),
-        items=("title", "text", "icon_name", "icon"),
+        items=("title", "text", "icon_name"),
         item_name=_("Geymifikatsiya kartochkasi"),
     ),
     _s(
@@ -335,10 +352,13 @@ SECTIONS: list[dict] = [
     _s(
         "space.parents", "space",
         _("6. «Ota-onalarga — bitta ilovada to'liq nazorat»"),
-        _("Yorliq, sarlavha, matn va slaydlar."),
+        _("Yorliq, sarlavha, matn va slaydlar. «Rasm» — barcha slaydlar uchun "
+          "umumiy telefon rasmi; slaydning o'z rasmi yuklansa, u ustun turadi."),
         ("eyebrow", "title", "text", "image"),
-        items=("title", "text", "icon_name", "icon"),
+        items=("title", "text", "image"),
         item_name=_("Slayd"),
+        item_hint=_("«Rasm» — shu slayd uchun telefon rasmi. Bo'sh qoldirilsa, "
+                    "blokning umumiy rasmi ishlatiladi."),
     ),
     _s(
         "space.application", "space",
@@ -366,7 +386,7 @@ SECTIONS: list[dict] = [
         "contacts.hero", "contacts",
         _("1. Hero — «Doim aloqada»"),
         _("Sahifa tepasidagi sarlavha va rasm."),
-        ("title", "text", "button_label", "image"),
+        ("title", "button_label", "image"),
     ),
     _s(
         "contacts.info", "contacts",

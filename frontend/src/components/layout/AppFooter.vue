@@ -8,7 +8,6 @@ import telegramIcon from '@/assets/icons/social-telegram.svg'
 import youtubeIcon from '@/assets/icons/social-youtube.svg'
 import logoMars from '@/assets/icons/logo-mars.svg'
 import rocketIcon from '@/assets/icons/rocket.svg'
-import helperRobot from '@/assets/images/helper-robot.webp'
 import { useSection } from '@/composables/useSection'
 import { useSiteStore } from '@/stores/site'
 
@@ -133,15 +132,6 @@ const socials = computed(() =>
           </ul>
         </div>
       </div>
-
-      <img
-        loading="lazy"
-        decoding="async"
-        :src="helperRobot"
-        alt=""
-        aria-hidden="true"
-        class="pointer-events-none absolute right-0 bottom-0 hidden size-[6.25vw] object-contain lg:block"
-      />
     </div>
 
     <div class="border-t border-surface">

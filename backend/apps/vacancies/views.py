@@ -1,3 +1,4 @@
+import contextlib
 import logging
 from pathlib import Path
 
@@ -64,6 +65,19 @@ class VacancyApplicationCreateView(CreateAPIView):
         )
 
 
+def _is_pdf(handle) -> bool:
+    """Fayl haqiqatan ham PDF bilan boshlanadimi (kursor joyiga qaytariladi)."""
+    try:
+        handle.seek(0)
+        header = handle.read(4)
+    except OSError:
+        return False
+    finally:
+        with contextlib.suppress(OSError):
+            handle.seek(0)
+    return header == b"%PDF"
+
+
 @require_safe
 @never_cache
 @staff_required
@@ -76,6 +90,12 @@ def resume_download_view(request, pk: str):
 
     Manzilda arizaning ObjectId'si turadi, fayl nomi emas: nomzodning ismi
     manzilda ko'rinmaydi va boshqa faylni so'rab olish mumkin emas.
+
+    PDF brauzerda **ochib** ko'rsatiladi (yangi oyna): xodim rezyumeni ko'rish
+    uchun uni kompyuteriga yuklab olishi shart emas — bu ham qulayroq, ham
+    xavfsizroq (nusxa diskda qolmaydi). Qolgan turlarni (doc/docx/rtf) brauzer
+    baribir chiza olmaydi, shuning uchun ular avvalgidek yuklab olinadi.
+    `?download=1` bilan PDF ham majburan yuklab olinadi.
     """
     application = get_object_or_404(VacancyApplication, pk=pk)
     if not application.resume:
@@ -86,17 +106,6 @@ def resume_download_view(request, pk: str):
     except FileNotFoundError as exc:  # fayl volume'dan yo'qolgan bo'lishi mumkin
         raise Http404(_("Fayl topilmadi.")) from exc
 
-    # Shaxsiy ma'lumotga har bir murojaat qayd etiladi. Bu ma'lumotlar
-    # sizib chiqqan taqdirda «kim ko'rgan» degan savolga javob beradigan
-    # yagona manba — hujjat yuklab olingandan keyin uni kuzatib bo'lmaydi.
-    audit_log.info(
-        "Rezyume yuklab olindi: application=%s kandidat=%s xodim=%s ip=%s",
-        application.pk,
-        application.full_name,
-        request.user.email,
-        client_ip(request),
-    )
-
     # Fayl diskda tasodifiy nom bilan yotadi; yuklab olishda esa xodim uchun
     # tushunarli nom beriladi. Kengaytma faqat oq ro'yxatdan olinadi —
     # `Content-Disposition` ga ixtiyoriy satr tushishi mumkin emas.
@@ -104,16 +113,36 @@ def resume_download_view(request, pk: str):
     if suffix not in RESUME_SIGNATURES:
         suffix = ".bin"
 
+    # Brauzerda ochish faqat PDF uchun va faqat fayl haqiqatan ham PDF bo'lsa.
+    # Signatura yuklashda bir marta tekshirilgan, lekin bu yerda qayta
+    # tekshiriladi: `.pdf` deb nomlangan HTML admin domenida ochilib ketmasin.
+    inline = suffix == ".pdf" and request.GET.get("download") != "1" and _is_pdf(handle)
+
+    audit_log.info(
+        "Rezyume %s: application=%s kandidat=%s xodim=%s ip=%s",
+        "ochildi" if inline else "yuklab olindi",
+        application.pk,
+        application.full_name,
+        request.user.email,
+        client_ip(request),
+    )
+
     response = FileResponse(
         handle,
-        # `as_attachment` — brauzer faylni ochib emas, yuklab oladi. Bu HTML
-        # yoki SVG ko'rinishidagi fayl admin domenida bajarilib ketishining
-        # oldini oladi.
-        as_attachment=True,
+        # `as_attachment=False` — brauzer PDF'ni o'z ko'ruvchisida ochadi.
+        # Boshqa turlar uchun `True`: HTML yoki SVG ko'rinishidagi fayl admin
+        # domenida bajarilib ketishining oldini oladi.
+        as_attachment=not inline,
         filename=f"rezyume-{application.pk}{suffix}",
-        # Turi baribir aniqlanmasin: brauzer mazmunga qarab «taxmin qilmaydi».
-        content_type="application/octet-stream",
+        # Turi aniq ko'rsatiladi (`nosniff` bilan birga) — brauzer mazmunga
+        # qarab «taxmin qilmaydi» va PDF'ni HTML deb o'qimaydi.
+        content_type="application/pdf" if inline else "application/octet-stream",
     )
     response["X-Content-Type-Options"] = "nosniff"
-    response["Content-Security-Policy"] = "default-src 'none'; sandbox"
+    # Ochilayotgan PDF uchun `sandbox` qo'yilmaydi: u brauzerning o'z PDF
+    # ko'ruvchisini ishga tushirmay qo'yishi mumkin. Tashqi resurs yuklash
+    # esa baribir taqiqlangan.
+    response["Content-Security-Policy"] = (
+        "default-src 'none'" if inline else "default-src 'none'; sandbox"
+    )
     return response
