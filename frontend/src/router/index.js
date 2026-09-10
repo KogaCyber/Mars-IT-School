@@ -39,7 +39,11 @@ const aliasRoutes = Object.entries(COURSE_ALIASES).map(([from, to]) => ({
   redirect: { name: COURSE_ROUTES[to] || 'course', params: { slug: to } },
 }))
 
-const routes = [
+/**
+ * Sahifalar jadvali. Eksport qilinadi, chunki testlar marshrut nomlarini
+ * tekshiradi: javob havolasi mavjud bo'lmagan sahifaga ketmasligi kerak.
+ */
+export const routes = [
   {
     path: '/',
     component: DefaultLayout,

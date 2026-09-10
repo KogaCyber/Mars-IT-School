@@ -19,6 +19,7 @@
  * `assistantSearch.js` dagi o'zak + Levenshtein orqali ketadi.
  */
 import { ASSISTANT_FALLBACK, ASSISTANT_TOPICS } from '@/data/assistantFaq'
+import { courseRouteTo } from '@/data/courseAliases'
 import { REPLIES, REPLY_SOURCE } from '@/data/assistantReplies'
 import { DIRECTIONS } from '@/data/directions'
 import { IT_DEV_FAQ } from '@/data/itDev'
@@ -101,6 +102,21 @@ const QUESTION_WORDS = [
   ...WORDS.schedule,
   ...WORDS.social,
 ]
+
+/**
+ * Kursga havola.
+ *
+ * Havola HAR DOIM `courseRouteTo()` orqali yasaladi: admin paneldagi slug
+ * («programmirovanie») maketga mos alohida sahifaga («/kursy/it-razrabotka»)
+ * o'giriladi. Ilgari havola to'g'ridan-to'g'ri `{ name: 'course', slug }`
+ * qilib yasalardi va marshrut nomi bo'yicha ochilgani uchun yo'naltirish
+ * ishlamay, tashrifchi dizaynsiz umumiy sahifaga tushib qolardi.
+ *
+ * @param {{slug: string, title?: string}} course
+ */
+function courseLink(course) {
+  return { label: course.title, ...courseRouteTo(course.slug) }
+}
 
 /** Bo'sh o'rinlarni to'ldiradi: `{name}` → qiymat. */
 function fill(template, values) {
@@ -334,7 +350,7 @@ function courseFacts(course, locale) {
       },
       locale,
     ),
-    links: [{ label: course.title, name: 'course', params: { slug: course.slug } }],
+    links: [courseLink(course)],
   }
 }
 
@@ -350,11 +366,7 @@ function courseAnswer(question, tokens, data, locale, settings) {
   const courses = data.courses
   if (courses.length === 0) return null
 
-  const links = courses.slice(0, 3).map((course) => ({
-    label: course.title,
-    name: 'course',
-    params: { slug: course.slug },
-  }))
+  const links = courses.slice(0, 3).map(courseLink)
 
   // Narx — API'dagi haqiqiy oylik to'lov.
   if (mentions(tokens, WORDS.price)) {
@@ -483,11 +495,7 @@ function ageAnswer(data, locale) {
       },
       locale,
     ),
-    links: courses.slice(0, 3).map((course) => ({
-      label: course.title,
-      name: 'course',
-      params: { slug: course.slug },
-    })),
+    links: courses.slice(0, 3).map(courseLink),
   }
 }
 
@@ -734,7 +742,7 @@ export function buildCorpus(data, locale) {
       title: course.title,
       text: [course.subtitle, course.description].filter(Boolean).join(' '),
       answer: shorten([course.subtitle, course.description].filter(Boolean).join(' ')),
-      links: [{ label: course.title, name: 'course', params: { slug: course.slug } }],
+      links: [courseLink(course)],
     })
   }
 
@@ -781,7 +789,7 @@ export function buildCorpus(data, locale) {
       title,
       text,
       answer: shorten(text),
-      links: [{ label: title, name: 'course', params: { slug: direction.slug } }],
+      links: [courseLink({ slug: direction.slug, title })],
     })
   }
 

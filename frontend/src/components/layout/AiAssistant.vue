@@ -12,11 +12,13 @@
 import { onKeyStroke } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 import robotImage from '@/assets/images/helper-robot.webp'
 import { useAiChat } from '@/composables/useAiChat'
 
 const { t } = useI18n()
+const router = useRouter()
 const {
   isOpen,
   isTyping,
@@ -68,6 +70,17 @@ watch(isOpen, async (value) => {
 })
 
 onKeyStroke('Escape', () => isOpen.value && close())
+
+/**
+ * Faqat haqiqatan mavjud sahifalarga havola qoldiradi.
+ *
+ * Javob havolalari marshrut nomi bilan yasaladi; nom xato bo'lsa `RouterLink`
+ * tashrifchini bo'sh sahifaga olib borardi. Shuning uchun chizishdan oldin
+ * marshrut borligi tekshiriladi.
+ */
+function safeLinks(links) {
+  return (links || []).filter((link) => link.href || router.hasRoute(link.name))
+}
 
 function submit() {
   const text = draft.value.trim()
@@ -163,9 +176,9 @@ function submit() {
                 {{ message.text }}
               </p>
 
-              <span v-if="message.links?.length" class="flex flex-wrap gap-2">
+              <span v-if="safeLinks(message.links).length" class="flex flex-wrap gap-2">
                 <RouterLink
-                  v-for="link in message.links"
+                  v-for="link in safeLinks(message.links)"
                   :key="`${link.name}-${link.label}`"
                   :to="link.href ? link.href : { name: link.name, params: link.params }"
                   class="text-small border-brand/40 text-brand press hover:bg-brand inline-flex items-center gap-1 rounded-pill border px-3 py-1.5 transition hover:text-white"

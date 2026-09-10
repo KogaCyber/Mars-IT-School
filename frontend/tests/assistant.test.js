@@ -1,3 +1,4 @@
+// @vitest-environment happy-dom
 /**
  * AI yordamchisining javob topishi.
  *
@@ -12,7 +13,16 @@ import { describe, expect, it } from 'vitest'
 
 import data from './fixtures/assistantData.json'
 
+import { routes } from '@/router'
 import { answerQuestion } from '@/utils/assistant'
+
+/** Marshrut daraxtidagi barcha nomlar. */
+function collectRouteNames(list) {
+  return list.flatMap((route) => [
+    ...(route.name ? [route.name] : []),
+    ...collectRouteNames(route.children || []),
+  ])
+}
 
 const settings = {
   phone: '+998 78 777 77 57',
@@ -87,7 +97,41 @@ describe('kurslar bo‘yicha savollar', () => {
   it('kurs nomi aytilsa — o‘sha kurs haqida', () => {
     const answer = ask('IT Kids haqida aytib bering')
     expect(answer.text).toContain(data.courses[0].age_range)
-    expect(answer.links[0]).toMatchObject({ name: 'course' })
+    expect(answer.links[0]).toMatchObject({ name: 'course-it-kids' })
+  })
+})
+
+describe('havolalar mavjud sahifalarga boradi', () => {
+  const routeNames = new Set(collectRouteNames(routes))
+
+  it('admin paneldagi slug alohida sahifaga yo‘naltiriladi', () => {
+    // Backendda kurs slug'i «programmirovanie», lekin bunday sahifa yo'q —
+    // maketga mos sahifa `/kursy/it-razrabotka` da turadi.
+    const answer = ask('Dasturlash kursi haqida')
+    expect(answer.links[0].name).toBe('course-it-razrabotka')
+    expect(answer.links[0].params?.slug).toBeUndefined()
+  })
+
+  it('barcha javoblardagi marshrut nomlari router’da bor', () => {
+    const questions = [
+      'Qanday kurslar bor',
+      'Narxi qancha',
+      'Necha yoshdan',
+      'Filiallar qayerda',
+      'Vakansiyalar bormi',
+      'Yangiliklar',
+      'Kim o‘qitadi',
+      'Sinov darsi',
+      'SPACE nima',
+      'Telefon raqamingiz',
+      'asdfgh qwerty',
+    ]
+
+    for (const question of questions) {
+      for (const link of ask(question).links) {
+        expect(routeNames, `${question} → ${link.name}`).toContain(link.name)
+      }
+    }
   })
 })
 
