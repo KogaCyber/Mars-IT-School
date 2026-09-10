@@ -13,7 +13,7 @@
  * Backend javob bermasa build to'xtamaydi — faqat statik qism yaratiladi.
  */
 import { readFileSync } from 'node:fs'
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -861,6 +861,70 @@ async function writePage(pathname, html) {
   await writeFile(join(target, 'index.html'), html, 'utf8')
 }
 
+/**
+ * `public/` dagi fayllarga ABSOLYUT havolalarga sayt prefiksini qo'shadi.
+ *
+ * Vite `base` ni HTML va o'zi qayta ishlagan aktivlarga qo'llaydi, lekin
+ * ikki joyga TEGMAYDI:
+ *
+ *   1. CSS ichidagi `url(/fonts/...)` — `public/` dagi faylga absolyut
+ *      havola. Yig'ilgan CSS'da u o'zgarishsiz qoladi.
+ *   2. `site.webmanifest` — u shunchaki nusxalanadi, ichidagi `start_url`,
+ *      `scope`, `id` va ikonka manzillari o'qilmaydi.
+ *
+ * Natijada sayt ildizda emas, `/school/` da turganda brauzer `/fonts/...`
+ * va `/favicon.svg` ni SO'RAYDI, u yerda esa boshqa saytning HTML'i yotadi.
+ * Shrift buzilgan deb hisoblanadi ("invalid sfntVersion" — aslida `<!DO`),
+ * manifest ikonkasi esa umuman yuklanmaydi.
+ *
+ * Prefiks bo'lmasa hech narsa o'zgarmaydi.
+ */
+async function applyBasePrefix() {
+  const prefix = withBase('/').replace(/\/$/, '')
+  if (!prefix) return 0
+
+  let patched = 0
+
+  // Prefiks allaqachon qo'yilgan manzilga ikkinchi marta qo'shilmasin.
+  const rewrite = (text, pattern) =>
+    text.replace(pattern, (match, path) =>
+      path.startsWith(`${prefix}/`) ? match : match.replace(path, `${prefix}${path}`),
+    )
+
+  const cssDir = join(DIST, 'assets')
+  let cssFiles
+  try {
+    cssFiles = (await readdir(cssDir)).filter((name) => name.endsWith('.css'))
+  } catch {
+    // `assets/` papkasi yo'q — yig'ilmagan dist, qo'shadigan narsa ham yo'q.
+    cssFiles = []
+  }
+
+  for (const name of cssFiles) {
+    const file = join(cssDir, name)
+    const before = await readFile(file, 'utf8')
+    const after = rewrite(before, /url\((\/[^)"']+)\)/g)
+    if (after !== before) {
+      await writeFile(file, after, 'utf8')
+      patched += 1
+    }
+  }
+
+  const manifest = join(DIST, 'site.webmanifest')
+  try {
+    const before = await readFile(manifest, 'utf8')
+    const after = rewrite(before, /"(\/[^"]*)"/g)
+    if (after !== before) {
+      await writeFile(manifest, after, 'utf8')
+      patched += 1
+    }
+  } catch {
+    /* manifest yo'q — muammo emas */
+  }
+
+  return patched
+}
+
 async function main() {
   const template = await readFile(join(DIST, 'index.html'), 'utf8')
 
@@ -913,6 +977,9 @@ async function main() {
     .replace(/\s*<link rel="canonical"[^>]*>/, '')
     .replace(/\s*<link rel="alternate" hreflang="[a-z-]+"[^>]*>/g, '')
   await writeFile(join(DIST, '404.html'), notFoundHtml, 'utf8')
+
+  const patched = await applyBasePrefix()
+  if (patched) log(`yo'l prefiksi ${patched} ta faylga qo'shildi (CSS / manifest)`)
 
   log(`sitemap.xml, llms.txt (${LOCALES.length} til) va ${total} ta statik sahifa yaratildi (${ORIGIN})`)
 
