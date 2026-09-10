@@ -32,3 +32,6 @@ frontend/dist/
 # Nomzod rezyumelari hech qachon git'ga tushmasligi kerak.
 backend/private-media/
 backend/.test-private-media/
+
+# Doimiy sirlar — hech qachon git ga tushmasin.
+.secrets/
