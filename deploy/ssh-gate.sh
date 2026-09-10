@@ -23,9 +23,14 @@ deny() {
     exit 1
 }
 
+# Skriptlar `bash <fayl>` orqali chaqiriladi, `exec <fayl>` orqali emas.
+# Farqi muhim: `exec` fayldagi bajarish huquqiga bog'liq, o'sha huquqni esa
+# `deploy.sh` ning O'ZI (git reset) boshqaradi. Huquq bir marta yo'qolsa
+# tugun paydo bo'lardi — git'dagi tuzatishni tortib keladigan yagona skript
+# aynan ishga tushmay qolgani uchun. `bash` bunga bog'liq emas.
 case "${SSH_ORIGINAL_COMMAND:-}" in
-    upload) exec "$ROOT/deploy/upload-web.sh" ;;
-    deploy) exec "$ROOT/deploy/deploy.sh" ;;
-    status) exec "$ROOT/deploy/status.sh" ;;
+    upload) exec /bin/bash "$ROOT/deploy/upload-web.sh" ;;
+    deploy) exec /bin/bash "$ROOT/deploy/deploy.sh" ;;
+    status) exec /bin/bash "$ROOT/deploy/status.sh" ;;
     *)      deny ;;
 esac
