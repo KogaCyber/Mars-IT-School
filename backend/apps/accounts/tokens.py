@@ -2,7 +2,13 @@
 
 import logging
 import random
-from datetime import UTC, datetime
+
+# `datetime.UTC` — Python 3.11 dan boshlab. `timezone.utc` esa aynan o'sha
+# obyekt va u barcha qo'llab-quvvatlanadigan versiyalarda bor
+# (paketlar minimumi — 3.10). Aks holda ilova 3.10 da import paytidayoq
+# qulardi va bu faqat serverda ma'lum bo'lardi.
+from datetime import datetime
+from datetime import timezone as dt_timezone
 
 from django.utils import timezone
 from rest_framework_simplejwt.exceptions import TokenError
@@ -41,7 +47,7 @@ def revoke(token: RefreshToken) -> None:
     if not jti:
         return
 
-    expires_at = datetime.fromtimestamp(token.payload.get("exp", 0), tz=UTC)
+    expires_at = datetime.fromtimestamp(token.payload.get("exp", 0), tz=dt_timezone.utc)
     RevokedRefreshToken.objects.get_or_create(
         jti=jti,
         defaults={"user_id": token.payload.get("user_id"), "expires_at": expires_at},
