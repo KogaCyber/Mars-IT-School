@@ -75,6 +75,32 @@ cd /home/mars/mars-it-school && ./deploy/deploy.sh && ./deploy/status.sh
 Фронт при этом не обновится — он собирается на раннере. Локально:
 `cd frontend && npm run build && tar -czf - -C dist . | ssh -i deploy_key mars@marsit.uz upload`
 
+## nginx
+
+Vhost `core.marsit.uz` **общий с фронтом геймификации** и деплоем не трогается —
+CI кладёт только файлы в `web/school/`. Копия конфига для справки:
+[`deploy/nginx/core.marsit.uz.conf`](nginx/core.marsit.uz.conf).
+
+Правки — руками и только вне окна занятий:
+
+```bash
+sudo cp /etc/nginx/sites-enabled/core.marsit.uz /home/mars/nginx-backups/core.marsit.uz.$(date +%Y%m%d-%H%M%S)
+# правим, затем:
+sudo nginx -t && sudo nginx -s reload
+```
+
+Бэкапы держать в `/home/mars/nginx-backups/`, **не** рядом с активным конфигом:
+nginx читает `sites-enabled/*` целиком, и `.bak` даёт дубль `server_name`.
+
+Две неочевидные вещи в конфиге:
+
+- `proxy_pass` для `/school/api/`, админки и `/school/i18n/` — **со слэшем на
+  конце**. Он срезает префикс, а Django возвращает его через `FORCE_SCRIPT_NAME`.
+  Уберёшь слэш — Django получит `/school/api/...` и отдаст 404 на всё.
+- Запросы с расширением файла (`.woff2`, `.css`, `.png` …) отдают честный **404**,
+  а не `index.html`. Иначе браузер получает HTML вместо шрифта и пишет
+  `invalid sfntVersion: 1008821359` — это число и есть `<!DO`.
+
 ## Окно деплоя
 
 mars — прод геймификации. Не деплоить **10:00–12:30** и **14:00–18:00** UZT:
