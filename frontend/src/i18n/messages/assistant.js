@@ -1,0 +1,51 @@
+/** Ekranning o'ng pastidagi AI yordamchisi (chat) matnlari. */
+export default {
+  uz: {
+    name: 'MARS AI',
+    role: 'Virtual yordamchi',
+    online: 'Onlayn',
+    open: 'AI yordamchini ochish',
+    close: 'Suhbatni yopish',
+    invite: 'Savolingiz bormi? Menga yozing 👋',
+    greeting:
+      'Salom! Men MARS IT School’ning AI yordamchisiman. Kurslar, yosh chegarasi, narx yoki filiallar haqida so‘rang.',
+    placeholder: 'Savolingizni yozing…',
+    send: 'Yuborish',
+    typing: 'Yozmoqda',
+    restart: 'Suhbatni yangilash',
+    hint: 'Tez-tez so‘raladigan savollar:',
+    note: 'Javoblar sayt ma’lumotlari asosida beriladi.',
+  },
+  ru: {
+    name: 'MARS AI',
+    role: 'Виртуальный помощник',
+    online: 'Онлайн',
+    open: 'Открыть AI-помощника',
+    close: 'Закрыть чат',
+    invite: 'Есть вопрос? Напишите мне 👋',
+    greeting:
+      'Привет! Я AI-помощник MARS IT School. Спросите про курсы, возраст, стоимость или филиалы.',
+    placeholder: 'Напишите вопрос…',
+    send: 'Отправить',
+    typing: 'Печатает',
+    restart: 'Начать заново',
+    hint: 'Частые вопросы:',
+    note: 'Ответы формируются по данным сайта.',
+  },
+  en: {
+    name: 'MARS AI',
+    role: 'Virtual assistant',
+    online: 'Online',
+    open: 'Open the AI assistant',
+    close: 'Close the chat',
+    invite: 'Got a question? Message me 👋',
+    greeting:
+      'Hi! I’m the MARS IT School AI assistant. Ask me about courses, age limits, pricing or branches.',
+    placeholder: 'Type your question…',
+    send: 'Send',
+    typing: 'Typing',
+    restart: 'Start over',
+    hint: 'Frequently asked:',
+    note: 'Answers are based on information from this site.',
+  },
+}

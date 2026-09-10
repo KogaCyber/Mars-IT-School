@@ -2,6 +2,12 @@
 /**
  * Ekranning o'ng pastida turadigan «tepaga» tugmasi.
  * Sahifa boshida ko'rinmaydi, skroll qilinganda paydo bo'ladi.
+ *
+ * Burchakning o'zida AI yordamchisi (`AiAssistant.vue`) turadi, shuning uchun
+ * bu tugma undan bir bo'y tepada joylashadi. Ikkalasi bitta tik chiziqda
+ * turishi kerak, o'lchamlari esa har xil — shu sababli o'ngdan qo'shimcha
+ * yarim farq (0.875rem = (4.5rem − 2.75rem) / 2) qo'shiladi va markazlar
+ * ustma-ust tushadi.
  */
 import { useWindowScroll } from '@vueuse/core'
 import { computed } from 'vue'
@@ -23,7 +29,7 @@ function scrollToTop() {
     <button
       v-show="isVisible"
       type="button"
-      class="bg-brand hover:bg-brand-hover press fixed right-[4%] bottom-[4%] z-40 grid size-[2.75rem] place-items-center rounded-pill text-white shadow-lg transition lg:size-[3rem]"
+      class="bg-brand hover:bg-brand-hover press fixed right-[calc(4%+0.875rem)] bottom-[calc(4%+4.5rem)] z-40 lg:right-[calc(4%+1rem)] lg:bottom-[calc(4%+5rem)] grid size-[2.75rem] place-items-center rounded-pill text-white shadow-lg transition lg:size-[3rem]"
       :aria-label="t('common.scrollTop')"
       @click="scrollToTop"
     >

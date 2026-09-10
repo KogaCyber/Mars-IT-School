@@ -1,0 +1,161 @@
+{
+  "branches": [
+    {
+      "slug": "filial-yunusabod",
+      "name": "Yunusobod filiali",
+      "address": "улица Янгишахар, 10",
+      "landmark": "улица Янгишахар, 10",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": true
+    },
+    {
+      "slug": "filial-chilonzor",
+      "name": "Chilonzor filiali",
+      "address": "8-й квартал, 2",
+      "landmark": "8-й квартал, 2",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": false
+    },
+    {
+      "slug": "filial-Sergeliy",
+      "name": "Sergeli filiali",
+      "address": "улица Бирлик, 18А",
+      "landmark": "улица Бирлик, 18А",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": false
+    },
+    {
+      "slug": "filial-tinchlik",
+      "name": "Tinchlik filiali",
+      "address": "Beruni ko'chasi, 13В",
+      "landmark": "улица Беруни, 13В",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": false
+    },
+    {
+      "slug": "filial-maksim-gorkiy",
+      "name": "Maksim Gorkiy filiali",
+      "address": "улица Буюк Ипак Йули, 152/1",
+      "landmark": "улица Буюк Ипак Йули, 152/1",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": false
+    },
+    {
+      "slug": "filial-Minor",
+      "name": "Minor filiali",
+      "address": "массив Марказ 5, 1А",
+      "landmark": "массив Марказ 5, 1А",
+      "working_hours": "Har kuni 09:00 dan 20:00 gacha",
+      "phone": "+998 78 777 77 57",
+      "is_main": false
+    }
+  ],
+  "courses": [
+    {
+      "slug": "it-kids",
+      "title": "IT Kids",
+      "subtitle": "O‘yin orqali texnologiyalar bilan ilk tanishuv",
+      "age_range": "7–12",
+      "duration_months": 24,
+      "lessons_per_week": 3,
+      "price": "1090000.00"
+    },
+    {
+      "slug": "programmirovanie",
+      "title": "Dasturlash",
+      "subtitle": "Asoslardan Python va JavaScript’dagi o‘z loyihalaringizgacha",
+      "age_range": "12–18",
+      "duration_months": 9,
+      "lessons_per_week": 3,
+      "price": "1090000.00"
+    }
+  ],
+  "teachers": [
+    {
+      "slug": "dilshod-karimov",
+      "full_name": "Dilshod Karimov",
+      "badge": "Back-End",
+      "company": "Mars IT School",
+      "experience_years": 8
+    },
+    {
+      "slug": "malika-karimova",
+      "full_name": "Малика Каримова",
+      "badge": "Robotics",
+      "company": "",
+      "experience_years": 5
+    },
+    {
+      "slug": "danila-karpov",
+      "full_name": "Данила Карпов",
+      "badge": "Front-End",
+      "company": "",
+      "experience_years": 7
+    }
+  ],
+  "news": [
+    {
+      "slug": "demo-day-ucheniki-predstavili-34-proekta",
+      "title": "Demo Day: o‘quvchilar 34 ta loyihani taqdim etdi",
+      "excerpt": "Saytlar, Telegram-botlar va aqlli qurilmalar — o‘quvchilar ishlarini ota-onalar va taklif etilgan ekspertlar baholadi.",
+      "published_at": "2026-07-13T15:54:02+05:00"
+    },
+    {
+      "slug": "obnovlenie-platformy-space-sezonnyi-reiting",
+      "title": "SPACE platformasi yangilanishi: mavsumiy reyting",
+      "excerpt": "SPACE’da o‘qishni yanada qiziqarli qiladigan yangilanishlar bilan yangi mavsum boshlandi.",
+      "published_at": "2026-07-02T15:54:02.066000+05:00"
+    }
+  ],
+  "vacancies": [
+    {
+      "slug": "uchitel",
+      "title": "O‘qituvchi",
+      "description": "IT KIDS yoki Dasturlash yo‘nalishlarida guruhlarga dars beradi.\r\nBiz ishlab chiqishda amaliy tajribaga ega va bolalar hamda o‘smirlar bilan ishlashni istagan o‘qituvchini qidiryapmiz. Siz kichik guruhlarda dars berasiz, o‘quvchilarga loyihalarda yordam berasiz va SPACE platformasida ishlaysiz.",
+      "requirements": "Tijorat loyihalarida 2 yildan ortiq ishlab chiqish tajribasi.\r\nMurakkab mavzularni sodda tilda tushuntira olish.\r\nBolalar bilan ishlash tajribasi ustunlik bo‘ladi.",
+      "is_open": true,
+      "branch_name": "Tinchlik filiali",
+      "salary_from": 300,
+      "salary_to": 1200,
+      "salary_currency": "USD"
+    },
+    {
+      "slug": "administrator-filiala",
+      "title": "Filial administratori",
+      "description": "Filial ishi va ota-onalar bilan muloqot uchun javob beradi.\nJadvalni tashkil qilish, o‘quvchi va ota-onalarni kutib olish, sinflardagi tartibni nazorat qilish, filial hisobotini yuritish.",
+      "requirements": "Odamlar bilan ishlashda 1 yildan ortiq tajriba.\nTafsilotlarga e’tibor va uyushqoqlik.\nKompyuterni ishonchli bilish.",
+      "is_open": true,
+      "branch_name": "Yunusobod filiali",
+      "salary_from": null,
+      "salary_to": null,
+      "salary_currency": "UZS"
+    },
+    {
+      "slug": "kurator",
+      "title": "Kurator",
+      "description": "Guruhlarni kuzatib boradi va o‘quvchilar taraqqiyotini nazorat qiladi.\nDarslarda o‘qituvchiga yordam beradi, ota-onalar bilan aloqani saqlaydi, SPACE platformasida uy vazifalari bajarilishini nazorat qiladi.",
+      "requirements": "Bolalar va o‘smirlar bilan ishlashni yoqtirish.\nMas’uliyat va muloqot qura olish.",
+      "is_open": true,
+      "branch_name": "Chilonzor filiali",
+      "salary_from": null,
+      "salary_to": null,
+      "salary_currency": "UZS"
+    },
+    {
+      "slug": "operator-koll-tsentra",
+      "title": "Kol-markaz operatori",
+      "description": "Kelib tushgan arizalar va sinov darsiga yozilish bilan ishlaydi.\nSayt va reklamadan kelgan arizalarni qayta ishlash, ota-onalarga kurslar bo‘yicha maslahat, sinov darsiga yozish, CRM’da ishlash.",
+      "requirements": "Rus va o‘zbek tillarida savodli nutq.\nCRM bilan ishlash tajribasi ustunlik bo‘ladi.",
+      "is_open": true,
+      "branch_name": "Maksim Gorkiy filiali",
+      "salary_from": null,
+      "salary_to": null,
+      "salary_currency": "UZS"
+    }
+  ]
+}

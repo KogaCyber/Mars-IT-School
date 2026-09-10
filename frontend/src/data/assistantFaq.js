@@ -1,0 +1,492 @@
+/**
+ * AI yordamchisining bilim bazasi.
+ *
+ * Yordamchi tashqi xizmatga murojaat qilmaydi — javoblar shu yerda, uch tilda
+ * yozilgan (`L()`), foydalanuvchi savolidagi kalit so'zlarga qarab tanlanadi
+ * (`utils/assistant.js`). Sabab: saytda maktab haqidagi savollar takrorlanadi
+ * va ularning javobi aniq — buning uchun tashqi model ham, kalit ham kerak
+ * emas, javob esa bir zumda va oflayn keladi.
+ *
+ * Yangi mavzu qo'shish: quyidagi ro'yxatga element qo'shish kifoya.
+ *   - `keywords` — apostrofsiz, kichik harfda; uchala til birga yoziladi,
+ *     chunki tashrifchi ruscha sahifada o'zbekcha yozishi ham mumkin.
+ *   - `answer` ichidagi `{phone}`, `{telegram}`, `{email}` — sayt
+ *     sozlamalaridan (stores/site.js) olinadigan real kontaktlar.
+ *   - `courseSlugs` — mavzu aynan qaysi kursga tegishli (javobga shu kursning
+ *     haqiqiy yoshi, davomiyligi va narxi qo'shiladi).
+ *   - `intent` — javobni API'dagi jonli ma'lumotdan yig'ish kerakligini
+ *     bildiradi (`utils/assistant.js`). Masalan «necha yoshdan» savoliga
+ *     kurslarning haqiqiy yosh oralig'i qaytadi, bu yerdagi matn esa faqat
+ *     ma'lumot yuklanmagan holatda ishlatiladi.
+ */
+import { L } from '@/i18n/localize'
+
+/** Har bir mavzuning havolalari marshrut nomi (`name`) orqali beriladi. */
+export const ASSISTANT_TOPICS = [
+  {
+    id: 'greeting',
+    keywords: ['salom', 'assalom', 'qale', 'privet', 'zdravstvuy', 'dobriy', 'hello', 'hi ', 'hey'],
+    answer: L(
+      'Salom! Men MARS IT School yordamchisiman. Kurslar, yosh chegarasi, narx, dars jadvali yoki filiallar haqida so‘rang — darhol javob beraman.',
+      'Привет! Я помощник MARS IT School. Спросите про курсы, возраст, стоимость, расписание или филиалы — отвечу сразу.',
+      'Hi! I’m the MARS IT School assistant. Ask me about courses, age limits, pricing, schedule or branches — I’ll answer right away.',
+    ),
+  },
+  {
+    id: 'courses',
+    intent: 'courses',
+    keywords: [
+      'kurs',
+      'yonalish',
+      'oqish',
+      'organ',
+      'dastur',
+      'nima organ',
+      'курс',
+      'направлен',
+      'обучен',
+      'учит',
+      'программирован',
+      'course',
+      'direction',
+      'learn',
+      'study',
+      'program',
+    ],
+    chip: L('Qanday kurslar bor?', 'Какие есть курсы?', 'What courses do you have?'),
+    answer: L(
+      'Bizda ikkita yo‘nalish bor: IT Kids (9–11 yosh) — robototexnika, C++ va Python; IT-dasturlash (12–17 yosh) — saytlar, Telegram-botlar, ma’lumotlar bazasi va sun’iy intellekt.',
+      'У нас два направления: IT Kids (9–11 лет) — робототехника, C++ и Python; IT-разработка (12–17 лет) — сайты, Telegram-боты, базы данных и искусственный интеллект.',
+      'We have two tracks: IT Kids (ages 9–11) — robotics, C++ and Python; IT Development (ages 12–17) — websites, Telegram bots, databases and AI.',
+    ),
+    links: [
+      { label: L('Barcha kurslar', 'Все курсы', 'All courses'), name: 'courses' },
+      { label: 'IT Kids', name: 'course-it-kids' },
+    ],
+  },
+  {
+    id: 'it-kids',
+    intent: 'course',
+    courseSlugs: ['it-kids'],
+    keywords: [
+      'it kids',
+      'itkids',
+      'kids',
+      'robot',
+      'робот',
+      'bolalar uchun',
+      'для детей',
+      'arduino',
+      'aqlli uy',
+      'умный дом',
+    ],
+    chip: L('IT Kids nima?', 'Что такое IT Kids?', 'What is IT Kids?'),
+    answer: L(
+      'IT Kids — kichik yoshdagi bolalar uchun. Bola o‘yin orqali robot yig‘adi, dasturlaydi va aqlli uy yaratadi; C++ va Python asoslarini, Arduino bilan ishlashni o‘rganadi.',
+      'IT Kids — для младших школьников. Ребёнок через игру собирает роботов, программирует и создаёт умный дом; осваивает основы C++ и Python, работает с Arduino.',
+      'IT Kids is for younger children. Through play, they build robots, write code and create a smart home, picking up the basics of C++ and Python and working with Arduino.',
+    ),
+    links: [
+      { label: L('IT Kids sahifasi', 'Страница IT Kids', 'IT Kids page'), name: 'course-it-kids' },
+    ],
+  },
+  {
+    id: 'it-dev',
+    intent: 'course',
+    courseSlugs: ['it-razrabotka', 'programmirovanie', 'dasturlash'],
+    keywords: [
+      'dasturlash kurs',
+      'razrabotka',
+      'разработк',
+      'sayt',
+      'сайт',
+      'website',
+      'bot',
+      'бот',
+      'python',
+      'javascript',
+      'html',
+      'osmir',
+      'подростк',
+      'teen',
+      'ai',
+      'sun’iy intellekt',
+      'искусственный интеллект',
+    ],
+    chip: L('IT-dasturlash haqida', 'Про IT-разработку', 'About IT Development'),
+    answer: L(
+      'IT-dasturlash — o‘smirlar uchun. O‘quvchi saytlar va Telegram-botlar yaratadi, ma’lumotlar bazasi bilan ishlaydi va sun’iy intellektdan foydalanishni o‘rganadi.',
+      'IT-разработка — для подростков. Ученик создаёт сайты и Telegram-боты, работает с базами данных и учится использовать искусственный интеллект.',
+      'IT Development is for teens. Students build websites and Telegram bots, work with databases and learn to use AI.',
+    ),
+    links: [
+      {
+        label: L('IT-dasturlash sahifasi', 'Страница IT-разработки', 'IT Development page'),
+        name: 'course-it-razrabotka',
+      },
+    ],
+  },
+  {
+    id: 'age',
+    intent: 'age',
+    keywords: [
+      'yosh',
+      'necha yosh',
+      'yoshdan',
+      'возраст',
+      'скольк лет',
+      'с какого',
+      'age',
+      'how old',
+      'years old',
+    ],
+    chip: L('Necha yoshdan qabul qilasiz?', 'С какого возраста?', 'From what age?'),
+    answer: L(
+      'Bolalarni 7 yoshdan qabul qilamiz, dastur yoshga qarab tanlanadi: IT Kids — 9–11 yosh, IT-dasturlash — 12–17 yosh.',
+      'Мы принимаем детей с 7 лет, программа подбирается по возрасту: IT Kids — 9–11 лет, IT-разработка — 12–17 лет.',
+      'We accept children from age 7 and match the program to their age: IT Kids for ages 9–11, IT Development for ages 12–17.',
+    ),
+    links: [
+      { label: L('Kurslarni ko‘rish', 'Посмотреть курсы', 'Browse courses'), name: 'courses' },
+    ],
+  },
+  {
+    id: 'price',
+    intent: 'price',
+    keywords: [
+      'narx',
+      'qancha',
+      'pul',
+      'tolov',
+      'chegirma',
+      'цена',
+      'стоим',
+      'скольк стоит',
+      'оплат',
+      'скидк',
+      'price',
+      'cost',
+      'how much',
+      'payment',
+      'fee',
+    ],
+    chip: L('Narxi qancha?', 'Сколько стоит?', 'How much does it cost?'),
+    answer: L(
+      'Narx tanlangan yo‘nalish va filialga bog‘liq, shuning uchun aniq summani menejerimiz aytib beradi: {phone}. Ariza qoldirsangiz, o‘zimiz qo‘ng‘iroq qilamiz.',
+      'Стоимость зависит от направления и филиала, поэтому точную сумму назовёт наш менеджер: {phone}. Оставьте заявку — мы перезвоним сами.',
+      'The price depends on the track and the branch, so our manager will give you the exact figure: {phone}. Leave a request and we’ll call you back.',
+    ),
+    links: [
+      { label: L('Ariza qoldirish', 'Оставить заявку', 'Leave a request'), name: 'application' },
+    ],
+  },
+  {
+    id: 'trial',
+    keywords: [
+      'sinov',
+      'bepul',
+      'birinchi dars',
+      'yozilish',
+      'пробн',
+      'бесплатн',
+      'первое занят',
+      'записат',
+      'trial',
+      'free lesson',
+      'sign up',
+      'enroll',
+    ],
+    chip: L('Sinov darsi bormi?', 'Есть пробный урок?', 'Is there a trial lesson?'),
+    answer: L(
+      'Ha, birinchi sinov darsi bepul. Ariza qoldirasiz — menejer qo‘ng‘iroq qilib, bolangizga mos guruh va qulay vaqtni tanlaydi.',
+      'Да, первое пробное занятие бесплатное. Оставьте заявку — менеджер позвонит и подберёт подходящую группу и удобное время.',
+      'Yes, the first trial lesson is free. Leave a request and a manager will call to find the right group and a convenient time.',
+    ),
+    links: [
+      {
+        label: L('Sinov darsiga yozilish', 'Записаться на пробный урок', 'Book a trial lesson'),
+        name: 'application',
+      },
+    ],
+  },
+  {
+    id: 'apply',
+    keywords: [
+      'ariza',
+      'yozilish',
+      'ro yxat',
+      'royxat',
+      'qabul',
+      'заявка',
+      'записаться',
+      'запись',
+      'оставить заявку',
+      'apply',
+      'application',
+      'sign up',
+      'register',
+      'enroll',
+    ],
+    chip: L('Qanday yoziladi?', 'Как записаться?', 'How do I sign up?'),
+    answer: L(
+      'Ariza qoldirish uchun «Ariza qoldirish» sahifasidagi formani to‘ldiring — ism va telefon raqami yetarli. Menejer qo‘ng‘iroq qilib, guruh va vaqtni kelishadi. Telefon orqali ham yozilish mumkin: {phone}',
+      'Чтобы записаться, заполните форму на странице «Оставить заявку» — достаточно имени и номера телефона. Менеджер позвонит и согласует группу и время. Можно записаться и по телефону: {phone}',
+      'To sign up, fill in the form on the “Leave a request” page — your name and phone number are enough. A manager will call to agree on the group and time. You can also enrol by phone: {phone}',
+    ),
+    links: [
+      { label: L('Ariza qoldirish', 'Оставить заявку', 'Leave a request'), name: 'application' },
+    ],
+  },
+  {
+    id: 'schedule',
+    intent: 'schedule',
+    keywords: [
+      'jadval',
+      'qachon',
+      'davomiylik',
+      'necha oy',
+      'necha marta',
+      'guruh',
+      'darslar qanday',
+      'расписан',
+      'когда',
+      'длительн',
+      'скольк месяц',
+      'групп',
+      'как проход',
+      'занятия проход',
+      'schedule',
+      'duration',
+      'how long',
+      'group',
+      'times a week',
+      'classes held',
+    ],
+    chip: L('Darslar qanday o‘tadi?', 'Как проходят занятия?', 'How are the classes held?'),
+    answer: L(
+      'Darslar haftasiga 2 marta, 12 tagacha o‘quvchidan iborat kichik guruhlarda o‘tadi. Dastur davomiyligi yo‘nalishga qarab 24 oygacha; aniq jadval filial va guruhga bog‘liq.',
+      'Занятия проходят 2 раза в неделю в малых группах до 12 учеников. Длительность программы — до 24 месяцев в зависимости от направления; точное расписание зависит от филиала и группы.',
+      'Classes run twice a week in small groups of up to 12 students. Programs last up to 24 months depending on the track; the exact schedule depends on the branch and group.',
+    ),
+  },
+  {
+    id: 'equipment',
+    keywords: [
+      'noutbuk',
+      'kompyuter',
+      'jihoz',
+      'olib kelish',
+      'ноутбук',
+      'компьютер',
+      'оборудован',
+      'приносит',
+      'laptop',
+      'computer',
+      'equipment',
+      'bring',
+    ],
+    chip: L('Noutbuk kerakmi?', 'Нужен ли ноутбук?', 'Is a laptop needed?'),
+    answer: L(
+      'Yo‘q, o‘z noutbugi shart emas. Darslar jihozlangan sinflarda o‘tadi — kompyuter, robot va elektronika to‘plamlarini maktab beradi.',
+      'Нет, свой ноутбук не нужен. Занятия проходят в оборудованных классах — компьютеры, роботов и наборы электроники предоставляет школа.',
+      'No, students don’t need their own laptop. Classes take place in equipped classrooms — the school provides computers, robots and electronics kits.',
+    ),
+  },
+  {
+    id: 'missed',
+    keywords: [
+      'otkazib',
+      'kelolmasa',
+      'kasal',
+      'propust',
+      'пропуст',
+      'не смож',
+      'заболе',
+      'missed',
+      'miss a lesson',
+      'absent',
+    ],
+    chip: L(
+      'Darsni o‘tkazib yuborsa-chi?',
+      'Если пропустить занятие?',
+      'What if a lesson is missed?',
+    ),
+    answer: L(
+      'O‘qituvchi o‘tkazib yuborilgan mavzuni alohida tushuntiradi, materiallar va yozuv esa SPACE platformasidagi shaxsiy profilda qoladi.',
+      'Преподаватель разберёт пропущенную тему индивидуально, а материалы и запись останутся в личном профиле ученика на платформе SPACE.',
+      'The teacher goes through the missed topic one-on-one, and the materials and the recording stay in the student’s profile on the SPACE platform.',
+    ),
+    links: [{ label: L('SPACE haqida', 'О платформе SPACE', 'About SPACE'), name: 'space' }],
+  },
+  {
+    id: 'space',
+    keywords: [
+      'space',
+      'platforma',
+      'ilova',
+      'приложен',
+      'платформ',
+      'app',
+      'profile',
+      'kabinet',
+      'кабинет',
+    ],
+    chip: L('SPACE platformasi nima?', 'Что такое SPACE?', 'What is SPACE?'),
+    answer: L(
+      'SPACE — o‘quvchining shaxsiy platformasi: dars materiallari, uy vazifalari, natijalar va darslar yozuvi shu yerda saqlanadi. Ota-ona farzandining progressini kuzatib boradi.',
+      'SPACE — личная платформа ученика: материалы занятий, домашние задания, результаты и записи уроков хранятся здесь. Родитель видит прогресс ребёнка.',
+      'SPACE is the student’s personal platform: lesson materials, homework, results and lesson recordings all live there, and parents can follow their child’s progress.',
+    ),
+    links: [{ label: L('SPACE sahifasi', 'Страница SPACE', 'SPACE page'), name: 'space' }],
+  },
+  {
+    id: 'branches',
+    intent: 'branches',
+    keywords: [
+      'manzil',
+      'filial',
+      'qayerda',
+      'joylash',
+      'адрес',
+      'филиал',
+      'где наход',
+      'address',
+      'branch',
+      'location',
+      'where',
+    ],
+    chip: L('Filiallar qayerda?', 'Где находятся филиалы?', 'Where are your branches?'),
+    answer: L(
+      'Filiallarimiz Toshkentda joylashgan. Har birining manzili, xaritadagi o‘rni va telefon raqami «Kontaktlar» sahifasida.',
+      'Наши филиалы находятся в Ташкенте. Адрес каждого, точка на карте и телефон — на странице «Контакты».',
+      'Our branches are in Tashkent. Every address, its point on the map and its phone number are on the Contacts page.',
+    ),
+    links: [{ label: L('Kontaktlar', 'Контакты', 'Contacts'), name: 'contacts' }],
+  },
+  {
+    id: 'contact',
+    keywords: [
+      'telefon',
+      'raqam',
+      'boglan',
+      'aloqa',
+      'telegram',
+      'email',
+      'pochta',
+      'телефон',
+      'номер',
+      'связат',
+      'почта',
+      'контакт',
+      'phone',
+      'contact',
+      'call',
+      'mail',
+    ],
+    chip: L('Qanday bog‘lansam bo‘ladi?', 'Как с вами связаться?', 'How can I contact you?'),
+    answer: L(
+      'Telefon: {phone}. Telegram: {telegram}. E-mail: {email}. Ariza qoldirsangiz, o‘zimiz qo‘ng‘iroq qilamiz.',
+      'Телефон: {phone}. Telegram: {telegram}. E-mail: {email}. Оставьте заявку — мы перезвоним сами.',
+      'Phone: {phone}. Telegram: {telegram}. Email: {email}. Leave a request and we’ll call you back.',
+    ),
+    links: [
+      { label: L('Kontaktlar', 'Контакты', 'Contacts'), name: 'contacts' },
+      { label: L('Ariza qoldirish', 'Оставить заявку', 'Leave a request'), name: 'application' },
+    ],
+  },
+  {
+    id: 'quiz',
+    keywords: [
+      'test',
+      'quiz',
+      'tanlash',
+      'qaysi kurs',
+      'тест',
+      'подобрат',
+      'какой курс',
+      'which course',
+      'choose',
+    ],
+    chip: L('Qaysi kurs mos keladi?', 'Какой курс подойдёт?', 'Which course fits?'),
+    answer: L(
+      'Qisqa test bor: bir necha savolga javob berasiz va bolangizning yoshi hamda qiziqishiga mos yo‘nalishni tavsiya qilamiz.',
+      'Есть короткий тест: ответите на несколько вопросов — и мы порекомендуем направление по возрасту и интересам ребёнка.',
+      'There’s a short quiz: answer a few questions and we’ll recommend a track based on your child’s age and interests.',
+    ),
+    links: [{ label: L('Testni boshlash', 'Пройти тест', 'Take the quiz'), name: 'quiz' }],
+  },
+  {
+    id: 'about',
+    intent: 'teachers',
+    keywords: [
+      'maktab haqida',
+      'kim',
+      'oqituvchi',
+      'jamoa',
+      'о школе',
+      'преподавател',
+      'команд',
+      'кто вы',
+      'about',
+      'teacher',
+      'team',
+    ],
+    chip: L('Maktab haqida', 'О школе', 'About the school'),
+    answer: L(
+      'MARS IT School — Toshkentdagi 7–17 yoshli bolalar va o‘smirlar uchun IT o‘quv markazlari tarmog‘i. Maktab, o‘qituvchilar va o‘quv jarayoni haqida «Biz haqimizda» sahifasida batafsil yozilgan.',
+      'MARS IT School — сеть IT учебных центров для детей и подростков 7–17 лет в Ташкенте. О школе, преподавателях и учебном процессе подробно — на странице «О нас».',
+      'MARS IT School is a network of IT learning centres for children and teens aged 7–17 in Tashkent. The About page covers the school, the teachers and how classes work.',
+    ),
+    links: [{ label: L('Biz haqimizda', 'О нас', 'About us'), name: 'about' }],
+  },
+  {
+    id: 'vacancies',
+    intent: 'vacancies',
+    keywords: [
+      'ish',
+      'vakansiya',
+      'rezyume',
+      'ishga',
+      'работ',
+      'ваканс',
+      'резюме',
+      'job',
+      'vacancy',
+      'career',
+      'hiring',
+    ],
+    chip: L('Bo‘sh ish o‘rinlari', 'Вакансии', 'Vacancies'),
+    answer: L(
+      'Ochiq vakansiyalar va ularga qanday ariza yuborish «Vakansiyalar» sahifasida turadi.',
+      'Открытые вакансии и порядок отклика — на странице «Вакансии».',
+      'Open positions and how to apply are on the Vacancies page.',
+    ),
+    links: [{ label: L('Vakansiyalar', 'Вакансии', 'Vacancies'), name: 'vacancies' }],
+  },
+  {
+    id: 'thanks',
+    keywords: ['rahmat', 'tashakkur', 'спасибо', 'благодар', 'thanks', 'thank you'],
+    answer: L(
+      'Arzimaydi! Yana savolingiz bo‘lsa — shu yerdaman 🚀',
+      'Пожалуйста! Будут ещё вопросы — я здесь 🚀',
+      'You’re welcome! If anything else comes up, I’m right here 🚀',
+    ),
+  },
+]
+
+/** Javob topilmaganda — savolni odamga uzatamiz. */
+export const ASSISTANT_FALLBACK = {
+  id: 'fallback',
+  answer: L(
+    'Bu savolga aniq javob bera olmadim. Menejerimiz batafsil aytib beradi: {phone}. Yoki quyidagi mavzulardan birini tanlang.',
+    'На этот вопрос я точно ответить не могу. Наш менеджер расскажет подробнее: {phone}. Или выберите одну из тем ниже.',
+    'I can’t answer that one for sure. Our manager can tell you more: {phone}. Or pick one of the topics below.',
+  ),
+  links: [
+    { label: L('Ariza qoldirish', 'Оставить заявку', 'Leave a request'), name: 'application' },
+    { label: L('Kontaktlar', 'Контакты', 'Contacts'), name: 'contacts' },
+  ],
+}
+
+/** Suhbat boshida taklif qilinadigan savollar (chiplar) — mavzu `id`lari. */
+export const ASSISTANT_QUICK = ['courses', 'age', 'price', 'trial', 'schedule', 'branches']
