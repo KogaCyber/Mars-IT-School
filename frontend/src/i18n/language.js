@@ -2,6 +2,8 @@
  * Til sozlamalari — alohida modulda, chunki uni ham HTTP klient,
  * ham i18n moduli ishlatadi (aylanma importlarning oldini oladi).
  */
+import { stripBase } from '@/data/basePath'
+
 export const LANGUAGE_STORAGE_KEY = 'mars.lang'
 
 /** Saytda mavjud tillar; birinchisi — asosiy til. */
@@ -23,7 +25,9 @@ export function languageFromUrl() {
   try {
     // 1. Yo'l prefiksi — asosiy shakl (`/ru/kursy`). Aynan shu manzilda
     //    ruscha prerender qilingan HTML yotadi, shuning uchun u ustun turadi.
-    const match = /^\/([a-z]{2})(\/|$)/.exec(window.location.pathname)
+    // Sayt yo'l prefiksida turgan bo'lsa (`/maktab/ru/kursy`) — uni kesamiz,
+    // aks holda til prefiksdan qidirilib topilmasdi.
+    const match = /^\/([a-z]{2})(\/|$)/.exec(stripBase(window.location.pathname))
     if (match && SUPPORTED_LANGUAGES.includes(match[1])) return match[1]
 
     // 2. `?lang=` — eski shakl. Ilgari ulashilgan va indekslangan havolalar

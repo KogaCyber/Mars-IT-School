@@ -9,6 +9,12 @@ export default defineConfig(({ mode }) => {
   const proxyTarget = env.VITE_DEV_PROXY_TARGET || 'http://127.0.0.1:8000'
 
   return {
+    // Sayt domen ildizida ham (`/`), boshqa saytning ichki yo'lida ham
+    // (`/maktab/`) turishi mumkin. Prefiks build vaqtida beriladi va
+    // `import.meta.env.BASE_URL` orqali kodga yetib boradi
+    // (`src/data/basePath.js`). `generate-seo.mjs` esa uni to'g'ridan-to'g'ri
+    // `VITE_BASE_PATH` dan o'qiydi — u alohida Node jarayoni.
+    base: env.VITE_BASE_PATH || '/',
     plugins: [vue(), tailwindcss()],
     resolve: {
       alias: {

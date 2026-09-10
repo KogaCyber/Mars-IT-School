@@ -13,8 +13,12 @@
  * `resolvePage()` yoki `pick()` tanlaydi.
  */
 
+import { stripBase } from './basePath.js'
+
 /** Uch tilli qiymat. */
 const L = (uz, ru, en) => ({ uz, ru, en })
+
+export { BASE_PATH, stripBase, withBase } from './basePath.js'
 
 /**
  * Sahifaning MA'LUM BIR TILDAGI manzili.
@@ -50,13 +54,16 @@ export function localePath(path, locale) {
  * @returns {{locale: string, path: string}}
  */
 export function splitLocalePath(pathname) {
-  const match = /^\/([a-z]{2})(\/|$)/.exec(String(pathname || '/'))
+  // Sayt domen ildizida turmasligi mumkin (`/maktab/ru/kursy`) — prefiks
+  // olib tashlanmasa til `sc`/`ma` kabi bo'lakdan qidirilib, topilmay qolardi.
+  const clean = stripBase(pathname)
+  const match = /^\/([a-z]{2})(\/|$)/.exec(clean)
   const code = match?.[1]
   if (code && code !== SITE.defaultLocale && SITE.locales.includes(code)) {
-    const rest = String(pathname).slice(code.length + 1) || '/'
+    const rest = clean.slice(code.length + 1) || '/'
     return { locale: code, path: rest.startsWith('/') ? rest : `/${rest}` }
   }
-  return { locale: SITE.defaultLocale, path: String(pathname || '/') }
+  return { locale: SITE.defaultLocale, path: clean }
 }
 
 /** Sahifaning barcha til variantlari — `hreflang` va sitemap uchun. */

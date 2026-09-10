@@ -17,6 +17,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { withBase } from '../src/data/basePath.js'
 import { COURSE_ALIASES } from '../src/data/courseAliases.js'
 import {
   SITE,
@@ -579,7 +580,11 @@ function renderPage(template, page, locale) {
     ...(page.schema || []),
   ])
 
-  const nav = (path, label) => `<a href="${escapeHtml(localePath(path, locale))}">${escapeHtml(label)}</a>`
+  // Bu havolalar HTML ichida qoladi va JS ishlatmaydigan robotlar aynan
+  // ulardan yuradi — ya'ni ular brauzer manzili, sayt ichidagi yo'l emas.
+  // Sayt yo'l prefiksida tursa (`/maktab/`) prefiks shu yerda qo'shiladi.
+  const nav = (path, label) =>
+    `<a href="${escapeHtml(withBase(localePath(path, locale)))}">${escapeHtml(label)}</a>`
 
   const replacements = [
     // `<html lang>` — ilova yuklanmasdan turib ham to'g'ri til ko'rsatilsin.

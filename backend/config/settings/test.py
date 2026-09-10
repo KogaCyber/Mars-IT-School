@@ -1,10 +1,20 @@
 """Testlar uchun sozlamalar — HAR DOIM lokal MongoDB ishlatiladi."""
 
-from .base import *  # noqa: F403
-from .base import BASE_DIR, DATABASES, REST_FRAMEWORK, env
+import os
+
+# `base.py` import paytidayoq `DJANGO_SECRET_KEY` ni TALAB qiladi (u yerda
+# default yo'q — productionda kalitsiz ishga tushmaslik uchun). Quyidagi
+# `SECRET_KEY` esa importdan KEYIN bajariladi, ya'ni
+# unga navbat umuman kelmasdi: testlar va CI'ning `manage.py check` qadami
+# `ImproperlyConfigured` bilan qulardi. Shuning uchun qiymat import
+# BOSHLANISHIDAN oldin muhitga qo'yiladi.
+os.environ.setdefault("DJANGO_SECRET_KEY", "test-secret-key-not-for-production-0123456789")
+
+from .base import *  # noqa: E402, F403
+from .base import BASE_DIR, DATABASES, REST_FRAMEWORK, env  # noqa: E402
 
 DEBUG = False
-SECRET_KEY = "test-secret-key"
+SECRET_KEY = "test-secret-key-not-for-production-0123456789"
 ALLOWED_HOSTS = ["*"]
 
 # ---------------------------------------------------------------------------

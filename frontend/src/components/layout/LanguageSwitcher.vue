@@ -12,6 +12,7 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
 import { useScrollLock } from '@/composables/useScrollLock'
+import { withBase } from '@/data/basePath'
 import { localePath } from '@/data/seoConfig'
 import { setLanguage } from '@/i18n/language'
 import { useSiteStore } from '@/stores/site'
@@ -72,7 +73,9 @@ function choose(code) {
   const params = new URLSearchParams(window.location.search)
   params.delete('lang')
   const search = params.toString()
-  const target = `${localePath(route.path, code)}${search ? `?${search}` : ''}${route.hash || ''}`
+  // `route.path` sayt ichidagi yo'l — brauzerga beriladigan manzilga esa
+  // saytning o'z yo'l prefiksi (`/maktab`) ham qo'shilishi shart.
+  const target = `${withBase(localePath(route.path, code))}${search ? `?${search}` : ''}${route.hash || ''}`
   window.location.assign(target)
 }
 

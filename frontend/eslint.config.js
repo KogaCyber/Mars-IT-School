@@ -38,7 +38,7 @@ export default [
   },
   {
     // Konfiguratsiya va build skriptlari Node muhitida ishlaydi.
-    files: ['vite.config.js', 'eslint.config.js', 'scripts/**/*.mjs'],
+    files: ['vite.config.js', 'eslint.config.js', 'scripts/**/*.mjs', 'tests/**/*.js'],
     languageOptions: {
       globals: {
         process: 'readonly',
