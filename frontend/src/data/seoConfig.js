@@ -18,7 +18,7 @@ import { stripBase } from './basePath.js'
 /** Uch tilli qiymat. */
 const L = (uz, ru, en) => ({ uz, ru, en })
 
-export { BASE_PATH, stripBase, withBase } from './basePath.js'
+export { basePath, stripBase, withBase } from './basePath.js'
 
 /**
  * Sahifaning MA'LUM BIR TILDAGI manzili.

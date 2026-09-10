@@ -22,28 +22,39 @@
  * shuning uchun `VITE_BASE_PATH` muhit o'zgaruvchisi).
  */
 
-const FROM_VITE =
-  (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || ''
-const FROM_NODE =
-  (globalThis.process && globalThis.process.env && globalThis.process.env.VITE_BASE_PATH) || ''
+function rawBase() {
+  const fromVite =
+    (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.BASE_URL) || ''
+  const fromNode =
+    (globalThis.process && globalThis.process.env && globalThis.process.env.VITE_BASE_PATH) || ''
 
-// Vite `BASE_URL` ni HAR DOIM beradi va prefiks berilmaganda u `/` bo'ladi —
-// ya'ni "prefiks yo'q" degani. Shu sababli `/` qiymati Node fallback'ini
-// bosib qo'ymasligi kerak: aks holda `generate-seo.mjs` bundle ichidan
-// chaqirilganda prefiksni yo'qotardi.
-const RAW_BASE = (FROM_VITE !== '/' ? FROM_VITE : '') || FROM_NODE || '/'
+  // Vite `BASE_URL` ni HAR DOIM beradi va prefiks berilmaganda u `/` bo'ladi —
+  // ya'ni "prefiks yo'q" degani. Shu sababli `/` qiymati Node fallback'ini
+  // bosib qo'ymasligi kerak.
+  return (fromVite !== '/' ? fromVite : '') || fromNode || '/'
+}
 
 /**
  * Yo'l prefiksi boshida `/` bilan, oxirida `/` SIZ.
- * Domen ildizida — bo'sh satr, shunda `${BASE_PATH}${path}` doim to'g'ri chiqadi.
+ * Domen ildizida — bo'sh satr, shunda `${basePath()}${path}` doim to'g'ri chiqadi.
+ *
+ * Qiymat ATAYLAB har chaqiruvda hisoblanadi, modul yuklanganda EMAS:
+ * `scripts/generate-seo.mjs` `.env.production` ni O'ZI o'qiydi, importlar esa
+ * undan oldin bajariladi. Bir marta hisoblanganda prefiks hali muhitda
+ * bo'lmasdi va prerender qilingan HTML'dagi havolalar prefikssiz chiqib
+ * ketardi — build yashil, sayt esa 404. Brauzerda bu bepul: Vite `BASE_URL`
+ * ni build vaqtida o'zgarmas qiymatga almashtiradi.
  */
-export const BASE_PATH = `/${String(RAW_BASE).replace(/^\/+|\/+$/g, '')}`.replace(/^\/$/, '')
+export function basePath() {
+  return `/${String(rawBase()).replace(/^\/+|\/+$/g, '')}`.replace(/^\/$/, '')
+}
 
 /** Sayt ichidagi yo'lga prefiksni qo'shadi (brauzerga beriladigan manzil uchun). */
 export function withBase(path) {
+  const prefix = basePath()
   const clean = path === '/' ? '/' : `/${String(path).replace(/^\/+/, '')}`
-  if (!BASE_PATH) return clean
-  return clean === '/' ? `${BASE_PATH}/` : `${BASE_PATH}${clean}`
+  if (!prefix) return clean
+  return clean === '/' ? `${prefix}/` : `${prefix}${clean}`
 }
 
 /**
@@ -53,8 +64,9 @@ export function withBase(path) {
  * qaytadi: noto'g'ri kesish tilni yo'qotgandan ko'ra xavfsizroq.
  */
 export function stripBase(pathname) {
+  const prefix = basePath()
   const value = String(pathname || '/')
-  if (!BASE_PATH) return value
-  if (value === BASE_PATH) return '/'
-  return value.startsWith(`${BASE_PATH}/`) ? value.slice(BASE_PATH.length) : value
+  if (!prefix) return value
+  if (value === prefix) return '/'
+  return value.startsWith(`${prefix}/`) ? value.slice(prefix.length) : value
 }

@@ -34,8 +34,8 @@ afterEach(() => {
 
 describe('yo‘l prefiksi — domen ildizi', () => {
   it('prefiks bo‘lmasa manzillar o‘zgarmaydi', async () => {
-    const { BASE_PATH, withBase, stripBase } = await load(undefined)
-    expect(BASE_PATH).toBe('')
+    const { basePath, withBase, stripBase } = await load(undefined)
+    expect(basePath()).toBe('')
     expect(withBase('/kursy')).toBe('/kursy')
     expect(withBase('/')).toBe('/')
     expect(stripBase('/ru/kursy')).toBe('/ru/kursy')
@@ -50,9 +50,9 @@ describe('yo‘l prefiksi — domen ildizi', () => {
 
 describe('yo‘l prefiksi — sayt ichki yo‘lda', () => {
   it('prefiks normallashtiriladi (boshida `/`, oxirida yo‘q)', async () => {
-    expect((await load('/maktab/')).BASE_PATH).toBe('/maktab')
-    expect((await load('maktab')).BASE_PATH).toBe('/maktab')
-    expect((await load('/')).BASE_PATH).toBe('')
+    expect((await load('/maktab/')).basePath()).toBe('/maktab')
+    expect((await load('maktab')).basePath()).toBe('/maktab')
+    expect((await load('/')).basePath()).toBe('')
   })
 
   it('brauzerga beriladigan manzilga prefiks qo‘shiladi', async () => {
