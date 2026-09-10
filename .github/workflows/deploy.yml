@@ -1,0 +1,97 @@
+# `prod` shoxiga push — mars serveriga deploy (core.marsit.uz/school/).
+#
+# Nega alohida shox: `main` da boshqa ishlar ham yig'iladi, production esa
+# faqat ataylab ko'chirilgan kodni ko'rishi kerak.
+#
+# Deploy kaliti serverda `command="..."` bilan cheklangan (deploy/ssh-gate.sh):
+# u qobiq bermaydi va faqat `upload`, `deploy`, `status` ni bajara oladi.
+# Sabab jiddiy — serverdagi hisobda parolsiz root bor, ya'ni cheklovsiz kalit
+# GitHub sirlaridan chiqib ketsa bevosita root degani bo'lardi.
+name: Deploy (mars)
+
+on:
+  push:
+    branches: [prod]
+  workflow_dispatch:
+
+concurrency:
+  # Ketma-ket ikki push bir vaqtda deploy qilmasin — ikkinchisi birinchisini
+  # o'rtasidan kesib o'tardi (migratsiya + restart bir vaqtda).
+  group: deploy-mars
+  cancel-in-progress: false
+
+jobs:
+  # Buzilgan kod productionga tushmasligi kerak: bu ayni CI to'plami
+  # (backend 3.10 + 3.12, frontend lint/test/build).
+  tests:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    needs: tests
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Frontend'ni yig'ish
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+        env:
+          # Sitemap'ga kurslar va yangiliklar ham tushishi uchun generator
+          # jonli API'ga murojaat qiladi. Backend javob bermasa build
+          # TO'XTAMAYDI — eski sitemap saytda qolgani yaxshiroq.
+          SEO_STRICT: '0'
+
+      - name: Yig'ilgan saytni arxivlash
+        working-directory: frontend
+        run: |
+          test -f dist/index.html
+          tar -czf ../web.tar.gz -C dist .
+          ls -lh ../web.tar.gz
+
+      - name: SSH kalitini o'rnatish
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.MARS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Xost kaliti oldindan qo'yiladi: `StrictHostKeyChecking=no` bo'lsa
+          # o'rtadagi hujumchi deploy'ni o'ziga qabul qilib olardi.
+          echo "${{ secrets.MARS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Frontend'ni yuklash
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+              ${{ secrets.MARS_USER }}@${{ secrets.MARS_HOST }} upload < web.tar.gz
+
+      - name: Backend deploy
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+              ${{ secrets.MARS_USER }}@${{ secrets.MARS_HOST }} deploy
+
+      # Deploy'dan keyingi tekshiruv. Bu qadamsiz buzilgan reliz haqida
+      # birinchi bo'lib o'quvchilar xabar berardi.
+      - name: Xizmat tirikligini tekshirish
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes \
+              ${{ secrets.MARS_USER }}@${{ secrets.MARS_HOST }} status
+
+      - name: Sayt tashqaridan ochilishini tekshirish
+        run: |
+          fail=0
+          for path in / /kursy /ru/kursy /api/v1/home/ /health/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 \
+                   "https://core.marsit.uz/school${path}")
+            printf '%-20s %s\n' "$path" "$code"
+            [ "$code" = "200" ] || fail=1
+          done
+          exit $fail

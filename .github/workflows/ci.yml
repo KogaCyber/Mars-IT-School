@@ -8,8 +8,11 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, prod]
   pull_request:
+  # `deploy.yml` shu to'plamni deploy'dan OLDIN qayta ishlatadi: production
+  # uchun alohida, nusxa ko'chirilgan tekshiruvlar ro'yxati bo'lmasin.
+  workflow_call:
 
 jobs:
   backend:
