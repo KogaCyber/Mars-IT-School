@@ -1,3 +1,13 @@
+> **DIQQAT — bu hujjat Railway + Vercel varianti uchun.**
+>
+> Bizning production BOSHQA joyda: sayt `mars` serverida, `core.marsit.uz/school/`
+> manzilida turadi va `prod` shoxiga push bo'lganda GitHub Actions orqali
+> o'z-o'zidan yoyiladi. Amaldagi tartib — [`deploy/README.md`](deploy/README.md),
+> loyihaning umumiy tavsifi — [`CLAUDE.md`](CLAUDE.md).
+>
+> Quyidagi matn Railway/Vercel'ga chiqarmoqchi bo'lganlar uchun saqlanib
+> qolgan; u bilan bizning serverimizga deploy qilib bo'lmaydi.
+
 # Mars IT School — serverga yuklash qo'llanmasi
 
 Loyiha ikki qismdan iborat va ular **alohida** joylashtiriladi:
