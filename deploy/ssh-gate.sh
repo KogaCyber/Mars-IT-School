@@ -19,7 +19,7 @@ mkdir -p "$ROOT/logs"
 deny() {
     printf 'Bu kalit faqat deploy uchun. Ruxsat etilgan: upload | deploy | status\n' >&2
     printf '[%s] RAD ETILDI: %q (from %s)\n' \
-        "$(date -Is)" "${SSH_ORIGINAL_COMMAND:-<yo'q>}" "${SSH_CONNECTION%% *}" >> "$LOG"
+        "$(date -Is)" "${SSH_ORIGINAL_COMMAND:-(bosh)}" "${SSH_CONNECTION%% *}" >> "$LOG"
     exit 1
 }
 
