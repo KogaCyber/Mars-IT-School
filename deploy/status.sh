@@ -8,12 +8,12 @@ HOST_HEADER="core.marsit.uz"
 fail=0
 
 state=$(sudo -n /usr/bin/supervisorctl status school_api 2>/dev/null | awk '{print $2}')
-echo "supervisor: ${state:-NOMA'LUM}"
+echo "supervisor: ${state:-NOMALUM}"
 [ "$state" = "RUNNING" ] || fail=1
 
 health=$(curl -s --max-time 10 -H "Host: $HOST_HEADER" -H "X-Forwarded-Proto: https" \
     "http://127.0.0.1:$PORT/health/" 2>/dev/null)
-echo "health: ${health:-<javob yo'q>}"
+echo "health: ${health:-(javob yoq)}"
 echo "$health" | grep -q '"database":true' || fail=1
 
 code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 -H "Host: $HOST_HEADER" \
