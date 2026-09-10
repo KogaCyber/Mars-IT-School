@@ -18,7 +18,9 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
 # Railway healthcheck ichki tarmoq orqali HTTP bilan keladi va X-Forwarded-Proto
 # qo'ymaydi — HTTPS'ga yo'naltirsak deploy "unhealthy" bo'lib qolardi.
-SECURE_REDIRECT_EXEMPT = [r"^health/$"]
+# `request.path` yo'l prefiksini ham o'z ichiga oladi (`FORCE_SCRIPT_NAME`),
+# shuning uchun namuna prefiksdan keyin ham mos kelishi kerak.
+SECURE_REDIRECT_EXEMPT = [rf"^{(FORCE_SCRIPT_NAME or '').lstrip('/')}/?health/$"]  # noqa: F405
 SECURE_HSTS_SECONDS = env.int("SECURE_HSTS_SECONDS", default=31536000)  # 1 yil
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True

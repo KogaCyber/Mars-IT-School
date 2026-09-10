@@ -268,11 +268,25 @@ USE_TZ = True
 # uchun bir kun.
 WHITENOISE_MAX_AGE = 60 * 60 * 24
 
-STATIC_URL = "/static/"
+# --- Sayt yo'l prefiksi (sub-path) ------------------------------------------
+# Ilova domen ildizida emas, boshqa saytning ichki yo'lida ham turishi mumkin
+# (masalan `core.marsit.uz/school/`). Bunda proksi to'liq manzilni o'zgarishsiz
+# uzatadi, Django esa o'zi yasagan HAR BIR manzilga (admin panel havolalari,
+# `redirect()`, statik va media fayllar) shu prefiksni qo'shishi kerak — aks
+# holda admin paneldagi har bir havola prefikssiz chiqib, 404 berardi.
+#
+# Bo'sh bo'lsa hech narsa o'zgarmaydi: sayt avvalgidek ildizda ishlaydi.
+FORCE_SCRIPT_NAME = env("FORCE_SCRIPT_NAME", default="").rstrip("/") or None
+
+#: Statik va media manzillari uchun prefiks (`FORCE_SCRIPT_NAME` ularga
+#: avtomatik qo'shilmaydi — Django ularni faqat `STATIC_URL` dan oladi).
+_URL_PREFIX = FORCE_SCRIPT_NAME or ""
+
+STATIC_URL = f"{_URL_PREFIX}/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 
-MEDIA_URL = "/media/"
+MEDIA_URL = f"{_URL_PREFIX}/media/"
 # Railway'da konteyner disk vaqtinchalik: har deploy'da yuklangan rasmlar
 # yo'qoladi. Shuning uchun MEDIA_ROOT doimiy volume'ga yo'naltiriladi
 # (Railway → Volumes → mount path, masalan /data/media).

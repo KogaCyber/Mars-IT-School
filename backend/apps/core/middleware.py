@@ -78,7 +78,13 @@ class AdminAccessMiddleware:
 
     def __init__(self, get_response):
         self.get_response = get_response
-        self.prefix = f"/{settings.ADMIN_URL.lstrip('/')}"
+        # Sayt yo'l prefiksida turishi mumkin (`FORCE_SCRIPT_NAME`, masalan
+        # `/school`). `request.path` prefiksni ham o'z ichiga oladi, shuning
+        # uchun taqqoslanadigan namuna ham prefiks bilan qurilishi kerak —
+        # aks holda bu middleware admin so'rovini umuman tanimay, IP cheklovi
+        # va qayd (audit) jimgina o'chib qolardi.
+        script_name = (getattr(settings, "FORCE_SCRIPT_NAME", "") or "").rstrip("/")
+        self.prefix = f"{script_name}/{settings.ADMIN_URL.lstrip('/')}"
         self.networks = self._parse(getattr(settings, "ADMIN_ALLOWED_IPS", []))
 
     @staticmethod
