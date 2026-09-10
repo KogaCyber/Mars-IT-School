@@ -120,3 +120,23 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  # Deploy skriptlari bajarilishi shart. Git rejimi — yagona manba: serverda
+  # `git reset --hard` har deploy'da qo'lda qo'yilgan huquqni qaytarib oladi.
+  # Birinchi push-deploy aynan shu sababdan yiqilgandi (126: Permission denied).
+  deploy-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bajarish huquqi va sintaksis
+        run: |
+          fail=0
+          for f in deploy/*.sh; do
+            if [ ! -x "$f" ]; then
+              echo "$f — bajarish huquqi yo'q (git update-index --chmod=+x $f)"
+              fail=1
+            fi
+            bash -n "$f" || fail=1
+          done
+          exit $fail
