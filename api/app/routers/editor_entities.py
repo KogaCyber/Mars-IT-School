@@ -234,21 +234,23 @@ async def delete_entity(kind: str, item_id: int, db: AsyncSession = Depends(get_
 # Sayt kontaktlari (bitta yozuv) — «Контакты» sahifasidagi telefon, email, tarmoqlar
 # ---------------------------------------------------------------------------
 
+# Guruh (`group`) frontend'da bo'lim sarlavhasi bo'lib chiqadi — bir uyum
+# maydon o'rniga «Контакты / Соцсети / Приложение / Документы / Видео».
 SETTINGS_FIELDS = [
-    field("phone", "text", "Телефон"),
-    field("extra_phone", "text", "Доп. телефон"),
-    field("email", "text", "Email"),
-    field("work_hours", "translated", "Часы работы"),
-    field("telegram_url", "text", "Telegram"),
-    field("instagram_url", "text", "Instagram"),
-    field("youtube_url", "text", "YouTube"),
-    field("facebook_url", "text", "Facebook"),
-    field("space_app_ios_url", "text", "SPACE — App Store"),
-    field("space_app_android_url", "text", "SPACE — Google Play"),
-    field("privacy_policy_url", "text", "Политика конфиденциальности"),
-    field("offer_url", "text", "Оферта"),
-    field("promo_video_url", "text", "Промо-видео (ссылка)"),
-    field("promo_cover", "image", "Обложка промо"),
+    field("phone", "text", "Телефон", group="Контакты"),
+    field("extra_phone", "text", "Доп. телефон", group="Контакты"),
+    field("email", "text", "Email", group="Контакты"),
+    field("work_hours", "translated", "Часы работы", group="Контакты"),
+    field("telegram_url", "text", "Telegram", group="Соцсети"),
+    field("instagram_url", "text", "Instagram", group="Соцсети"),
+    field("youtube_url", "text", "YouTube", group="Соцсети"),
+    field("facebook_url", "text", "Facebook", group="Соцсети"),
+    field("space_app_ios_url", "text", "App Store", group="Приложение SPACE"),
+    field("space_app_android_url", "text", "Google Play", group="Приложение SPACE"),
+    field("privacy_policy_url", "text", "Политика конфиденциальности", group="Документы"),
+    field("offer_url", "text", "Оферта", group="Документы"),
+    field("promo_video_url", "text", "Промо-видео (ссылка)", group="Промо-видео на главной"),
+    field("promo_cover", "image", "Обложка видео", group="Промо-видео на главной"),
 ]
 _SETTINGS_COLS = {
     f"{f['name']}_{lang}" if f["kind"] == "translated" else f["name"]

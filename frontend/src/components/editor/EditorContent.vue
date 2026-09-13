@@ -4,8 +4,9 @@
  * vakansiyalar. Bo'limlar (matn bloklari) EditorPanel'da; bu yerda esa
  * qo'shish / o'zgartirish / o'chirish.
  *
- * Modal: chapda ro'yxat, o'ngda tanlangan yozuv formasi. Forma maydonlari
- * backend `spec`'idan quriladi.
+ * Ko'rinish: chapda bo'limlar, o'ngda KARTOCHKALAR to'ri (rasm + nom + holat).
+ * Kartochkaga bosilganda o'sha yozuv formasi ochiladi. Kontaktlar — bitta
+ * yozuv, shuning uchun darhol forma.
  */
 import { computed, ref } from 'vue'
 
@@ -33,22 +34,25 @@ const TABS = [
 const LANGS = ['ru', 'uz', 'en']
 const LANG_LABEL = { ru: 'RU', uz: 'UZ', en: 'EN' }
 const MAX_MB = 5
+const PLAIN = new Set(['button_url', 'button2_url', 'image', 'image2', 'icon_name', 'icon', 'url'])
 
 const active = ref('settings')
 const fields = ref([])
 const items = ref([])
 const singular = ref('')
-const editing = ref(null) // редактируемая запись (values-объект) или null
+const editing = ref(null) // редактируемая запись или null (тогда — сетка карточек)
 const isNew = ref(false)
 const lang = ref('ru')
 const busy = ref(false)
 const error = ref('')
 
 const isSettings = computed(() => active.value === 'settings')
+const coverField = computed(() => fields.value.find((f) => f.kind === 'image'))
 
 async function loadTab(kind) {
   active.value = kind
   editing.value = null
+  isNew.value = false
   error.value = ''
   busy.value = true
   lang.value = LANGS.includes(getLanguage()) ? getLanguage() : 'ru'
@@ -56,7 +60,7 @@ async function loadTab(kind) {
     if (kind === 'settings') {
       const data = await fetchSettings()
       fields.value = data.fields
-      editing.value = { ...data.values } // настройки правятся сразу, без списка
+      editing.value = { ...data.values } // настройки — сразу форма
       singular.value = 'Контакты'
       items.value = []
     } else {
@@ -78,7 +82,19 @@ function fieldKey(f, l = lang.value) {
 
 function displayName(item) {
   const f = fields.value.find((x) => x.kind === 'translated') || fields.value[0]
-  return item[fieldKey(f, 'ru')] || item.slug || `#${item.id}`
+  return (f && item[fieldKey(f, 'ru')]) || item.slug || `#${item.id}`
+}
+
+function cardCover(item) {
+  return coverField.value ? item[`${coverField.value.name}_url`] : null
+}
+
+function cardSubtitle(item) {
+  // Вторая строка карточки: краткое описание / адрес, если есть.
+  const second = fields.value.find(
+    (f) => f.kind === 'translated' && f.name !== (fields.value.find((x) => x.kind === 'translated')?.name),
+  )
+  return second ? item[fieldKey(second, 'ru')] : ''
 }
 
 function startNew() {
@@ -96,6 +112,12 @@ function startNew() {
 function edit(item) {
   isNew.value = false
   editing.value = { ...item }
+}
+
+function backToGrid() {
+  editing.value = null
+  isNew.value = false
+  error.value = ''
 }
 
 async function pickImage(event, field) {
@@ -123,6 +145,11 @@ async function pickImage(event, field) {
   }
 }
 
+function clearImage(field) {
+  editing.value[field.name] = ''
+  editing.value[`${field.name}_url`] = null
+}
+
 async function save() {
   busy.value = true
   error.value = ''
@@ -136,15 +163,14 @@ async function save() {
       await patchSettings(values)
     } else if (isNew.value) {
       await createEntity(active.value, values, editing.value.is_published)
-      await loadTab(active.value)
+      await loadTab(active.value) // назад к сетке с обновлённым списком
     } else {
       const updated = await updateEntity(active.value, editing.value.id, values, editing.value.is_published)
       const i = items.value.findIndex((x) => x.id === updated.id)
       if (i >= 0) items.value[i] = updated
+      editing.value = null
     }
     await useContentStore().load({ force: true })
-    if (!isSettings.value && !isNew.value) editing.value = null
-    isNew.value = false
   } catch (e) {
     error.value = e.response?.data?.detail || 'Не удалось сохранить.'
   } finally {
@@ -158,7 +184,6 @@ async function remove(item) {
   try {
     await deleteEntity(active.value, item.id)
     items.value = items.value.filter((x) => x.id !== item.id)
-    if (editing.value?.id === item.id) editing.value = null
     await useContentStore().load({ force: true })
   } catch (e) {
     error.value = e.response?.data?.detail || 'Не удалось удалить.'
@@ -167,7 +192,6 @@ async function remove(item) {
   }
 }
 
-// Ochilganda birinchi tab.
 loadTab('settings')
 </script>
 
@@ -179,7 +203,7 @@ loadTab('settings')
       @click.self="editor.showContent = false"
     >
       <div class="flex h-[85vh] w-full max-w-5xl overflow-hidden rounded-3xl bg-white text-ink shadow-2xl">
-        <!-- Вкладки -->
+        <!-- Разделы -->
         <nav class="w-44 shrink-0 border-r border-gray-200 bg-gray-50 p-3">
           <h2 class="mb-3 px-2 font-bold">Контент</h2>
           <button
@@ -197,34 +221,55 @@ loadTab('settings')
           </button>
         </nav>
 
-        <!-- Список (для сущностей) -->
-        <div v-if="!isSettings" class="w-64 shrink-0 overflow-y-auto border-r border-gray-200 p-3">
-          <button type="button" class="mb-2 w-full rounded-pill bg-brand px-3 py-2 text-sm font-bold text-white" @click="startNew">
-            + Добавить
-          </button>
-          <p v-if="!items.length" class="px-2 py-4 text-sm text-gray-400">Пусто. Нажмите «Добавить».</p>
-          <ul>
-            <li v-for="item in items" :key="item.id" class="mb-1 flex items-center gap-1">
+        <div class="flex-1 overflow-y-auto">
+          <!-- СЕТКА КАРТОЧЕК (для сущностей, когда ничего не выбрано) -->
+          <div v-if="!isSettings && !editing" class="p-5">
+            <p v-if="busy" class="text-gray-500">Загрузка…</p>
+            <div v-else class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <!-- Карточка «Добавить» -->
               <button
                 type="button"
-                class="min-w-0 flex-1 truncate rounded-lg px-2 py-2 text-left text-sm hover:bg-gray-100"
-                :class="{ 'bg-brand/10': editing?.id === item.id, 'opacity-50': !item.is_published }"
-                @click="edit(item)"
+                class="flex aspect-[4/3] flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-300 text-gray-500 transition hover:border-brand hover:text-brand"
+                @click="startNew"
               >
-                {{ displayName(item) }}
+                <span class="text-3xl">+</span>
+                <span class="text-sm font-semibold">Добавить</span>
               </button>
-              <button type="button" class="px-1 text-gray-400 hover:text-red-600" title="Удалить" @click="remove(item)">×</button>
-            </li>
-          </ul>
-        </div>
 
-        <!-- Форма -->
-        <div class="flex-1 overflow-y-auto p-5">
-          <p v-if="busy && !editing" class="text-gray-500">Загрузка…</p>
-          <p v-else-if="!editing" class="text-gray-400">Выберите запись слева или нажмите «Добавить».</p>
+              <!-- Карточки записей -->
+              <div
+                v-for="item in items"
+                :key="item.id"
+                class="group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200 text-left transition hover:shadow-lg"
+                :class="{ 'opacity-60': !item.is_published }"
+              >
+                <button type="button" class="flex flex-1 flex-col text-left" @click="edit(item)">
+                  <div class="aspect-[4/3] w-full bg-gray-100">
+                    <img v-if="cardCover(item)" :src="cardCover(item)" class="h-full w-full object-cover" alt="" />
+                    <div v-else class="grid h-full place-items-center text-xs text-gray-400">без фото</div>
+                  </div>
+                  <div class="flex-1 p-3">
+                    <p class="line-clamp-2 font-semibold">{{ displayName(item) }}</p>
+                    <p v-if="cardSubtitle(item)" class="mt-1 line-clamp-2 text-xs text-gray-500">{{ cardSubtitle(item) }}</p>
+                    <span v-if="!item.is_published" class="mt-2 inline-block rounded-pill bg-gray-200 px-2 py-0.5 text-[11px]">скрыто</span>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  class="absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full bg-white/90 text-gray-500 opacity-0 shadow transition group-hover:opacity-100 hover:text-red-600"
+                  title="Удалить"
+                  @click.stop="remove(item)"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
 
-          <div v-else>
+          <!-- ФОРМА (запись или контакты) -->
+          <div v-else-if="editing" class="p-5">
             <div class="mb-4 flex items-center gap-2">
+              <button v-if="!isSettings" type="button" class="text-sm text-gray-500 hover:text-ink" @click="backToGrid">← Назад</button>
               <h3 class="font-bold">{{ isSettings ? 'Контакты сайта' : isNew ? `Новая: ${singular}` : displayName(editing) }}</h3>
               <div class="ml-auto flex gap-1 rounded-pill bg-gray-100 p-1">
                 <button
@@ -245,32 +290,44 @@ loadTab('settings')
               Показывать на сайте
             </label>
 
-            <div v-for="f in fields" :key="f.name" class="mb-4">
-              <label class="mb-1 block text-xs font-semibold tracking-wide text-gray-500 uppercase">
-                {{ f.label }}<span v-if="f.kind === 'translated'" class="ml-1 font-normal">· {{ LANG_LABEL[lang] }}</span>
-              </label>
+            <template v-for="(f, idx) in fields" :key="f.name">
+              <h4
+                v-if="f.group && f.group !== fields[idx - 1]?.group"
+                class="mt-6 mb-3 border-b border-gray-100 pb-1 text-sm font-bold text-ink"
+                :class="{ '!mt-0': idx === 0 }"
+              >
+                {{ f.group }}
+              </h4>
+              <div class="mb-4">
+                <label class="mb-1 block text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                  {{ f.label }}<span v-if="f.kind === 'translated'" class="ml-1 font-normal">· {{ LANG_LABEL[lang] }}</span>
+                </label>
 
-              <template v-if="f.kind === 'image'">
-                <div class="flex items-center gap-3">
-                  <img v-if="editing[`${f.name}_url`]" :src="editing[`${f.name}_url`]" class="h-16 w-24 rounded-lg object-cover" alt="" />
-                  <div v-else class="grid h-16 w-24 place-items-center rounded-lg bg-gray-100 text-xs text-gray-400">нет</div>
-                  <label class="cursor-pointer rounded-pill bg-ink px-3 py-1 text-sm text-white hover:bg-brand">
-                    Загрузить
-                    <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="sr-only" @change="pickImage($event, f)" />
-                  </label>
-                  <span class="text-xs text-gray-400">до {{ MAX_MB }} МБ</span>
-                </div>
-              </template>
-              <select v-else-if="f.kind === 'select'" v-model="editing[f.name]" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm">
-                <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
-              </select>
-              <label v-else-if="f.kind === 'bool'" class="flex items-center gap-2 text-sm">
-                <input v-model="editing[f.name]" type="checkbox" /> да
-              </label>
-              <input v-else-if="f.kind === 'number'" v-model="editing[f.name]" type="number" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
-              <textarea v-else-if="f.long" v-model="editing[fieldKey(f)]" rows="3" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
-              <input v-else v-model="editing[fieldKey(f)]" type="text" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
-            </div>
+                <template v-if="f.kind === 'image'">
+                  <div class="flex items-center gap-3">
+                    <img v-if="editing[`${f.name}_url`]" :src="editing[`${f.name}_url`]" class="h-20 w-28 rounded-lg object-cover" alt="" />
+                    <div v-else class="grid h-20 w-28 place-items-center rounded-lg bg-gray-100 text-xs text-gray-400">нет</div>
+                    <div class="flex flex-col gap-1">
+                      <label class="cursor-pointer rounded-pill bg-ink px-3 py-1 text-center text-sm text-white hover:bg-brand">
+                        {{ editing[`${f.name}_url`] ? 'Заменить' : 'Загрузить' }}
+                        <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" class="sr-only" @change="pickImage($event, f)" />
+                      </label>
+                      <button v-if="editing[f.name]" type="button" class="text-xs text-gray-500 hover:text-red-600" @click="clearImage(f)">Убрать</button>
+                      <span class="text-xs text-gray-400">до {{ MAX_MB }} МБ</span>
+                    </div>
+                  </div>
+                </template>
+                <select v-else-if="f.kind === 'select'" v-model="editing[f.name]" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm">
+                  <option v-for="o in f.options" :key="o.value" :value="o.value">{{ o.label }}</option>
+                </select>
+                <label v-else-if="f.kind === 'bool'" class="flex items-center gap-2 text-sm">
+                  <input v-model="editing[f.name]" type="checkbox" /> да
+                </label>
+                <input v-else-if="f.kind === 'number'" v-model="editing[f.name]" type="number" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
+                <textarea v-else-if="f.long || (f.kind === 'translated' && !PLAIN.has(f.name))" v-model="editing[fieldKey(f)]" rows="3" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
+                <input v-else v-model="editing[fieldKey(f)]" type="text" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
+              </div>
+            </template>
 
             <div class="sticky bottom-0 -mx-5 flex items-center gap-3 border-t border-gray-200 bg-white px-5 py-3">
               <button type="button" class="rounded-pill bg-brand px-5 py-2 font-bold text-white disabled:opacity-50" :disabled="busy" @click="save">
