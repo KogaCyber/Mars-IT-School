@@ -236,18 +236,19 @@ def revision_view(request):
 # to'ldirib, haqiqiy tashrifchilarni siqib chiqarmasligi kerak.
 @throttle_classes([HealthThrottle])
 def health_view(request):
-    """Railway healthcheck uchun: MongoDB bilan aloqani ham tekshiradi.
+    """Healthcheck: baza bilan aloqani ham tekshiradi.
 
-    Baza ishlamayotgan bo'lsa 503 qaytariladi — shunda Railway buzuq deploy'ga
-    trafik yubormaydi va konteynerni qayta ishga tushiradi. 200 qaytarsak,
-    sayt tashqaridan "sog'lom" ko'rinib, aslida hech nima ishlamas edi.
+    Baza ishlamayotgan bo'lsa 503 qaytariladi — shunda deploy tekshiruvi
+    qizil bo'ladi va buzilgan reliz sezilmay qolmaydi. 200 qaytarsak, sayt
+    tashqaridan "sog'lom" ko'rinib, aslida hech nima ishlamas edi.
     """
     try:
-        # MongoDB'ning standart tekshiruvi — `ping` buyrug'i.
-        connections["default"].database.client.admin.command("ping")
+        with connections["default"].cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
         db_ok = True
     except Exception:  # noqa: BLE001 — healthcheck hech qachon stack trace bermasligi kerak
-        logger.exception("Healthcheck: MongoDB bilan aloqa yo'q")
+        logger.exception("Healthcheck: baza bilan aloqa yo'q")
         db_ok = False
 
     return Response(

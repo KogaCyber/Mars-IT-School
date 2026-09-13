@@ -37,9 +37,16 @@ def test_unpublished_course_is_hidden(api, course):
     assert api.get(reverse("v1:course-detail", args=[course.slug])).status_code == 404
 
 
-def test_object_id_is_serialized_as_string(api, course):
+def test_id_is_a_plain_integer(api, course):
+    """`id` — oddiy butun son, satr emas.
+
+    MongoDB davrida bu yerda ObjectId satr sifatida chiqishi tekshirilardi.
+    Endi birlamchi kalit PostgreSQL'ning `BigAutoField` i; sayt `id` ni faqat
+    `:key` va o'zaro solishtirish uchun ishlatadi, turiga tayanmaydi.
+    """
     response = api.get(reverse("v1:course-detail", args=[course.slug]))
-    assert isinstance(response.data["id"], str)
+    assert isinstance(response.data["id"], int)
+    assert response.data["id"] == course.pk
 
 
 def test_health_endpoint(api):
