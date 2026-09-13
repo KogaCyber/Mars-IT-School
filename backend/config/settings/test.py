@@ -1,4 +1,4 @@
-"""Testlar uchun sozlamalar — HAR DOIM lokal MongoDB ishlatiladi."""
+"""Testlar uchun sozlamalar — HAR DOIM lokal PostgreSQL ishlatiladi."""
 
 import os
 
@@ -21,7 +21,7 @@ ALLOWED_HOSTS = ["*"]
 # Ma'lumotlar bazasi — ATAYLAB `.env` dan olinmaydi
 # ---------------------------------------------------------------------------
 # Ilgari bu yerda hech narsa qayta belgilanmasdi va testlar `.env` dagi
-# `MONGODB_URI` ni, ya'ni PRODUCTION Atlas klasterini ishlatardi. Oqibatlari:
+# `MONGODB_URI` ni, ya'ni o'sha paytdagi PRODUCTION Atlas klasterini ishlatardi. Oqibatlari:
 #
 #   * har bir amal Yevropa ↔ Singapur oralig'ini bosib o'tardi — 30 ta test
 #     10 daqiqa 19 soniya davom etardi (o'lchangan);
@@ -31,9 +31,13 @@ ALLOWED_HOSTS = ["*"]
 #     ochiq turardi.
 #
 # Testlar hech qachon masofaviy bazaga tegmasligi kerak. Kerak bo'lsa
-# `TEST_MONGODB_URI` orqali boshqa LOKAL manzil beriladi.
-DATABASES["default"]["HOST"] = env("TEST_MONGODB_URI", default="mongodb://localhost:27017")
-DATABASES["default"]["NAME"] = "mars_it_school_test"
+# `TEST_DATABASE_URL` orqali boshqa LOKAL manzil beriladi. Django test bazasini
+# (`test_<NAME>`) o'zi yaratadi va o'chiradi — rolda CREATEDB huquqi bo'lishi kerak.
+DATABASES["default"] = env.db_url(
+    "TEST_DATABASE_URL",
+    default="postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school",
+)
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 AXES_ENABLED = False

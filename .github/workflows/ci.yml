@@ -1,6 +1,6 @@
 # Har bir push va pull request'da ikkala qismning testlari yuriladi.
 #
-# Nega kerak: ilgari testlar `.env` dagi production Atlas klasteriga ulanardi va
+# Nega kerak: ilgari testlar `.env` dagi masofaviy bazaga ulanardi va
 # 30 ta test 10 daqiqadan ko'proq davom etardi — shuning uchun ularni hech kim
 # muntazam yurgizmasdi. Endi baza konteynerda, to'plam bir necha soniyada
 # tugaydi va buzilgan kod main'ga tusha olmaydi.
@@ -30,12 +30,16 @@ jobs:
         python-version: ['3.10', '3.12']
 
     services:
-      mongo:
-        image: mongo:7
-        ports: ['27017:27017']
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: mars_it_school
+          POSTGRES_PASSWORD: mars_it_school
+          POSTGRES_DB: mars_it_school
+        ports: ['5432:5432']
         options: >-
-          --health-cmd "mongosh --quiet --eval 'db.runCommand({ping:1})'"
-          --health-interval 10s
+          --health-cmd "pg_isready -U mars_it_school"
+          --health-interval 5s
           --health-timeout 5s
           --health-retries 10
 
@@ -66,7 +70,7 @@ jobs:
         env:
           # `config/settings/test.py` baribir lokal manzilni majburlaydi —
           # bu yerda faqat aniqlik uchun takrorlanadi.
-          TEST_MONGODB_URI: mongodb://localhost:27017
+          TEST_DATABASE_URL: postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school
 
       # Production sozlamalari bilan Django'ning o'z xavfsizlik tekshiruvi.
       # Bu qadam `.env` ga bog'liq bo'lmasligi uchun barcha qiymatlar shu
@@ -82,7 +86,7 @@ jobs:
           ADMIN_URL: ci-maxfiy-panel/
           MEDIA_ROOT: /tmp/ci-media
           PRIVATE_MEDIA_ROOT: /tmp/ci-private-media
-          MONGODB_URI: mongodb://localhost:27017
+          DATABASE_URL: postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school
 
       # Ma'lum zaifliklari bor paketlar main'ga tushmasligi kerak.
       # Zaiflik bazasi kundan kunga o'zgaradi, ya'ni kod o'zgarmasa ham

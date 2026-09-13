@@ -1,7 +1,5 @@
 import random
 
-from bson import ObjectId
-from bson.errors import InvalidId
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
@@ -12,13 +10,14 @@ from .models import Option, Outcome, Question, Quiz, Skill, Submission, skill_la
 from .services import sample_questions
 
 
-def _is_object_id(value) -> bool:
-    """Satr MongoDB identifikatori ko'rinishidami."""
-    try:
-        ObjectId(str(value))
-    except (InvalidId, TypeError, ValueError):
-        return False
-    return True
+def _is_pk(value) -> bool:
+    """Qiymat birlamchi kalit (musbat butun son) ko'rinishidami.
+
+    `answers` kalitlari to'g'ridan-to'g'ri `question_id__in` so'roviga
+    tushadi. `"abc"` kabi qiymat u yerda `ValueError` ko'tarib 500 berardi;
+    shuning uchun mos kelmaganlari oldindan tashlab yuboriladi.
+    """
+    return str(value).isdigit() and int(value) > 0
 
 
 class OptionSerializer(TranslatedSerializerMixin, serializers.ModelSerializer):
@@ -92,17 +91,15 @@ class SubmissionCreateSerializer(serializers.Serializer):
         return phone
 
     def validate_answers(self, value: dict) -> dict:
-        """Kalit va qiymat haqiqiy ObjectId bo'lishi shart.
+        """Kalitlar haqiqiy savol identifikatori bo'lishi shart.
 
-        Ular to'g'ridan-to'g'ri `question_id__in` so'roviga tushadi. Tekshirmasak,
-        `{"answers": {"abc": "def"}}` kabi so'rov MongoDB maydonida
-        `ValidationError` ko'tarib, 500 xatolik berardi. Noto'g'ri yozuv
-        jimgina tashlab yuboriladi — qolgan javoblar baribir hisoblanadi.
+        Noto'g'ri yozuv jimgina tashlab yuboriladi — qolgan javoblar baribir
+        hisoblanadi.
         """
         if len(value) > 100:
             raise serializers.ValidationError(_("Javoblar soni juda ko'p."))
 
-        cleaned = {key: item for key, item in value.items() if _is_object_id(key)}
+        cleaned = {key: item for key, item in value.items() if _is_pk(key)}
         if not cleaned:
             raise serializers.ValidationError(_("Javoblar yaroqsiz."))
         return cleaned

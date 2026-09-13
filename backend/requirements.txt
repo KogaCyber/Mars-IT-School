@@ -1,5 +1,5 @@
 # --- Core ---------------------------------------------------------------
-# Django LTS 5.2 liniyasi (django-mongodb-backend shu versiyaga bog'langan).
+# Django LTS 5.2 liniyasi.
 # Patch versiyalar — xavfsizlik tuzatishlari; CI'da `pip-audit` har yurishda
 # ma'lum zaifliklarni tekshiradi, shuning uchun bu qiymatlar eskirib qolmaydi.
 Django==5.2.17
@@ -13,8 +13,11 @@ drf-spectacular==0.28.0
 django-environ==0.12.0
 gunicorn==23.0.0
 whitenoise[brotli]==6.9.0
-django-mongodb-backend==5.2.4
-pymongo==4.17.0
+
+# --- Ma'lumotlar bazasi -------------------------------------------------
+# PostgreSQL drayveri. `binary` — kompilyator va libpq-dev talab qilmaydi:
+# serverda Python 3.10 va build vositalari yo'q.
+psycopg[binary]==3.2.9
 
 # --- Media / images -----------------------------------------------------
 # Pillow foydalanuvchi yuklagan rasmni O'ZI tahlil qiladi — ya'ni undagi har

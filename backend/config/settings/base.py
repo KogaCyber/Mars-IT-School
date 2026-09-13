@@ -76,10 +76,9 @@ for _network in ADMIN_ALLOWED_IPS:
 # Ilovalar
 # ---------------------------------------------------------------------------
 DJANGO_APPS = [
-    # MongoDB uchun moslashtirilgan konfiguratsiyalar (config/mongo_apps.py).
-    "config.mongo_apps.MongoAdminConfig",
-    "config.mongo_apps.MongoAuthConfig",
-    "config.mongo_apps.MongoContentTypesConfig",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
@@ -91,7 +90,7 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "django_filters",
     "drf_spectacular",
-    "config.mongo_apps.MongoAxesConfig",
+    "axes",
 ]
 
 LOCAL_APPS = [
@@ -164,35 +163,32 @@ TEMPLATES = [
 # ---------------------------------------------------------------------------
 # Ma'lumotlar bazasi
 # ---------------------------------------------------------------------------
-# MongoDB (django-mongodb-backend). Ulanish satri MONGODB_URI orqali beriladi:
-#   lokal:      mongodb://localhost:27017/mars_it_school
-#   Atlas/Railway: mongodb+srv://user:pass@cluster/mars_it_school?retryWrites=true&w=majority
+# PostgreSQL. Ulanish satri DATABASE_URL orqali beriladi:
+#   lokal:  postgres://mars_it_school:parol@localhost:5432/mars_it_school
+#   mars:   postgres://school:parol@127.0.0.1:5432/mars_it_school
+#
+# Ilgari bu yerda MongoDB (django-mongodb-backend) turardi. Undan voz kechildi:
+# ma'lumotlar boshdan-oyoq relyatsion (kurs -> yo'nalish, savol -> variant,
+# ariza -> kurs/filial), Mongo esa buning evaziga tranzaksiyalarni olib qo'ygan,
+# `icontains` ni escape qilinmagan regexga aylantirgan (SafeSearchFilter shu
+# uchun yozilgandi), simplejwt blacklist'ini ishlatishga qo'ymagan va
+# ObjectId'ni API'ga chiqarib IDOR bergandi. Serverda esa Postgres allaqachon
+# bor edi, Mongo uchun alohida konteyner ko'tarishga to'g'ri kelgandi.
 DATABASES = {
-    "default": {
-        "ENGINE": "django_mongodb_backend",
-        "HOST": env("MONGODB_URI", default="mongodb://localhost:27017"),
-        "NAME": env("MONGODB_NAME", default="mars_it_school"),
-    }
+    "default": env.db_url(
+        "DATABASE_URL",
+        default="postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school",
+    )
 }
 
-# MongoDB tranzaksiyalarni Django ORM darajasida qo'llab-quvvatlamaydi,
-# shuning uchun ATOMIC_REQUESTS ishlatilmaydi (yozish amallari idempotent yozilgan).
-DATABASES["default"]["ATOMIC_REQUESTS"] = False
+# Har bir so'rov — bitta tranzaksiya: yarim yozilgan ariza yoki test natijasi
+# bo'lmaydi. Mongo'da bu imkoniyat yo'q edi va ataylab o'chirilgandi.
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
+# Ulanishlar qayta ishlatiladi — har so'rovda yangi TCP/auth qilinmaydi.
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("DB_CONN_MAX_AGE", default=60)
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = True
 
-# Embedded (ichki) modellar alohida kolleksiya yaratmasligi uchun router kerak.
-DATABASE_ROUTERS = ["django_mongodb_backend.routers.MongoRouter"]
-
-# Mongo hujjatlarining birlamchi kaliti — ObjectId.
-DEFAULT_AUTO_FIELD = "django_mongodb_backend.fields.ObjectIdAutoField"
-
-# Django/uchinchi tomon ilovalarining tayyor migratsiyalari AutoField ishlatadi,
-# shuning uchun ular Mongo uchun qaytadan yaratiladi (mongo_migrations/ papkasi).
-MIGRATION_MODULES = {
-    "admin": "mongo_migrations.admin",
-    "auth": "mongo_migrations.auth",
-    "contenttypes": "mongo_migrations.contenttypes",
-    "axes": "mongo_migrations.axes",
-}
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ---------------------------------------------------------------------------
 # Autentifikatsiya
@@ -340,12 +336,12 @@ REST_FRAMEWORK = {
         "apps.accounts.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_RENDERER_CLASSES": ("apps.core.drf.MongoJSONRenderer",),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.StandardPagination",
     "PAGE_SIZE": 12,
     "DEFAULT_FILTER_BACKENDS": (
         "django_filters.rest_framework.DjangoFilterBackend",
-        "apps.core.filters.SafeSearchFilter",
+        "rest_framework.filters.SearchFilter",
         "rest_framework.filters.OrderingFilter",
     ),
     "DEFAULT_THROTTLE_CLASSES": (
