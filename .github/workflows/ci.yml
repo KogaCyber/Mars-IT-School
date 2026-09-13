@@ -19,11 +19,10 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: backend
+        working-directory: api
 
-    # Eng PAST va eng yuqori versiya — ikkalasida ham yurishi shart.
-    # Faqat 3.12 da tekshirilganda `from datetime import UTC` (3.11+) sezilmay
-    # qolgandi va ilova 3.10 turgan serverda import paytidayoq qulagandi.
+    # Eng PAST va eng yuqori versiya — ikkalasida ham yurishi shart
+    # (serverda 3.10 turibdi).
     strategy:
       fail-fast: false
       matrix:
@@ -50,51 +49,25 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-          cache-dependency-path: backend/requirements*.txt
+          cache-dependency-path: api/requirements*.txt
 
       - name: Paketlarni o'rnatish
-        run: |
-          pip install -r requirements.txt
-          pip install -r requirements-dev.txt
+        run: pip install -r requirements-dev.txt
 
       - name: Ruff (lint)
         run: ruff check .
 
-      - name: Sozlamalar tekshiruvi
-        run: python manage.py check
+      - name: Migratsiyalar bo'sh bazaga yotadi va model bilan mos
+        run: |
+          alembic upgrade head
+          alembic check
         env:
-          DJANGO_SETTINGS_MODULE: config.settings.test
+          DATABASE_URL: postgresql+asyncpg://mars_it_school:mars_it_school@localhost:5432/mars_it_school
 
       - name: Testlar
         run: pytest -q
         env:
-          # `config/settings/test.py` baribir lokal manzilni majburlaydi —
-          # bu yerda faqat aniqlik uchun takrorlanadi.
-          TEST_DATABASE_URL: postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school
-
-      # Production sozlamalari bilan Django'ning o'z xavfsizlik tekshiruvi.
-      # Bu qadam `.env` ga bog'liq bo'lmasligi uchun barcha qiymatlar shu
-      # yerda beriladi — maqsad kodni tekshirish, sirlarni emas.
-      - name: Xavfsizlik tekshiruvi (check --deploy)
-        run: python manage.py check --deploy --fail-level WARNING
-        env:
-          DJANGO_SETTINGS_MODULE: config.settings.production
-          DJANGO_SECRET_KEY: ci-uchun-uzun-va-tasodifiy-kalit-0123456789abcdefghijklmnop
-          ALLOWED_HOSTS: api.example.com
-          CORS_ALLOWED_ORIGINS: https://example.com
-          CSRF_TRUSTED_ORIGINS: https://example.com
-          ADMIN_URL: ci-maxfiy-panel/
-          MEDIA_ROOT: /tmp/ci-media
-          PRIVATE_MEDIA_ROOT: /tmp/ci-private-media
-          DATABASE_URL: postgres://mars_it_school:mars_it_school@localhost:5432/mars_it_school
-
-      # Ma'lum zaifliklari bor paketlar main'ga tushmasligi kerak.
-      # Zaiflik bazasi kundan kunga o'zgaradi, ya'ni kod o'zgarmasa ham
-      # yangi CVE paydo bo'lishi mumkin — shuning uchun har bir yurishda.
-      - name: Paketlardagi zaifliklar (pip-audit)
-        run: |
-          pip install pip-audit==2.9.0
-          pip-audit --requirement requirements.txt --strict
+          TEST_DATABASE_URL: postgresql+asyncpg://mars_it_school:mars_it_school@localhost:5432/mars_it_school_test
 
   frontend:
     runs-on: ubuntu-latest

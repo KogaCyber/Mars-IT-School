@@ -22,11 +22,11 @@ echo "api/v1/home: $code"
 [ "$code" = "200" ] || fail=1
 
 # Deploy'dan keyin paydo bo'lgan traceback — jimgina buzilgan reliz belgisi.
-if [ -f /home/mars/mars-it-school/logs/error.log ]; then
-    recent=$(find /home/mars/mars-it-school/logs/error.log -newermt '-3 minutes' 2>/dev/null)
-    if [ -n "$recent" ] && grep -q "Traceback" /home/mars/mars-it-school/logs/error.log; then
+if [ -f /home/mars/mars-it-school/logs/api.err.log ]; then
+    recent=$(find /home/mars/mars-it-school/logs/api.err.log -newermt '-3 minutes' 2>/dev/null)
+    if [ -n "$recent" ] && grep -q "Traceback" /home/mars/mars-it-school/logs/api.err.log; then
         echo "DIQQAT: loglarda yangi traceback bor"
-        tail -20 /home/mars/mars-it-school/logs/error.log
+        tail -20 /home/mars/mars-it-school/logs/api.err.log
     fi
 fi
 

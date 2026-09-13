@@ -35,3 +35,8 @@ backend/.test-private-media/
 
 # Doimiy sirlar — hech qachon git ga tushmasin.
 .secrets/
+
+# FastAPI backend
+api/.venv/
+api/media/
+api/private-media/

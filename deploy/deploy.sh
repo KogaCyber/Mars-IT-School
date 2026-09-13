@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT="/home/mars/mars-it-school"
-BACKEND="$ROOT/backend"
+API="$ROOT/api"
 BRANCH="prod"
 LOG="$ROOT/logs/deploy.log"
 mkdir -p "$ROOT/logs"
@@ -31,36 +31,29 @@ main() {
     after=$(git rev-parse --short HEAD)
     log "kod: $before -> $after ($(git log -1 --pretty=%s))"
 
-    cd "$BACKEND"
-    export DJANGO_SETTINGS_MODULE=config.settings.production
+    cd "$API"
 
     # Paketlar faqat requirements.txt o'zgarganda o'rnatiladi: har deploy'da
     # `pip install` yurgizish yuklangan serverda bir necha daqiqa oladi.
-    # `:/` — yo'l repozitoriy ILDIZIdan: bu yerda CWD allaqachon backend/, va oddiy
-    # `backend/requirements.txt` CWD'ga nisbatan `backend/backend/...` bo'lib,
-    # hech qachon topilmasdi — diff bo'sh, "o'zgarmadi", paket o'rnatilmasdi.
-    # Postgres'ga o'tishda aynan shu sabab psycopg o'rnatilmay deploy yiqildi.
-    if ! git diff --quiet "$before" "$after" -- ":/backend/requirements.txt" 2>/dev/null; then
+    # `:/` — yo'l repozitoriy ILDIZIdan (CWD bu yerda api/).
+    if ! git diff --quiet "$before" "$after" -- ":/api/requirements.txt" 2>/dev/null; then
         log "requirements.txt o'zgardi — paketlar yangilanmoqda"
         .venv/bin/pip install --quiet -r requirements.txt
     else
         log "requirements.txt o'zgarmadi — paketlar o'tkazib yuborildi"
     fi
 
-    log "migrate"
-    .venv/bin/python manage.py migrate --noinput 2>&1 | tail -5 | tee -a "$LOG"
+    log "alembic upgrade head"
+    .venv/bin/alembic upgrade head 2>&1 | tail -3 | tee -a "$LOG"
 
-    log "sync_sections"
-    .venv/bin/python manage.py sync_sections 2>&1 | tail -2 | tee -a "$LOG"
-
-    log "collectstatic"
-    .venv/bin/python manage.py collectstatic --noinput 2>&1 | tail -2 | tee -a "$LOG"
+    log "sync-sections"
+    .venv/bin/python manage.py sync-sections 2>&1 | tail -2 | tee -a "$LOG"
 
     log "restart school_api"
     sudo -n /usr/bin/supervisorctl restart school_api 2>&1 | tee -a "$LOG"
 
-    # Gunicorn `--preload` bilan ishlaydi: worker'lar ko'tarilishiga vaqt kerak.
-    sleep 8
+    # Uvicorn worker'lari va baza ulanishlari ko'tarilishiga vaqt kerak.
+    sleep 6
     log "deploy tugadi ($after)"
 }
 
