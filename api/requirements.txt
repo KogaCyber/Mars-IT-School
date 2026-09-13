@@ -1,0 +1,14 @@
+# Sayt backend'i — FastAPI. Python 3.10 (mars serveridagi versiya).
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.30.0
+alembic==1.14.0
+python-multipart==0.0.20
+python-slugify==8.0.4
+# Rasm yuklashda signatura va o'lchamni tekshirish uchun.
+Pillow==12.3.0
+# Redis kesh (public javoblar) — bo'lmasa xotira ichida.
+redis==5.2.1

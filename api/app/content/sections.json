@@ -1,0 +1,921 @@
+{
+ "pages": [
+  {
+   "key": "home",
+   "name": "Bosh sahifa",
+   "url": "/"
+  },
+  {
+   "key": "about",
+   "name": "Biz haqimizda",
+   "url": "/o-nas"
+  },
+  {
+   "key": "courses",
+   "name": "Kurslar (ro'yxat)",
+   "url": "/kursy"
+  },
+  {
+   "key": "itkids",
+   "name": "Kurs — IT Kids",
+   "url": "/kursy/it-kids"
+  },
+  {
+   "key": "itdev",
+   "name": "Kurs — IT dasturlash",
+   "url": "/kursy/it-razrabotka"
+  },
+  {
+   "key": "space",
+   "name": "SPACE platformasi",
+   "url": "/space"
+  },
+  {
+   "key": "news",
+   "name": "Yangiliklar",
+   "url": "/novosti"
+  },
+  {
+   "key": "contacts",
+   "name": "Kontaktlar",
+   "url": "/kontakty"
+  },
+  {
+   "key": "vacancies",
+   "name": "Vakansiyalar",
+   "url": "/vakansii"
+  },
+  {
+   "key": "quiz",
+   "name": "Proforientatsiya testi",
+   "url": "/test"
+  },
+  {
+   "key": "common",
+   "name": "Umumiy bloklar",
+   "url": ""
+  }
+ ],
+ "sections": [
+  {
+   "key": "home.hero",
+   "page": "home",
+   "name": "1. Hero — «Kelajakni yaratishni o'rganamiz»",
+   "hint": "Sahifaning eng tepasidagi katta blok: sarlavha, matn, ikkita tugma va o'ngdagi astronavt rasmi.",
+   "fields": [
+    "title",
+    "text",
+    "subtitle",
+    "button_label",
+    "button2_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 0
+  },
+  {
+   "key": "home.advantages",
+   "page": "home",
+   "name": "2. «Nega MARS IT School ni tanlashadi» — sarlavha",
+   "hint": "Blok sarlavhasi va izohi. Raqamlangan kartochkalar — «Afzalliklar» bo'limida (shu sahifa menyusida).",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 1
+  },
+  {
+   "key": "home.space",
+   "page": "home",
+   "name": "3. SPACE platformasi bloki",
+   "hint": "Bosh sahifadagi SPACE reklama bloki: yorliq, sarlavha va matn.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "button_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 2
+  },
+  {
+   "key": "home.platform",
+   "page": "home",
+   "name": "3.1. SPACE maketi — chap menyu va ekran rasmlari",
+   "hint": "SPACE blokidagi platforma maketi. Har bir element — chapdagi bitta tugma: nomi, ikonkasi va tugma bosilganda o'ngda ko'rinadigan ekran rasmi. Tugmalar sonini xohlagancha o'zgartirish mumkin.",
+   "fields": [],
+   "items": [
+    "title",
+    "icon_name",
+    "icon",
+    "image"
+   ],
+   "item_name": "Menyu tugmasi",
+   "item_hint": "«Sarlavha» — tugma matni. «Rasm» — shu tugma bosilganda o'ngda ko'rsatiladigan ekran rasmi (bo'sh qoldirilsa, tayyor jonli maket chiziladi). «Ikonka nomi» — book, play, star, trophy, chat, bag; o'z ikonkangizni «ikonka rasmi»ga yuklashingiz ham mumkin.",
+   "hideable": true,
+   "order": 3
+  },
+  {
+   "key": "home.news",
+   "page": "home",
+   "name": "4. «Maktabda nimalar bo'lyapti» — sarlavha",
+   "hint": "Yangiliklar lentasi tepasidagi matn va tugma. Yangiliklarning o'zi — «Yangiliklar» sahifasida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "button_label"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 4
+  },
+  {
+   "key": "home.team",
+   "page": "home",
+   "name": "5. «IT'da ishlaydigan o'qituvchilar» — sarlavha",
+   "hint": "O'qituvchilar karuseli tepasidagi matn. O'qituvchilar — «Biz haqimizda» sahifasida.",
+   "fields": [
+    "eyebrow",
+    "title"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 5
+  },
+  {
+   "key": "home.reviews",
+   "page": "home",
+   "name": "6. «Ota-onalar nima deydi» — sarlavha",
+   "hint": "Fikrlar karuseli tepasidagi matn. Fikrlarning o'zi — «Ota-onalar fikri» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 6
+  },
+  {
+   "key": "home.faq",
+   "page": "home",
+   "name": "7. «Ko'p beriladigan savollar» — sarlavha",
+   "hint": "Akkordeon tepasidagi matn va yonidagi rasm. Savollar — «Savol-javoblar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 7
+  },
+  {
+   "key": "about.hero",
+   "page": "about",
+   "name": "1. Hero — «O'rganamiz. Yaratamiz. Rivojlanamiz.»",
+   "hint": "Sahifa tepasidagi sarlavha va fon rasmi.",
+   "fields": [
+    "title",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 8
+  },
+  {
+   "key": "about.future",
+   "page": "about",
+   "name": "2. «Nega bu kelajak uchun muhim»",
+   "hint": "Yorliq, sarlavha, matn va pastdagi eslatma. Kartochkalar — «Kelajak uchun afzalliklar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 9
+  },
+  {
+   "key": "about.skills",
+   "page": "about",
+   "name": "3. «Bola qanday ko'nikmalarni rivojlantiradi»",
+   "hint": "Sarlavha. Ko'nikmalar ro'yxati — «Ko'nikmalar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 10
+  },
+  {
+   "key": "about.demoday",
+   "page": "about",
+   "name": "4. Demo Day — «Bola o'z loyihasini himoya qiladigan kun»",
+   "hint": "Yorliq, sarlavha va matn. Raqamlar — «Loyiha himoyasi bosqichlari» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 11
+  },
+  {
+   "key": "about.school",
+   "page": "about",
+   "name": "5. «MARS IT — bu oddiy kurslar emas»",
+   "hint": "Yorliq, sarlavha va video tugmasi matni. Ro'yxat bandlari — «Maktab afzalliklari» bo'limida, videoning o'zi — «Sayt sozlamalari»da.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "button_label"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 12
+  },
+  {
+   "key": "about.founders",
+   "page": "about",
+   "name": "6. «Maktab ortida kim turadi» — asoschilar",
+   "hint": "Yorliq va sarlavha. Asoschilar — «Asoschilar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 13
+  },
+  {
+   "key": "about.teachers",
+   "page": "about",
+   "name": "7. «IT sohasida ishlaydigan o'qituvchilar»",
+   "hint": "Yorliq, sarlavha va matn. O'qituvchilar — «O'qituvchilar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 14
+  },
+  {
+   "key": "courses.hero",
+   "page": "courses",
+   "name": "1. Hero — «Kurslar MARS IT School»",
+   "hint": "Sahifa tepasidagi sarlavha, tugma matni va o'ngdagi rasm.",
+   "fields": [
+    "title",
+    "button_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 15
+  },
+  {
+   "key": "courses.directions",
+   "page": "courses",
+   "name": "2. «Yo'nalishlar» — IT Kids va IT dasturlash kartochkalari",
+   "hint": "Bo'lim sarlavhasi va kartochkalar. Har bir kartochkada: nomi (sarlavha), qisqa izoh (yorliq), tavsif (matn), yosh (qiymat), rasm va havola.",
+   "fields": [
+    "title"
+   ],
+   "items": [
+    "title",
+    "label",
+    "text",
+    "value",
+    "image",
+    "url",
+    "icon_name"
+   ],
+   "item_name": "Yo'nalish kartochkasi",
+   "item_hint": "«Texnologiyalar» — vergul bilan: html, css, js, react, python, cpp",
+   "hideable": true,
+   "order": 16
+  },
+  {
+   "key": "courses.coming_soon",
+   "page": "courses",
+   "name": "3. «Tez orada...» banneri",
+   "hint": "Yo'nalishlar ostidagi banner: sarlavha, matn va o'ngdagi astronavt rasmi. Rasm bo'sh qoldirilsa — maketdagi astronavt ishlatiladi.",
+   "fields": [
+    "title",
+    "text",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 17
+  },
+  {
+   "key": "itkids.hero",
+   "page": "itkids",
+   "name": "1. Hero — «IT KIDS dasturlash»",
+   "hint": "Sarlavha, tugmalar matni va o'ngdagi rasm.",
+   "fields": [
+    "title",
+    "button_label",
+    "button2_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 18
+  },
+  {
+   "key": "itkids.facts",
+   "page": "itkids",
+   "name": "2. Ko'rsatkichlar tasmasi (yosh, davomiylik, format, guruh)",
+   "hint": "Hero ostidagi to'rtta katak. Har birida: katta qiymat va uning ostidagi izoh.",
+   "fields": [],
+   "items": [
+    "value",
+    "label"
+   ],
+   "item_name": "Ko'rsatkich",
+   "item_hint": "",
+   "hideable": true,
+   "order": 19
+  },
+  {
+   "key": "itkids.about",
+   "page": "itkids",
+   "name": "3. «Kurs haqida» — mavzular karuseli",
+   "hint": "Yorliq, sarlavha, tavsif va aylanuvchi mavzu kartochkalari.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [
+    "title",
+    "text",
+    "icon_name",
+    "icon"
+   ],
+   "item_name": "Mavzu kartochkasi",
+   "item_hint": "Ikonka nomi: blocks, robot, wrench, chip, brain, code, rocket",
+   "hideable": true,
+   "order": 20
+  },
+  {
+   "key": "itkids.stages",
+   "page": "itkids",
+   "name": "4. «O'qishning uch bosqichi» — akkordeon",
+   "hint": "Sarlavha, izoh va bosqichlar. Har bir bosqichda: raqam (qiymat), nomi, davomiyligi (yorliq) va tavsifi.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [
+    "value",
+    "title",
+    "label",
+    "text",
+    "list",
+    "note",
+    "icon_name"
+   ],
+   "item_name": "Bosqich",
+   "item_hint": "«Ro'yxat» — mavzular, har biri alohida qatorda. «Natija» — bosqich yakunidagi ish. «Ikonka nomi» — texnologiyalar vergul bilan: html, css, js, react, python, cpp.",
+   "hideable": true,
+   "order": 21
+  },
+  {
+   "key": "itkids.gallery",
+   "page": "itkids",
+   "name": "5. «Darslar muhiti» — galereya",
+   "hint": "Sarlavha, izoh va rasmlar. Har bir rasmda tavsif (matn) — u ekranni o'qib beruvchi dasturlar uchun kerak.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [
+    "image",
+    "text"
+   ],
+   "item_name": "Galereya rasmi",
+   "item_hint": "",
+   "hideable": true,
+   "order": 22
+  },
+  {
+   "key": "itdev.hero",
+   "page": "itdev",
+   "name": "1. Hero — «IT-dasturlash»",
+   "hint": "Sarlavha, izoh, tugmalar matni va o'ngdagi rasm.",
+   "fields": [
+    "title",
+    "text",
+    "button_label",
+    "button2_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 23
+  },
+  {
+   "key": "itdev.facts",
+   "page": "itdev",
+   "name": "2. Ko'rsatkichlar tasmasi",
+   "hint": "Hero ostidagi kataklar: katta qiymat va izoh.",
+   "fields": [],
+   "items": [
+    "value",
+    "label"
+   ],
+   "item_name": "Ko'rsatkich",
+   "item_hint": "",
+   "hideable": true,
+   "order": 24
+  },
+  {
+   "key": "itdev.about",
+   "page": "itdev",
+   "name": "3. «Kurs haqida» — mavzular karuseli",
+   "hint": "Yorliq, sarlavha, tavsif va mavzu kartochkalari.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [
+    "title",
+    "text",
+    "icon_name",
+    "icon"
+   ],
+   "item_name": "Mavzu kartochkasi",
+   "item_hint": "",
+   "hideable": true,
+   "order": 25
+  },
+  {
+   "key": "itdev.stages",
+   "page": "itdev",
+   "name": "4. «O'qish bosqichlari» — akkordeon",
+   "hint": "Sarlavha, izoh va bosqichlar.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [
+    "value",
+    "title",
+    "label",
+    "text",
+    "list",
+    "note",
+    "icon_name"
+   ],
+   "item_name": "Bosqich",
+   "item_hint": "«Ro'yxat» — mavzular, har biri alohida qatorda. «Natija» — bosqich yakunidagi ish. «Ikonka nomi» — texnologiyalar vergul bilan: html, css, js, react, python, cpp.",
+   "hideable": true,
+   "order": 26
+  },
+  {
+   "key": "itdev.gallery",
+   "page": "itdev",
+   "name": "5. «Darslar muhiti» — galereya",
+   "hint": "Sarlavha, izoh va rasmlar.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [
+    "image",
+    "text"
+   ],
+   "item_name": "Galereya rasmi",
+   "item_hint": "",
+   "hideable": true,
+   "order": 27
+  },
+  {
+   "key": "space.hero",
+   "page": "space",
+   "name": "1. Hero — «SPACE — o'ynab o'rgan»",
+   "hint": "Sarlavha, tugma matni va o'ngdagi rasm.",
+   "fields": [
+    "title",
+    "button_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 28
+  },
+  {
+   "key": "space.features",
+   "page": "space",
+   "name": "2. «SPACE nimalarga qodir» — imkoniyatlar",
+   "hint": "Yorliq, sarlavha, matn va imkoniyat kartochkalari.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [
+    "title",
+    "text",
+    "icon_name"
+   ],
+   "item_name": "Imkoniyat",
+   "item_hint": "Ikonka nomi: notes, book, code, feed, card, coins, cup, star",
+   "hideable": true,
+   "order": 29
+  },
+  {
+   "key": "space.gamification",
+   "page": "space",
+   "name": "3. «O'qish — bu qiziqarli» (geymifikatsiya)",
+   "hint": "Yorliq, sarlavha, matn va kartochkalar.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [
+    "title",
+    "text",
+    "icon_name"
+   ],
+   "item_name": "Geymifikatsiya kartochkasi",
+   "item_hint": "",
+   "hideable": true,
+   "order": 30
+  },
+  {
+   "key": "space.premium",
+   "page": "space",
+   "name": "4. «Space Premium»",
+   "hint": "Yorliq, sarlavha, matn, eslatma va tugma. Ro'yxat bandlari — pastdagi elementlar.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note",
+    "button_label",
+    "image"
+   ],
+   "items": [
+    "title",
+    "text",
+    "icon_name"
+   ],
+   "item_name": "Premium imkoniyati",
+   "item_hint": "",
+   "hideable": true,
+   "order": 31
+  },
+  {
+   "key": "space.shop",
+   "page": "space",
+   "name": "5. «MARS Shop — ballarni sovg'aga almashtir»",
+   "hint": "Yorliq, sarlavha, matn va tugma. Sovg'alar — pastdagi elementlar: nomi, koinlar soni (qiymat) va rasmi. «Qo'shimcha sarlavha» va «eslatma» — oxirgi katakdagi chaqiruv matni.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "subtitle",
+    "note",
+    "button_label"
+   ],
+   "items": [
+    "title",
+    "value",
+    "image"
+   ],
+   "item_name": "Sovg'a",
+   "item_hint": "",
+   "hideable": true,
+   "order": 32
+  },
+  {
+   "key": "space.parents",
+   "page": "space",
+   "name": "6. «Ota-onalarga — bitta ilovada to'liq nazorat»",
+   "hint": "Yorliq, sarlavha, matn va slaydlar. «Rasm» — barcha slaydlar uchun umumiy telefon rasmi; slaydning o'z rasmi yuklansa, u ustun turadi.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "image"
+   ],
+   "items": [
+    "title",
+    "text",
+    "image"
+   ],
+   "item_name": "Slayd",
+   "item_hint": "«Rasm» — shu slayd uchun telefon rasmi. Bo'sh qoldirilsa, blokning umumiy rasmi ishlatiladi.",
+   "hideable": true,
+   "order": 33
+  },
+  {
+   "key": "space.application",
+   "page": "space",
+   "name": "7. «SPACE ko'magida o'qishni boshlang» — ariza",
+   "hint": "Yorliq, sarlavha va matn.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 34
+  },
+  {
+   "key": "news.hero",
+   "page": "news",
+   "name": "1. Hero — «MARS IT maktabi hayoti»",
+   "hint": "Sahifa tepasidagi sarlavha, izoh va rasm.",
+   "fields": [
+    "title",
+    "text",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 35
+  },
+  {
+   "key": "news.list",
+   "page": "news",
+   "name": "2. Yangiliklar ro'yxati — sarlavha",
+   "hint": "Ro'yxat tepasidagi yorliq va sarlavha, hamda ro'yxat bo'sh bo'lgandagi matn.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "subtitle",
+    "note"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 36
+  },
+  {
+   "key": "contacts.hero",
+   "page": "contacts",
+   "name": "1. Hero — «Doim aloqada»",
+   "hint": "Sahifa tepasidagi sarlavha va rasm.",
+   "fields": [
+    "title",
+    "button_label",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 37
+  },
+  {
+   "key": "contacts.info",
+   "page": "contacts",
+   "name": "2. Kontaktlar bloki",
+   "hint": "Yorliq, sarlavha va matn. Telefon, email va ish vaqti — «Sayt sozlamalari»dan olinadi.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 38
+  },
+  {
+   "key": "contacts.branches",
+   "page": "contacts",
+   "name": "3. «Toshkentdagi maktab manzillari» — xarita va ro'yxat",
+   "hint": "Yorliq, sarlavha va izoh. Filiallar — «Filiallar» bo'limida.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "note"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 39
+  },
+  {
+   "key": "contacts.trial",
+   "page": "contacts",
+   "name": "4. «Sinov darsiga yoziling» — shu sahifadagi variant",
+   "hint": "Kontaktlar sahifasidagi ariza blokining sarlavhasi va izohi.",
+   "fields": [
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 40
+  },
+  {
+   "key": "vacancies.hero",
+   "page": "vacancies",
+   "name": "1. Hero — «MARS IT School'da ishlash»",
+   "hint": "Sahifa tepasidagi sarlavha, izoh va rasm.",
+   "fields": [
+    "title",
+    "text",
+    "image"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 41
+  },
+  {
+   "key": "vacancies.list",
+   "page": "vacancies",
+   "name": "2. Vakansiyalar ro'yxati — sarlavha",
+   "hint": "Yorliq, sarlavha, matn va ro'yxat bo'sh bo'lgandagi yozuv.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text",
+    "subtitle",
+    "note"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": true,
+   "order": 42
+  },
+  {
+   "key": "quiz.intro",
+   "page": "quiz",
+   "name": "1. Test boshlanishi — salomlashuv va izoh",
+   "hint": "«Salom, bo'lajak dasturchi!» sarlavhasi va uning ostidagi matn.",
+   "fields": [
+    "title",
+    "subtitle",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 43
+  },
+  {
+   "key": "quiz.contact",
+   "page": "quiz",
+   "name": "2. «Deyarli tayyor!» — kontakt qadami",
+   "hint": "Test oxiridagi kontakt so'raladigan qadam matni va tugmasi.",
+   "fields": [
+    "title",
+    "text",
+    "button_label"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 44
+  },
+  {
+   "key": "quiz.result",
+   "page": "quiz",
+   "name": "3. Natija sahifasi — sarlavhalar",
+   "hint": "«Natijangiz tayyor!» sarlavhasi va ko'nikmalar bo'limi yorliqlari.",
+   "fields": [
+    "title",
+    "eyebrow",
+    "subtitle",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 45
+  },
+  {
+   "key": "common.trial",
+   "page": "common",
+   "name": "«Bepul sinov darsi» — ariza bloki (barcha sahifalarda)",
+   "hint": "Yorliq, sarlavha va izoh. Kontaktlar sahifasida o'z varianti bor.",
+   "fields": [
+    "eyebrow",
+    "title",
+    "text"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 46
+  },
+  {
+   "key": "common.buttons",
+   "page": "common",
+   "name": "Takrorlanadigan tugmalar matni",
+   "hint": "«Bepul sinov darsiga yozilish» va «Kurslarni ko'rish» tugmalari — sayt bo'ylab bir xil.",
+   "fields": [
+    "button_label",
+    "button2_label"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 47
+  },
+  {
+   "key": "common.footer",
+   "page": "common",
+   "name": "Sayt podvali (futer)",
+   "hint": "Podvaldagi qisqa matn va mualliflik yozuvi. Telefon, ijtimoiy tarmoqlar — «Sayt sozlamalari»da.",
+   "fields": [
+    "text",
+    "note"
+   ],
+   "items": [],
+   "item_name": "Element",
+   "item_hint": "",
+   "hideable": false,
+   "order": 48
+  }
+ ]
+}
