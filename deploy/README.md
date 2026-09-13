@@ -4,10 +4,10 @@ Push в `prod` → GitHub Actions `.github/workflows/deploy.yml`. Ничего �
 
 ```
 push в prod
-  → CI (backend py3.10 + py3.12, frontend lint/test/build)   ← красный = деплоя нет
+  → CI (api: ruff + alembic check + pytest на py3.10/3.12; frontend)   ← красный = деплоя нет
   → сборка фронта на раннере
   → ssh upload   тарболл фронта → web/school/ (атомарная подмена)
-  → ssh deploy   git reset --hard origin/prod, migrate, collectstatic, restart
+  → ssh deploy   git reset --hard origin/prod, alembic upgrade, sync-sections, restart
   → ssh status   supervisor + /health/ + /api/v1/home/
   → curl снаружи https://core.marsit.uz/school/…
 ```
@@ -69,8 +69,11 @@ gh secret set MARS_SSH_KEY --repo KogaCyber/Mars-IT-School < deploy_key
 
 ```bash
 ssh mars@marsit.uz
-cd /home/mars/mars-it-school && ./deploy/deploy.sh && ./deploy/status.sh
+cd /home/mars/mars-it-school && bash deploy/deploy.sh && bash deploy/status.sh
 ```
+
+Supervisor-конфиг лежит в репо — `deploy/supervisor.school_api.conf`; на сервере
+это `/etc/supervisor/conf.d/school_api.conf`. Поменял — `supervisorctl reread && update school_api`.
 
 Фронт при этом не обновится — он собирается на раннере. Локально:
 `cd frontend && npm run build && tar -czf - -C dist . | ssh -i deploy_key mars@marsit.uz upload`
