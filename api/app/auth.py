@@ -76,9 +76,11 @@ def verify(token: str | None) -> dict | None:
 
 
 def _redirect_uri(request: Request) -> str:
-    s = get_settings()
-    base = str(request.base_url).rstrip("/")
-    return f"{base}{s.root_path}/api/auth/callback"
+    # `request.base_url` proksi ortida ALLAQACHON `root_path` ni (`/school`) o'z
+    # ichiga oladi (FastAPI shunday). Shu sababli `root_path` ni QAYTA
+    # qo'shmaymiz — aks holda `/school/school/...` bo'lib, Mars ID uni begona
+    # redirect deb rad etardi.
+    return f"{str(request.base_url).rstrip('/')}/api/auth/callback"
 
 
 def _safe_next(value: str | None) -> str:
