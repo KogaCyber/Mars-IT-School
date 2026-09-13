@@ -82,7 +82,7 @@ useSeo(() => ({
 </script>
 
 <template>
-  <CourseHero
+  <CourseHero v-editable="'itkids.hero'"
     v-if="page.hero.value.visible"
     :title="page.hero.value.titleLines"
     :breadcrumbs="[
@@ -112,9 +112,9 @@ useSeo(() => ({
     </template>
   </CourseHero>
 
-  <CourseFactsStrip v-if="page.factsBlock.value.visible" :facts="facts" />
+  <CourseFactsStrip v-editable="'itkids.facts'" v-if="page.factsBlock.value.visible" :facts="facts" />
 
-  <CourseAboutSection
+  <CourseAboutSection v-editable="'itkids.about'"
     v-if="page.about.value.visible"
     :eyebrow="page.about.value.eyebrow"
     :title="page.about.value.title"
@@ -123,7 +123,7 @@ useSeo(() => ({
     :topics="topics"
   />
 
-  <CourseStagesSection
+  <CourseStagesSection v-editable="'itkids.stages'"
     v-if="page.stages.value.visible"
     id="programma"
     :eyebrow="page.stages.value.eyebrow"
@@ -133,7 +133,7 @@ useSeo(() => ({
     :stages="stages"
   />
 
-  <CourseGallerySection
+  <CourseGallerySection v-editable="'itkids.gallery'"
     v-if="page.gallery.value.visible"
     :eyebrow="page.gallery.value.eyebrow"
     :title="page.gallery.value.titleLines"

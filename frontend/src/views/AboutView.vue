@@ -75,7 +75,7 @@ const hero = useSection('about.hero', { title: 'about.heroTitle' })
 </script>
 
 <template>
-  <PageHero
+  <PageHero v-editable="'about.hero'"
     v-if="hero.visible"
     :title="hero.titleLines"
     :breadcrumbs="[

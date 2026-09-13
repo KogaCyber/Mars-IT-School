@@ -60,7 +60,7 @@ const socials = computed(() =>
 </script>
 
 <template>
-  <footer class="relative border-t border-surface bg-ink">
+  <footer class="relative border-t border-surface bg-ink" v-editable="'common.footer'">
     <div class="container-page relative py-[var(--spacing-section)]">
       <div class="grid gap-12 lg:grid-cols-3">
         <div>

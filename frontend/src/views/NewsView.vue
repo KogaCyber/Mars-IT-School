@@ -31,7 +31,7 @@ useSeo(() => ({
 </script>
 
 <template>
-  <PageHero
+  <PageHero v-editable="'news.hero'"
     v-if="hero.visible"
     :title="hero.titleLines"
     :breadcrumbs="[

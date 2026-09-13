@@ -42,7 +42,7 @@ useSeo(() => ({
 </script>
 
 <template>
-  <PageHero
+  <PageHero v-editable="'courses.hero'"
     v-if="hero.visible"
     :title="hero.titleLines"
     :breadcrumbs="[

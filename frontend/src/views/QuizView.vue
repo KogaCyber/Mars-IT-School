@@ -147,7 +147,7 @@ async function submit() {
     <BaseEmptyState :title="t('quiz.unavailable')" :description="error || ''" />
   </div>
 
-  <section v-else class="bg-ink pt-[3%] pb-[var(--spacing-section)]">
+  <section v-editable="'quiz.intro'" v-else class="bg-ink pt-[3%] pb-[var(--spacing-section)]">
     <div class="container-page">
       <BaseBreadcrumbs
         :items="[
@@ -262,7 +262,7 @@ async function submit() {
 
           <!-- Kontakt bosqichi -->
           <template v-else-if="isContactStep">
-            <h2 class="font-wide mt-8 text-[1.15rem] leading-snug font-bold text-white">
+            <h2 v-editable="'quiz.contact'" class="font-wide mt-8 text-[1.15rem] leading-snug font-bold text-white">
               {{ contactStep.title }}
             </h2>
             <p class="mt-3 leading-relaxed text-white/55">

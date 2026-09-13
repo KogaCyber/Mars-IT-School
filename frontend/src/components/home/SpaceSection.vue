@@ -39,7 +39,7 @@ watch(menu, (items) => {
 </script>
 
 <template>
-  <section v-if="section.visible" v-reveal class="section bg-ink">
+  <section v-editable="'home.space'" v-if="section.visible" v-reveal class="section bg-ink">
     <div class="container-page">
       <p class="eyebrow">{{ section.eyebrow }}</p>
 
@@ -119,7 +119,7 @@ watch(menu, (items) => {
         </li>
       </ul>
 
-      <SpacePlatform v-if="platformVisible" v-model="activeId" class="mt-[5%]" />
+      <SpacePlatform v-if="platformVisible" v-editable="'home.platform'" v-model="activeId" class="mt-[5%]" />
 
       <!-- Tor ekranda tugma maketdan keyin keladi -->
       <div class="mt-[7%] lg:hidden">

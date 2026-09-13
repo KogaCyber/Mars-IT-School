@@ -14,6 +14,9 @@ import { useSection } from '@/composables/useSection'
 const { t } = useI18n()
 
 const props = defineProps({
+  // Qaysi bo'lim tahrirlanadi: kontaktlar sahifasida `contacts.trial`,
+  // qolgan joyda umumiy `common.trial`.
+  editKey: { type: String, default: 'common.trial' },
   /** Ariza qayerdan kelgani — backendda statistika uchun. */
   source: { type: String, default: 'courses' },
   /** Sarlavha qatorlari — bo'sh qoldirilsa tarjimadan olinadi. */
@@ -39,7 +42,7 @@ const descriptionText = computed(() => props.description || section.value.text)
 </script>
 
 <template>
-  <section class="section bg-ink relative overflow-hidden">
+  <section v-editable="editKey" class="section bg-ink relative overflow-hidden">
     <!-- Fon nuri: kartochka ortidan chapga qarab so'nadi -->
     <img
       loading="lazy"

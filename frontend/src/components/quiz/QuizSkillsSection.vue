@@ -27,7 +27,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="skills.length" v-reveal class="bg-ink pb-[var(--spacing-block)]">
+  <section v-editable="'quiz.result'" v-if="skills.length" v-reveal class="bg-ink pb-[var(--spacing-block)]">
     <div class="container-page">
       <div class="bg-surface rounded-[2.5rem] p-7 sm:p-10 lg:p-14">
         <!-- Sarlavha qatori -->

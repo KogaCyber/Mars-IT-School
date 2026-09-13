@@ -108,7 +108,7 @@ watch(
 </script>
 
 <template>
-  <section
+  <section v-editable="'about.founders'"
     v-if="section.visible && items.length"
     v-reveal
     class="section bg-ink relative overflow-hidden"
