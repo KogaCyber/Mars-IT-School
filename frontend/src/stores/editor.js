@@ -19,6 +19,7 @@ export const useEditorStore = defineStore('editor', () => {
   const user = ref(null)
   const checked = ref(false)
   const editing = ref(false)
+  const showContent = ref(false)
   /** Ochiq bo'lim: { key, field } yoki null. */
   const active = ref(null)
   /** Ochiq bo'limning to'liq ma'lumoti (barcha tillar, elementlar). */
@@ -61,6 +62,12 @@ export const useEditorStore = defineStore('editor', () => {
     document.body.classList.toggle('is-editing', editing.value && isEditor.value)
   }
 
+  function applyPanelClass() {
+    if (typeof document === 'undefined') return
+    // Panel ochilganda sahifa siqiladi (o'ng tomon ko'rinib qolsin).
+    document.body.classList.toggle('editor-panel-open', Boolean(active.value))
+  }
+
   function setEditing(value) {
     editing.value = Boolean(value)
     if (!editing.value) close()
@@ -80,6 +87,7 @@ export const useEditorStore = defineStore('editor', () => {
 
   async function open(key, field = null) {
     active.value = { key, field }
+    applyPanelClass()
     loading.value = true
     error.value = ''
     try {
@@ -94,6 +102,7 @@ export const useEditorStore = defineStore('editor', () => {
 
   function close() {
     active.value = null
+    applyPanelClass()
     section.value = null
     error.value = ''
   }
@@ -128,6 +137,7 @@ export const useEditorStore = defineStore('editor', () => {
     user,
     checked,
     editing,
+    showContent,
     active,
     section,
     pages,

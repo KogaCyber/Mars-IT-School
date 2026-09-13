@@ -45,6 +45,11 @@ const items = ref([])
 const isPublished = ref(true)
 const uploading = ref('')
 const dirty = ref(false)
+const uploadError = ref('')
+
+// Yuklash cheklovi — serverdagi bilan bir xil (5 MB). Katta faylni umuman
+// yubormaymiz: sahifa qotib qolmaydi va foydalanuvchi sababni darhol ko'radi.
+const MAX_UPLOAD_MB = 5
 
 const section = computed(() => editor.section)
 const activeField = computed(() => editor.active?.field || null)
@@ -77,16 +82,27 @@ function markDirty() {
 
 async function pickImage(event, target, field) {
   const file = event.target.files?.[0]
+  event.target.value = ''
+  uploadError.value = ''
   if (!file) return
+  if (!/^image\/(png|jpe?g|webp|gif)$/.test(file.type)) {
+    uploadError.value = 'Только PNG, JPG, WEBP или GIF.'
+    return
+  }
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+    uploadError.value = `Файл ${(file.size / 1024 / 1024).toFixed(1)} МБ — максимум ${MAX_UPLOAD_MB} МБ.`
+    return
+  }
   uploading.value = `${target === values.value ? 'section' : items.value.indexOf(target)}:${field}`
   try {
     const { path, url } = await uploadImage(file)
     target[field] = path
     target[`${field}_url`] = url
     markDirty()
+  } catch (e) {
+    uploadError.value = e.response?.data?.detail || 'Не удалось загрузить.'
   } finally {
     uploading.value = ''
-    event.target.value = ''
   }
 }
 
@@ -273,7 +289,8 @@ function close() {
         >
           {{ editor.saving ? 'Сохраняю…' : 'Сохранить' }}
         </button>
-        <span v-if="editor.error" class="text-sm text-red-600">{{ editor.error }}</span>
+        <span v-if="uploadError" class="text-sm text-red-600">{{ uploadError }}</span>
+        <span v-else-if="editor.error" class="text-sm text-red-600">{{ editor.error }}</span>
         <span v-else-if="dirty" class="text-sm text-gray-500">есть изменения</span>
         <span v-else-if="section" class="text-sm text-green-600">сохранено</span>
       </footer>
