@@ -37,12 +37,12 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
     >
       <!-- Matn -->
       <div class="order-1">
-        <h1 v-reveal class="title-hero font-wide font-bold text-white">
+        <h1 v-reveal v-editable="['home.hero', 'title']" class="title-hero font-wide font-bold text-white">
           <span v-for="line in hero.titleLines" :key="line" class="block">{{ line }}</span>
           <span class="sr-only">{{ t('home.heroTitleSr') }}</span>
         </h1>
 
-        <p v-reveal="{ delay: 120 }" class="text-lead mt-[4%] leading-relaxed text-white">
+        <p v-reveal="{ delay: 120 }" v-editable="['home.hero', 'text']" class="text-lead mt-[4%] leading-relaxed text-white">
           {{ hero.text }}
           <br />
           {{ hero.subtitle }}
@@ -79,6 +79,7 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
       <div class="relative order-2 mt-[8%] lg:mt-0">
         <img
           decoding="async"
+          v-editable="['home.hero', 'image']"
           :src="heroImage"
           :alt="t('seo.heroImageAlt')"
           fetchpriority="high"

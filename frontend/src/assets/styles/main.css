@@ -413,3 +413,22 @@
     animation: none;
   }
 }
+
+/* --- Vizual muharrir: tahrirlash rejimida bo'lim maydonlari ajratiladi --- */
+body.is-editing [data-edit-key] {
+  cursor: pointer;
+  outline: 2px dashed rgba(255, 90, 31, 0.55);
+  outline-offset: 4px;
+  border-radius: 4px;
+  transition: outline-color 0.15s ease;
+}
+
+body.is-editing [data-edit-key]:hover {
+  outline-color: #ff5a1f;
+  outline-style: solid;
+}
+
+/* Muharrir ochiq paytda sahifa skrolli sahifada qoladi, panel ustida. */
+body.is-editing [data-editor-ui] {
+  outline: none;
+}

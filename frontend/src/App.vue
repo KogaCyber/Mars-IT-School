@@ -4,12 +4,15 @@ import { useI18n } from 'vue-i18n'
 
 import BaseLightbox from '@/components/base/BaseLightbox.vue'
 import BaseVideoModal from '@/components/base/BaseVideoModal.vue'
+import EditorBar from '@/components/editor/EditorBar.vue'
+import EditorPanel from '@/components/editor/EditorPanel.vue'
 import LeadSuccessPanel from '@/components/forms/LeadSuccessPanel.vue'
 import AiAssistant from '@/components/layout/AiAssistant.vue'
 import AppToasts from '@/components/layout/AppToasts.vue'
 import ScrollTopButton from '@/components/layout/ScrollTopButton.vue'
 import { setLanguage as persistLanguage } from '@/i18n/language'
 import { useContentStore } from '@/stores/content'
+import { useEditorStore } from '@/stores/editor'
 import { useLiveStore } from '@/stores/live'
 import { useSiteStore } from '@/stores/site'
 import { clearAssistantData } from '@/utils/assistantData'
@@ -18,6 +21,7 @@ const { t } = useI18n()
 const site = useSiteStore()
 const content = useContentStore()
 const live = useLiveStore()
+const editor = useEditorStore()
 
 onMounted(() => {
   document.documentElement.lang = site.language
@@ -30,6 +34,9 @@ onMounted(() => {
 
   // Admin paneldagi o'zgarishlar sahifa yangilanmasdan ko'rinishi uchun
   // kontent versiyasi kuzatib boriladi (stores/live.js).
+  // Xodim kirganmi — Mars ID sessiyasi. Oddiy tashrifchi uchun bitta 401 va tamom.
+  editor.init()
+
   live.start()
   live.subscribe(() => {
     site.refresh()
@@ -51,4 +58,6 @@ onMounted(() => {
   <ScrollTopButton />
   <AiAssistant />
   <AppToasts />
+  <EditorBar />
+  <EditorPanel />
 </template>
