@@ -199,3 +199,18 @@ async def test_logout_clears_cookie(client):
     r = await client.post("/api/auth/logout", headers={"Origin": "http://test"})
     assert r.status_code == 200
     assert "school_editor=" in r.headers.get("set-cookie", "") and "Max-Age=0" in r.headers.get("set-cookie", "")
+
+
+def test_redirect_uri_does_not_double_the_prefix():
+    """`base_url` proksi ortida `/school` ni o'z ichiga oladi — ikkilanmasin."""
+    from types import SimpleNamespace
+
+    from app import auth
+
+    # `/school` prefiksli base_url — mars'dagi holat.
+    req = SimpleNamespace(base_url="https://core.marsit.uz/school/")
+    assert auth._redirect_uri(req) == "https://core.marsit.uz/school/api/auth/callback"
+
+    # Ildizda (lokal) — prefikssiz.
+    req = SimpleNamespace(base_url="http://localhost:8000/")
+    assert auth._redirect_uri(req) == "http://localhost:8000/api/auth/callback"

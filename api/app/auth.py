@@ -76,9 +76,11 @@ def verify(token: str | None) -> dict | None:
 
 
 def _redirect_uri(request: Request) -> str:
-    s = get_settings()
-    base = str(request.base_url).rstrip("/")
-    return f"{base}{s.root_path}/api/auth/callback"
+    # `request.base_url` proksi ortida ALLAQACHON `root_path` ni (`/school`) o'z
+    # ichiga oladi (FastAPI shunday). Shu sababli `root_path` ni QAYTA
+    # qo'shmaymiz — aks holda `/school/school/...` bo'lib, Mars ID uni begona
+    # redirect deb rad etardi.
+    return f"{str(request.base_url).rstrip('/')}/api/auth/callback"
 
 
 def _safe_next(value: str | None) -> str:
@@ -115,9 +117,12 @@ def require_editor(request: Request) -> dict:
     if user is None:
         raise HTTPException(401, "Kirish talab qilinadi.")
     if request.method not in ("GET", "HEAD", "OPTIONS"):
-        origin = request.headers.get("origin") or ""
-        allowed = {get_settings().site_url.rstrip("/"), str(request.base_url).rstrip("/")}
-        if origin and origin.rstrip("/") not in allowed:
+        # `Origin` — faqat sxema+xost (yo'lsiz). `base_url` da esa `/school`
+        # yo'li bor, shuning uchun undan ham faqat sxema+xost olinadi.
+        origin = (request.headers.get("origin") or "").rstrip("/")
+        base = request.base_url
+        allowed = {get_settings().site_url.rstrip("/"), f"{base.scheme}://{base.netloc}"}
+        if origin and origin not in allowed:
             raise HTTPException(403, "Ruxsat etilmagan manba.")
     return user
 
