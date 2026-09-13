@@ -165,7 +165,7 @@ TEMPLATES = [
 # ---------------------------------------------------------------------------
 # PostgreSQL. Ulanish satri DATABASE_URL orqali beriladi:
 #   lokal:  postgres://mars_it_school:parol@localhost:5432/mars_it_school
-#   mars:   postgres://school:parol@127.0.0.1:5432/mars_it_school
+#   mars:   postgres://school:parol@127.0.0.1:5437/mars_it_school  (PG 17; Django 5.2 ga 14+ kerak)
 #
 # Ilgari bu yerda MongoDB (django-mongodb-backend) turardi. Undan voz kechildi:
 # ma'lumotlar boshdan-oyoq relyatsion (kurs -> yo'nalish, savol -> variant,

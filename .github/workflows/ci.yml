@@ -31,7 +31,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:13
+        image: postgres:17
         env:
           POSTGRES_USER: mars_it_school
           POSTGRES_PASSWORD: mars_it_school

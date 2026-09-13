@@ -36,7 +36,7 @@
 | Что | Где |
 |---|---|
 | backend | supervisor `school_api` → gunicorn `127.0.0.1:3530` |
-| PostgreSQL | база `mars_it_school` в кластере PG 13 на `127.0.0.1:5432` (тот же, где `gamification_db`), роль `school` |
+| PostgreSQL | база `mars_it_school` в кластере **PG 17** на `127.0.0.1:5437`, роль `school`. Не :5432 — там PG 13, а Django 5.2 требует 14+ |
 | маршрутизация | Caddy :443 → nginx :8880 → gunicorn |
 | vhost | `/etc/nginx/sites-enabled/core.marsit.uz`, блок `/school/` |
 
