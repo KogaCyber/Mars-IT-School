@@ -17,7 +17,6 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
-staticfiles/
 .pytest_cache/
 .ruff_cache/
 .coverage
@@ -29,9 +28,6 @@ frontend/dist/
 *.log
 
 # --- Maxfiy media ---
-# Nomzod rezyumelari hech qachon git'ga tushmasligi kerak.
-backend/private-media/
-backend/.test-private-media/
 
 # Doimiy sirlar — hech qachon git ga tushmasin.
 .secrets/

@@ -1,4 +1,0 @@
-# Railway build muhiti — Python versiyasini aniq belgilaymiz.
-# Ma'lumotlar bazasi MongoDB (tashqi xizmat), shuning uchun DB paketi kerak emas.
-[phases.setup]
-nixPkgs = ["python312", "gcc"]
