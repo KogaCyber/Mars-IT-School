@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import BaseLightbox from '@/components/base/BaseLightbox.vue'
 import BaseVideoModal from '@/components/base/BaseVideoModal.vue'
 import EditorBar from '@/components/editor/EditorBar.vue'
+import EditorContent from '@/components/editor/EditorContent.vue'
 import EditorPanel from '@/components/editor/EditorPanel.vue'
 import LeadSuccessPanel from '@/components/forms/LeadSuccessPanel.vue'
 import AiAssistant from '@/components/layout/AiAssistant.vue'
@@ -60,4 +61,5 @@ onMounted(() => {
   <AppToasts />
   <EditorBar />
   <EditorPanel />
+  <EditorContent v-if="editor.showContent" />
 </template>

@@ -57,3 +57,40 @@ export async function uploadImage(file, folder = 'sections') {
   })
   return data
 }
+
+// --- Mavjudotlar (filial, yangilik, vakansiya) va kontaktlar ---
+
+export async function fetchEntities(kind) {
+  const { data } = await editorHttp.get(`/editor/entities/${kind}`)
+  return data
+}
+
+export async function createEntity(kind, values, isPublished) {
+  const { data } = await editorHttp.post(`/editor/entities/${kind}`, {
+    values,
+    is_published: isPublished,
+  })
+  return data
+}
+
+export async function updateEntity(kind, id, values, isPublished) {
+  const { data } = await editorHttp.patch(`/editor/entities/${kind}/${id}`, {
+    values,
+    is_published: isPublished,
+  })
+  return data
+}
+
+export async function deleteEntity(kind, id) {
+  await editorHttp.delete(`/editor/entities/${kind}/${id}`)
+}
+
+export async function fetchSettings() {
+  const { data } = await editorHttp.get('/editor/site-settings')
+  return data
+}
+
+export async function patchSettings(values) {
+  const { data } = await editorHttp.patch('/editor/site-settings', { values })
+  return data
+}

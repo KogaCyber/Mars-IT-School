@@ -52,6 +52,15 @@ function pick(section) {
       <span>Режим правки</span>
     </label>
 
+    <button
+      v-if="editor.editing"
+      type="button"
+      class="rounded-pill bg-ink px-3 py-1 text-white hover:bg-brand"
+      @click="editor.showContent = true"
+    >
+      Контент
+    </button>
+
     <div v-if="editor.editing" class="relative">
       <button
         type="button"

@@ -432,3 +432,21 @@ body.is-editing [data-edit-key]:hover {
 body.is-editing [data-editor-ui] {
   outline: none;
 }
+
+/* --- Muharrir paneli ochilganda sahifa siqiladi (o'ng tomon ko'rinib qolsin) --- */
+#app {
+  transition: width 0.2s ease;
+}
+
+body.editor-panel-open {
+  overflow-x: hidden;
+}
+
+/* `transform` #app ichidagi `position:fixed` elementlarni (sarlavha, tugmalar)
+   #app'ga bog'laydi — shu sabab ular ham panel bilan birga siqiladi. */
+@media (min-width: 900px) {
+  body.editor-panel-open #app {
+    width: calc(100% - min(30rem, 42vw));
+    transform: translateZ(0);
+  }
+}

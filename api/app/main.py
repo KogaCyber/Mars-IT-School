@@ -22,7 +22,7 @@ from . import db as database
 from .config import get_settings
 from .deps import cache_key, public_cache
 from .i18n import resolve_language
-from .routers import catalog, editor, forms, public
+from .routers import catalog, editor, editor_entities, forms, public
 from .services import revision
 
 logging.basicConfig(level=logging.INFO, format="[%(asctime)s] %(levelname)s %(name)s %(message)s")
@@ -152,6 +152,7 @@ def create_app() -> FastAPI:
     app.include_router(forms.router, prefix="/api/v1")
     app.include_router(auth.router)
     app.include_router(editor.router)
+    app.include_router(editor_entities.router)
     return app
 
 
