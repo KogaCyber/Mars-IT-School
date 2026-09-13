@@ -51,8 +51,17 @@ class Settings(BaseSettings):
     smtp_password: str = ""
     default_from_email: str = "Mars IT School <no-reply@marsit.uz>"
 
-    # --- Tahrirlash (2-bosqich) ---
+    # --- Muharrir: Mars ID (OIDC) orqali kirish -----------------------------
+    # Mars ID — maktab ekotizimining SSO'si (id.marshub.uz). Sayt uchun alohida
+    # OAuth-klient `school-site` ro'yxatdan o'tkazilgan (mars-id/server.js).
+    # Muharrirga kim kiradi: `is_staff` (LMS xodimi) yoki `role == admin`.
+    marsid_issuer: str = "https://id.marshub.uz"
+    marsid_client_id: str = "school-site"
+    marsid_client_secret: str = ""
+    # Sessiya cookie'si va `state` imzosi uchun kalit. Bo'sh — muharrir o'chiq.
     secret_key: str = "change-me"
+    editor_session_hours: int = 12
+    editor_cookie_name: str = "school_editor"
     debug: bool = False
 
     languages: tuple[str, ...] = ("ru", "uz", "en")
@@ -61,6 +70,10 @@ class Settings(BaseSettings):
     @property
     def lms_enabled(self) -> bool:
         return bool(self.lms_database_url)
+
+    @property
+    def editor_enabled(self) -> bool:
+        return bool(self.marsid_client_secret) and self.secret_key != "change-me"
 
 
 @lru_cache

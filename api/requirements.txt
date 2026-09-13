@@ -10,5 +10,7 @@ python-multipart==0.0.20
 python-slugify==8.0.4
 # Rasm yuklashda signatura va o'lchamni tekshirish uchun.
 Pillow==12.3.0
+# Mars ID bilan token almashish (OAuth).
+httpx==0.28.1
 # Redis kesh (public javoblar) — bo'lmasa xotira ichida.
 redis==5.2.1
