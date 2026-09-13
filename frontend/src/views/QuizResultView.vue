@@ -96,7 +96,7 @@ useSeo(() => ({
   </div>
 
   <template v-else>
-    <section class="bg-ink pt-[3%] pb-[var(--spacing-block)]">
+    <section v-editable="'quiz.result'" class="bg-ink pt-[3%] pb-[var(--spacing-block)]">
       <div class="container-page">
         <BaseBreadcrumbs
           :items="[

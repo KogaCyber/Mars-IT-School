@@ -56,7 +56,7 @@ const cards = computed(() =>
 </script>
 
 <template>
-  <section v-if="cards.length" v-reveal class="bg-ink pb-[var(--spacing-section)]">
+  <section v-editable="'quiz.result'" v-if="cards.length" v-reveal class="bg-ink pb-[var(--spacing-section)]">
     <div class="container-page">
       <div class="bg-surface rounded-[2.5rem] p-7 sm:p-10 lg:p-14">
         <!-- Sarlavha qatori -->

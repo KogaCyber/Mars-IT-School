@@ -30,7 +30,7 @@ const isUploaded = computed(() => Boolean(section.value.image))
 </script>
 
 <template>
-  <div class="banner rounded-block relative overflow-hidden px-[6%] py-[5%]">
+  <div class="banner rounded-block relative overflow-hidden px-[6%] py-[5%]" v-editable="'courses.coming_soon'">
     <div class="relative grid items-center gap-[6%] md:grid-cols-[auto_1fr_auto] md:gap-[4%]">
       <h3 class="title-hero font-wide font-bold text-white">{{ comingSoon.title }}</h3>
 

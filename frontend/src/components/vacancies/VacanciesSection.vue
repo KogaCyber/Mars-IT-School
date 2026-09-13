@@ -102,7 +102,7 @@ function apply(vacancy) {
 </script>
 
 <template>
-  <section v-if="section.visible" class="section bg-white">
+  <section v-editable="'vacancies.list'" v-if="section.visible" class="section bg-white">
     <div class="container-page">
       <!-- Sarlavha bloki: chapda izoh, o'ngda yorliq va sarlavha -->
       <div class="block lg:flex justify-between items-center">

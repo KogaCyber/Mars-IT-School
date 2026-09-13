@@ -31,7 +31,7 @@ const heroImage = computed(() => hero.value.image || heroAstronaut)
 </script>
 
 <template>
-  <section v-if="hero.visible" class="bg-ink overflow-hidden">
+  <section v-if="hero.visible" class="bg-ink overflow-hidden" v-editable="'home.hero'">
     <div
       class="container-page grid items-center gap-[6%] pt-[8%] pb-[var(--spacing-section)] lg:min-h-[34rem] lg:grid-cols-[1.05fr_1fr] lg:gap-[4%] lg:pt-[4%]"
     >

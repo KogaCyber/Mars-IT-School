@@ -48,7 +48,7 @@ const directions = computed(() => {
 </script>
 
 <template>
-  <section v-if="section.visible" class="section bg-ink">
+  <section v-editable="'courses.directions'" v-if="section.visible" class="section bg-ink">
     <div class="container-page">
       <h2 v-reveal class="title-hero font-wide font-bold text-white">
         {{ section.title }}
