@@ -96,8 +96,38 @@ def _cookie_path() -> str:
     return (get_settings().root_path or "") + "/"
 
 
-def _is_editor(info: dict) -> bool:
-    return bool(info.get("is_staff")) or info.get("role") == "admin"
+def _norm(value: str | None) -> str:
+    """`@South67` / ` Ivan@Mail.uz ` → `south67` / `ivan@mail.uz` (taqqoslash uchun)."""
+    return (value or "").strip().lstrip("@").lower()
+
+
+def _handle_of(info: dict) -> str:
+    return info.get("handle") or info.get("preferred_username") or ""
+
+
+def _identity_candidates(sub: str | None, handle: str | None, email: str | None) -> set[str]:
+    """Foydalanuvchini ro'yxat bilan solishtirish uchun normallashtirilgan belgilar.
+
+    `email` bu yerga FAQAT tasdiqlangan bo'lsa keladi (chaqiruvchi tekshiradi) —
+    tasdiqlanmagan email'ni kim xohlasa o'ziga qo'yib, ro'yxatga «kirib» olardi.
+    `sub` — Mars ID'ning o'zgarmas identifikatori (eng ishonchli belgi).
+    """
+    return {_norm(sub), _norm(handle), _norm(email)} - {""}
+
+
+def _may_edit(
+    sub: str | None, handle: str | None, email: str | None, *, is_staff: bool = False, role: str = ""
+) -> bool:
+    """Muharrir huquqi.
+
+    `EDITOR_ALLOWLIST` to'ldirilgan bo'lsa — FAQAT undagilar (sub, handle yoki
+    TASDIQLANGAN email bo'yicha), qolganlar rad etiladi. Ro'yxat bo'sh bo'lsa —
+    eski qoida saqlanadi: har qanday `is_staff` xodim yoki `admin`.
+    """
+    allow = get_settings().editor_allowlist_set
+    if allow:
+        return bool(_identity_candidates(sub, handle, email) & allow)
+    return bool(is_staff) or role == "admin"
 
 
 def current_editor(request: Request) -> dict | None:
@@ -116,6 +146,11 @@ def require_editor(request: Request) -> dict:
     user = current_editor(request)
     if user is None:
         raise HTTPException(401, "Kirish talab qilinadi.")
+    # Allowlist har so'rovda qayta tekshiriladi — kimnidir ro'yxatdan olib
+    # tashlansa, uning eski cookie'si ham darhol ishlamay qoladi.
+    allow = get_settings().editor_allowlist_set
+    if allow and not (_identity_candidates(user.get("sub"), user.get("handle"), user.get("email")) & allow):
+        raise HTTPException(403, "Muharrirga ruxsat yo'q.")
     if request.method not in ("GET", "HEAD", "OPTIONS"):
         # `Origin` — faqat sxema+xost (yo'lsiz). `base_url` da esa `/school`
         # yo'li bor, shuning uchun undan ham faqat sxema+xost olinadi.
@@ -192,16 +227,27 @@ async def callback(request: Request, code: str | None = None, state: str | None 
             raise HTTPException(502, "Mars ID foydalanuvchini bermadi.")
         info = info_resp.json()
 
-    if not _is_editor(info):
-        # Sayt muharriri — faqat xodimlar. Talaba yoki begona — rad.
-        raise HTTPException(403, "Muharrirga faqat maktab xodimlari kira oladi.")
+    # Email'ga faqat Mars ID uni TASDIQLAGAN bo'lsa ishonamiz — aks holda uni
+    # kim xohlasa o'ziga qo'yib, ro'yxatga kirib olardi.
+    verified_email = info.get("email") if info.get("email_verified") else ""
+    allowed = _may_edit(
+        info.get("sub"),
+        _handle_of(info),
+        verified_email,
+        is_staff=bool(info.get("is_staff")),
+        role=info.get("role") or "",
+    )
+    if not allowed:
+        # Ro'yxatda yo'q (yoki xodim emas) — rad.
+        raise HTTPException(403, "Muharrirga faqat ro'yxatdagi xodimlar kira oladi.")
 
     session = sign(
         {
             "kind": "session",
             "sub": info.get("sub"),
             "name": info.get("name") or "",
-            "handle": info.get("handle") or info.get("preferred_username") or "",
+            "handle": _handle_of(info),
+            "email": verified_email or "",
             "role": info.get("role") or "",
         },
         s.editor_session_hours * 3600,
