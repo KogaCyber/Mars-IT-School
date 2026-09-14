@@ -10,9 +10,11 @@ import { computed, ref, watch } from 'vue'
 
 import { uploadImage } from '@/api/editor'
 import { getLanguage } from '@/i18n/language'
+import { useContentStore } from '@/stores/content'
 import { useEditorStore } from '@/stores/editor'
 
 const editor = useEditorStore()
+const content = useContentStore()
 
 const LANGS = ['ru', 'uz', 'en']
 const LANG_LABEL = { ru: 'RU', uz: 'UZ', en: 'EN' }
@@ -54,9 +56,62 @@ const MAX_UPLOAD_MB = 5
 const section = computed(() => editor.section)
 const activeField = computed(() => editor.active?.field || null)
 
+// ── Jonli ko'rish ────────────────────────────────────────────────────────
+// Panelda o'zgargan qiymat shu zahoti sahifada ko'rinadi (hali saqlanmagan
+// bo'lsa ham): panel qiymatlaridan sahifa o'qiydigan obyekt yasab, kontent
+// storeining «ko'rish» qatlamiga yoziladi. «Сохранить» — server qiymati bilan
+// tozalanadi, «Отмена»/yopish — qatlam olib tashlanadi va eski matn qaytadi.
+let previewKey = null
+
+/** Sayt qaysi tilda chizilyapti — jonli ko'rish shu til qiymatini ko'rsatadi. */
+function siteLang() {
+  return LANGS.includes(getLanguage()) ? getLanguage() : 'ru'
+}
+
+/** Panel qiymatlarini sahifa o'qiydigan (lokalizatsiyalangan) ko'rinishga o'giradi. */
+function localize(src, fieldList, out) {
+  const l = siteLang()
+  for (const field of fieldList) {
+    if (IMAGE.has(field)) out[field] = src[`${field}_url`] || null
+    else if (PLAIN.has(field)) out[field] = src[field] ?? ''
+    else out[field] = src[`${field}_${l}`] ?? ''
+  }
+  return out
+}
+
+function previewObject() {
+  const base = { ...content.raw(editor.active?.key) }
+  localize(values.value, section.value?.fields ?? [], base)
+  base.is_published = isPublished.value
+  if (section.value?.item_fields?.length) {
+    // Sahifa faqat ko'rsatiladigan elementlarni chizadi — ko'rishda ham shunday.
+    base.items = items.value
+      .filter((it) => it.is_published !== false)
+      .map((it) => localize(it, section.value.item_fields, { id: it.id ?? null, is_published: it.is_published }))
+  }
+  return base
+}
+
+function applyPreview() {
+  const key = editor.active?.key
+  if (!key || !section.value) return
+  previewKey = key
+  content.setPreview(key, previewObject())
+}
+
+/** Ko'rish qatlamini olib tashlaydi — sahifada asl (server) qiymat qoladi. */
+function clearPreview() {
+  if (previewKey) {
+    content.setPreview(previewKey, null)
+    previewKey = null
+  }
+}
+
 watch(
   section,
   (s) => {
+    // Boshqa blokka o'tildi — oldingisining saqlanmagan ko'rinishini tozalaymiz.
+    if (previewKey && previewKey !== editor.active?.key) clearPreview()
     if (!s) return
     values.value = { ...s.values }
     items.value = s.items.map((it) => ({ ...it }))
@@ -66,6 +121,18 @@ watch(
     lang.value = LANGS.includes(getLanguage()) ? getLanguage() : 'ru'
   },
   { immediate: true },
+)
+
+// Har qanday o'zgarish (matn kiritildi, rasm, element qo'shildi) — sahifada
+// darhol ko'rinsin. `deep` — ichki maydonlar va elementlar ham kuzatiladi.
+watch([values, items, isPublished], () => applyPreview(), { deep: true })
+
+// Panel qanday yopilmasin (×, «Отмена», tahrir rejimi o'chdi) — ko'rish tozalanadi.
+watch(
+  () => editor.active,
+  (val) => {
+    if (!val) clearPreview()
+  },
 )
 
 function key(field, l = lang.value) {
@@ -147,12 +214,20 @@ async function save() {
     })
   }
   await editor.save(payload)
+  // Saqlandi — ko'rish qatlamini olib tashlaymiz, sahifada endi server qiymati.
+  clearPreview()
   dirty.value = false
 }
 
-function close() {
-  if (dirty.value && !window.confirm('Есть несохранённые изменения. Закрыть?')) return
+/** «Отмена» — o'zgarishlar saqlanmaydi, sahifa eski holatiga qaytadi. */
+function cancel() {
+  clearPreview()
   editor.close()
+}
+
+function close() {
+  if (dirty.value && !window.confirm('Отменить несохранённые изменения?')) return
+  cancel()
 }
 </script>
 
@@ -289,9 +364,18 @@ function close() {
         >
           {{ editor.saving ? 'Сохраняю…' : 'Сохранить' }}
         </button>
+        <button
+          v-if="dirty"
+          type="button"
+          class="rounded-pill border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-600 hover:bg-gray-100"
+          :disabled="editor.saving"
+          @click="cancel"
+        >
+          Отмена
+        </button>
         <span v-if="uploadError" class="text-sm text-red-600">{{ uploadError }}</span>
         <span v-else-if="editor.error" class="text-sm text-red-600">{{ editor.error }}</span>
-        <span v-else-if="dirty" class="text-sm text-gray-500">есть изменения</span>
+        <span v-else-if="dirty" class="text-sm text-gray-500">видно на странице · не сохранено</span>
         <span v-else-if="section" class="text-sm text-green-600">сохранено</span>
       </footer>
     </aside>

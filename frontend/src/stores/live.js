@@ -41,6 +41,15 @@ export const useLiveStore = defineStore('live', () => {
     return () => listeners.delete(handler)
   }
 
+  /**
+   * Barcha obunachilarni darhol ishga tushiradi — versiya so'rovini kutmasdan.
+   * Xodim biror narsani saqlagach chaqiriladi: qo'shilgan yangilik/vakansiya,
+   * o'zgargan matn shu zahoti sahifada ko'rinadi (5 soniyalik so'rovni kutmay).
+   */
+  function notify() {
+    listeners.forEach((handler) => handler())
+  }
+
   async function check() {
     if (isChecking || document.visibilityState === 'hidden') return
     isChecking = true
@@ -82,5 +91,5 @@ export const useLiveStore = defineStore('live', () => {
     window.removeEventListener('focus', onVisibility)
   }
 
-  return { revision, subscribe, start, stop, check }
+  return { revision, subscribe, notify, start, stop, check }
 })

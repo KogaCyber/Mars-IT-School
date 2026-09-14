@@ -106,3 +106,41 @@ describe('toCards', () => {
     expect(cards[0].icon).toBe('book')
   })
 })
+
+describe('jonli ko\'rish qatlami (setPreview)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+  })
+
+  it('ko\'rish qiymati asl qiymatning ustidan ko\'rinadi, raw esa aslini beradi', () => {
+    const store = useContentStore()
+    store.merge({ 'home.hero': { title: 'Сохранённый', items: [] } })
+
+    store.setPreview('home.hero', { title: 'Черновик', items: [] })
+
+    expect(useSection('home.hero').value.title).toBe('Черновик')
+    expect(store.raw('home.hero').title).toBe('Сохранённый')
+  })
+
+  it('serverdan qayta yuklash ko\'rish qatlamini tegmaydi (fon so\'rovi tahrirni yozmaydi)', () => {
+    const store = useContentStore()
+    store.merge({ 'home.hero': { title: 'Старый', items: [] } })
+    store.setPreview('home.hero', { title: 'Черновик', items: [] })
+
+    // Fon so'rovi kabi — `sections` yangilanadi, `overrides` qoladi.
+    store.merge({ 'home.hero': { title: 'Обновлённый сервером', items: [] } })
+
+    expect(useSection('home.hero').value.title).toBe('Черновик')
+    expect(store.raw('home.hero').title).toBe('Обновлённый сервером')
+  })
+
+  it('tozalangach asl (server) qiymat qaytadi', () => {
+    const store = useContentStore()
+    store.merge({ 'home.hero': { title: 'Сервер', items: [] } })
+    store.setPreview('home.hero', { title: 'Черновик', items: [] })
+
+    store.setPreview('home.hero', null)
+
+    expect(useSection('home.hero').value.title).toBe('Сервер')
+  })
+})
