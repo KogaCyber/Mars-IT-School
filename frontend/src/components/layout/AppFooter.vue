@@ -9,6 +9,7 @@ import youtubeIcon from '@/assets/icons/social-youtube.svg'
 import logoMars from '@/assets/icons/logo-mars.svg'
 import rocketIcon from '@/assets/icons/rocket.svg'
 import { useSection } from '@/composables/useSection'
+import { DEFAULT_PHONE } from '@/data/siteDefaults'
 import { useSiteStore } from '@/stores/site'
 
 // Menyu yozuvlari tarjimadan olinadi — `nav.*` kalitlari bo'yicha.
@@ -33,7 +34,7 @@ const section = useSection('common.footer', {
 const site = useSiteStore()
 const year = new Date().getFullYear()
 
-const phone = computed(() => site.settings.phone || '+998 78 777 77 57')
+const phone = computed(() => site.settings.phone || DEFAULT_PHONE)
 const phoneHref = computed(() => `tel:${phone.value.replace(/[^\d+]/g, '')}`)
 const phoneParts = computed(() => {
   const [first, ...rest] = phone.value.trim().split(' ')
@@ -100,7 +101,7 @@ const socials = computed(() =>
           >
             <span class="text-brand">{{ phoneParts.first }}</span> {{ phoneParts.rest }}
           </a>
-          <p class="mt-4 text-base text-white">{{ t('footer.workingHours') }}</p>
+          <p class="mt-4 text-base text-white">{{ site.settings.work_hours || t('footer.workingHours') }}</p>
 
           <a
             v-if="site.settings.email"

@@ -7,6 +7,7 @@ Ikki baza:
     olmaydi, hatto xato bo'lsa ham.
 """
 
+import re
 from functools import lru_cache
 from pathlib import Path
 
@@ -58,6 +59,13 @@ class Settings(BaseSettings):
     marsid_issuer: str = "https://id.marshub.uz"
     marsid_client_id: str = "school-site"
     marsid_client_secret: str = ""
+    # Muharrirga kim kiradi. Bo'sh bo'lsa — eski xatti-harakat (har qanday
+    # `is_staff`/`admin`). To'ldirilsa — FAQAT shu ro'yxatdagilar, qolganlar rad.
+    # Har bir yozuv — Mars ID `sub` (o'zgarmas, eng ishonchli), `handle`, yoki
+    # TASDIQLANGAN email. Vergul/probel bilan ajratiladi, `@` va katta-kichik
+    # harf ahamiyatsiz. Masalan:
+    #   EDITOR_ALLOWLIST=@south67, ivan@marsit.uz, 6f2c1a90-...
+    editor_allowlist: str = ""
     # Sessiya cookie'si va `state` imzosi uchun kalit. Bo'sh — muharrir o'chiq.
     secret_key: str = "change-me"
     editor_session_hours: int = 12
@@ -74,6 +82,11 @@ class Settings(BaseSettings):
     @property
     def editor_enabled(self) -> bool:
         return bool(self.marsid_client_secret) and self.secret_key != "change-me"
+
+    @property
+    def editor_allowlist_set(self) -> set[str]:
+        """Ruxsat etilgan handle/email'lar — normallashtirilgan (`@` yo'q, kichik)."""
+        return {p.strip().lstrip("@").lower() for p in re.split(r"[,\s]+", self.editor_allowlist) if p.strip()}
 
 
 @lru_cache

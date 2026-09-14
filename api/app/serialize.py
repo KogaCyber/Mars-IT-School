@@ -23,10 +23,13 @@ def media_url(request: Request, path: str | None) -> str | None:
     if not path:
         return None
     s = get_settings()
-    base = str(request.base_url).rstrip("/")  # sxema + xost (proksi sarlavhalari hisobga olinadi)
-    prefix = s.root_path.rstrip("/")
+    # `request.base_url` proksi ortida ALLAQACHON `root_path` (`/school`) ni o'z
+    # ichiga oladi — xuddi `auth._redirect_uri` dagidek. Shu sababli `root_path`
+    # ni QAYTA qo'shmaymiz: aks holda `/school/school/media/...` bo'lib, nginx
+    # uni media deb topmaydi (SPA'ga tushib, rasm o'rniga HTML qaytaradi).
+    base = str(request.base_url).rstrip("/")
     media = s.public_media_url.strip("/")
-    return f"{base}{prefix}/{media}/{path.lstrip('/')}"
+    return f"{base}/{media}/{path.lstrip('/')}"
 
 
 def _price(value: Decimal | None) -> str | None:

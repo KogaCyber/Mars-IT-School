@@ -214,3 +214,84 @@ def test_redirect_uri_does_not_double_the_prefix():
     # Ildizda (lokal) — prefikssiz.
     req = SimpleNamespace(base_url="http://localhost:8000/")
     assert auth._redirect_uri(req) == "http://localhost:8000/api/auth/callback"
+
+
+def test_media_url_does_not_double_the_prefix():
+    """`base_url` proksi ortida `/school` ni o'z ichiga oladi — media ikkilanmasin.
+
+    `/school/school/media/...` nginx'da yo'q → SPA'ga tushib rasm o'rniga HTML
+    qaytardi, shuning uchun yuklangan rasmlar ko'rinmasdi.
+    """
+    from types import SimpleNamespace
+
+    from app import serialize as ser
+
+    # Prefiksli base_url — mars'dagi holat.
+    req = SimpleNamespace(base_url="https://core.marsit.uz/school/")
+    assert ser.media_url(req, "sections/a.png") == "https://core.marsit.uz/school/media/sections/a.png"
+    # Boshidagi `/` ham to'g'ri ishlansin.
+    assert ser.media_url(req, "/sections/a.png") == "https://core.marsit.uz/school/media/sections/a.png"
+
+    # Ildizda (lokal) — prefikssiz.
+    req = SimpleNamespace(base_url="http://localhost:8000/")
+    assert ser.media_url(req, "sections/a.png") == "http://localhost:8000/media/sections/a.png"
+
+    # Bo'sh yo'l — None.
+    assert ser.media_url(req, "") is None
+    assert ser.media_url(req, None) is None
+
+
+async def test_editor_allowlist_gates_by_sub_handle_and_email(client):
+    """`EDITOR_ALLOWLIST` to'ldirilsa — faqat undagilar (sub, handle yoki email)."""
+    from app import auth
+
+    os.environ["EDITOR_ALLOWLIST"] = "@South67, boss@marsit.uz, sub-abc123"
+    get_settings.cache_clear()
+    name = get_settings().editor_cookie_name
+
+    def as_user(sub="u", handle="", email="", role=""):
+        tok = auth.sign(
+            {"kind": "session", "sub": sub, "name": "U", "handle": handle, "email": email, "role": role}, 3600
+        )
+        client.cookies.set(name, tok)
+
+    try:
+        # Handle ro'yxatda (katta-kichik harf va `@` ahamiyatsiz) — kiradi.
+        as_user(handle="South67")
+        assert (await client.get("/api/editor/pages")).status_code == 200
+        # Email ro'yxatda (sessiyadagi email — tasdiqlangan) — kiradi.
+        as_user(email="BOSS@marsit.uz")
+        assert (await client.get("/api/editor/pages")).status_code == 200
+        # sub ro'yxatda — kiradi (eng ishonchli belgi).
+        as_user(sub="sub-abc123")
+        assert (await client.get("/api/editor/pages")).status_code == 200
+        # Admin, lekin ro'yxatda YO'Q — endi rad etiladi.
+        as_user(handle="chetdan", role="admin")
+        assert (await client.get("/api/editor/pages")).status_code == 403
+    finally:
+        os.environ.pop("EDITOR_ALLOWLIST", None)
+        get_settings.cache_clear()
+        client.cookies.clear()
+
+
+def test_may_edit_ignores_unverified_email():
+    """Callback tasdiqlanmagan email'ni ro'yxatga solishtirmaydi (spoofing)."""
+    from app import auth
+
+    os.environ["EDITOR_ALLOWLIST"] = "boss@marsit.uz"
+    get_settings.cache_clear()
+    try:
+        # Callback tasdiqlangan bo'lsa email'ni uzatadi — kiradi.
+        assert auth._may_edit("s", "h", "boss@marsit.uz") is True
+        # Tasdiqlanmagan bo'lsa callback email='' beradi — kirmaydi.
+        assert auth._may_edit("s", "h", "") is False
+    finally:
+        os.environ.pop("EDITOR_ALLOWLIST", None)
+        get_settings.cache_clear()
+
+
+async def test_no_allowlist_keeps_staff_admin_behavior(client):
+    """Ro'yxat bo'sh — eski qoida saqlanadi (admin/xodim kiradi)."""
+    assert "EDITOR_ALLOWLIST" not in os.environ
+    _login(client, role="admin")
+    assert (await client.get("/api/editor/pages")).status_code == 200
