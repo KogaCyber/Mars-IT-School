@@ -12,7 +12,8 @@ import { describe, expect, it } from 'vitest'
 
 import vercelConfig from '../vercel.json'
 import { COURSE_ALIASES, COURSE_ROUTES } from '@/data/courseAliases'
-import { SITE, STATIC_PAGES } from '@/data/seoConfig'
+import { SITE } from '@/data/seoConfig'
+import { STATIC_PAGES } from '@/data/seoPages'
 
 describe('kurs aliaslari', () => {
   it('har bir alias haqiqiy sahifasi bor kursga ishora qiladi', () => {

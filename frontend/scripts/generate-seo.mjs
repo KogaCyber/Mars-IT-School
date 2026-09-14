@@ -21,13 +21,12 @@ import { withBase } from '../src/data/basePath.js'
 import { COURSE_ALIASES } from '../src/data/courseAliases.js'
 import {
   SITE,
-  STATIC_PAGES,
   localeAlternates,
   localePath,
   localeUrl,
   pick,
-  resolvePage,
 } from '../src/data/seoConfig.js'
+import { STATIC_PAGES, resolvePage } from '../src/data/seoPages.js'
 import {
   absoluteUrl,
   articleSchema,

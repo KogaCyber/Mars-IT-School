@@ -11,11 +11,23 @@
  * Build vaqtida `scripts/generate-seo.mjs` shu ma'lumotdan statik HTML yasaydi,
  * shuning uchun JS ishlatmaydigan crawler'lar ham to'liq meta ko'radi.
  */
-import { watchEffect } from 'vue'
+import { ref, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 
-import { SITE, findStaticPage, isNoindexPath, localeAlternates, localeUrl } from '@/data/seoConfig'
+import { SITE, isNoindexPath, localeAlternates, localeUrl } from '@/data/seoConfig'
+
+// Statik sahifalar SEO-ma'lumoti (~95 KB) og'ir va ilova ishga tushishida
+// SHART EMAS — shuning uchun DINAMIK yuklanadi va boot chunk'idan chiqadi
+// (mobil Performance uchun). Yuklanmaguncha `preset` bo'sh: sahifa o'z
+// sarlavhasini bermasa, standart matn qisqa vaqt turadi va keyin aniqlashadi.
+// Craulerlar meta'ni prerender qilingan HTML'dan oladi, shuning uchun bu
+// kechikish SEO'ga ta'sir qilmaydi. `ref` — yuklangach `watchEffect` qayta
+// ishga tushib meta'ni to'ldiradi.
+const staticPageFinder = ref(null)
+import('@/data/seoPages').then((m) => {
+  staticPageFinder.value = m.findStaticPage
+})
 import { useSiteStore } from '@/stores/site'
 import {
   absoluteUrl,
@@ -155,7 +167,7 @@ export function useSeo(source) {
     const url = localeUrl(origin, path, locale)
     // JSON-LD ichidagi matnlar ham sayt tiliga ergashadi.
     setSchemaLocale(locale)
-    const preset = findStaticPage(path, locale) || {}
+    const preset = staticPageFinder.value?.(path, locale) || {}
     const title = meta.title || preset.title
     const description = trim(meta.description || preset.description)
     const keywords = meta.keywords || preset.keywords
