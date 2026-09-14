@@ -12,6 +12,7 @@ import { computed, ref } from 'vue'
 import { fetchMe, fetchPages, fetchSection, loginUrl, logout as apiLogout, patchSection } from '@/api/editor'
 
 import { useContentStore } from './content'
+import { useLiveStore } from './live'
 
 const EDITING_KEY = 'mars.editing'
 
@@ -116,6 +117,8 @@ export const useEditorStore = defineStore('editor', () => {
       section.value = await patchSection(active.value.key, payload)
       pages.value = [] // keyingi ochilishda qayta o'qiladi
       await useContentStore().load({ force: true })
+      // Sahifadagi ro'yxatlar (yangiliklar, vakansiyalar…) ham darhol yangilansin.
+      useLiveStore().notify()
     } catch (e) {
       error.value = e.response?.data?.detail || 'Не удалось сохранить.'
       throw e

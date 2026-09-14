@@ -22,6 +22,13 @@ import {
 import { getLanguage } from '@/i18n/language'
 import { useContentStore } from '@/stores/content'
 import { useEditorStore } from '@/stores/editor'
+import { useLiveStore } from '@/stores/live'
+
+/** Saqlagach sahifadagi ro'yxatlarni darhol yangilaydi — F5 kutilmasin. */
+async function refreshPage() {
+  await useContentStore().load({ force: true })
+  useLiveStore().notify()
+}
 
 const editor = useEditorStore()
 
@@ -170,7 +177,7 @@ async function save() {
       if (i >= 0) items.value[i] = updated
       editing.value = null
     }
-    await useContentStore().load({ force: true })
+    await refreshPage()
   } catch (e) {
     error.value = e.response?.data?.detail || 'Не удалось сохранить.'
   } finally {
@@ -184,7 +191,7 @@ async function remove(item) {
   try {
     await deleteEntity(active.value, item.id)
     items.value = items.value.filter((x) => x.id !== item.id)
-    await useContentStore().load({ force: true })
+    await refreshPage()
   } catch (e) {
     error.value = e.response?.data?.detail || 'Не удалось удалить.'
   } finally {
