@@ -10,6 +10,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 import { fetchSiteSettings } from '@/api/site'
+import { DEFAULT_EMAIL, DEFAULT_PHONE } from '@/data/siteDefaults'
 import OutlineIcon from '@/components/base/OutlineIcon.vue'
 import { useAsyncData } from '@/composables/useAsyncData'
 import { useSection } from '@/composables/useSection'
@@ -33,8 +34,8 @@ const telegramHandle = computed(() => {
 })
 
 const items = computed(() => {
-  const phone = settings.value.phone || '+998 78 777 77 57'
-  const email = settings.value.email || 'info@marsit.uz'
+  const phone = settings.value.phone || DEFAULT_PHONE
+  const email = settings.value.email || DEFAULT_EMAIL
 
   return [
     {

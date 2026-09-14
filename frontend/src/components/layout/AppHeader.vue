@@ -15,6 +15,7 @@ import logoMars from '@/assets/icons/logo-mars.svg'
 import rocketIcon from '@/assets/icons/rocket.svg'
 import LanguageSwitcher from '@/components/layout/LanguageSwitcher.vue'
 import { useScrollLock } from '@/composables/useScrollLock'
+import { DEFAULT_PHONE } from '@/data/siteDefaults'
 import { useSiteStore } from '@/stores/site'
 import { useUiStore } from '@/stores/ui'
 
@@ -39,7 +40,7 @@ const { y } = useWindowScroll()
 const isScrollLocked = useScrollLock()
 
 const isScrolled = computed(() => y.value > 20)
-const phone = computed(() => site.settings.phone || '+998 78 777 77 57')
+const phone = computed(() => site.settings.phone || DEFAULT_PHONE)
 const phoneHref = computed(() => `tel:${phone.value.replace(/[^\d+]/g, '')}`)
 
 /** Telefon raqamning birinchi bo'lagi to'q sariq rangda ko'rsatiladi. */

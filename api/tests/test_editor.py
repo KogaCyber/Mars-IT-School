@@ -214,3 +214,28 @@ def test_redirect_uri_does_not_double_the_prefix():
     # Ildizda (lokal) — prefikssiz.
     req = SimpleNamespace(base_url="http://localhost:8000/")
     assert auth._redirect_uri(req) == "http://localhost:8000/api/auth/callback"
+
+
+def test_media_url_does_not_double_the_prefix():
+    """`base_url` proksi ortida `/school` ni o'z ichiga oladi — media ikkilanmasin.
+
+    `/school/school/media/...` nginx'da yo'q → SPA'ga tushib rasm o'rniga HTML
+    qaytardi, shuning uchun yuklangan rasmlar ko'rinmasdi.
+    """
+    from types import SimpleNamespace
+
+    from app import serialize as ser
+
+    # Prefiksli base_url — mars'dagi holat.
+    req = SimpleNamespace(base_url="https://core.marsit.uz/school/")
+    assert ser.media_url(req, "sections/a.png") == "https://core.marsit.uz/school/media/sections/a.png"
+    # Boshidagi `/` ham to'g'ri ishlansin.
+    assert ser.media_url(req, "/sections/a.png") == "https://core.marsit.uz/school/media/sections/a.png"
+
+    # Ildizda (lokal) — prefikssiz.
+    req = SimpleNamespace(base_url="http://localhost:8000/")
+    assert ser.media_url(req, "sections/a.png") == "http://localhost:8000/media/sections/a.png"
+
+    # Bo'sh yo'l — None.
+    assert ser.media_url(req, "") is None
+    assert ser.media_url(req, None) is None

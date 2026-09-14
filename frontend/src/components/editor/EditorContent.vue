@@ -19,6 +19,7 @@ import {
   updateEntity,
   uploadImage,
 } from '@/api/editor'
+import { DEFAULT_EMAIL, DEFAULT_PHONE, defaultWorkHours } from '@/data/siteDefaults'
 import { getLanguage } from '@/i18n/language'
 import { useContentStore } from '@/stores/content'
 import { useEditorStore } from '@/stores/editor'
@@ -67,7 +68,15 @@ async function loadTab(kind) {
     if (kind === 'settings') {
       const data = await fetchSettings()
       fields.value = data.fields
-      editing.value = { ...data.values } // настройки — сразу форма
+      const values = { ...data.values }
+      // Пустые контакты показываем текущими (сайтовыми) значениями по умолчанию —
+      // форма отражает то, что видно на сайте, а не пустые поля.
+      if (!values.phone) values.phone = DEFAULT_PHONE
+      if (!values.email) values.email = DEFAULT_EMAIL
+      for (const l of LANGS) {
+        if (!values[`work_hours_${l}`]) values[`work_hours_${l}`] = defaultWorkHours(l)
+      }
+      editing.value = values // настройки — сразу форма
       singular.value = 'Контакты'
       items.value = []
     } else {
